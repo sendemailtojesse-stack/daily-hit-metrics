@@ -1,12 +1,12 @@
 {
-  "lastUpdated": "2026-06-16T08:15:51.674Z",
+  "lastUpdated": "2026-06-16T08:17:07.407Z",
   "trafficLeaderboard": [
     {
       "rank": 1,
       "site": "june 16",
       "category": "Search Spike",
       "dailyHits": "200+",
-      "growth": "+5.7%",
+      "growth": "+7.2%",
       "trend": "Your Daily Work Horoscope for June 16, 2026"
     },
     {
@@ -14,7 +14,7 @@
       "site": "2026 年 fifa 世界杯",
       "category": "Search Spike",
       "dailyHits": "2000+",
-      "growth": "+8.0%",
+      "growth": "+6.0%",
       "trend": "梅西在2026年世界杯对阵阿尔及利亚前发布的“一起”具体是什么含义？"
     },
     {
@@ -22,7 +22,7 @@
       "site": "fullmetal alchemist seiko watch",
       "category": "Search Spike",
       "dailyHits": "500+",
-      "growth": "+14.3%",
+      "growth": "+12.7%",
       "trend": "Seiko&apos;s New Collaboration Watch Features a Cult-Classic Anime Series"
     },
     {
@@ -30,7 +30,7 @@
       "site": "calcium",
       "category": "Search Spike",
       "dailyHits": "200+",
-      "growth": "+13.4%",
+      "growth": "+14.0%",
       "trend": "Millions take calcium and vitamin D for stronger bones. A major review finds little benefit"
     },
     {
@@ -38,7 +38,7 @@
       "site": "miguel rojas",
       "category": "Search Spike",
       "dailyHits": "2000+",
-      "growth": "+9.5%",
+      "growth": "+11.3%",
       "trend": "Dodgers 4-3 Rays (Jun 15, 2026) Game Recap"
     },
     {
@@ -46,7 +46,7 @@
       "site": "junior caminero",
       "category": "Search Spike",
       "dailyHits": "200+",
-      "growth": "+11.9%",
+      "growth": "+12.5%",
       "trend": "Caminero&apos;s blast starts 5-run 8th as Rays close Angels set with a &apos;W&apos;"
     },
     {
@@ -54,8 +54,32 @@
       "site": "colin farrell",
       "category": "Search Spike",
       "dailyHits": "2000+",
-      "growth": "+7.8%",
+      "growth": "+10.7%",
       "trend": "What to stream: ‘Project Hail Mary,’ ‘Sugar,’ Myles Smith’s debut album"
+    },
+    {
+      "rank": 8,
+      "site": "Bitcoin (BTC)",
+      "category": "Crypto Velocity",
+      "dailyHits": "$28.4B Vol",
+      "growth": "+6.01%",
+      "trend": "High-velocity market action tracking at $71,471.94. Large-scale liquidity shift capturing heavy institutional trading volume."
+    },
+    {
+      "rank": 9,
+      "site": "Ethereum (ETH)",
+      "category": "Crypto Velocity",
+      "dailyHits": "$14.1B Vol",
+      "growth": "+4.91%",
+      "trend": "High-velocity market action tracking at $3,650.87. Large-scale liquidity shift capturing heavy institutional trading volume."
+    },
+    {
+      "rank": 10,
+      "site": "Solana (SOL)",
+      "category": "Crypto Velocity",
+      "dailyHits": "$3.8B Vol",
+      "growth": "+4.95%",
+      "trend": "High-velocity market action tracking at $152.18. Large-scale liquidity shift capturing heavy institutional trading volume."
     }
   ]
 }
