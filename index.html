@@ -106,7 +106,6 @@
             margin-bottom: 4px;
         }
 
-        /* HYPERLINK STYLING */
         .dashboard-link {
             color: var(--text-main);
             text-decoration: none;
@@ -190,23 +189,21 @@
             data.trafficLeaderboard.forEach(item => {
                 const row = document.createElement('tr');
                 
-                // 1. DYNAMIC BADGE COLOR SELECTOR
-                let badgeColor = 'var(--neon-glow)';
-                let badgeBg = 'rgba(88, 166, 255, 0.1)';
+                // Color-mapping configurations for the custom layout categories
+                let badgeColor = '#bc8cff'; // Matrix Purple default for Social Pulse
+                let badgeBg = 'rgba(188, 140, 255, 0.1)';
                 
-                if (item.category === 'Crypto Velocity') {
+                if (item.category === 'Finance Trends') {
                     badgeColor = 'var(--ticker-green)';
                     badgeBg = 'rgba(63, 185, 80, 0.1)';
-                } else if (item.category === 'Social Pulse') {
-                    badgeColor = '#bc8cff'; 
-                    badgeBg = 'rgba(188, 140, 255, 0.1)';
+                } else if (item.category === 'Popular Searches') {
+                    badgeColor = 'var(--neon-glow)';
+                    badgeBg = 'rgba(88, 166, 255, 0.1)';
                 }
 
-                // 2. DYNAMIC DIRECTIONAL MOVEMENT COLOR SELECTOR
+                // Conditional coloring mapping for directional momentum changes
                 const isNegative = item.growth.startsWith('-');
                 const momentumColor = isNegative ? 'var(--ticker-red)' : 'var(--ticker-green)';
-
-                // Default fallback if no URL property exists yet
                 const targetUrl = item.url || '#';
 
                 row.innerHTML = `
