@@ -1,44 +1,84 @@
 {
-  "lastUpdated": "2026-06-16T07:32:05.188Z",
+  "lastUpdated": "2026-06-16T07:41:56.801Z",
   "trafficLeaderboard": [
     {
       "rank": 1,
       "site": "2026 年 fifa 世界杯",
       "category": "Search Spike",
-      "dailyHits": "150K",
-      "growth": "+11.3%",
+      "dailyHits": "200K",
+      "growth": "+8.9%",
       "trend": "Real-time High Velocity Volume"
     },
     {
       "rank": 2,
       "site": "fullmetal alchemist seiko watch",
       "category": "Search Spike",
-      "dailyHits": "128K",
-      "growth": "+15.7%",
+      "dailyHits": "185K",
+      "growth": "+7.3%",
       "trend": "Real-time High Velocity Volume"
     },
     {
       "rank": 3,
       "site": "calcium",
       "category": "Search Spike",
-      "dailyHits": "106K",
-      "growth": "+13.1%",
+      "dailyHits": "170K",
+      "growth": "+12.4%",
       "trend": "Real-time High Velocity Volume"
     },
     {
       "rank": 4,
       "site": "junior caminero",
       "category": "Search Spike",
-      "dailyHits": "84K",
-      "growth": "+12.2%",
+      "dailyHits": "155K",
+      "growth": "+10.0%",
       "trend": "Real-time High Velocity Volume"
     },
     {
       "rank": 5,
       "site": "colin farrell",
       "category": "Search Spike",
-      "dailyHits": "62K",
-      "growth": "+14.6%",
+      "dailyHits": "140K",
+      "growth": "+9.8%",
+      "trend": "Real-time High Velocity Volume"
+    },
+    {
+      "rank": 6,
+      "site": "mookie betts",
+      "category": "Search Spike",
+      "dailyHits": "125K",
+      "growth": "+5.8%",
+      "trend": "Real-time High Velocity Volume"
+    },
+    {
+      "rank": 7,
+      "site": "jimmy fallon",
+      "category": "Search Spike",
+      "dailyHits": "110K",
+      "growth": "+5.2%",
+      "trend": "Real-time High Velocity Volume"
+    },
+    {
+      "rank": 8,
+      "site": "josimar dias",
+      "category": "Search Spike",
+      "dailyHits": "95K",
+      "growth": "+5.4%",
+      "trend": "Real-time High Velocity Volume"
+    },
+    {
+      "rank": 9,
+      "site": "austria vs jordan",
+      "category": "Search Spike",
+      "dailyHits": "80K",
+      "growth": "+9.3%",
+      "trend": "Real-time High Velocity Volume"
+    },
+    {
+      "rank": 10,
+      "site": "mike trout",
+      "category": "Search Spike",
+      "dailyHits": "65K",
+      "growth": "+7.7%",
       "trend": "Real-time High Velocity Volume"
     }
   ]
