@@ -35,4 +35,4 @@ jobs:
 
       - name: Force Cloudflare Deployment Sync
         run: |
-          curl -X POST "PASTE_YOUR_CLOUDFLARE_DEPLOY_HOOK_URL_HERE"
+          curl -X POST "https://api.cloudflare.com/client/v4/workers/builds/deploy_hooks/ae899479-de1d-4671-8505-da948da9cb15"
