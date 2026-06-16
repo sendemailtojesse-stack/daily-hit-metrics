@@ -5,7 +5,7 @@ async function fetchTripleMix() {
     let cryptoMovers = [];
     let socialPulse = [];
 
-    console.log("Initializing Master Triple-Mix Data Pipeline...");
+    console.log("Initializing Master Hyperlinked Data Pipeline...");
 
     // ==========================================
     // SOURCE 1: GOOGLE SEARCH TRENDS (Top 5)
@@ -20,7 +20,7 @@ async function fetchTripleMix() {
             const xmlItems = xmlText.split('<item>');
             xmlItems.shift();
             
-            searchSpikes = xmlItems.slice(0, 5).map((itemStr, index) => {
+            searchSpikes = xmlItems.slice(0, 5).map((itemStr) => {
                 const titleMatch = itemStr.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/);
                 const trendName = titleMatch ? titleMatch[1].trim() : "High-Velocity Trend";
                 
@@ -31,11 +31,16 @@ async function fetchTripleMix() {
                 let storyContext = newsTitleMatch ? newsTitleMatch[1].replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').replace(/&quot;/g, '"').trim() : "";
                 
                 if (!storyContext) storyContext = "Explosive search volume spike tracking real-time consumer focus.";
+                
+                // Extract original Google News search link
+                const linkMatch = itemStr.match(/<link>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/link>/);
+                const sourceUrl = linkMatch ? linkMatch[1].trim() : "https://trends.google.com/trends/trendingsearches/daily?geo=US";
+
                 const growthRate = "+" + (Math.random() * 10 + 5).toFixed(1) + "%";
 
-                return { site: trendName, category: "Search Spike", dailyHits: liveTraffic, growth: growthRate, trend: storyContext };
+                return { site: trendName, category: "Search Spike", dailyHits: liveTraffic, growth: growthRate, trend: storyContext, url: sourceUrl };
             });
-            console.log(`Parsed ${searchSpikes.length} Google search components.`);
+            console.log(`Parsed ${searchSpikes.length} Google search components with source hyperlinks.`);
         }
     } catch (error) { console.error('Google pipeline error:', error.message); }
 
@@ -61,7 +66,8 @@ async function fetchTripleMix() {
                     category: "Crypto Velocity",
                     dailyHits: formattedVolume,
                     growth: `${percentChange >= 0 ? "+" : ""}${percentChange.toFixed(2)}%`,
-                    trend: `High-velocity market action tracking at ${formattedPrice}. Large-scale liquidity shift capturing heavy trading volume.`
+                    trend: `High-velocity market action tracking at ${formattedPrice}. Large-scale liquidity shift capturing heavy trading volume.`,
+                    url: `https://coincap.io/assets/${asset.id}` // Direct tracking link
                 };
             });
         }
@@ -70,9 +76,9 @@ async function fetchTripleMix() {
     // Crypto Fallback Guard
     if (cryptoMovers.length === 0) {
         cryptoMovers = [
-            { name: "Bitcoin", symbol: "BTC", baselinePrice: 68200, volume: "31.2B" },
-            { name: "Ethereum", symbol: "ETH", baselinePrice: 3510, volume: "15.4B" },
-            { name: "Solana", symbol: "SOL", baselinePrice: 148, volume: "4.1B" }
+            { id: "bitcoin", name: "Bitcoin", symbol: "BTC", baselinePrice: 68200, volume: "31.2B" },
+            { id: "ethereum", name: "Ethereum", symbol: "ETH", baselinePrice: 3510, volume: "15.4B" },
+            { id: "solana", name: "Solana", symbol: "SOL", baselinePrice: 148, volume: "4.1B" }
         ].map(asset => {
             const mockPercent = (Math.random() * 10 - 2).toFixed(2);
             return {
@@ -80,7 +86,8 @@ async function fetchTripleMix() {
                 category: "Crypto Velocity",
                 dailyHits: `$${asset.volume} Vol`,
                 growth: `${mockPercent >= 0 ? "+" : ""}${mockPercent}%`,
-                trend: `High-velocity market action tracking at $${(asset.baselinePrice * (1 + parseFloat(mockPercent)/100)).toLocaleString(undefined,{minimumFractionDigits:2})}. Heavy institutional trading volume.`
+                trend: `High-velocity market action tracking at $${(asset.baselinePrice * (1 + parseFloat(mockPercent)/100)).toLocaleString(undefined,{minimumFractionDigits:2})}. Heavy institutional trading volume.`,
+                url: `https://coincap.io/assets/${asset.id}`
             };
         });
     }
@@ -97,15 +104,18 @@ async function fetchTripleMix() {
         if (response.ok) {
             const xmlText = await response.text();
             const xmlItems = xmlText.split('<entry>');
-            xmlItems.shift(); // Remove feed header
+            xmlItems.shift(); 
 
             socialPulse = xmlItems.slice(0, 2).map((itemStr) => {
                 const titleMatch = itemStr.match(/<title>(.*?)<\/title>/);
                 let originalTitle = titleMatch ? titleMatch[1].replace(/&amp;/g, '&').replace(/&quot;/g, '"').trim() : "";
                 
-                // Truncate title strings if they are too long for dashboard rows
                 if (originalTitle.length > 60) originalTitle = originalTitle.substring(0, 57) + "...";
                 
+                // Extract direct thread link from Reddit RSS entry attributes
+                const linkMatch = itemStr.match(/<link\s+href=["'](.*?)["']/);
+                const threadUrl = linkMatch ? linkMatch[1].trim() : "https://www.reddit.com/r/popular/";
+
                 const commentsCount = Math.floor(Math.random() * 4000 + 1200);
                 const velocityAcceleration = "+" + Math.floor(Math.random() * 40 + 20) + " upvotes/min";
 
@@ -114,43 +124,43 @@ async function fetchTripleMix() {
                     category: "Social Pulse",
                     dailyHits: `${commentsCount.toLocaleString()} Coms`,
                     growth: velocityAcceleration,
-                    trend: "Viral megathread dominating internet front-pages. Mass social synchronization driving explosive user interaction and cross-platform sharing."
+                    trend: "Viral megathread dominating internet front-pages. Mass social synchronization driving explosive user interaction.",
+                    url: threadUrl
                 };
             });
-            console.log("Social pipeline data captured.");
+            console.log("Social pipeline data captured with permalinks.");
         }
     } catch (error) { console.error('Social pipeline error:', error.message); }
 
-    // Social Pulse Fallback Guard (Protects layout from Reddit rate-limiting)
+    // Social Pulse Fallback Guard
     if (socialPulse.length === 0) {
-        console.log("Deploying high-fidelity social fallback structures...");
         socialPulse = [
-            { title: "Summer Gaming Festival Keynote & Announcements", comments: 3450, upvotes: 42 },
-            { title: "Major Tech Framework Releases Next-Gen Client Architecture", comments: 1890, upvotes: 28 }
+            { title: "Summer Gaming Festival Keynote & Announcements", comments: 3450, upvotes: 42, url: "https://www.reddit.com/r/gaming/" },
+            { title: "Major Tech Framework Releases Next-Gen Client Architecture", comments: 1890, upvotes: 28, url: "https://www.reddit.com/r/technology/" }
         ].map(post => ({
             site: post.title,
             category: "Social Pulse",
             dailyHits: `${post.comments.toLocaleString()} Coms`,
             growth: `+${post.upvotes} upvotes/min`,
-            trend: "Viral megathread dominating internet front-pages. Mass social synchronization driving explosive user interaction and cross-platform sharing."
+            trend: "Viral megathread dominating internet front-pages. Mass social synchronization driving explosive user interaction.",
+            url: post.url
         }));
     }
 
     // ==========================================
     // CONSOLIDATE AND SHUFFLE INTO 10 ITEMS
     // ==========================================
-    // Force absolute safety fallbacks for Google trends if it flatlines completely
     if (searchSpikes.length === 0) {
         searchSpikes = Array.from({ length: 5 }, (_, i) => ({
             site: `High-Velocity Trend Volume #${i + 1}`,
             category: "Search Spike",
             dailyHits: `${150 - (i * 20)}K+`,
             growth: "+" + (Math.random() * 8 + 4).toFixed(1) + "%",
-            trend: "Explosive search volume spike tracking real-time high-velocity focus across localized regions."
+            trend: "Explosive search volume spike tracking real-time high-velocity focus across localized regions.",
+            url: "https://trends.google.com/trends/trendingsearches/daily?geo=US"
         }));
     }
 
-    // Blend the master payload array together
     const finalBlendedPayload = [...searchSpikes, ...cryptoMovers, ...socialPulse].map((item, index) => {
         return {
             rank: index + 1,
@@ -164,7 +174,7 @@ async function fetchTripleMix() {
     };
 
     fs.writeFileSync('data.json', JSON.stringify(updatedData, null, 2));
-    console.log(`Pipeline Consolidation Perfect. 10 matrix rows pushed to raw storage file.`);
+    console.log(`Pipeline Consolidation Perfect. Hyperlinked rows written.`);
 }
 
 fetchTripleMix();
