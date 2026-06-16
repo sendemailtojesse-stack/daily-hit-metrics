@@ -31,3 +31,7 @@ jobs:
           git config --global user.email "actions@github.com"
           git add data.json
           git diff-index --quiet HEAD || (git commit -m "Automated data refresh [skip ci]" && git push)
+
+          - name: Force Cloudflare Deployment Sync
+        run: |
+          curl -X POST "https://api.cloudflare.com/client/v4/pages/spaces/..."
