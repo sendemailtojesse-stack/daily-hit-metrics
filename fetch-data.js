@@ -2,23 +2,25 @@ const fs = require('fs');
 
 async function fetchTrends() {
     try {
-        // Fetching live global search trends from a public RSS-to-JSON converter
+        // Fetch live global search trends
         const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://trends.google.com/trending/rss?geo=US');
         const data = await response.json();
         
-        // Map the live trending items into our scoreboard format
         const trafficLeaderboard = data.items.slice(0, 5).map((item, index) => {
-            // Generate simulated traffic velocity baselines for our dashboard UI
-            const approximateHits = (150 - (index * 20)) + "M"; 
-            const growthRate = "+" + (Math.random() * 8 + 1).toFixed(1) + "%";
+            // Calculate a simulated traffic velocity baseline based on Google's search volume ranking
+            const approximateHits = (150 - (index * 22)) + "K"; 
+            const growthRate = "+" + (Math.random() * 12 + 4).toFixed(1) + "%";
             
+            // Clean up the search title (removing extra characters if any exist)
+            const cleanTrendName = item.title.trim();
+
             return {
                 rank: index + 1,
-                site: item.categories[0] || "Trending News",
-                category: "Live Trend",
+                site: cleanTrendName,          // Move the actual live trend name to the primary "Site/Entity" column
+                category: "Search Spike",      
                 dailyHits: approximateHits,
                 growth: growthRate,
-                trend: item.title
+                trend: "Real-time High Velocity Volume" // Contextual description
             };
         });
 
@@ -27,9 +29,8 @@ async function fetchTrends() {
             trafficLeaderboard: trafficLeaderboard
         };
 
-        // Overwrite the local data.json file
         fs.writeFileSync('data.json', JSON.stringify(updatedData, null, 2));
-        console.log('Successfully updated data.json with live trends!');
+        console.log('Successfully updated data.json with clean live trends!');
         
     } catch (error) {
         console.error('Error fetching real-time data:', error);
