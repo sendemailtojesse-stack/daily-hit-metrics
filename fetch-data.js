@@ -6,21 +6,20 @@ async function fetchTrends() {
         const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://trends.google.com/trending/rss?geo=US');
         const data = await response.json();
         
-        const trafficLeaderboard = data.items.slice(0, 5).map((item, index) => {
+        // Raised .slice from 5 to 10 to grab the top 10 trends
+        const trafficLeaderboard = data.items.slice(0, 10).map((item, index) => {
             // Calculate a simulated traffic velocity baseline based on Google's search volume ranking
-            const approximateHits = (150 - (index * 22)) + "K"; 
+            const approximateHits = (200 - (index * 15)) + "K"; 
             const growthRate = "+" + (Math.random() * 12 + 4).toFixed(1) + "%";
-            
-            // Clean up the search title (removing extra characters if any exist)
             const cleanTrendName = item.title.trim();
 
             return {
                 rank: index + 1,
-                site: cleanTrendName,          // Move the actual live trend name to the primary "Site/Entity" column
+                site: cleanTrendName,          
                 category: "Search Spike",      
                 dailyHits: approximateHits,
                 growth: growthRate,
-                trend: "Real-time High Velocity Volume" // Contextual description
+                trend: "Real-time High Velocity Volume" 
             };
         });
 
@@ -30,7 +29,7 @@ async function fetchTrends() {
         };
 
         fs.writeFileSync('data.json', JSON.stringify(updatedData, null, 2));
-        console.log('Successfully updated data.json with clean live trends!');
+        console.log('Successfully updated data.json with 10 live trends!');
         
     } catch (error) {
         console.error('Error fetching real-time data:', error);
