@@ -192,14 +192,19 @@
 </div>
 
 <script>
+    // System Memory Flags
     let isPipelineRefreshing = false;
+    let currentlyLoadedTimestamp = ""; 
+    let pollingIntervalContainer = null;
 
     function initCountdownClock() {
         setInterval(() => {
+            // Freeze calculations if the system is currently looping background checks
             if (isPipelineRefreshing) return;
 
             const now = new Date();
             
+            // Calculate accurate distance to the top of the next hour
             const nextSync = new Date(
                 now.getFullYear(),
                 now.getMonth(),
@@ -212,20 +217,9 @@
             const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
+            // 1. TOP OF THE HOUR TRIGGER CONDITION
             if (minutes === 0 && seconds === 0) {
-                isPipelineRefreshing = true;
-                
-                const clockLabel = document.getElementById('countdown-clock');
-                clockLabel.innerText = `FETCHING FRESH DATA PIPELINE...`;
-                clockLabel.style.color = 'var(--ticker-green)';
-                
-                // Staggered look ahead to let Cloudflare pull down the hook build updates
-                setTimeout(async () => {
-                    await loadDashboard();
-                    isPipelineRefreshing = false;
-                    clockLabel.style.color = 'var(--neon-glow)';
-                }, 45000);
-                
+                executeSmartPipelineSync();
                 return;
             }
 
@@ -235,11 +229,40 @@
         }, 1000);
     }
 
-    async function loadDashboard() {
+    // 2. BACK-END POLLING ENGINE
+    function executeSmartPipelineSync() {
+        isPipelineRefreshing = true;
+        const clockLabel = document.getElementById('countdown-clock');
+        clockLabel.innerText = `SYNCHRONIZING WITH CLOUD PIPELINE...`;
+        clockLabel.style.color = 'var(--ticker-green)';
+
+        // Quietly check Cloudflare's directory assets every 30 seconds until the new file registers
+        pollingIntervalContainer = setInterval(async () => {
+            console.log("Checking cloud for raw database mutations...");
+            const updateFound = await loadDashboard(true);
+            
+            if (updateFound) {
+                // Clear the loop the exact second the new file arrives
+                clearInterval(pollingIntervalContainer);
+                isPipelineRefreshing = false;
+                clockLabel.style.color = 'var(--neon-glow)';
+                console.log("Smart sync complete. Terminal state refreshed.");
+            }
+        }, 30000);
+    }
+
+    async function loadDashboard(isPollingCheck = false) {
         try {
-            // SAFE RELATIVE PATH: Works universally for private or public repos on any branch
             const response = await fetch('data.json?t=' + Date.now());
             const data = await response.json();
+            
+            // If this is a background check, compare incoming data timestamps with screen state
+            if (isPollingCheck && data.lastUpdated === currentlyLoadedTimestamp) {
+                return false; // Timestamps match; Cloudflare hasn't finished deployment yet
+            }
+
+            // A newer database file has been confirmed! Lock in the state change
+            currentlyLoadedTimestamp = data.lastUpdated;
             
             const localTime = new Date(data.lastUpdated).toLocaleString();
             document.getElementById('live-clock').innerText = `SYSTEM ACTIVE // REFRESHED: ${localTime}`;
@@ -285,12 +308,16 @@
                 `;
                 tableBody.appendChild(row);
             });
+
+            return true; // Return true to signal successful row mapping update
         } catch (error) {
             console.error('Dashboard synchronization error:', error);
             document.getElementById('live-clock').innerText = 'PIPELINE ERROR // OUT OF SYNC';
+            return false;
         }
     }
 
+    // Initialize layout
     loadDashboard();
     initCountdownClock();
 </script>
