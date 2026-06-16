@@ -5,6 +5,9 @@ on:
     - cron: '0 * * * *' # Wakes up automatically every single hour on the dot
   workflow_dispatch: # Keeps your manual refresh button active
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # Forces GitHub's helper tools to execute on Node 24
+
 jobs:
   update-data:
     runs-on: ubuntu-latest
@@ -17,7 +20,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
-          node-version: 24 # Upgraded to Node 24 to clear the deprecation warning
+          node-version: 24
 
       - name: Run data aggregation script
         run: node fetch-data.js
