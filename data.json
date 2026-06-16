@@ -1,95 +1,113 @@
 {
-  "lastUpdated": "2026-06-16T08:56:04.718Z",
+  "lastUpdated": "2026-06-16T09:19:13.609Z",
   "trafficLeaderboard": [
     {
       "rank": 1,
-      "site": "trump ufc white house",
-      "category": "Search Spike",
-      "dailyHits": "2000+",
-      "growth": "+6.7%",
-      "trend": "UFC at White House a success, but never again, Dana White says",
-      "url": "https://trends.google.com/trending/rss?geo=US"
-    },
-    {
-      "rank": 2,
-      "site": "june 16",
-      "category": "Search Spike",
-      "dailyHits": "200+",
-      "growth": "+14.8%",
-      "trend": "According to an astrologer, these 3 signs are about to experience a once-in-12-year lucky streak starting June 2026",
-      "url": "https://trends.google.com/trending/rss?geo=US"
-    },
-    {
-      "rank": 3,
-      "site": "2026 年 fifa 世界杯",
-      "category": "Search Spike",
-      "dailyHits": "2000+",
-      "growth": "+5.1%",
-      "trend": "特朗普：会去看球赛",
-      "url": "https://trends.google.com/trending/rss?geo=US"
-    },
-    {
-      "rank": 4,
-      "site": "fullmetal alchemist seiko watch",
-      "category": "Search Spike",
-      "dailyHits": "1000+",
-      "growth": "+8.1%",
-      "trend": "Seiko&apos;s New Collaboration Watch Features a Cult-Classic Anime Series",
-      "url": "https://trends.google.com/trending/rss?geo=US"
-    },
-    {
-      "rank": 5,
-      "site": "san andreas fault stress level",
-      "category": "Search Spike",
-      "dailyHits": "5000+",
-      "growth": "+11.6%",
-      "trend": "San Andreas Fault stress hits 1,000-year high, raising quake risk",
-      "url": "https://trends.google.com/trending/rss?geo=US"
-    },
-    {
-      "rank": 6,
-      "site": "Bitcoin (BTC)",
-      "category": "Crypto Velocity",
-      "dailyHits": "$31.2B Vol",
-      "growth": "+2.06%",
-      "trend": "High-velocity market action tracking at $69,604.92. Heavy institutional trading volume.",
-      "url": "https://coincap.io/assets/bitcoin"
-    },
-    {
-      "rank": 7,
-      "site": "Ethereum (ETH)",
-      "category": "Crypto Velocity",
-      "dailyHits": "$15.4B Vol",
-      "growth": "+7.65%",
-      "trend": "High-velocity market action tracking at $3,778.515. Heavy institutional trading volume.",
-      "url": "https://coincap.io/assets/ethereum"
-    },
-    {
-      "rank": 8,
-      "site": "Solana (SOL)",
-      "category": "Crypto Velocity",
-      "dailyHits": "$4.1B Vol",
-      "growth": "+6.65%",
-      "trend": "High-velocity market action tracking at $157.842. Heavy institutional trading volume.",
-      "url": "https://coincap.io/assets/solana"
-    },
-    {
-      "rank": 9,
       "site": "Parents make me cook, but not in the way I want to.",
       "category": "Social Pulse",
-      "dailyHits": "1,949 Coms",
-      "growth": "+26 upvotes/min",
-      "trend": "Viral megathread dominating internet front-pages. Mass social synchronization driving explosive user interaction.",
+      "dailyHits": "4,971 Coms",
+      "growth": "+58 up/min",
+      "trend": "Viral megathread dominating internet culture boards. Mass social synchronization driving explosive user interaction.",
       "url": "https://www.reddit.com/r/mildlyinfuriating/comments/1u6wtn4/parents_make_me_cook_but_not_in_the_way_i_want_to/"
     },
     {
-      "rank": 10,
+      "rank": 2,
       "site": "What is the dumbest thing you have been told is “not manl...",
       "category": "Social Pulse",
-      "dailyHits": "2,303 Coms",
-      "growth": "+55 upvotes/min",
-      "trend": "Viral megathread dominating internet front-pages. Mass social synchronization driving explosive user interaction.",
+      "dailyHits": "3,047 Coms",
+      "growth": "+34 up/min",
+      "trend": "Viral megathread dominating internet culture boards. Mass social synchronization driving explosive user interaction.",
       "url": "https://www.reddit.com/r/AskReddit/comments/1u6s5sz/what_is_the_dumbest_thing_you_have_been_told_is/"
+    },
+    {
+      "rank": 3,
+      "site": "She almost married a man that didn't wipe his ass",
+      "category": "Social Pulse",
+      "dailyHits": "3,175 Coms",
+      "growth": "+53 up/min",
+      "trend": "Viral megathread dominating internet culture boards. Mass social synchronization driving explosive user interaction.",
+      "url": "https://www.reddit.com/r/TikTokCringe/comments/1u6khtq/she_almost_married_a_man_that_didnt_wipe_his_ass/"
+    },
+    {
+      "rank": 4,
+      "site": "What kind of bees are these?",
+      "category": "Social Pulse",
+      "dailyHits": "2,665 Coms",
+      "growth": "+51 up/min",
+      "trend": "Viral megathread dominating internet culture boards. Mass social synchronization driving explosive user interaction.",
+      "url": "https://www.reddit.com/r/whatisit/comments/1u6qd5g/what_kind_of_bees_are_these/"
+    },
+    {
+      "rank": 5,
+      "site": "Macro Economic Index Data Release Analysis",
+      "category": "Finance Trends",
+      "dailyHits": "476 Traders",
+      "growth": "-19 coms/min",
+      "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
+      "url": "https://www.reddit.com/r/stocks/"
+    },
+    {
+      "rank": 6,
+      "site": "Options Chain Implied Volatility Shift",
+      "category": "Finance Trends",
+      "dailyHits": "102 Traders",
+      "growth": "+7 coms/min",
+      "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
+      "url": "https://www.reddit.com/r/stocks/"
+    },
+    {
+      "rank": 7,
+      "site": "Tech Sector Earnings Report Breakdown",
+      "category": "Finance Trends",
+      "dailyHits": "121 Traders",
+      "growth": "+13 coms/min",
+      "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
+      "url": "https://www.reddit.com/r/stocks/"
+    },
+    {
+      "rank": 8,
+      "site": "Treasury Yield Yield-Curve Movement",
+      "category": "Finance Trends",
+      "dailyHits": "221 Traders",
+      "growth": "-17 coms/min",
+      "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
+      "url": "https://www.reddit.com/r/stocks/"
+    },
+    {
+      "rank": 9,
+      "site": "trump ufc white house",
+      "category": "Popular Searches",
+      "dailyHits": "2000+",
+      "growth": "+13.9%",
+      "trend": "UFC at White House a success, but never again, Dana White says",
+      "url": "https://www.espn.com/mma/story/_/id/49070230/ufc-white-house-success-never-again-dana-white-says"
+    },
+    {
+      "rank": 10,
+      "site": "june 16",
+      "category": "Popular Searches",
+      "dailyHits": "200+",
+      "growth": "+10.9%",
+      "trend": "According to an astrologer, these 3 signs are about to experience a once-in-12-year lucky streak starting June 2026",
+      "url": "https://graziamagazine.com/us/articles/according-to-an-astrologer-these-3-signs-are-about-to-experience-a-once-in-12-year-lucky-streak-starting-june-2026-25497/"
+    },
+    {
+      "rank": 11,
+      "site": "2026 年 fifa 世界杯",
+      "category": "Popular Searches",
+      "dailyHits": "2000+",
+      "growth": "+13.9%",
+      "trend": "重现世俱杯名场面？特朗普或将亲手举起大力神杯",
+      "url": "https://news.ifeng.com/c/8u0RaJh5xvx"
+    },
+    {
+      "rank": 12,
+      "site": "fullmetal alchemist seiko watch",
+      "category": "Popular Searches",
+      "dailyHits": "1000+",
+      "growth": "+10.5%",
+      "trend": "Seiko&apos;s New Collaboration Watch Features a Cult-Classic Anime Series",
+      "url": "https://www.esquire.com/style/mens-accessories/a71591492/seiko-fullmetal-alchemist-collaboration-watch-anime/"
     }
   ]
 }
