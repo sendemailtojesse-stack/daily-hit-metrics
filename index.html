@@ -51,10 +51,24 @@
             -webkit-text-fill-color: transparent;
         }
 
+        .header-clocks {
+            text-align: right;
+        }
+
         .timestamp {
             font-size: 13px;
             color: var(--text-muted);
             font-family: monospace;
+            line-height: 1.5;
+        }
+
+        .countdown {
+            font-size: 12px;
+            color: var(--neon-glow);
+            font-family: monospace;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
         }
 
         .scoreboard {
@@ -155,7 +169,10 @@
         <div>
             <h1>Daily Hit Metrics</h1>
         </div>
-        <div class="timestamp" id="live-clock">Syncing pipeline...</div>
+        <div class="header-clocks">
+            <div class="timestamp" id="live-clock">Syncing pipeline...</div>
+            <div class="countdown" id="countdown-clock">NEXT PIPELINE SYNC: --:--</div>
+        </div>
     </header>
 
     <table class="scoreboard">
@@ -169,14 +186,42 @@
             </tr>
         </thead>
         <tbody id="leaderboard-rows">
-            <!-- Dynamic data drops here -->
-        </tbody>
+            </tbody>
     </table>
 </div>
 
 <script>
+    // 1. LIVE REFRESH COUNTDOWN ENGINE
+    function initCountdownClock() {
+        setInterval(() => {
+            const now = new Date();
+            
+            // Target the absolute top of the very next hour
+            const nextSync = new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate(),
+                now.getHours() + 1,
+                0, 0, 0
+            );
+            
+            const timeDifference = nextSync - now;
+
+            // Extract remaining minutes and seconds
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            // Format with structural padding (e.g., 05:09)
+            const displayMinutes = String(minutes).padStart(2, '0');
+            const displaySeconds = String(seconds).padStart(2, '0');
+
+            document.getElementById('countdown-clock').innerText = `NEXT PIPELINE SYNC IN: ${displayMinutes}:${displaySeconds}`;
+        }, 1000);
+    }
+
     async function loadDashboard() {
         try {
+            // Fetching live data straight from the GitHub raw data endpoint to bypass Cloudflare caching
             const response = await fetch('https://raw.githubusercontent.com/sendemailtojesse-stack/daily-hit-metrics/main/data.json?t=' + Date.now());
             const data = await response.json();
             
@@ -189,8 +234,7 @@
             data.trafficLeaderboard.forEach(item => {
                 const row = document.createElement('tr');
                 
-                // Color-mapping configurations for the custom layout categories
-                let badgeColor = '#bc8cff'; // Matrix Purple default for Social Pulse
+                let badgeColor = '#bc8cff'; 
                 let badgeBg = 'rgba(188, 140, 255, 0.1)';
                 
                 if (item.category === 'Finance Trends') {
@@ -201,7 +245,6 @@
                     badgeBg = 'rgba(88, 166, 255, 0.1)';
                 }
 
-                // Conditional coloring mapping for directional momentum changes
                 const isNegative = item.growth.startsWith('-');
                 const momentumColor = isNegative ? 'var(--ticker-red)' : 'var(--ticker-green)';
                 const targetUrl = item.url || '#';
@@ -232,7 +275,9 @@
         }
     }
 
+    // Initialize both assets on load
     loadDashboard();
+    initCountdownClock();
 </script>
 
 </body>
