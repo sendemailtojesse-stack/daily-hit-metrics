@@ -1,0 +1,30 @@
+name: Daily Hit Metrics Updater
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Wakes up automatically every single hour on the dot
+  workflow_dispatch: # Keeps your manual refresh button active
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run data aggregation script
+        run: node fetch-data.js
+
+      - name: Commit and push fresh data
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add data.json
+          git diff-index --quiet HEAD || (git commit -m "Automated data refresh [skip ci]" && git push)
