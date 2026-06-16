@@ -4,10 +4,13 @@ async function fetchDataBlend() {
     let searchSpikes = [];
     let cryptoMovers = [];
 
+    console.log("Initializing data pipelines...");
+
     // ==========================================
-    // SOURCE 1: FETCH GOOGLE SEARCH TRENDS (Top 7)
+    // SOURCE 1: GOOGLE SEARCH TRENDS
     // ==========================================
     try {
+        console.log("Connecting to Google Trends RSS stream...");
         const response = await fetch('https://trends.google.com/trending/rss?geo=US', {
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
@@ -17,9 +20,8 @@ async function fetchDataBlend() {
         if (response.ok) {
             const xmlText = await response.text();
             const xmlItems = xmlText.split('<item>');
-            xmlItems.shift(); // Strip out configuration header
+            xmlItems.shift(); 
             
-            // Take the top 7 trends
             searchSpikes = xmlItems.slice(0, 7).map((itemStr, index) => {
                 const titleMatch = itemStr.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/);
                 const trendName = titleMatch ? titleMatch[1].trim() : "High-Velocity Asset";
@@ -44,32 +46,33 @@ async function fetchDataBlend() {
                     trend: storyContext
                 };
             });
+            console.log(`Successfully parsed ${searchSpikes.length} search spikes from Google.`);
+        } else {
+            console.log(`Google RSS stream returned an error status: ${response.status}`);
         }
     } catch (error) {
         console.error('Failed to parse Google Search trends:', error);
     }
 
     // ==========================================
-    // SOURCE 2: FETCH REAL-TIME CRYPTO MOVERS (Top 3)
+    // SOURCE 2: COINCAP CRYPTO MOVERS
     // ==========================================
     try {
-        // Fetch top assets from the open CoinCap API
+        console.log("Connecting to CoinCap asset liquidity market API...");
         const response = await fetch('https://api.coincap.io/v2/assets?limit=25');
+        
         if (response.ok) {
             const json = await response.json();
             
-            // Filter and sort by highest 24-hour percentage growth to find the momentum leaders
             const sortedAssets = json.data
                 .sort((a, b) => Math.abs(parseFloat(b.changePercent24Hr)) - Math.abs(parseFloat(a.changePercent24Hr)));
 
-            // Take the top 3 highest velocity assets
             cryptoMovers = sortedAssets.slice(0, 3).map(asset => {
                 const price = parseFloat(asset.priceUsd);
                 const formattedPrice = price > 1 ? `$${price.toFixed(2)}` : `$${price.toFixed(4)}`;
                 const percentChange = parseFloat(asset.changePercent24Hr);
                 const growthSign = percentChange >= 0 ? "+" : "";
                 
-                // Format billions/millions volume metrics
                 const volume = parseFloat(asset.volumeUsd24Hr);
                 const formattedVolume = volume > 1e9 ? `$${(volume / 1e9).toFixed(1)}B Vol` : `$${(volume / 1e6).toFixed(1)}M Vol`;
 
@@ -81,21 +84,22 @@ async function fetchDataBlend() {
                     trend: `High-velocity market action tracking at ${formattedPrice}. Large-scale liquidity shift capturing heavy institutional trading volume.`
                 };
             });
+            console.log(`Successfully parsed ${cryptoMovers.length} crypto velocity assets.`);
+        } else {
+            console.log(`CoinCap API returned an error status: ${response.status}`);
         }
     } catch (error) {
         console.error('Failed to fetch live crypto assets:', error);
     }
 
     // ==========================================
-    // PIPELINE BLENDER & SYNCHRONIZATION
+    // DATA BLENDER
     // ==========================================
-    // Fallback generation if an external API completely flatlines
     if (searchSpikes.length === 0 && cryptoMovers.length === 0) {
-        console.error("Both primary data pipelines failed to return assets.");
+        console.log("Critical Error: Both data feeds are empty. Aborting build.");
         process.exit(1);
     }
 
-    // Blend the arrays together into a single 10-item list
     const blendedLeaderboard = [...searchSpikes, ...cryptoMovers].map((item, index) => {
         return {
             rank: index + 1,
@@ -109,7 +113,7 @@ async function fetchDataBlend() {
     };
 
     fs.writeFileSync('data.json', JSON.stringify(updatedData, null, 2));
-    console.log(`Successfully synced pipeline: Blended ${searchSpikes.length} Search Spikes and ${cryptoMovers.length} Crypto Assets.`);
+    console.log(`Pipeline Sync Complete. Total rows saved: ${blendedLeaderboard.length}`);
 }
 
 fetchDataBlend();
