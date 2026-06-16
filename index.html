@@ -170,7 +170,7 @@
             const data = await response.json();
             
             const localTime = new Date(data.lastUpdated).toLocaleString();
-            document.getElementById('live-clock').innerText = `SYSTEM ACTIVE // REFRESSED: ${localTime}`;
+            document.getElementById('live-clock').innerText = `SYSTEM ACTIVE // REFRESHED: ${localTime}`;
             
             const tableBody = document.getElementById('leaderboard-rows');
             tableBody.innerHTML = ''; 
