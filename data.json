@@ -1,9 +1,45 @@
 {
-  "lastUpdated": "2026-06-15T12:00:00Z",
+  "lastUpdated": "2026-06-16T07:04:19.082Z",
   "trafficLeaderboard": [
-    { "rank": 1, "site": "Wikipedia", "category": "Reference", "dailyHits": "2.5B", "growth": "+1.2%", "trend": "Quantum Computing breakthroughs" },
-    { "rank": 2, "site": "BBC News", "category": "News", "dailyHits": "140M", "growth": "+5.4%", "trend": "Global climate accord updates" },
-    { "rank": 3, "site": "Reddit", "category": "Social/Info", "dailyHits": "120M", "growth": "-0.8%", "trend": "A popular open-source AI project goes viral" },
-    { "rank": 4, "site": "GitHub", "category": "Tech", "dailyHits": "95M", "growth": "+3.1%", "trend": "Massive migration to automated deployment tools" }
+    {
+      "rank": 1,
+      "site": "Trending News",
+      "category": "Live Trend",
+      "dailyHits": "150M",
+      "growth": "+5.1%",
+      "trend": "calcium"
+    },
+    {
+      "rank": 2,
+      "site": "Trending News",
+      "category": "Live Trend",
+      "dailyHits": "130M",
+      "growth": "+5.1%",
+      "trend": "junior caminero"
+    },
+    {
+      "rank": 3,
+      "site": "Trending News",
+      "category": "Live Trend",
+      "dailyHits": "110M",
+      "growth": "+2.1%",
+      "trend": "colin farrell"
+    },
+    {
+      "rank": 4,
+      "site": "Trending News",
+      "category": "Live Trend",
+      "dailyHits": "90M",
+      "growth": "+6.4%",
+      "trend": "mookie betts"
+    },
+    {
+      "rank": 5,
+      "site": "Trending News",
+      "category": "Live Trend",
+      "dailyHits": "70M",
+      "growth": "+2.9%",
+      "trend": "jimmy fallon"
+    }
   ]
 }
