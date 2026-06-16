@@ -1,45 +1,45 @@
 {
-  "lastUpdated": "2026-06-16T07:04:19.082Z",
+  "lastUpdated": "2026-06-16T07:32:05.188Z",
   "trafficLeaderboard": [
     {
       "rank": 1,
-      "site": "Trending News",
-      "category": "Live Trend",
-      "dailyHits": "150M",
-      "growth": "+5.1%",
-      "trend": "calcium"
+      "site": "2026 年 fifa 世界杯",
+      "category": "Search Spike",
+      "dailyHits": "150K",
+      "growth": "+11.3%",
+      "trend": "Real-time High Velocity Volume"
     },
     {
       "rank": 2,
-      "site": "Trending News",
-      "category": "Live Trend",
-      "dailyHits": "130M",
-      "growth": "+5.1%",
-      "trend": "junior caminero"
+      "site": "fullmetal alchemist seiko watch",
+      "category": "Search Spike",
+      "dailyHits": "128K",
+      "growth": "+15.7%",
+      "trend": "Real-time High Velocity Volume"
     },
     {
       "rank": 3,
-      "site": "Trending News",
-      "category": "Live Trend",
-      "dailyHits": "110M",
-      "growth": "+2.1%",
-      "trend": "colin farrell"
+      "site": "calcium",
+      "category": "Search Spike",
+      "dailyHits": "106K",
+      "growth": "+13.1%",
+      "trend": "Real-time High Velocity Volume"
     },
     {
       "rank": 4,
-      "site": "Trending News",
-      "category": "Live Trend",
-      "dailyHits": "90M",
-      "growth": "+6.4%",
-      "trend": "mookie betts"
+      "site": "junior caminero",
+      "category": "Search Spike",
+      "dailyHits": "84K",
+      "growth": "+12.2%",
+      "trend": "Real-time High Velocity Volume"
     },
     {
       "rank": 5,
-      "site": "Trending News",
-      "category": "Live Trend",
-      "dailyHits": "70M",
-      "growth": "+2.9%",
-      "trend": "jimmy fallon"
+      "site": "colin farrell",
+      "category": "Search Spike",
+      "dailyHits": "62K",
+      "growth": "+14.6%",
+      "trend": "Real-time High Velocity Volume"
     }
   ]
 }
