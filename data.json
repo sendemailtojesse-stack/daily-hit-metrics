@@ -1,85 +1,95 @@
 {
-  "lastUpdated": "2026-06-16T08:32:29.676Z",
+  "lastUpdated": "2026-06-16T08:49:27.903Z",
   "trafficLeaderboard": [
     {
       "rank": 1,
-      "site": "june 16",
+      "site": "trump ufc white house",
       "category": "Search Spike",
-      "dailyHits": "200+",
-      "growth": "+6.6%",
-      "trend": "Your Daily Work Horoscope for June 16, 2026"
+      "dailyHits": "2000+",
+      "growth": "+10.0%",
+      "trend": "UFC at White House a success, but never again, Dana White says",
+      "url": "https://trends.google.com/trending/rss?geo=US"
     },
     {
       "rank": 2,
-      "site": "2026 年 fifa 世界杯",
+      "site": "june 16",
       "category": "Search Spike",
-      "dailyHits": "2000+",
-      "growth": "+13.4%",
-      "trend": "英媒：特朗普将亲手颁发世界杯冠军奖杯，FIFA无异议|切尔西|世界杯"
+      "dailyHits": "200+",
+      "growth": "+9.7%",
+      "trend": "According to an astrologer, these 3 signs are about to experience a once-in-12-year lucky streak starting June 2026",
+      "url": "https://trends.google.com/trending/rss?geo=US"
     },
     {
       "rank": 3,
-      "site": "fullmetal alchemist seiko watch",
+      "site": "2026 年 fifa 世界杯",
       "category": "Search Spike",
-      "dailyHits": "500+",
-      "growth": "+14.8%",
-      "trend": "Seiko&apos;s New Collaboration Watch Features a Cult-Classic Anime Series"
+      "dailyHits": "2000+",
+      "growth": "+12.6%",
+      "trend": "英媒：特朗普将亲手颁发世界杯冠军奖杯，FIFA无异议|切尔西|世界杯",
+      "url": "https://trends.google.com/trending/rss?geo=US"
     },
     {
       "rank": 4,
-      "site": "calcium",
+      "site": "fullmetal alchemist seiko watch",
       "category": "Search Spike",
-      "dailyHits": "200+",
-      "growth": "+6.9%",
-      "trend": "Millions take calcium and vitamin D for stronger bones. A major review finds little benefit"
+      "dailyHits": "1000+",
+      "growth": "+13.3%",
+      "trend": "Seiko&apos;s New Collaboration Watch Features a Cult-Classic Anime Series",
+      "url": "https://trends.google.com/trending/rss?geo=US"
     },
     {
       "rank": 5,
-      "site": "miguel rojas",
+      "site": "calcium",
       "category": "Search Spike",
-      "dailyHits": "2000+",
-      "growth": "+9.9%",
-      "trend": "Dodgers 4-3 Rays (Jun 15, 2026) Game Recap"
+      "dailyHits": "200+",
+      "growth": "+11.0%",
+      "trend": "Millions take calcium and vitamin D for stronger bones. A major review finds little benefit",
+      "url": "https://trends.google.com/trending/rss?geo=US"
     },
     {
       "rank": 6,
       "site": "Bitcoin (BTC)",
       "category": "Crypto Velocity",
       "dailyHits": "$31.2B Vol",
-      "growth": "+5.43%",
-      "trend": "High-velocity market action tracking at $71,903.26. Heavy institutional trading volume."
+      "growth": "+6.64%",
+      "trend": "High-velocity market action tracking at $72,728.48. Heavy institutional trading volume.",
+      "url": "https://coincap.io/assets/bitcoin"
     },
     {
       "rank": 7,
       "site": "Ethereum (ETH)",
       "category": "Crypto Velocity",
       "dailyHits": "$15.4B Vol",
-      "growth": "+5.12%",
-      "trend": "High-velocity market action tracking at $3,689.712. Heavy institutional trading volume."
+      "growth": "+0.68%",
+      "trend": "High-velocity market action tracking at $3,533.868. Heavy institutional trading volume.",
+      "url": "https://coincap.io/assets/ethereum"
     },
     {
       "rank": 8,
       "site": "Solana (SOL)",
       "category": "Crypto Velocity",
       "dailyHits": "$4.1B Vol",
-      "growth": "+3.21%",
-      "trend": "High-velocity market action tracking at $152.751. Heavy institutional trading volume."
+      "growth": "-1.15%",
+      "trend": "High-velocity market action tracking at $146.298. Heavy institutional trading volume.",
+      "url": "https://coincap.io/assets/solana"
     },
     {
       "rank": 9,
       "site": "A Taiwanese couple becomes fashion icons by posing in clo...",
       "category": "Social Pulse",
-      "dailyHits": "3,319 Coms",
-      "growth": "+46 upvotes/min",
-      "trend": "Viral megathread dominating internet front-pages. Mass social synchronization driving explosive user interaction and cross-platform sharing."
+      "dailyHits": "4,775 Coms",
+      "growth": "+54 upvotes/min",
+      "trend": "Viral megathread dominating internet front-pages. Mass social synchronization driving explosive user interaction.",
+      "url": "https://www.reddit.com/r/BeAmazed/comments/1u71nr0/a_taiwanese_couple_becomes_fashion_icons_by/"
     },
     {
       "rank": 10,
       "site": "Parents make me cook, but not in the way I want to.",
       "category": "Social Pulse",
-      "dailyHits": "2,998 Coms",
-      "growth": "+47 upvotes/min",
-      "trend": "Viral megathread dominating internet front-pages. Mass social synchronization driving explosive user interaction and cross-platform sharing."
+      "dailyHits": "4,843 Coms",
+      "growth": "+34 upvotes/min",
+      "trend": "Viral megathread dominating internet front-pages. Mass social synchronization driving explosive user interaction.",
+      "url": "https://www.reddit.com/r/mildlyinfuriating/comments/1u6wtn4/parents_make_me_cook_but_not_in_the_way_i_want_to/"
     }
   ]
 }
