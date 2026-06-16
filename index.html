@@ -3,77 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Internet Scoreboard</title>
+    <title>Daily Hit Metrics - Real-Time Internet Pulse</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #f8fafc; padding: 2rem; margin: 0; }
-        .container { max-width: 800px; margin: 0 auto; }
-        header { margin-bottom: 2rem; border-bottom: 1px solid #334155; padding-bottom: 1rem; }
-        h1 { margin: 0; color: #38bdf8; }
-        .timestamp { color: #94a3b8; font-size: 0.875rem; }
-        .grid { display: grid; gap: 1rem; }
-        .card { background: #1e293b; padding: 1.25rem; border-radius: 8px; border: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
-        .site-info { display: flex; flex-direction: column; }
-        .site-name { font-weight: bold; font-size: 1.25rem; color: #f1f5f9; }
-        .site-meta { color: #94a3b8; font-size: 0.875rem; margin-top: 0.25rem; }
-        .stats { text-align: right; }
-        .hits { font-size: 1.25rem; font-weight: bold; color: #34d399; }
-        .growth { font-size: 0.875rem; margin-top: 0.25rem; }
-        .positive { color: #34d399; }
-        .negative { color: #f87171; }
-        .trend-tag { font-size: 0.85rem; color: #cbd5e1; font-style: italic; margin-top: 0.5rem; background: #0f172a; padding: 0.25rem 0.5rem; border-radius: 4px; display: inline-block; }
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+            --accent-green: #238636;
+            --neon-glow: #58a6ff;
+            --ticker-green: #3fb950;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 950px;
+        }
+
+        header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            background: linear-gradient(45deg, #f0f6fc, #58a6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .timestamp {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        .scoreboard {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        th {
+            background-color: #21262d;
+            color: var(--text-muted);
+            text-align: left;
+            padding: 14px 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #1f242c;
+        }
+
+        .rank-col {
+            font-family: monospace;
+            font-weight: bold;
+            color: var(--text-muted);
+            font-size: 16px;
+            width: 40px;
+        }
+
+        .entity-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .entity-summary {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .badge {
+            background-color: #21262d;
+            border: 1px solid var(--border-color);
+            color: var(--neon-glow);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: monospace;
+        }
+
+        .velocity-data {
+            font-family: monospace;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .growth-indicator {
+            color: var(--ticker-green);
+            font-family: monospace;
+            font-size: 15px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>The Internet Scoreboard</h1>
-            <p class="timestamp">Live Daily Traffic & Core Informational Trends</p>
-            <div id="update-time" class="timestamp"></div>
-        </header>
-        
-        <main id="leaderboard" class="grid">
-            </main>
-    </div>
 
-    <script>
-        // Fetch and render the data
-        async function loadScoreboard() {
-            try {
-                const response = await fetch('https://raw.githubusercontent.com/sendemailtojesse-stack/daily-hit-metrics/refs/heads/main/data.json');
-                const data = await response.json();
-                
-                // Format and display the last updated timestamp
-                const date = new Date(data.lastUpdated);
-                document.getElementById('update-time').innerText = `Last Updated: ${date.toLocaleString()}`;
-                
-                const container = document.getElementById('leaderboard');
-                container.innerHTML = ''; // Clear loading state
-                
-                data.trafficLeaderboard.forEach(item => {
-                    const isPositive = item.growth.startsWith('+');
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <div class="site-info">
-                            <span class="site-name">#${item.rank} ${item.site}</span>
-                            <span class="site-meta">Category: ${item.category}</span>
-                            <div><span class="trend-tag">Trending Topic: ${item.trend}</span></div>
-                        </div>
-                        <div class="stats">
-                            <div class="hits">${item.dailyHits} hits/day</div>
-                            <div class="growth ${isPositive ? 'positive' : 'negative'}">${item.growth} vs yesterday</div>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            } catch (error) {
-                console.error("Error parsing traffic data:", error);
-                document.getElementById('leaderboard').innerHTML = `<p>Error loading real-time data.</p>`;
-            }
+<div class="container">
+    <header>
+        <div>
+            <h1>Daily Hit Metrics</h1>
+        </div>
+        <div class="timestamp" id="live-clock">Syncing pipeline...</div>
+    </header>
+
+    <table class="scoreboard">
+        <thead>
+            <tr>
+                <th style="width: 5%">Rank</th>
+                <th style="width: 55%">Trending Topic & Context</th>
+                <th style="width: 15%">Classification</th>
+                <th style="width: 13%">Velocity Index</th>
+                <th style="width: 12%">Hourly Momentum</th>
+            </tr>
+        </thead>
+        <tbody id="leaderboard-rows">
+            </tbody>
+    </table>
+</div>
+
+<script>
+    async function loadDashboard() {
+        try {
+            // Fetch live data directly from your master GitHub storage link
+            const response = await fetch('https://raw.githubusercontent.com/JesseMSchenk/daily-hit-metrics/main/data.json');
+            const data = await response.json();
+            
+            // Format and stamp the local update time
+            const localTime = new Date(data.lastUpdated).toLocaleString();
+            document.getElementById('live-clock').innerText = `SYSTEM ACTIVE // REFRESSED: ${localTime}`;
+            
+            const tableBody = document.getElementById('leaderboard-rows');
+            tableBody.innerHTML = ''; // Clear template rows
+
+            data.trafficLeaderboard.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="rank-col">#${item.rank}</td>
+                    <td>
+                        <div class="entity-title">${item.site}</div>
+                        <div class="entity-summary">${item.trend}</div>
+                    </td>
+                    <td><span class="badge">${item.category}</span></td>
+                    <td class="velocity-data">${item.dailyHits}</td>
+                    <td class="growth-indicator">${item.growth}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Dashboard synchronization error:', error);
+            document.getElementById('live-clock').innerText = 'PIPELINE ERROR // OUT OF SYNC';
         }
+    }
 
-        // Run on page load
-        loadScoreboard();
-    </script>
+    loadDashboard();
+</script>
+
 </body>
 </html>
