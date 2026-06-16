@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24 # Upgraded to Node 24 to clear the deprecation warning
 
       - name: Run data aggregation script
         run: node fetch-data.js
