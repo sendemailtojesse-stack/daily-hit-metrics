@@ -166,7 +166,7 @@
     async function loadDashboard() {
         try {
             // Using a relative path makes the application 100% agnostic to branches or names!
-            const response = await fetch('data.json');
+            const response = await fetch('data.json?t=' + Date.now());
             const data = await response.json();
             
             const localTime = new Date(data.lastUpdated).toLocaleString();
