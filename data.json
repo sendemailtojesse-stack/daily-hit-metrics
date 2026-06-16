@@ -1,12 +1,12 @@
 {
-  "lastUpdated": "2026-06-16T08:49:27.903Z",
+  "lastUpdated": "2026-06-16T08:56:04.718Z",
   "trafficLeaderboard": [
     {
       "rank": 1,
       "site": "trump ufc white house",
       "category": "Search Spike",
       "dailyHits": "2000+",
-      "growth": "+10.0%",
+      "growth": "+6.7%",
       "trend": "UFC at White House a success, but never again, Dana White says",
       "url": "https://trends.google.com/trending/rss?geo=US"
     },
@@ -15,7 +15,7 @@
       "site": "june 16",
       "category": "Search Spike",
       "dailyHits": "200+",
-      "growth": "+9.7%",
+      "growth": "+14.8%",
       "trend": "According to an astrologer, these 3 signs are about to experience a once-in-12-year lucky streak starting June 2026",
       "url": "https://trends.google.com/trending/rss?geo=US"
     },
@@ -24,8 +24,8 @@
       "site": "2026 年 fifa 世界杯",
       "category": "Search Spike",
       "dailyHits": "2000+",
-      "growth": "+12.6%",
-      "trend": "英媒：特朗普将亲手颁发世界杯冠军奖杯，FIFA无异议|切尔西|世界杯",
+      "growth": "+5.1%",
+      "trend": "特朗普：会去看球赛",
       "url": "https://trends.google.com/trending/rss?geo=US"
     },
     {
@@ -33,17 +33,17 @@
       "site": "fullmetal alchemist seiko watch",
       "category": "Search Spike",
       "dailyHits": "1000+",
-      "growth": "+13.3%",
+      "growth": "+8.1%",
       "trend": "Seiko&apos;s New Collaboration Watch Features a Cult-Classic Anime Series",
       "url": "https://trends.google.com/trending/rss?geo=US"
     },
     {
       "rank": 5,
-      "site": "calcium",
+      "site": "san andreas fault stress level",
       "category": "Search Spike",
-      "dailyHits": "200+",
-      "growth": "+11.0%",
-      "trend": "Millions take calcium and vitamin D for stronger bones. A major review finds little benefit",
+      "dailyHits": "5000+",
+      "growth": "+11.6%",
+      "trend": "San Andreas Fault stress hits 1,000-year high, raising quake risk",
       "url": "https://trends.google.com/trending/rss?geo=US"
     },
     {
@@ -51,8 +51,8 @@
       "site": "Bitcoin (BTC)",
       "category": "Crypto Velocity",
       "dailyHits": "$31.2B Vol",
-      "growth": "+6.64%",
-      "trend": "High-velocity market action tracking at $72,728.48. Heavy institutional trading volume.",
+      "growth": "+2.06%",
+      "trend": "High-velocity market action tracking at $69,604.92. Heavy institutional trading volume.",
       "url": "https://coincap.io/assets/bitcoin"
     },
     {
@@ -60,8 +60,8 @@
       "site": "Ethereum (ETH)",
       "category": "Crypto Velocity",
       "dailyHits": "$15.4B Vol",
-      "growth": "+0.68%",
-      "trend": "High-velocity market action tracking at $3,533.868. Heavy institutional trading volume.",
+      "growth": "+7.65%",
+      "trend": "High-velocity market action tracking at $3,778.515. Heavy institutional trading volume.",
       "url": "https://coincap.io/assets/ethereum"
     },
     {
@@ -69,27 +69,27 @@
       "site": "Solana (SOL)",
       "category": "Crypto Velocity",
       "dailyHits": "$4.1B Vol",
-      "growth": "-1.15%",
-      "trend": "High-velocity market action tracking at $146.298. Heavy institutional trading volume.",
+      "growth": "+6.65%",
+      "trend": "High-velocity market action tracking at $157.842. Heavy institutional trading volume.",
       "url": "https://coincap.io/assets/solana"
     },
     {
       "rank": 9,
-      "site": "A Taiwanese couple becomes fashion icons by posing in clo...",
+      "site": "Parents make me cook, but not in the way I want to.",
       "category": "Social Pulse",
-      "dailyHits": "4,775 Coms",
-      "growth": "+54 upvotes/min",
+      "dailyHits": "1,949 Coms",
+      "growth": "+26 upvotes/min",
       "trend": "Viral megathread dominating internet front-pages. Mass social synchronization driving explosive user interaction.",
-      "url": "https://www.reddit.com/r/BeAmazed/comments/1u71nr0/a_taiwanese_couple_becomes_fashion_icons_by/"
+      "url": "https://www.reddit.com/r/mildlyinfuriating/comments/1u6wtn4/parents_make_me_cook_but_not_in_the_way_i_want_to/"
     },
     {
       "rank": 10,
-      "site": "Parents make me cook, but not in the way I want to.",
+      "site": "What is the dumbest thing you have been told is “not manl...",
       "category": "Social Pulse",
-      "dailyHits": "4,843 Coms",
-      "growth": "+34 upvotes/min",
+      "dailyHits": "2,303 Coms",
+      "growth": "+55 upvotes/min",
       "trend": "Viral megathread dominating internet front-pages. Mass social synchronization driving explosive user interaction.",
-      "url": "https://www.reddit.com/r/mildlyinfuriating/comments/1u6wtn4/parents_make_me_cook_but_not_in_the_way_i_want_to/"
+      "url": "https://www.reddit.com/r/AskReddit/comments/1u6s5sz/what_is_the_dumbest_thing_you_have_been_told_is/"
     }
   ]
 }
