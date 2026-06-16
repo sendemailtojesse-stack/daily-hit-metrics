@@ -14,6 +14,7 @@
             --accent-green: #238636;
             --neon-glow: #58a6ff;
             --ticker-green: #3fb950;
+            --ticker-red: #f85149;
         }
 
         body {
@@ -115,11 +116,12 @@
         .badge {
             background-color: #21262d;
             border: 1px solid var(--border-color);
-            color: var(--neon-glow);
             padding: 4px 8px;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 11px;
             font-family: monospace;
+            font-weight: bold;
+            letter-spacing: 0.5px;
         }
 
         .velocity-data {
@@ -129,7 +131,6 @@
         }
 
         .growth-indicator {
-            color: var(--ticker-green);
             font-family: monospace;
             font-size: 15px;
             font-weight: bold;
@@ -165,7 +166,6 @@
 <script>
     async function loadDashboard() {
         try {
-            // Using a relative path makes the application 100% agnostic to branches or names!
             const response = await fetch('data.json?t=' + Date.now());
             const data = await response.json();
             
@@ -177,15 +177,36 @@
 
             data.trafficLeaderboard.forEach(item => {
                 const row = document.createElement('tr');
+                
+                // 1. DYNAMIC BADGE COLOR SELECTOR
+                let badgeColor = 'var(--neon-glow)';
+                let badgeBg = 'rgba(88, 166, 255, 0.1)';
+                
+                if (item.category === 'Crypto Velocity') {
+                    badgeColor = 'var(--ticker-green)';
+                    badgeBg = 'rgba(63, 185, 80, 0.1)';
+                } else if (item.category === 'Social Pulse') {
+                    badgeColor = '#bc8cff'; // Matrix Purple
+                    badgeBg = 'rgba(188, 140, 255, 0.1)';
+                }
+
+                // 2. DYNAMIC DIRECTIONAL MOVEMENT COLOR SELECTOR
+                const isNegative = item.growth.startsWith('-');
+                const momentumColor = isNegative ? 'var(--ticker-red)' : 'var(--ticker-green)';
+
                 row.innerHTML = `
                     <td class="rank-col">#${item.rank}</td>
                     <td>
                         <div class="entity-title">${item.site}</div>
                         <div class="entity-summary">${item.trend}</div>
                     </td>
-                    <td><span class="badge">${item.category}</span></td>
+                    <td>
+                        <span class="badge" style="color: ${badgeColor}; border-color: ${badgeColor}40; background-color: ${badgeBg};">
+                            ${item.category}
+                        </span>
+                    </td>
                     <td class="velocity-data">${item.dailyHits}</td>
-                    <td class="growth-indicator">${item.growth}</td>
+                    <td class="growth-indicator" style="color: ${momentumColor};">${item.growth}</td>
                 `;
                 tableBody.appendChild(row);
             });
