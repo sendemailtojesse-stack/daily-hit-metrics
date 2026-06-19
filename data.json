@@ -1,48 +1,48 @@
 {
-  "lastUpdated": "2026-06-19T12:33:59.739Z",
+  "lastUpdated": "2026-06-19T19:16:49.442Z",
   "trafficLeaderboard": [
     {
       "rank": 1,
-      "site": "Trending Cultural Narrative Thread Pool #1",
+      "site": "Me irl",
       "category": "Social Pulse",
-      "dailyHits": "2725 Coms",
-      "growth": "+16 up/min",
-      "trend": "Viral discussion megathread running hot across aggregated open networks.",
-      "url": "https://www.reddit.com/r/popular/"
+      "dailyHits": "3,181 Coms",
+      "growth": "+52 up/min",
+      "trend": "Viral megathread dominating internet culture boards. Mass social synchronization driving explosive user interaction.",
+      "url": "https://www.reddit.com/r/me_irl/comments/1ua5uf4/me_irl/"
     },
     {
       "rank": 2,
-      "site": "Trending Cultural Narrative Thread Pool #2",
+      "site": "If Obama Had Done What Trump Just Did on Iran, He’d Be Cr...",
       "category": "Social Pulse",
-      "dailyHits": "3700 Coms",
-      "growth": "+42 up/min",
-      "trend": "Viral discussion megathread running hot across aggregated open networks.",
-      "url": "https://www.reddit.com/r/popular/"
+      "dailyHits": "1,292 Coms",
+      "growth": "+56 up/min",
+      "trend": "Viral megathread dominating internet culture boards. Mass social synchronization driving explosive user interaction.",
+      "url": "https://www.reddit.com/r/politics/comments/1ua55fb/if_obama_had_done_what_trump_just_did_on_iran_hed/"
     },
     {
       "rank": 3,
-      "site": "Trending Cultural Narrative Thread Pool #3",
+      "site": "English football fans in a Dallas bar",
       "category": "Social Pulse",
-      "dailyHits": "1077 Coms",
-      "growth": "+17 up/min",
-      "trend": "Viral discussion megathread running hot across aggregated open networks.",
-      "url": "https://www.reddit.com/r/popular/"
+      "dailyHits": "2,686 Coms",
+      "growth": "+41 up/min",
+      "trend": "Viral megathread dominating internet culture boards. Mass social synchronization driving explosive user interaction.",
+      "url": "https://www.reddit.com/r/TikTokCringe/comments/1u9s5n1/english_football_fans_in_a_dallas_bar/"
     },
     {
       "rank": 4,
-      "site": "Trending Cultural Narrative Thread Pool #4",
+      "site": "Husband has these taped to the wall and refuses to tell m...",
       "category": "Social Pulse",
-      "dailyHits": "2691 Coms",
-      "growth": "+26 up/min",
-      "trend": "Viral discussion megathread running hot across aggregated open networks.",
-      "url": "https://www.reddit.com/r/popular/"
+      "dailyHits": "2,391 Coms",
+      "growth": "+49 up/min",
+      "trend": "Viral megathread dominating internet culture boards. Mass social synchronization driving explosive user interaction.",
+      "url": "https://www.reddit.com/r/whatisit/comments/1u9oxis/husband_has_these_taped_to_the_wall_and_refuses/"
     },
     {
       "rank": 5,
       "site": "Macro Economic Index Data Release Analysis",
       "category": "Finance Trends",
-      "dailyHits": "319 Traders",
-      "growth": "+22 coms/min",
+      "dailyHits": "284 Traders",
+      "growth": "-14 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
@@ -50,8 +50,8 @@
       "rank": 6,
       "site": "Options Chain Implied Volatility Shift",
       "category": "Finance Trends",
-      "dailyHits": "407 Traders",
-      "growth": "+23 coms/min",
+      "dailyHits": "164 Traders",
+      "growth": "+5 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
@@ -59,8 +59,8 @@
       "rank": 7,
       "site": "Tech Sector Earnings Report Breakdown",
       "category": "Finance Trends",
-      "dailyHits": "212 Traders",
-      "growth": "-13 coms/min",
+      "dailyHits": "390 Traders",
+      "growth": "-24 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
@@ -68,46 +68,46 @@
       "rank": 8,
       "site": "Treasury Yield Yield-Curve Movement",
       "category": "Finance Trends",
-      "dailyHits": "159 Traders",
-      "growth": "-18 coms/min",
+      "dailyHits": "290 Traders",
+      "growth": "+17 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
     {
       "rank": 9,
-      "site": "is spotify down",
+      "site": "fox one",
       "category": "Popular Searches",
-      "dailyHits": "2000+",
-      "growth": "+5.5%",
-      "trend": "DoorDash &apos;back up and running&apos; following earlier outage Tuesday",
-      "url": "https://www.king5.com/article/news/nation-world/is-doordash-down-major-outage-reported/507-cea340c6-7c96-4f65-be51-87da22e2c6dd"
+      "dailyHits": "10000+",
+      "growth": "+9.2%",
+      "trend": "Netflix&apos;s stock slide is getting worse",
+      "url": "https://finance.yahoo.com/markets/stocks/article/netflixs-stock-slide-is-getting-worse-123338038.html"
     },
     {
       "rank": 10,
-      "site": "gary woodland",
+      "site": "youtube tv",
       "category": "Popular Searches",
-      "dailyHits": "200+",
-      "growth": "+5.0%",
-      "trend": "Gary Woodland betting profile: U.S. Open",
-      "url": "https://www.pgatour.com/article/news/betting-profile/2026/us-open/gary-woodland-pga-tour-betting-profile-us-open-2026"
+      "dailyHits": "10000+",
+      "growth": "+12.2%",
+      "trend": "YouTube TV’s quiet update restricts ‘less powerful devices,’ including Roku",
+      "url": "https://9to5google.com/2026/06/18/quiet-youtube-tv-restricts-less-powerful-devices-roku/"
     },
     {
       "rank": 11,
-      "site": "mens health",
+      "site": "us world cup",
       "category": "Popular Searches",
-      "dailyHits": "200+",
-      "growth": "+9.5%",
-      "trend": "The &apos;Greek God Method&apos; May be the Most Efficient Way to Build an Aesthetic Physique After 40",
-      "url": "https://www.menshealth.com/uk/building-muscle/train-smarter/a71623780/greek-god-method-after-40/"
+      "dailyHits": "2000+",
+      "growth": "+11.0%",
+      "trend": "The USA facing Australia in a high-stakes World Cup showdown without star Christian Pulisic",
+      "url": "https://www.cnn.com/2026/06/19/sport/soccer-world-cup-usa-australia"
     },
     {
       "rank": 12,
-      "site": "brandon nakashima",
+      "site": "weston mckennie",
       "category": "Popular Searches",
-      "dailyHits": "200+",
-      "growth": "+7.3%",
-      "trend": "How to live stream 2026 HSBC Championships, Quarterfinals, TV channel",
-      "url": "https://sports.yahoo.com/articles/live-stream-2026-hsbc-championships-062409160.html"
+      "dailyHits": "2000+",
+      "growth": "+11.2%",
+      "trend": "Little Elm&apos;s Weston McKennie celebrated by family during World Cup debut",
+      "url": "https://www.nbcdfw.com/news/local/little-elms-weston-mckinnie-celebrated-by-family-during-world-cup-debut/4037646/"
     }
   ]
 }
