@@ -1,12 +1,12 @@
 {
-  "lastUpdated": "2026-06-24T10:34:45.509Z",
+  "lastUpdated": "2026-06-24T18:13:06.461Z",
   "trafficLeaderboard": [
     {
       "rank": 1,
       "site": "Trending Cultural Narrative Thread Pool #1",
       "category": "Social Pulse",
-      "dailyHits": "1939 Coms",
-      "growth": "+44 up/min",
+      "dailyHits": "2738 Coms",
+      "growth": "+31 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -14,8 +14,8 @@
       "rank": 2,
       "site": "Trending Cultural Narrative Thread Pool #2",
       "category": "Social Pulse",
-      "dailyHits": "1982 Coms",
-      "growth": "+31 up/min",
+      "dailyHits": "2387 Coms",
+      "growth": "+27 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -23,8 +23,8 @@
       "rank": 3,
       "site": "Trending Cultural Narrative Thread Pool #3",
       "category": "Social Pulse",
-      "dailyHits": "1272 Coms",
-      "growth": "+20 up/min",
+      "dailyHits": "2209 Coms",
+      "growth": "+23 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -32,8 +32,8 @@
       "rank": 4,
       "site": "Trending Cultural Narrative Thread Pool #4",
       "category": "Social Pulse",
-      "dailyHits": "2763 Coms",
-      "growth": "+31 up/min",
+      "dailyHits": "1709 Coms",
+      "growth": "+33 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -41,8 +41,8 @@
       "rank": 5,
       "site": "Macro Economic Index Data Release Analysis",
       "category": "Finance Trends",
-      "dailyHits": "467 Traders",
-      "growth": "+23 coms/min",
+      "dailyHits": "249 Traders",
+      "growth": "+8 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
@@ -50,8 +50,8 @@
       "rank": 6,
       "site": "Options Chain Implied Volatility Shift",
       "category": "Finance Trends",
-      "dailyHits": "319 Traders",
-      "growth": "+5 coms/min",
+      "dailyHits": "168 Traders",
+      "growth": "-5 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
@@ -59,8 +59,8 @@
       "rank": 7,
       "site": "Tech Sector Earnings Report Breakdown",
       "category": "Finance Trends",
-      "dailyHits": "119 Traders",
-      "growth": "+22 coms/min",
+      "dailyHits": "326 Traders",
+      "growth": "-11 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
@@ -68,46 +68,46 @@
       "rank": 8,
       "site": "Treasury Yield Yield-Curve Movement",
       "category": "Finance Trends",
-      "dailyHits": "107 Traders",
-      "growth": "-17 coms/min",
+      "dailyHits": "109 Traders",
+      "growth": "+23 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
     {
       "rank": 9,
-      "site": "rockstar games",
+      "site": "mexico game today",
       "category": "Popular Searches",
-      "dailyHits": "1000+",
-      "growth": "+14.4%",
-      "trend": "The Next Big Score",
-      "url": "https://www.rockstargames.com/newswire/article/517k8ak75ao327/the-next-big-score"
+      "dailyHits": "5000+",
+      "growth": "+8.6%",
+      "trend": "How to Watch the World Cup Today: Schedule, Times, TV, Streaming for Brazil, Mexico, More",
+      "url": "https://www.foxsports.com/stories/soccer/how-watch-world-cup-today-schedule-times-tv-streaming-brazil-mexico-more"
     },
     {
       "rank": 10,
-      "site": "china",
+      "site": "micron earnings",
       "category": "Popular Searches",
-      "dailyHits": "500+",
-      "growth": "+7.5%",
-      "trend": "China’s Crackdown Rattles the World’s Top Offshore Wealth Hub",
-      "url": "https://www.bloomberg.com/news/features/2026-06-23/china-s-offshore-capital-outflow-crackdown-hits-hong-kong-wealth-boom"
+      "dailyHits": "2000+",
+      "growth": "+13.4%",
+      "trend": "Stock market today: Dow rises, S&P 500 and Nasdaq slip as oil prices tumble, AI jitters return",
+      "url": "https://finance.yahoo.com/markets/live/stock-market-today-dow-rises-sp-500-and-nasdaq-slip-as-oil-prices-tumble-ai-jitters-return-230105138.html"
     },
     {
       "rank": 11,
-      "site": "what is a heat index",
+      "site": "btc",
       "category": "Popular Searches",
       "dailyHits": "500+",
-      "growth": "+10.9%",
-      "trend": "An unusual weather pattern is building in Florida: high heat, low rain chances",
-      "url": "https://www.clickorlando.com/weather/2026/06/22/an-unusual-weather-pattern-is-building-in-florida-high-heat-low-rain-chances/"
+      "growth": "+13.0%",
+      "trend": "Live updates: Bitcoin could drop to $59,000 in the short-term as liquidity dries up",
+      "url": "https://www.coindesk.com/tech/2026/06/24/live-markets-bitcoin-could-drop-to-usd59-000-in-the-short-term-as-liquidaity-dries-up"
     },
     {
       "rank": 12,
-      "site": "las vegas weather",
+      "site": "government shutdown",
       "category": "Popular Searches",
-      "dailyHits": "500+",
-      "growth": "+11.1%",
-      "trend": "Astronomical summer begins in Las Vegas on longest day",
-      "url": "https://www.8newsnow.com/news/local-news/astronomical-summer-begins-in-las-vegas-on-longest-day/"
+      "dailyHits": "200+",
+      "growth": "+12.4%",
+      "trend": "Virginia legislators advance $205 billion budget including new tax on data centers",
+      "url": "https://virginiamercury.com/2026/06/22/virginia-legislators-advance-205-billion-budget-including-new-tax-on-data-centers/"
     }
   ]
 }
