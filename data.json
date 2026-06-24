@@ -1,12 +1,12 @@
 {
-  "lastUpdated": "2026-06-24T18:13:06.461Z",
+  "lastUpdated": "2026-06-24T22:56:21.940Z",
   "trafficLeaderboard": [
     {
       "rank": 1,
       "site": "Trending Cultural Narrative Thread Pool #1",
       "category": "Social Pulse",
-      "dailyHits": "2738 Coms",
-      "growth": "+31 up/min",
+      "dailyHits": "2797 Coms",
+      "growth": "+40 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -14,8 +14,8 @@
       "rank": 2,
       "site": "Trending Cultural Narrative Thread Pool #2",
       "category": "Social Pulse",
-      "dailyHits": "2387 Coms",
-      "growth": "+27 up/min",
+      "dailyHits": "1169 Coms",
+      "growth": "+44 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -23,8 +23,8 @@
       "rank": 3,
       "site": "Trending Cultural Narrative Thread Pool #3",
       "category": "Social Pulse",
-      "dailyHits": "2209 Coms",
-      "growth": "+23 up/min",
+      "dailyHits": "3716 Coms",
+      "growth": "+19 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -32,8 +32,8 @@
       "rank": 4,
       "site": "Trending Cultural Narrative Thread Pool #4",
       "category": "Social Pulse",
-      "dailyHits": "1709 Coms",
-      "growth": "+33 up/min",
+      "dailyHits": "1981 Coms",
+      "growth": "+35 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -41,8 +41,8 @@
       "rank": 5,
       "site": "Macro Economic Index Data Release Analysis",
       "category": "Finance Trends",
-      "dailyHits": "249 Traders",
-      "growth": "+8 coms/min",
+      "dailyHits": "126 Traders",
+      "growth": "-10 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
@@ -50,8 +50,8 @@
       "rank": 6,
       "site": "Options Chain Implied Volatility Shift",
       "category": "Finance Trends",
-      "dailyHits": "168 Traders",
-      "growth": "-5 coms/min",
+      "dailyHits": "289 Traders",
+      "growth": "-23 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
@@ -59,8 +59,8 @@
       "rank": 7,
       "site": "Tech Sector Earnings Report Breakdown",
       "category": "Finance Trends",
-      "dailyHits": "326 Traders",
-      "growth": "-11 coms/min",
+      "dailyHits": "399 Traders",
+      "growth": "-5 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
@@ -68,46 +68,46 @@
       "rank": 8,
       "site": "Treasury Yield Yield-Curve Movement",
       "category": "Finance Trends",
-      "dailyHits": "109 Traders",
-      "growth": "+23 coms/min",
+      "dailyHits": "495 Traders",
+      "growth": "-14 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
     {
       "rank": 9,
-      "site": "mexico game today",
+      "site": "brasil",
       "category": "Popular Searches",
       "dailyHits": "5000+",
-      "growth": "+8.6%",
-      "trend": "How to Watch the World Cup Today: Schedule, Times, TV, Streaming for Brazil, Mexico, More",
-      "url": "https://www.foxsports.com/stories/soccer/how-watch-world-cup-today-schedule-times-tv-streaming-brazil-mexico-more"
+      "growth": "+11.8%",
+      "trend": "Brasil x Escócia: os possíveis caminhos do Brasil na Copa após o jogo | Ge",
+      "url": "https://ge.globo.com/futebol/copa-do-mundo/noticia/2026/06/24/o-que-esta-em-jogo-resultado-contra-a-escocia-apontara-o-caminho-do-brasil-na-copa-veja-cenarios.ghtml"
     },
     {
       "rank": 10,
-      "site": "micron earnings",
+      "site": "royals vs rays",
       "category": "Popular Searches",
       "dailyHits": "2000+",
-      "growth": "+13.4%",
-      "trend": "Stock market today: Dow rises, S&P 500 and Nasdaq slip as oil prices tumble, AI jitters return",
-      "url": "https://finance.yahoo.com/markets/live/stock-market-today-dow-rises-sp-500-and-nasdaq-slip-as-oil-prices-tumble-ai-jitters-return-230105138.html"
+      "growth": "+6.3%",
+      "trend": "Kansas City Royals @ Tampa Bay Rays Odds",
+      "url": "https://sportsbook.fanduel.com/baseball/mlb/kansas-city-royals-@-tampa-bay-rays-35751322"
     },
     {
       "rank": 11,
-      "site": "btc",
+      "site": "venezuela earthquake",
       "category": "Popular Searches",
-      "dailyHits": "500+",
-      "growth": "+13.0%",
-      "trend": "Live updates: Bitcoin could drop to $59,000 in the short-term as liquidity dries up",
-      "url": "https://www.coindesk.com/tech/2026/06/24/live-markets-bitcoin-could-drop-to-usd59-000-in-the-short-term-as-liquidaity-dries-up"
+      "dailyHits": "2000+",
+      "growth": "+12.8%",
+      "trend": "Tsunami Alerts Issued After 7.1-Magnitude Earthquake Hits Venezuela",
+      "url": "https://www.nytimes.com/interactive/2026/06/24/world/venezuela-earthquake.html"
     },
     {
       "rank": 12,
-      "site": "government shutdown",
+      "site": "is haiti eliminated from world cup",
       "category": "Popular Searches",
-      "dailyHits": "200+",
-      "growth": "+12.4%",
-      "trend": "Virginia legislators advance $205 billion budget including new tax on data centers",
-      "url": "https://virginiamercury.com/2026/06/22/virginia-legislators-advance-205-billion-budget-including-new-tax-on-data-centers/"
+      "dailyHits": "1000+",
+      "growth": "+10.1%",
+      "trend": "World Cup 2026: Which teams have been eliminated?",
+      "url": "https://www.espn.com/soccer/story/_/id/49152393/world-cup-2026-which-teams-eliminated"
     }
   ]
 }
