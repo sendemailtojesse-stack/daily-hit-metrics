@@ -1,12 +1,12 @@
 {
-  "lastUpdated": "2026-06-25T10:24:50.017Z",
+  "lastUpdated": "2026-06-25T18:35:38.633Z",
   "trafficLeaderboard": [
     {
       "rank": 1,
       "site": "Trending Cultural Narrative Thread Pool #1",
       "category": "Social Pulse",
-      "dailyHits": "3988 Coms",
-      "growth": "+26 up/min",
+      "dailyHits": "2563 Coms",
+      "growth": "+15 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -14,8 +14,8 @@
       "rank": 2,
       "site": "Trending Cultural Narrative Thread Pool #2",
       "category": "Social Pulse",
-      "dailyHits": "2965 Coms",
-      "growth": "+31 up/min",
+      "dailyHits": "1108 Coms",
+      "growth": "+34 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -23,8 +23,8 @@
       "rank": 3,
       "site": "Trending Cultural Narrative Thread Pool #3",
       "category": "Social Pulse",
-      "dailyHits": "2187 Coms",
-      "growth": "+19 up/min",
+      "dailyHits": "1371 Coms",
+      "growth": "+16 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -32,8 +32,8 @@
       "rank": 4,
       "site": "Trending Cultural Narrative Thread Pool #4",
       "category": "Social Pulse",
-      "dailyHits": "3460 Coms",
-      "growth": "+32 up/min",
+      "dailyHits": "3678 Coms",
+      "growth": "+33 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -41,8 +41,8 @@
       "rank": 5,
       "site": "Macro Economic Index Data Release Analysis",
       "category": "Finance Trends",
-      "dailyHits": "354 Traders",
-      "growth": "-6 coms/min",
+      "dailyHits": "113 Traders",
+      "growth": "+15 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
@@ -50,8 +50,8 @@
       "rank": 6,
       "site": "Options Chain Implied Volatility Shift",
       "category": "Finance Trends",
-      "dailyHits": "108 Traders",
-      "growth": "-18 coms/min",
+      "dailyHits": "294 Traders",
+      "growth": "-11 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
@@ -59,8 +59,8 @@
       "rank": 7,
       "site": "Tech Sector Earnings Report Breakdown",
       "category": "Finance Trends",
-      "dailyHits": "398 Traders",
-      "growth": "+5 coms/min",
+      "dailyHits": "453 Traders",
+      "growth": "-14 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
@@ -68,46 +68,46 @@
       "rank": 8,
       "site": "Treasury Yield Yield-Curve Movement",
       "category": "Finance Trends",
-      "dailyHits": "223 Traders",
-      "growth": "-7 coms/min",
+      "dailyHits": "376 Traders",
+      "growth": "+13 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
     {
       "rank": 9,
-      "site": "jade benning",
+      "site": "vaccine",
       "category": "Popular Searches",
-      "dailyHits": "200+",
-      "growth": "+6.9%",
-      "trend": "Day 2: Witness recounts pregnant victim&apos;s final accusation in Blaise Taylor trial",
-      "url": "https://fox17.com/news/local/murder-trial-ex-titans-scout-blaise-taylor-accused-of-killing-pregnant-girlfriend-day-2-witnesses-resume-testimonies-jade-benning-nashville-tennessee-utah-arrest-court-davidson-county"
+      "dailyHits": "1000+",
+      "growth": "+12.9%",
+      "trend": "Military requiring flu vaccines for recruits as Air Force base deals with outbreak",
+      "url": "https://www.cbsnews.com/news/military-flu-vaccine-recruits-hegseth-lackland-outbreak/"
     },
     {
       "rank": 10,
-      "site": "usa vs bosnia",
+      "site": "fifa world cup players",
       "category": "Popular Searches",
       "dailyHits": "10000+",
-      "growth": "+12.3%",
-      "trend": "2026 World Cup Bracket, Standings, Projections: USA in Round of 32, Who Else Might Advance?",
-      "url": "https://www.foxsports.com/stories/soccer/2026-world-cup-bracket-standings-projections-usa-round-32-who-else-might-advance"
+      "growth": "+5.2%",
+      "trend": "World Cup 2026 Power Rankings after two games: Who is No. 1?",
+      "url": "https://www.espn.com/soccer/story/_/id/49154319/fifa-world-cup-power-rankings-spain-brazil-germany-usa-mexico-england-argentina-france"
     },
     {
       "rank": 11,
-      "site": "ebola cases france",
+      "site": "fifa world cup 2026 group d qualifiers table",
       "category": "Popular Searches",
-      "dailyHits": "200+",
-      "growth": "+13.2%",
-      "trend": "France reports first Ebola patient as cases in Africa surge above 1,000",
-      "url": "https://www.washingtonpost.com/world/2026/06/24/ebola-outbreak-could-be-worst-ever-cases-surge-past-1000-congo/"
+      "dailyHits": "20000+",
+      "growth": "+13.9%",
+      "trend": "2026 World Cup: How teams can advance to the knockout rounds",
+      "url": "https://www.espn.com/soccer/story/_/id/49031236/2026-world-cup-group-stage-clinching-scenarios-knockout-rounds-elimination"
     },
     {
       "rank": 12,
-      "site": "bad homburg open",
+      "site": "roundup supreme court",
       "category": "Popular Searches",
-      "dailyHits": "200+",
-      "growth": "+6.7%",
-      "trend": "Williams and Eala&apos;s doubles run rolls into Bad Homburg quarterfinals",
-      "url": "https://www.wtatennis.com/videos/4526229/venus-williams-eala-set-sail-into-bad-homburg-quarterfinals"
+      "dailyHits": "1000+",
+      "growth": "+8.7%",
+      "trend": "Supreme Court Rejects Lawsuit Against Bayer Alleging Roundup Weedkiller Caused Cancer",
+      "url": "https://www.nytimes.com/2026/06/25/us/politics/supreme-court-weedkiller-roundup-bayer.html"
     }
   ]
 }
