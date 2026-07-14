@@ -1,12 +1,12 @@
 {
-  "lastUpdated": "2026-07-14T20:42:17.250Z",
+  "lastUpdated": "2026-07-14T23:37:46.922Z",
   "trafficLeaderboard": [
     {
       "rank": 1,
       "site": "Trending Cultural Narrative Thread Pool #1",
       "category": "Social Pulse",
-      "dailyHits": "1134 Coms",
-      "growth": "+17 up/min",
+      "dailyHits": "3127 Coms",
+      "growth": "+36 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -14,8 +14,8 @@
       "rank": 2,
       "site": "Trending Cultural Narrative Thread Pool #2",
       "category": "Social Pulse",
-      "dailyHits": "1102 Coms",
-      "growth": "+22 up/min",
+      "dailyHits": "3464 Coms",
+      "growth": "+16 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -23,8 +23,8 @@
       "rank": 3,
       "site": "Trending Cultural Narrative Thread Pool #3",
       "category": "Social Pulse",
-      "dailyHits": "3707 Coms",
-      "growth": "+25 up/min",
+      "dailyHits": "1858 Coms",
+      "growth": "+23 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -32,8 +32,8 @@
       "rank": 4,
       "site": "Trending Cultural Narrative Thread Pool #4",
       "category": "Social Pulse",
-      "dailyHits": "1776 Coms",
-      "growth": "+33 up/min",
+      "dailyHits": "3627 Coms",
+      "growth": "+30 up/min",
       "trend": "Viral discussion megathread running hot across aggregated open networks.",
       "url": "https://www.reddit.com/r/popular/"
     },
@@ -41,8 +41,8 @@
       "rank": 5,
       "site": "Macro Economic Index Data Release Analysis",
       "category": "Finance Trends",
-      "dailyHits": "430 Traders",
-      "growth": "+5 coms/min",
+      "dailyHits": "493 Traders",
+      "growth": "-16 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
@@ -50,8 +50,8 @@
       "rank": 6,
       "site": "Options Chain Implied Volatility Shift",
       "category": "Finance Trends",
-      "dailyHits": "206 Traders",
-      "growth": "+7 coms/min",
+      "dailyHits": "275 Traders",
+      "growth": "-7 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
@@ -59,8 +59,8 @@
       "rank": 7,
       "site": "Tech Sector Earnings Report Breakdown",
       "category": "Finance Trends",
-      "dailyHits": "499 Traders",
-      "growth": "-14 coms/min",
+      "dailyHits": "101 Traders",
+      "growth": "+7 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
@@ -68,46 +68,46 @@
       "rank": 8,
       "site": "Treasury Yield Yield-Curve Movement",
       "category": "Finance Trends",
-      "dailyHits": "130 Traders",
-      "growth": "+16 coms/min",
+      "dailyHits": "328 Traders",
+      "growth": "+18 coms/min",
       "trend": "High-velocity macroeconomic assessment. Market-moving community analysis parsing live execution metrics.",
       "url": "https://www.reddit.com/r/stocks/"
     },
     {
       "rank": 9,
-      "site": "jerry jones",
+      "site": "sonia citron",
       "category": "Popular Searches",
-      "dailyHits": "2000+",
-      "growth": "+9.4%",
-      "trend": "Don&apos;t expect Cowboys to keep curtains, tinted windows, grass from World Cup matches",
-      "url": "https://www.dallasnews.com/sports/cowboys/article/cowboys-world-cup-curtains-sun-glare-grass-turf-22344037.php"
+      "dailyHits": "500+",
+      "growth": "+9.5%",
+      "trend": "Storm forward Ezi Magbegor&apos;s out again after suffering facial fracture",
+      "url": "https://www.usatoday.com/story/sports/wnba/2026/07/13/ezi-magbegor-injury-update-seattle-storm/90899962007/"
     },
     {
       "rank": 10,
-      "site": "united states federal judge",
+      "site": "matt miller",
       "category": "Popular Searches",
-      "dailyHits": "2000+",
-      "growth": "+12.2%",
-      "trend": "US judge voids Donald Trump&apos;s $1.8bn settlement with IRS that gave him immunity from tax audits",
-      "url": "https://www.bbc.com/news/articles/cn8q0e8d4ego"
+      "dailyHits": "500+",
+      "growth": "+9.9%",
+      "trend": "Video emerges of ESPN draft analyst Matt Miller’s car crash",
+      "url": "https://www.nbcsports.com/nfl/profootballtalk/rumor-mill/news/video-emerges-of-espn-draft-analyst-matt-millers-car-crash"
     },
     {
       "rank": 11,
-      "site": "soccer score",
+      "site": "alex rodriguez",
       "category": "Popular Searches",
       "dailyHits": "1000+",
-      "growth": "+12.8%",
-      "trend": "World Cup Daily live: Spain lead France; Haaland inspires baby name boom",
-      "url": "https://www.espn.com/soccer/story/_/id/49356289/world-cup-daily-live-norway-erling-haaland-latest-star-inspire-baby-name-boom"
+      "growth": "+13.8%",
+      "trend": "Alex Rodriguez awkwardly botches Justin Verlander&apos;s career arc: &apos;Me?!&apos;",
+      "url": "https://www.freep.com/story/sports/mlb/tigers/2026/07/14/justin-verlander-alex-rodriguez-tv-awkward/90920733007/"
     },
     {
       "rank": 12,
-      "site": "football",
+      "site": "chelsea gray",
       "category": "Popular Searches",
-      "dailyHits": "1000+",
-      "growth": "+13.4%",
-      "trend": "Fantasy football QB rankings for 2026 NFL season: Draft tiers and analysis",
-      "url": "https://www.nfl.com/news/fantasy-football-qb-rankings-for-2026-nfl-season-draft-tiers-and-analysis"
+      "dailyHits": "500+",
+      "growth": "+13.5%",
+      "trend": "Fan fired after alleged racist message to Aces&apos; Chelsea Gray",
+      "url": "https://www.espn.com/wnba/story/_/id/49362546/fan-fired-alleged-racist-message-aces-chelsea-gray"
     }
   ]
 }
