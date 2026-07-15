@@ -444,28 +444,36 @@
                 const arrow = isNegative ? '▼' : '▲';
                 const targetUrl = item.url || '#';
 
+                const containsTrump = /trump/i.test(item.site) || /trump/i.test(item.trend);
+                const imageToShow = containsTrump
+                    ? null
+                    : (item.image || `https://www.google.com/s2/favicons?domain=${new URL(item.url).hostname}&sz=128`);
+
                 row.innerHTML = `
                     <td class="img-col">
-                        <img
-                            src="${item.image || `https://www.google.com/s2/favicons?domain=${new URL(item.url).hostname}&sz=128`}"
-                            class="article-img"
-                            onerror="
-                                const host = (() => { try { return new URL('${item.url}').hostname.replace('www.',''); } catch(e) { return ''; } })();
-                                if (this.dataset.fallback === '1') {
-                                    this.style.display='none';
-                                    const p = document.createElement('div');
-                                    p.className='article-img-placeholder';
-                                    p.textContent = host ? host[0].toUpperCase() : '?';
-                                    this.parentNode.appendChild(p);
-                                } else {
-                                    this.dataset.fallback='1';
-                                    this.className='article-img-logo';
-                                    this.src='https://www.google.com/s2/favicons?domain=' + host + '&sz=128';
-                                }
-                            "
-                            alt=""
-                            loading="lazy"
-                        >
+                        ${containsTrump
+                            ? `<div class="article-img-placeholder" style="background:#888;">T</div>`
+                            : `<img
+                                src="${imageToShow}"
+                                class="article-img"
+                                onerror="
+                                    const host = (() => { try { return new URL('${item.url}').hostname.replace('www.',''); } catch(e) { return ''; } })();
+                                    if (this.dataset.fallback === '1') {
+                                        this.style.display='none';
+                                        const p = document.createElement('div');
+                                        p.className='article-img-placeholder';
+                                        p.textContent = host ? host[0].toUpperCase() : '?';
+                                        this.parentNode.appendChild(p);
+                                    } else {
+                                        this.dataset.fallback='1';
+                                        this.className='article-img-logo';
+                                        this.src='https://www.google.com/s2/favicons?domain=' + host + '&sz=128';
+                                    }
+                                "
+                                alt=""
+                                loading="lazy"
+                            >`
+                        }
                     </td>
                     <td class="rank-col">${item.rank}</td>
                     <td>
