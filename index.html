@@ -375,6 +375,11 @@
 
     function initCountdownClock() {
         setInterval(() => {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('live-clock').innerText = `${dateStr} · ${timeStr}`;
+
             if (isPipelineRefreshing) return;
 
             const now = new Date();
@@ -432,11 +437,6 @@
             }
 
             currentlyLoadedTimestamp = data.lastUpdated;
-
-            const date = new Date(data.lastUpdated);
-            const dateStr = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            const timeStr = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('live-clock').innerText = `${dateStr} · ${timeStr}`;
 
             const tableBody = document.getElementById('leaderboard-rows');
             tableBody.innerHTML = '';
