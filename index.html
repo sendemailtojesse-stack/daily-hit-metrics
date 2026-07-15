@@ -6,12 +6,12 @@
     <title>Daily Hit Metrics - The Internet's Record of Record</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: #e8dfc8;
+            background-color: #faf8f4;
             color: #1a0f00;
             font-family: 'Libre Baskerville', Georgia, serif;
             padding: 36px 20px 60px;
@@ -27,11 +27,14 @@
         /* ── MASTHEAD ── */
         .masthead {
             text-align: center;
-            border-top: 5px solid #2c1810;
-            border-bottom: 5px solid #2c1810;
-            padding: 14px 0 10px;
+            padding-bottom: 10px;
             margin-bottom: 0;
-            position: relative;
+        }
+
+        .masthead-top-rule {
+            border: none;
+            border-top: 5px solid #2c1810;
+            margin-bottom: 8px;
         }
 
         .masthead-eyebrow {
@@ -40,28 +43,30 @@
             text-transform: uppercase;
             color: #5a3e2b;
             font-family: 'Libre Baskerville', serif;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .masthead-title {
-            font-family: 'UnifrakturMaguntia', cursive;
-            font-size: 62px;
+            font-family: 'Playfair Display', serif;
+            font-size: 64px;
+            font-weight: 900;
             color: #2c1810;
+            letter-spacing: -1px;
             line-height: 1;
-            margin: 2px 0 4px;
+            margin: 2px 0 6px;
         }
 
         .masthead-rule {
             border: none;
             border-top: 1px solid #2c1810;
-            margin: 6px 60px;
+            margin: 0 0 6px;
         }
 
         .masthead-bottom {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 4px 0;
+            padding: 4px 2px 0;
         }
 
         .masthead-dateline {
@@ -71,54 +76,49 @@
             font-style: italic;
         }
 
-        .masthead-sync {
-            text-align: right;
-        }
-
-        .sync-status {
+        .masthead-tagline {
             font-family: 'Libre Baskerville', serif;
             font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
             color: #5a3e2b;
-            font-style: italic;
         }
 
         .sync-countdown {
             font-family: 'Libre Baskerville', serif;
-            font-size: 10px;
+            font-size: 11px;
             color: #2c1810;
             font-weight: 700;
-            letter-spacing: 0.05em;
-            margin-top: 2px;
             transition: color 0.2s ease;
+        }
+
+        .masthead-thick-rule {
+            border: none;
+            border-top: 5px solid #2c1810;
+            margin: 8px 0 0;
         }
 
         /* ── SECTION HEADERS ── */
         .section-banner {
             background: #2c1810;
-            color: #f5edd6;
+            color: #faf8f4;
             font-family: 'Libre Baskerville', serif;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
             letter-spacing: 0.25em;
             text-transform: uppercase;
             text-align: center;
             padding: 5px 0;
-            margin: 0;
         }
 
         /* ── TABLE ── */
         .scoreboard {
             width: 100%;
             border-collapse: collapse;
-            background-color: #f5edd6;
+            background-color: #faf8f4;
             border-left: 1px solid #2c1810;
             border-right: 1px solid #2c1810;
             border-bottom: 3px double #2c1810;
-        }
-
-        .scoreboard thead tr {
-            background-color: #e8dfc8;
-            border-bottom: 1px solid #b8a070;
         }
 
         .scoreboard th {
@@ -128,14 +128,16 @@
             letter-spacing: 0.18em;
             text-transform: uppercase;
             color: #5a3e2b;
-            padding: 10px 14px;
+            padding: 10px 16px;
             text-align: left;
+            background: #f0ebe0;
+            border-top: 2px solid #2c1810;
             border-bottom: 2px solid #2c1810;
         }
 
         .scoreboard td {
-            padding: 12px 14px;
-            border-bottom: 1px dashed #b8a070;
+            padding: 13px 16px;
+            border-bottom: 1px dashed #c8b89a;
             vertical-align: middle;
         }
 
@@ -144,26 +146,26 @@
         }
 
         .scoreboard tbody tr:hover td {
-            background-color: #ede4cc;
+            background-color: #f0ebe0;
         }
 
         /* ── ROW ELEMENTS ── */
         .rank-col {
             font-family: 'Playfair Display', serif;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
-            color: #b8a070;
-            width: 36px;
+            color: #c8b89a;
+            width: 40px;
             text-align: center;
         }
 
         .entity-title {
-            font-family: 'IM Fell English', serif;
+            font-family: 'Playfair Display', serif;
             font-size: 15px;
             font-weight: 700;
             color: #1a0f00;
             line-height: 1.3;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
 
         .dispatch-link {
@@ -193,9 +195,9 @@
             font-weight: 700;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: #f5edd6;
+            color: #faf8f4;
             background: #2c1810;
-            padding: 2px 6px;
+            padding: 2px 7px;
             margin-top: 5px;
         }
 
@@ -217,20 +219,14 @@
         }
 
         /* ── FOOTER ── */
-        .footer-rule {
-            border: none;
-            border-top: 3px double #2c1810;
-            margin-top: 0;
-        }
-
         .footer-note {
             text-align: center;
             font-family: 'IM Fell English', serif;
-            font-size: 10px;
+            font-size: 11px;
             font-style: italic;
             color: #8a6a50;
-            margin-top: 12px;
-            letter-spacing: 0.05em;
+            margin-top: 14px;
+            letter-spacing: 0.04em;
         }
     </style>
 </head>
@@ -239,33 +235,32 @@
 <div class="container">
 
     <div class="masthead">
+        <div class="masthead-top-rule"></div>
         <div class="masthead-eyebrow">Est. 2026 &nbsp;✦&nbsp; The Internet's Record of Record</div>
         <div class="masthead-title">Daily Hit Metrics</div>
         <hr class="masthead-rule">
         <div class="masthead-bottom">
             <div class="masthead-dateline" id="live-clock">Syncing dispatches...</div>
-            <div class="masthead-sync">
-                <div class="sync-countdown" id="countdown-clock">Next dispatch: --:--</div>
-            </div>
+            <div class="masthead-tagline">All the data fit to print</div>
+            <div class="sync-countdown" id="countdown-clock">Next dispatch: --:--</div>
         </div>
+        <div class="masthead-thick-rule"></div>
     </div>
 
     <table class="scoreboard">
         <thead>
             <tr>
                 <th style="width: 5%">No.</th>
-                <th style="width: 57%">Dispatch & Context</th>
-                <th style="width: 13%">Bureau</th>
-                <th style="width: 13%">Circulation</th>
-                <th style="width: 12%">Velocity</th>
+                <th style="width: 55%">Dispatch &amp; Context</th>
+                <th style="width: 14%">Circulation</th>
+                <th style="width: 13%">Momentum</th>
             </tr>
         </thead>
         <tbody id="leaderboard-rows">
         </tbody>
     </table>
 
-    <div class="footer-rule"></div>
-    <div class="footer-note">All dispatches sourced from open networks &amp; public indices. Updated each hour on the hour. &nbsp;✦&nbsp; dailyhitmetrics.com</div>
+    <div class="footer-note">All dispatches sourced from open networks &amp; public indices &nbsp;·&nbsp; Updated hourly on the hour &nbsp;·&nbsp; dailyhitmetrics.com</div>
 
 </div>
 
@@ -277,9 +272,9 @@
     const MAX_POLL_ATTEMPTS = 10;
 
     const SECTION_LABELS = {
-        'Social Pulse':     '§ Social Pulse — Viral Dispatches from the Public Square',
-        'Finance Trends':   '§ Finance Trends — Market Intelligence & Trading Sentiment',
-        'Popular Searches': '§ Popular Searches — The Nation\'s Most Sought Queries'
+        'Social Pulse':     'Social Pulse — Viral Dispatches from the Public Square',
+        'Finance Trends':   'Finance Trends — Market Intelligence & Trading Sentiment',
+        'Popular Searches': "Popular Searches — The Nation's Most Sought Queries"
     };
 
     function initCountdownClock() {
@@ -345,7 +340,7 @@
             const date = new Date(data.lastUpdated);
             const dateStr = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             const timeStr = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-            document.getElementById('live-clock').innerText = `${dateStr} · Dispatched at ${timeStr}`;
+            document.getElementById('live-clock').innerText = `${dateStr} · ${timeStr}`;
 
             const tableBody = document.getElementById('leaderboard-rows');
             tableBody.innerHTML = '';
@@ -353,23 +348,21 @@
             let lastCategory = null;
 
             data.trafficLeaderboard.forEach(item => {
-                // Insert section banner when category changes
                 if (item.category !== lastCategory) {
                     lastCategory = item.category;
                     const bannerRow = document.createElement('tr');
-                    bannerRow.innerHTML = `<td colspan="5" class="section-banner">${SECTION_LABELS[item.category] || item.category}</td>`;
+                    bannerRow.innerHTML = `<td colspan="4" class="section-banner">${SECTION_LABELS[item.category] || item.category}</td>`;
                     tableBody.appendChild(bannerRow);
                 }
 
                 const row = document.createElement('tr');
-
                 const isNegative = item.growth.startsWith('-');
                 const momentumColor = isNegative ? '#8a2a2a' : '#2a5a2a';
                 const arrow = isNegative ? '▼' : '▲';
                 const targetUrl = item.url || '#';
 
                 row.innerHTML = `
-                    <td class="rank-col">${toRoman(item.rank)}</td>
+                    <td class="rank-col">${item.rank}</td>
                     <td>
                         <div class="entity-title">
                             <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="dispatch-link">
@@ -391,16 +384,6 @@
             document.getElementById('live-clock').innerText = 'Wire service disruption — dispatches delayed';
             return false;
         }
-    }
-
-    function toRoman(num) {
-        const vals = [1000,900,500,400,100,90,50,40,10,9,5,4,1];
-        const syms = ['M','CM','D','CD','C','XC','L','XL','X','IX','V','IV','I'];
-        let result = '';
-        for (let i = 0; i < vals.length; i++) {
-            while (num >= vals[i]) { result += syms[i]; num -= vals[i]; }
-        }
-        return result;
     }
 
     loadDashboard();
