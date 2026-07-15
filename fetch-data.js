@@ -329,12 +329,13 @@ async function fetchHighUtilityMatrix() {
         console.log(`Finance Trends RSS status: ${res.status}`);
         if (res.ok) {
             const entries = parseAtomEntries(await res.text(), 4, 'https://www.reddit.com/r/stocks/', LOGOS.reddit);
+            const subredditMatch = (url) => { const m = url.match(/\/r\/([^/]+)\//); return m ? `r/${m[1]}` : 'r/stocks'; };
             entries.forEach(entry => financeTrends.push({
                 site: entry.title || "Market Discussion",
                 category: "Finance Trends",
                 dailyHits: `${Math.floor(Math.random() * 800 + 150)} Traders`,
                 growth: `${Math.random() > 0.35 ? "+" : "-"}${Math.floor(Math.random() * 25 + 5)} coms/min`,
-                trend: "Active market discussion — retail traders parsing live developments.",
+                trend: `Active discussion in ${subredditMatch(entry.url)} — retail traders parsing live market developments.`,
                 url: entry.url,
                 image: entry.image
             }));
