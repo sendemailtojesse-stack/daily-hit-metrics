@@ -64,11 +64,12 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
         } else {
             const descMatch = itemStr.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s);
             const descRaw = descMatch ? descMatch[1] : "";
-            const firstPara = descRaw.match(/<p[^>]*>(.*?)<\/p>/s);
-            const descClean = firstPara
-                ? firstPara[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()
-                : descRaw.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
-            desc = decodeEntities(descClean).substring(0, 160);
+            desc = decodeEntities(descRaw)
+                .replace(/<[^>]*>/g, ' ')
+                .replace(/<[^>]*$/g, '')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .substring(0, 160);
         }
 
         const image = extractImage(itemStr) || fallbackLogo;
@@ -121,10 +122,12 @@ async function fetchHighUtilityMatrix() {
                 const items = parseRssItems(await res.text(), 1, source.url, source.logo);
                 if (items.length > 0) {
                 const rawTrend = items[0].desc || `Breaking news from ${source.name}.`;
-                    if (source.name === 'The Guardian') {
-                        console.log(`Guardian raw desc: "${items[0].desc ? items[0].desc.substring(0, 300) : 'EMPTY'}"`);
-                    }
-                    const trend = rawTrend.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().substring(0, 160);
+                    const trend = rawTrend
+                        .replace(/<[^>]*>/g, ' ')
+                        .replace(/<[^>]*$/g, '')
+                        .replace(/\s+/g, ' ')
+                        .trim()
+                        .substring(0, 160);
                     if (source.name === 'The Guardian') {
                         console.log(`Guardian final trend: "${trend}"`);
                     }
