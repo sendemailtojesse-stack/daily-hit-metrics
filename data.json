@@ -1,194 +1,225 @@
 {
-  "lastUpdated": "2026-07-15T03:38:59.253Z",
+  "lastUpdated": "2026-07-15T03:47:43.477Z",
   "trafficLeaderboard": [
     {
       "rank": 1,
       "site": "Trump scraps threat of 20% fee on Hormuz cargo as US resumes blockade of Iran ports",
       "category": "World News",
       "dailyHits": "Global",
-      "growth": "+1.4%",
+      "growth": "+2.2%",
       "trend": "Trump drops a 24-hour-old vow to charge cargo ships for using the Strait as the US continues its battle to break Iran's hold on the waterway.",
-      "url": "https://www.bbc.co.uk/news/articles/cy0608wy8pro?at_medium=RSS&amp;at_campaign=rss"
+      "url": "https://www.bbc.co.uk/news/articles/cy0608wy8pro?at_medium=RSS&amp;at_campaign=rss",
+      "image": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/d6c0/live/e8f90230-7fb4-11f1-926f-c90d1bcfbc84.jpg"
     },
     {
       "rank": 2,
-      "site": "Trump retreat over Hormuz tolls suggests he is struggling to end Iran war",
+      "site": "Supreme Court Justices give chilling accounts of threats to their safety",
       "category": "World News",
       "dailyHits": "Global",
-      "growth": "+4.1%",
-      "trend": "The abrupt about-face from the US president was the latest twist in a conflict that has now lasted more than four months.",
-      "url": "https://www.bbc.co.uk/news/articles/crele3r8j19o?at_medium=RSS&amp;at_campaign=rss"
+      "growth": "+3.6%",
+      "trend": "Supreme Court Justices Elena Kagan and Amy Coney Barrett spoke with lawmakers about funding for security and other needs for the court on Tuesday.",
+      "url": "https://www.npr.org/2026/07/14/nx-s1-5893664/supreme-court-justices-kagan-barrett-give-chilling-accounts-of-threats-to-their-safety",
+      "image": "https://logo.clearbit.com/npr.org"
     },
     {
       "rank": 3,
-      "site": "Match Thread: France vs Spain | World Cup | Semi-finals | 14 Jul 19:00 UTC",
-      "category": "Social Pulse",
-      "dailyHits": "2,404 Coms",
-      "growth": "+22 up/min",
-      "trend": "Trending in r/worldcup — viral engagement climbing across the network.",
-      "url": "https://www.reddit.com/r/worldcup/comments/1uwf9fl/match_thread_france_vs_spain_world_cup_semifinals/"
+      "site": "Nearly 75% of Americans think there’s too much money in politics",
+      "category": "World News",
+      "dailyHits": "Global",
+      "growth": "+2.4%",
+      "trend": "The US is set to have some of the most expensive elections in history.",
+      "url": "https://www.aljazeera.com/video/newsfeed/2026/7/15/nearly-75-of-americans-think-theres-too-much-money-in-politics?traffic_source=rss",
+      "image": "https://logo.clearbit.com/aljazeera.com"
     },
     {
       "rank": 4,
-      "site": "Pigeon walks into falcon's nest",
+      "site": "Match Thread: France vs Spain | World Cup | Semi-finals | 14 Jul 19:00 UTC",
       "category": "Social Pulse",
-      "dailyHits": "3,827 Coms",
-      "growth": "+32 up/min",
-      "trend": "Trending in r/interesting — viral engagement climbing across the network.",
-      "url": "https://www.reddit.com/r/interesting/comments/1uw3jyx/pigeon_walks_into_falcons_nest/"
+      "dailyHits": "4,414 Coms",
+      "growth": "+34 up/min",
+      "trend": "Trending in r/worldcup — viral engagement climbing across the network.",
+      "url": "https://www.reddit.com/r/worldcup/comments/1uwf9fl/match_thread_france_vs_spain_world_cup_semifinals/",
+      "image": "https://logo.clearbit.com/reddit.com"
     },
     {
       "rank": 5,
-      "site": "Owner of Metroflex Miramar Gym is a Nazi",
+      "site": "Pigeon walks into falcon's nest",
       "category": "Social Pulse",
-      "dailyHits": "3,688 Coms",
-      "growth": "+25 up/min",
-      "trend": "Trending in r/sandiego — viral engagement climbing across the network.",
-      "url": "https://www.reddit.com/r/sandiego/comments/1uwraju/owner_of_metroflex_miramar_gym_is_a_nazi/"
+      "dailyHits": "4,064 Coms",
+      "growth": "+39 up/min",
+      "trend": "Trending in r/interesting — viral engagement climbing across the network.",
+      "url": "https://www.reddit.com/r/interesting/comments/1uw3jyx/pigeon_walks_into_falcons_nest/",
+      "image": "https://external-preview.redd.it/MndnZXdhcDd4NWRoMfPal0Qcll4e5bCjBbWibJ-lIEkQJzqq0FWA1cuyrUQ9.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=9923ea4293815a6807c2751e7129992a777ed8c0"
     },
     {
       "rank": 6,
       "site": "Some of the new guidelines that have been introduced by The European Broadcasting Union in partnership with European ...",
       "category": "Social Pulse",
-      "dailyHits": "2,445 Coms",
-      "growth": "+52 up/min",
+      "dailyHits": "1,991 Coms",
+      "growth": "+36 up/min",
       "trend": "Trending in r/interestingasfuck — viral engagement climbing across the network.",
-      "url": "https://www.reddit.com/r/interestingasfuck/comments/1uwaxzx/some_of_the_new_guidelines_that_have_been/"
+      "url": "https://www.reddit.com/r/interestingasfuck/comments/1uwaxzx/some_of_the_new_guidelines_that_have_been/",
+      "image": "https://preview.redd.it/pnroh7vzk7dh1.png?width=140&amp;height=82&amp;auto=webp&amp;s=287e88148afea4c2d27811ff66c5138a09c5aa38"
     },
     {
       "rank": 7,
-      "site": "Vancouver PD website features Quick Escape button that wipes itself from history",
-      "category": "Tech",
-      "dailyHits": "536 pts",
-      "growth": "+5 pts/hr",
-      "trend": "Comments",
-      "url": "https://vpd.ca/"
+      "site": "Owner of Metroflex Miramar Gym is a Nazi",
+      "category": "Social Pulse",
+      "dailyHits": "2,182 Coms",
+      "growth": "+40 up/min",
+      "trend": "Trending in r/sandiego — viral engagement climbing across the network.",
+      "url": "https://www.reddit.com/r/sandiego/comments/1uwraju/owner_of_metroflex_miramar_gym_is_a_nazi/",
+      "image": "https://preview.redd.it/hb5byc88nadh1.jpeg?width=640&amp;crop=smart&amp;auto=webp&amp;s=dd94c6a87654b8c072760d19da53c533d3d86bee"
     },
     {
       "rank": 8,
-      "site": "TS-2026-009: Insecure argument handling in Tailscale SSH permitted root access",
+      "site": "Vancouver PD website features Quick Escape button that wipes itself from history",
       "category": "Tech",
-      "dailyHits": "937 pts",
-      "growth": "+15 pts/hr",
+      "dailyHits": "807 pts",
+      "growth": "+28 pts/hr",
       "trend": "Comments",
-      "url": "https://tailscale.com/security-bulletins"
+      "url": "https://vpd.ca/",
+      "image": "https://logo.clearbit.com/ycombinator.com"
     },
     {
       "rank": 9,
-      "site": "Global Warming at 3 °C by 2050? What&#x27;s Behind the New German Climate Warning",
+      "site": "TS-2026-009: Insecure argument handling in Tailscale SSH permitted root access",
       "category": "Tech",
-      "dailyHits": "416 pts",
-      "growth": "+8 pts/hr",
+      "dailyHits": "894 pts",
+      "growth": "+10 pts/hr",
       "trend": "Comments",
-      "url": "https://worldcrunch.com/focus/green-or-gone/global-warming-at-3c-by-2050-what-s-behind-the-new-german-climate-warning/"
+      "url": "https://tailscale.com/security-bulletins",
+      "image": "https://logo.clearbit.com/ycombinator.com"
     },
     {
       "rank": 10,
       "site": "Bonsai 27B: A 27B-Class model that runs on a phone",
       "category": "Tech",
-      "dailyHits": "592 pts",
-      "growth": "+18 pts/hr",
+      "dailyHits": "765 pts",
+      "growth": "+22 pts/hr",
       "trend": "Comments",
-      "url": "https://prismml.com/news/bonsai-27b"
+      "url": "https://prismml.com/news/bonsai-27b",
+      "image": "https://logo.clearbit.com/ycombinator.com"
     },
     {
       "rank": 11,
-      "site": "Dead Space Creator Glen Schofield Announces Retirement From Gaming Industry",
-      "category": "Video Games",
-      "dailyHits": "3,541 views",
-      "growth": "+2.2%",
-      "trend": "Dead Space creator Glen Schofield has announced his retirement from the gaming industry.",
-      "url": "https://www.ign.com/articles/dead-space-creator-glen-schofield-announces-retirement-from-gaming-industry"
+      "site": "Jurassic Park computers in excruciating detail",
+      "category": "Tech",
+      "dailyHits": "833 pts",
+      "growth": "+8 pts/hr",
+      "trend": "Comments",
+      "url": "https://fabiensanglard.net/jurrasic_park_computers/index.html",
+      "image": "https://logo.clearbit.com/ycombinator.com"
     },
     {
       "rank": 12,
-      "site": "Halo Studios Reportedly Cancels New Multiplayer Project",
+      "site": "Dead Space Creator Glen Schofield Announces Retirement From Gaming Industry",
       "category": "Video Games",
-      "dailyHits": "5,432 views",
-      "growth": "+1.3%",
-      "trend": "A brand new Halo multiplayer game has been scrapped, according to sources.",
-      "url": "https://www.ign.com/articles/halo-studios-reportedly-cancels-new-multiplayer-project"
+      "dailyHits": "2,015 views",
+      "growth": "+4.6%",
+      "trend": "Dead Space creator Glen Schofield has announced his retirement from the gaming industry.",
+      "url": "https://www.ign.com/articles/dead-space-creator-glen-schofield-announces-retirement-from-gaming-industry",
+      "image": "https://logo.clearbit.com/ign.com"
     },
     {
       "rank": 13,
-      "site": "Far Cry TV Series Casts Steve Buscemi in Mystery Role",
+      "site": "Halo Studios Reportedly Cancels New Multiplayer Project",
       "category": "Video Games",
-      "dailyHits": "3,537 views",
-      "growth": "+6.1%",
-      "trend": "Steve Buscemi is joining the cast of FX's Far Cry TV series.",
-      "url": "https://www.ign.com/articles/far-cry-tv-series-casts-steve-buscemi-in-mystery-role"
+      "dailyHits": "4,357 views",
+      "growth": "+3.3%",
+      "trend": "A brand new Halo multiplayer game has been scrapped, according to sources.",
+      "url": "https://www.ign.com/articles/halo-studios-reportedly-cancels-new-multiplayer-project",
+      "image": "https://logo.clearbit.com/ign.com"
     },
     {
       "rank": 14,
-      "site": "Macro Index Data Release Analysis",
-      "category": "Finance Trends",
-      "dailyHits": "425 Traders",
-      "growth": "-24 coms/min",
-      "trend": "Market-moving community analysis parsing live execution metrics.",
-      "url": "https://www.reddit.com/r/stocks/"
+      "site": "Far Cry TV Series Casts Steve Buscemi in Mystery Role",
+      "category": "Video Games",
+      "dailyHits": "1,976 views",
+      "growth": "+6.6%",
+      "trend": "Steve Buscemi is joining the cast of FX's Far Cry TV series.",
+      "url": "https://www.ign.com/articles/far-cry-tv-series-casts-steve-buscemi-in-mystery-role",
+      "image": "https://logo.clearbit.com/ign.com"
     },
     {
       "rank": 15,
-      "site": "Options Chain Volatility Shift",
+      "site": "Macro Index Data Release Analysis",
       "category": "Finance Trends",
-      "dailyHits": "169 Traders",
-      "growth": "+12 coms/min",
+      "dailyHits": "206 Traders",
+      "growth": "+10 coms/min",
       "trend": "Market-moving community analysis parsing live execution metrics.",
-      "url": "https://www.reddit.com/r/stocks/"
+      "url": "https://www.reddit.com/r/stocks/",
+      "image": "https://logo.clearbit.com/reddit.com"
     },
     {
       "rank": 16,
-      "site": "Tech Sector Earnings Breakdown",
+      "site": "Options Chain Volatility Shift",
       "category": "Finance Trends",
-      "dailyHits": "338 Traders",
-      "growth": "+21 coms/min",
+      "dailyHits": "160 Traders",
+      "growth": "-16 coms/min",
       "trend": "Market-moving community analysis parsing live execution metrics.",
-      "url": "https://www.reddit.com/r/stocks/"
+      "url": "https://www.reddit.com/r/stocks/",
+      "image": "https://logo.clearbit.com/reddit.com"
     },
     {
       "rank": 17,
-      "site": "Treasury Yield Curve Movement",
+      "site": "Tech Sector Earnings Breakdown",
       "category": "Finance Trends",
-      "dailyHits": "411 Traders",
-      "growth": "+15 coms/min",
+      "dailyHits": "108 Traders",
+      "growth": "-7 coms/min",
       "trend": "Market-moving community analysis parsing live execution metrics.",
-      "url": "https://www.reddit.com/r/stocks/"
+      "url": "https://www.reddit.com/r/stocks/",
+      "image": "https://logo.clearbit.com/reddit.com"
     },
     {
       "rank": 18,
-      "site": "jhoan duran",
-      "category": "Popular Searches",
-      "dailyHits": "500+",
-      "growth": "+9.8%",
-      "trend": "Jhoan Duran's All-Star Game was awkward. Take a look",
-      "url": "https://www.delawareonline.com/story/sports/mlb/phillies/2026/07/14/watch-jhoan-duran-enter-all-star-game-at-citizens-bank-park/90920182007/"
+      "site": "Treasury Yield Curve Movement",
+      "category": "Finance Trends",
+      "dailyHits": "459 Traders",
+      "growth": "+6 coms/min",
+      "trend": "Market-moving community analysis parsing live execution metrics.",
+      "url": "https://www.reddit.com/r/stocks/",
+      "image": "https://logo.clearbit.com/reddit.com"
     },
     {
       "rank": 19,
-      "site": "bryan baker",
+      "site": "lakers summer league",
       "category": "Popular Searches",
       "dailyHits": "500+",
-      "growth": "+6.8%",
-      "trend": "This former Orioles reliever turned All-Star closer is showing just how big a mistake the Orioles made last year",
-      "url": "https://birdswatcher.com/this-former-orioles-reliever-turned-all-star-closer-is-showing-just-how-big-a-mistake-the-orioles-made-last-year"
+      "growth": "+10.1%",
+      "trend": "Clippers vs Lakers LIVE Score Updates: Battle of L.A. in the NBA Summer League (16-24)",
+      "url": "https://www.vavel.com/en-us/nba/2026/07/15/1265804-la-clippers-vs-la-lakers-live-score-nba-summer-league.html",
+      "image": "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRw-P-VzEJ2iXhD5KVGYp3NicJsf76qdfNQlfLev-NHv4kgdG0zRPbAbAnA-zE"
     },
     {
       "rank": 20,
-      "site": "all star game mvp",
+      "site": "ivan herrera",
       "category": "Popular Searches",
-      "dailyHits": "2000+",
-      "growth": "+6.0%",
-      "trend": "2026 MLB All-Star Game: Expert picks for Midsummer Classic MVP",
-      "url": "https://www.cbssports.com/mlb/news/2026-mlb-all-star-game-mvp-odds-expert-picks/"
+      "dailyHits": "500+",
+      "growth": "+12.4%",
+      "trend": "Shohei Ohtani disputará la serie de fin de semana de Dodgers en Yankees tras drenaje de rodilla",
+      "url": "https://www.expressnews.com/sports/article/shohei-ohtani-disputar-la-serie-de-fin-de-22345471.php",
+      "image": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRmWeTLO-GYzTpaBe1AI9V6dh-CQKhH__ruQ6N3CeP1_QvDRf-r6MK3TLP--rs"
     },
     {
       "rank": 21,
-      "site": "louis varland",
+      "site": "jhoan duran",
       "category": "Popular Searches",
-      "dailyHits": "2000+",
-      "growth": "+14.8%",
-      "trend": "Thinking out loud: Mic'd up Cease, Langeliers work through 3-K 1st in ASG",
-      "url": "https://www.mlb.com/news/dylan-cease-shea-langeliers-mic-d-up-during-2026-all-star-game"
+      "dailyHits": "500+",
+      "growth": "+6.5%",
+      "trend": "Jhoan Duran's All-Star Game was awkward. Take a look",
+      "url": "https://www.delawareonline.com/story/sports/mlb/phillies/2026/07/14/watch-jhoan-duran-enter-all-star-game-at-citizens-bank-park/90920182007/",
+      "image": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSrtrq0MFlvI02IowiTGQL5AxqWglmeIsb8NU9vYRcfzAnVSw_GlgNq-ChWh5g"
+    },
+    {
+      "rank": 22,
+      "site": "bryan baker",
+      "category": "Popular Searches",
+      "dailyHits": "500+",
+      "growth": "+8.8%",
+      "trend": "This former Orioles reliever turned All-Star closer is showing just how big a mistake the Orioles made last year",
+      "url": "https://birdswatcher.com/this-former-orioles-reliever-turned-all-star-closer-is-showing-just-how-big-a-mistake-the-orioles-made-last-year",
+      "image": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRrKjnxonTvt_kpBPs6wz66u_U4D8FdNR8GbYUh-PLO0qyl6hAMBvukHdBEygI"
     }
   ]
 }
