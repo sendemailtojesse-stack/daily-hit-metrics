@@ -64,14 +64,12 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
         } else {
             const descMatch = itemStr.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s);
             const descRaw = descMatch ? descMatch[1] : "";
-            const fullDesc = decodeEntities(descRaw)
-                .replace(/<\/p>/gi, ' ')
-                .replace(/<[^>]*>/g, ' ')
-                .replace(/<[^>]*$/g, '')
-                .replace(/\s+/g, ' ')
-                .trim();
-            const firstSentence = fullDesc.match(/^.*?[.!?](?:\s|$)/);
-            desc = firstSentence ? firstSentence[0].trim() : fullDesc.substring(0, 160);
+            const fullDesc = decodeEntities(descRaw);
+            const firstParaMatch = fullDesc.match(/<p[^>]*>(.*?)<\/p>/s);
+            const firstParaText = firstParaMatch
+                ? firstParaMatch[1].replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim()
+                : fullDesc.replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim().substring(0, 160);
+            desc = firstParaText;
         }
 
         const image = extractImage(itemStr) || fallbackLogo;
@@ -124,14 +122,11 @@ async function fetchHighUtilityMatrix() {
                 const items = parseRssItems(await res.text(), 1, source.url, source.logo);
                 if (items.length > 0) {
                 const rawTrend = items[0].desc || `Breaking news from ${source.name}.`;
-                    const cleanTrend = rawTrend
-                        .replace(/<\/p>/gi, ' ')
-                        .replace(/<[^>]*>/g, ' ')
-                        .replace(/<[^>]*$/g, '')
-                        .replace(/\s+/g, ' ')
-                        .trim();
-                    const firstSentence = cleanTrend.match(/^.*?[.!?](?:\s|$)/);
-                    const trend = firstSentence ? firstSentence[0].trim() : cleanTrend.substring(0, 160);
+                    const fullTrend = decodeEntities(rawTrend);
+                    const firstParaMatch = fullTrend.match(/<p[^>]*>(.*?)<\/p>/s);
+                    const trend = firstParaMatch
+                        ? firstParaMatch[1].replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim()
+                        : fullTrend.replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim().substring(0, 160);
                     if (source.name === 'The Guardian') {
                         console.log(`Guardian final trend: "${trend}"`);
                     }
@@ -203,15 +198,43 @@ async function fetchHighUtilityMatrix() {
         const res = await fetch('https://news.ycombinator.com/rss', { headers: BROWSER_HEADERS });
         console.log(`Hacker News RSS status: ${res.status}`);
         if (res.ok) {
-            const items = parseRssItems(await res.text(), 4, 'https://news.ycombinator.com/', LOGOS.hn);
-            items.forEach(item => techNews.push({
-                site: item.title || "Hacker News",
-                category: "Tech",
-                dailyHits: Math.floor(Math.random() * 800 + 200) + " pts",
-                growth: "+" + Math.floor(Math.random() * 30 + 5) + " pts/hr",
-                trend: "Top story trending in the tech and startup community.",
-                url: item.url,
-                image: item.image
+            const xmlText = await res.text();
+            const hnItems = xmlText.split('<item>');
+            hnItems.shift();
+            const parsed = hnItems.slice(0, 4).map(itemStr => {
+                const titleMatch = itemStr.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/s);
+                let title = titleMatch ? decodeEntities(titleMatch[1].replace(/<[^>]*>/g, '').trim()) : "";
+                if (title.length > 120) title = title.substring(0, 117) + "...";
+                const linkMatch = itemStr.match(/<link>([^<]+)<\/link>/);
+                const url = linkMatch ? linkMatch[1].trim() : 'https://news.ycombinator.com/';
+                const commentsMatch = itemStr.match(/<comments>([^<]+)<\/comments>/);
+                const commentsUrl = commentsMatch ? commentsMatch[1].trim() : '';
+                const idMatch = commentsUrl.match(/id=(\d+)/);
+                const hnId = idMatch ? idMatch[1] : null;
+                const image = extractImage(itemStr) || LOGOS.hn;
+                return { title, url, commentsUrl, hnId, image };
+            });
+
+            await Promise.all(parsed.map(async item => {
+                let commentCount = null;
+                if (item.hnId) {
+                    try {
+                        const apiRes = await fetch(`https://hacker-news.firebaseio.com/v0/item/${item.hnId}.json`);
+                        if (apiRes.ok) {
+                            const data = await apiRes.json();
+                            commentCount = data.descendants;
+                        }
+                    } catch (e) {}
+                }
+                techNews.push({
+                    site: item.title || "Hacker News",
+                    category: "Tech",
+                    dailyHits: Math.floor(Math.random() * 800 + 200) + " pts",
+                    growth: "+" + Math.floor(Math.random() * 30 + 5) + " pts/hr",
+                    trend: commentCount !== null ? `${commentCount} comment${commentCount !== 1 ? 's' : ''} on Hacker News.` : "Top story on Hacker News.",
+                    url: item.url,
+                    image: item.image
+                });
             }));
         }
     } catch (e) { console.error('Hacker News Error:', e.message); }
