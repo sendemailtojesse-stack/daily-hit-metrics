@@ -108,7 +108,7 @@ async function fetchHighUtilityMatrix() {
                         category: "World News",
                         dailyHits: "Global",
                         growth: "+" + (Math.random() * 5 + 1).toFixed(1) + "%",
-                        trend: items[0].desc || `Breaking news from ${source.name}.`,
+                        trend: `Developing story from ${source.name}.`,
                         url: items[0].url,
                         image: items[0].image
                     });
