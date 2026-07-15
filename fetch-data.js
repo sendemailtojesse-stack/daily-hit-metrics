@@ -64,14 +64,14 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
         } else {
             const descMatch = itemStr.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s);
             const descRaw = descMatch ? descMatch[1] : "";
-            desc = decodeEntities(descRaw)
-                .replace(/<\/p>/gi, '. ')
+            const fullDesc = decodeEntities(descRaw)
+                .replace(/<\/p>/gi, ' ')
                 .replace(/<[^>]*>/g, ' ')
                 .replace(/<[^>]*$/g, '')
-                .replace(/\.\s*\./g, '.')
                 .replace(/\s+/g, ' ')
-                .trim()
-                .substring(0, 160);
+                .trim();
+            const firstSentence = fullDesc.match(/^.*?[.!?](?:\s|$)/);
+            desc = firstSentence ? firstSentence[0].trim() : fullDesc.substring(0, 160);
         }
 
         const image = extractImage(itemStr) || fallbackLogo;
@@ -124,14 +124,14 @@ async function fetchHighUtilityMatrix() {
                 const items = parseRssItems(await res.text(), 1, source.url, source.logo);
                 if (items.length > 0) {
                 const rawTrend = items[0].desc || `Breaking news from ${source.name}.`;
-                    const trend = rawTrend
-                        .replace(/<\/p>/gi, '. ')
+                    const cleanTrend = rawTrend
+                        .replace(/<\/p>/gi, ' ')
                         .replace(/<[^>]*>/g, ' ')
                         .replace(/<[^>]*$/g, '')
-                        .replace(/\.\s*\./g, '.')
                         .replace(/\s+/g, ' ')
-                        .trim()
-                        .substring(0, 160);
+                        .trim();
+                    const firstSentence = cleanTrend.match(/^.*?[.!?](?:\s|$)/);
+                    const trend = firstSentence ? firstSentence[0].trim() : cleanTrend.substring(0, 160);
                     if (source.name === 'The Guardian') {
                         console.log(`Guardian final trend: "${trend}"`);
                     }
