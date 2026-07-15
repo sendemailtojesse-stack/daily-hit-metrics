@@ -53,7 +53,8 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
         const linkMatch = itemStr.match(/<link>([^<]+)<\/link>/) || itemStr.match(/<link\s+href=["']([^"']+)["']/);
         const url = linkMatch ? linkMatch[1].trim() : fallbackUrl;
         const descMatch = itemStr.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s);
-        const desc = descMatch ? decodeEntities(descMatch[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()).substring(0, 160) : "";
+        const descRaw = descMatch ? descMatch[1] : "";
+        const desc = decodeEntities(descRaw.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()).substring(0, 160);
         const image = extractImage(itemStr) || fallbackLogo;
         return { title, url, desc, image };
     });
@@ -103,14 +104,7 @@ async function fetchHighUtilityMatrix() {
             if (res.ok) {
                 const items = parseRssItems(await res.text(), 1, source.url, source.logo);
                 if (items.length > 0) {
-                    const rawDesc = source.name === 'The Guardian'
-                        ? (items[0].desc || '').replace(/\s+/g, ' ').trim()
-                        : (items[0].desc || `Breaking news from ${source.name}.`);
-                    if (source.name === 'The Guardian') {
-                        console.log(`Guardian desc length: ${rawDesc.length}`);
-                        console.log(`Guardian desc sample: ${rawDesc.substring(0, 200)}`);
-                    }
-                    const trend = rawDesc || `Developing story from ${source.name}.`;
+                    const trend = items[0].desc || `Breaking news from ${source.name}.`;
                     worldNews.push({
                         site: items[0].title || `${source.name} News`,
                         category: "World News",
@@ -227,6 +221,7 @@ async function fetchHighUtilityMatrix() {
 
     try {
         console.log("Parsing Video Games from r/gaming...");
+        await new Promise(r => setTimeout(r, 2000));
         const res = await fetch('https://www.reddit.com/r/gaming/.rss?limit=10', { headers: BROWSER_HEADERS });
         console.log(`r/gaming RSS status: ${res.status}`);
         if (res.ok) {
@@ -276,6 +271,7 @@ async function fetchHighUtilityMatrix() {
     // ==========================================
     try {
         console.log("Parsing Finance Trends from Reddit...");
+        await new Promise(r => setTimeout(r, 2000));
         const res = await fetch('https://www.reddit.com/r/stocks+investing+options/.rss?limit=15', { headers: BROWSER_HEADERS });
         console.log(`Finance Trends RSS status: ${res.status}`);
         if (res.ok) {
