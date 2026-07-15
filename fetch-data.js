@@ -1,16 +1,5 @@
 const fs = require('fs');
 
-function decodeEntities(str) {
-    return str
-        .replace(/&amp;/g, '&')
-        .replace(/&quot;/g, '"')
-        .replace(/&apos;/g, "'")
-        .replace(/&#39;/g, "'")
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)));
-}
-
 async function fetchHighUtilityMatrix() {
     let socialPulse = [];
     let financeTrends = [];
@@ -24,13 +13,9 @@ async function fetchHighUtilityMatrix() {
     try {
         console.log("Parsing Social Pulse streams from r/popular...");
         const response = await fetch('https://www.reddit.com/r/popular/.rss?limit=15', {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-                'Accept': 'application/rss+xml, application/xml, text/xml, */*'
-            }
+            headers: { 'User-Agent': 'Mozilla/5.0 (DailyHitMetrics Bot; contact@dailyhitmetrics.com)' }
         });
         
-        console.log(`Social Pulse RSS status: ${response.status}`);
         if (response.ok) {
             const xmlText = await response.text();
             const xmlItems = xmlText.split('<entry>');
@@ -39,7 +24,6 @@ async function fetchHighUtilityMatrix() {
             socialPulse = xmlItems.slice(0, 4).map((itemStr) => {
                 const titleMatch = itemStr.match(/<title>(.*?)<\/title>/);
                 let originalTitle = titleMatch ? decodeEntities(titleMatch[1].trim()) : "";
-                if (originalTitle.length > 60) originalTitle = originalTitle.substring(0, 57) + "...";
                 
                 // Extract precise direct web link to the Reddit discussion thread
                 const linkMatch = itemStr.match(/<link\s+href=["'](https:\/\/www\.reddit\.com\/r\/[^"']+)["']/);
@@ -80,13 +64,9 @@ async function fetchHighUtilityMatrix() {
         console.log("Parsing Finance Trends from market discussion engines...");
         // Scrapes consolidated high-fidelity retail trading and investment boards
         const response = await fetch('https://www.reddit.com/r/stocks+investing+options/.rss?limit=15', {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-                'Accept': 'application/rss+xml, application/xml, text/xml, */*'
-            }
+            headers: { 'User-Agent': 'Mozilla/5.0 (DailyHitMetrics Bot; contact@dailyhitmetrics.com)' }
         });
         
-        console.log(`Finance Trends RSS status: ${response.status}`);
         if (response.ok) {
             const xmlText = await response.text();
             const xmlItems = xmlText.split('<entry>');
@@ -95,7 +75,6 @@ async function fetchHighUtilityMatrix() {
             financeTrends = xmlItems.slice(0, 4).map((itemStr) => {
                 const titleMatch = itemStr.match(/<title>(.*?)<\/title>/);
                 let originalTitle = titleMatch ? decodeEntities(titleMatch[1].trim()) : "";
-                if (originalTitle.length > 60) originalTitle = originalTitle.substring(0, 57) + "...";
                 
                 const linkMatch = itemStr.match(/<link\s+href=["'](https:\/\/www\.reddit\.com\/r\/[^"']+)["']/);
                 const threadUrl = linkMatch ? linkMatch[1].trim() : "https://www.reddit.com/r/stocks/";
@@ -152,7 +131,7 @@ async function fetchHighUtilityMatrix() {
                 const liveTraffic = trafficMatch ? trafficMatch[1].trim() : "100K+";
                 
                 const newsTitleMatch = itemStr.match(/<ht:news_item_title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/ht:news_item_title>/);
-                let storyContext = newsTitleMatch ? decodeEntities(newsTitleMatch[1].replace(/<[^>]*>/g, '').trim()) : "";
+                let storyContext = newsTitleMatch ? newsTitleMatch[1].replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').replace(/&quot;/g, '"').trim() : "";
                 if (!storyContext) storyContext = "Explosive volume vector dominating localized macro search trends.";
                 
                 // TOPICAL RELEVANCY UPGRADE: Pull direct source article url from RSS metadata block
