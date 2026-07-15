@@ -121,6 +121,9 @@ async function fetchHighUtilityMatrix() {
                 const items = parseRssItems(await res.text(), 1, source.url, source.logo);
                 if (items.length > 0) {
                 const rawTrend = items[0].desc || `Breaking news from ${source.name}.`;
+                    if (source.name === 'The Guardian') {
+                        console.log(`Guardian raw desc: "${items[0].desc ? items[0].desc.substring(0, 300) : 'EMPTY'}"`);
+                    }
                     const trend = rawTrend.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim().substring(0, 160);
                     if (source.name === 'The Guardian') {
                         console.log(`Guardian final trend: "${trend}"`);
