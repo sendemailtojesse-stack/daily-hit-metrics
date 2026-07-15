@@ -28,9 +28,6 @@ function extractImage(itemStr) {
     return null;
 }
 
-function logoFor(domain) {
-    return `https://logo.clearbit.com/${domain}`;
-}
 
 function parseAtomEntries(xmlText, limit, fallbackUrl, fallbackLogo) {
     const items = xmlText.split('<entry>');
@@ -68,14 +65,14 @@ const BROWSER_HEADERS = {
 };
 
 const LOGOS = {
-    reuters:   logoFor('reuters.com'),
-    bbc:       logoFor('bbc.com'),
-    npr:       logoFor('npr.org'),
-    aljazeera: logoFor('aljazeera.com'),
-    reddit:    logoFor('reddit.com'),
-    hn:        logoFor('ycombinator.com'),
-    ign:       logoFor('ign.com'),
-    google:    logoFor('google.com'),
+    reuters:   'https://www.google.com/s2/favicons?domain=reuters.com&sz=128',
+    bbc:       'https://www.google.com/s2/favicons?domain=bbc.com&sz=128',
+    npr:       'https://www.google.com/s2/favicons?domain=npr.org&sz=128',
+    aljazeera: 'https://www.google.com/s2/favicons?domain=aljazeera.com&sz=128',
+    reddit:    'https://www.google.com/s2/favicons?domain=reddit.com&sz=128',
+    hn:        'https://www.google.com/s2/favicons?domain=ycombinator.com&sz=128',
+    ign:       'https://www.google.com/s2/favicons?domain=ign.com&sz=128',
+    google:    'https://www.google.com/s2/favicons?domain=google.com&sz=128',
 };
 
 async function fetchHighUtilityMatrix() {

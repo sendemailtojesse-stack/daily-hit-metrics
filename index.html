@@ -189,14 +189,28 @@
             display: block;
         }
 
-        .article-img-fallback {
+        .article-img-logo {
             width: 56px;
             height: 40px;
             object-fit: contain;
-            padding: 6px;
+            padding: 8px;
             background: #f0ebe0;
             border: 0.5px solid #c8b89a;
             display: block;
+        }
+
+        .article-img-placeholder {
+            width: 56px;
+            height: 40px;
+            background: #3a6b4a;
+            border: 0.5px solid #c8b89a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Quantico', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #faf8f4;
         }
 
         /* ── ROW ELEMENTS ── */
@@ -433,10 +447,24 @@
                 row.innerHTML = `
                     <td class="img-col">
                         <img
-                            src="${item.image || ''}"
+                            src="${item.image || `https://www.google.com/s2/favicons?domain=${new URL(item.url).hostname}&sz=128`}"
                             class="article-img"
-                            onerror="this.onerror=null; this.className='article-img-fallback'; this.src='https://logo.clearbit.com/' + (new URL('${item.url}').hostname.replace('www.',''));"
+                            onerror="
+                                const host = (() => { try { return new URL('${item.url}').hostname.replace('www.',''); } catch(e) { return ''; } })();
+                                if (this.dataset.fallback === '1') {
+                                    this.style.display='none';
+                                    const p = document.createElement('div');
+                                    p.className='article-img-placeholder';
+                                    p.textContent = host ? host[0].toUpperCase() : '?';
+                                    this.parentNode.appendChild(p);
+                                } else {
+                                    this.dataset.fallback='1';
+                                    this.className='article-img-logo';
+                                    this.src='https://www.google.com/s2/favicons?domain=' + host + '&sz=128';
+                                }
+                            "
                             alt=""
+                            loading="lazy"
                         >
                     </td>
                     <td class="rank-col">${item.rank}</td>
