@@ -152,17 +152,13 @@
             margin: 8px 0 0;
         }
 
-        /* ── SECTION HEADERS ── */
-        .section-banner {
-            background: linear-gradient(to right, #254d33, transparent);
-            color: #faf8f4;
-            font-family: 'Libre Baskerville', serif;
-            font-size: 0.6rem;
-            font-weight: 700;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            padding: 6px 0 6px 12px;
-        }
+        .section-banner { color: #faf8f4; font-family: 'Libre Baskerville', serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; padding: 6px 0 6px 12px; }
+        .section-banner-world    { background: linear-gradient(to right, #254d33, transparent); }
+        .section-banner-social   { background: linear-gradient(to right, #2d5a3d, transparent); }
+        .section-banner-tech     { background: linear-gradient(to right, #1e4028, transparent); }
+        .section-banner-games    { background: linear-gradient(to right, #3b5e45, transparent); }
+        .section-banner-finance  { background: linear-gradient(to right, #243d2e, transparent); }
+        .section-banner-searches { background: linear-gradient(to right, #2f5238, transparent); }
 
         /* ── TABLE ── */
         .scoreboard {
@@ -502,7 +498,15 @@
                 if (item.category !== lastCategory) {
                     lastCategory = item.category;
                     const bannerRow = document.createElement('tr');
-                    bannerRow.innerHTML = `<td colspan="5" class="section-banner">${SECTION_LABELS[item.category] || item.category}</td>`;
+                const bannerClass = {
+                        'World News':       'section-banner-world',
+                        'Social Pulse':     'section-banner-social',
+                        'Tech':             'section-banner-tech',
+                        'Video Games':      'section-banner-games',
+                        'Finance Trends':   'section-banner-finance',
+                        'Popular Searches': 'section-banner-searches'
+                    }[item.category] || 'section-banner-world';
+                    bannerRow.innerHTML = `<td colspan="5" class="section-banner ${bannerClass}">${SECTION_LABELS[item.category] || item.category}</td>`;
                     tableBody.appendChild(bannerRow);
                 }
 
