@@ -310,7 +310,37 @@
             white-space: nowrap;
         }
 
-        /* ── FOOTER ── */
+        .top-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 1rem;
+            padding: 0 0 10px;
+            border-bottom: 0.5px solid #d4c9b0;
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.55rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #5a3e2b;
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+
+        .nav-link:hover { color: #2c1810; }
+
+        .nav-link-signup {
+            color: #faf8f4;
+            background: #3a6b4a;
+            padding: 4px 10px;
+            transition: background 0.15s ease;
+        }
+
+        .nav-link-signup:hover { background: #254d33; color: #faf8f4; }
         .footer-note {
             text-align: center;
             font-family: 'IM Fell English', serif;
@@ -325,6 +355,11 @@
 <body>
 
 <div class="container">
+
+    <div class="top-nav">
+        <a href="#" class="nav-link">Login</a>
+        <a href="#" class="nav-link nav-link-signup">Create Account</a>
+    </div>
 
     <div class="masthead">
 
