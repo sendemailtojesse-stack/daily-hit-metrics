@@ -52,8 +52,28 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
         if (title.length > 120) title = title.substring(0, 117) + "...";
         const linkMatch = itemStr.match(/<link>([^<]+)<\/link>/) || itemStr.match(/<link\s+href=["']([^"']+)["']/);
         const url = linkMatch ? linkMatch[1].trim() : fallbackUrl;
-        const descMatch = itemStr.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s);
-        const desc = descMatch ? decodeEntities(descMatch[1].replace(/<[^>]*>/g, '').trim()).substring(0, 160) : "";
+
+        // Try clean description fields first, fall back to stripping HTML from description
+        let desc = "";
+        const mediaDesc = itemStr.match(/<media:description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/media:description>/s);
+        const dcDesc = itemStr.match(/<dc:description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/dc:description>/s);
+        if (mediaDesc) {
+            desc = decodeEntities(mediaDesc[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()).substring(0, 160);
+        } else if (dcDesc) {
+            desc = decodeEntities(dcDesc[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()).substring(0, 160);
+        } else {
+            const descMatch = itemStr.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s);
+            const descRaw = descMatch ? descMatch[1] : "";
+            const fullDesc = decodeEntities(descRaw)
+                .replace(/<\/p>/gi, ' ')
+                .replace(/<[^>]*>/g, ' ')
+                .replace(/<[^>]*$/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+            const firstSentence = fullDesc.match(/^.*?[.!?](?:\s|$)/);
+            desc = firstSentence ? firstSentence[0].trim() : fullDesc.substring(0, 160);
+        }
+
         const image = extractImage(itemStr) || fallbackLogo;
         return { title, url, desc, image };
     });
@@ -103,12 +123,24 @@ async function fetchHighUtilityMatrix() {
             if (res.ok) {
                 const items = parseRssItems(await res.text(), 1, source.url, source.logo);
                 if (items.length > 0) {
+                const rawTrend = items[0].desc || `Breaking news from ${source.name}.`;
+                    const cleanTrend = rawTrend
+                        .replace(/<\/p>/gi, ' ')
+                        .replace(/<[^>]*>/g, ' ')
+                        .replace(/<[^>]*$/g, '')
+                        .replace(/\s+/g, ' ')
+                        .trim();
+                    const firstSentence = cleanTrend.match(/^.*?[.!?](?:\s|$)/);
+                    const trend = firstSentence ? firstSentence[0].trim() : cleanTrend.substring(0, 160);
+                    if (source.name === 'The Guardian') {
+                        console.log(`Guardian final trend: "${trend}"`);
+                    }
                     worldNews.push({
                         site: items[0].title || `${source.name} News`,
                         category: "World News",
                         dailyHits: "Global",
                         growth: "+" + (Math.random() * 5 + 1).toFixed(1) + "%",
-                        trend: items[0].desc || `Breaking news from ${source.name}.`,
+                        trend,
                         url: items[0].url,
                         image: items[0].image
                     });
@@ -177,7 +209,7 @@ async function fetchHighUtilityMatrix() {
                 category: "Tech",
                 dailyHits: Math.floor(Math.random() * 800 + 200) + " pts",
                 growth: "+" + Math.floor(Math.random() * 30 + 5) + " pts/hr",
-                trend: item.desc || "Top story on Hacker News.",
+                trend: "Top story trending in the tech and startup community.",
                 url: item.url,
                 image: item.image
             }));
@@ -219,6 +251,7 @@ async function fetchHighUtilityMatrix() {
 
     try {
         console.log("Parsing Video Games from r/gaming...");
+        await new Promise(r => setTimeout(r, 2000));
         const res = await fetch('https://www.reddit.com/r/gaming/.rss?limit=10', { headers: BROWSER_HEADERS });
         console.log(`r/gaming RSS status: ${res.status}`);
         if (res.ok) {
@@ -268,6 +301,7 @@ async function fetchHighUtilityMatrix() {
     // ==========================================
     try {
         console.log("Parsing Finance Trends from Reddit...");
+        await new Promise(r => setTimeout(r, 2000));
         const res = await fetch('https://www.reddit.com/r/stocks+investing+options/.rss?limit=15', { headers: BROWSER_HEADERS });
         console.log(`Finance Trends RSS status: ${res.status}`);
         if (res.ok) {
