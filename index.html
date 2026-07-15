@@ -110,6 +110,9 @@
             font-size: 0.7rem;
             color: #5a3e2b;
             font-style: italic;
+            min-width: 0;
+            flex: 1;
+            font-variant-numeric: tabular-nums;
         }
 
         .masthead-tagline {
@@ -118,14 +121,19 @@
             letter-spacing: 0.12em;
             text-transform: uppercase;
             color: #5a3e2b;
+            flex-shrink: 0;
+            text-align: center;
         }
 
         .sync-countdown {
-            font-family: 'Libre Baskerville', serif;
+            font-family: monospace;
             font-size: 0.7rem;
             color: #2c1810;
             font-weight: 700;
             transition: color 0.2s ease;
+            flex-shrink: 0;
+            text-align: right;
+            min-width: 12rem;
         }
 
         .masthead-thick-rule {
