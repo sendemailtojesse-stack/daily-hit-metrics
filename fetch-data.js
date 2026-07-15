@@ -53,7 +53,7 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
         const linkMatch = itemStr.match(/<link>([^<]+)<\/link>/) || itemStr.match(/<link\s+href=["']([^"']+)["']/);
         const url = linkMatch ? linkMatch[1].trim() : fallbackUrl;
         const descMatch = itemStr.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s);
-        const desc = descMatch ? decodeEntities(descMatch[1].replace(/<[^>]*>/g, '').trim()).substring(0, 160) : "";
+        const desc = descMatch ? decodeEntities(descMatch[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()).substring(0, 160) : "";
         const image = extractImage(itemStr) || fallbackLogo;
         return { title, url, desc, image };
     });
@@ -103,9 +103,10 @@ async function fetchHighUtilityMatrix() {
             if (res.ok) {
                 const items = parseRssItems(await res.text(), 1, source.url, source.logo);
                 if (items.length > 0) {
-                    const trend = source.name === 'The Guardian'
-                        ? `Developing story from The Guardian.`
+                    const rawDesc = source.name === 'The Guardian'
+                        ? (items[0].desc || '').replace(/\s+/g, ' ').trim()
                         : (items[0].desc || `Breaking news from ${source.name}.`);
+                    const trend = rawDesc || `Developing story from ${source.name}.`;
                     worldNews.push({
                         site: items[0].title || `${source.name} News`,
                         category: "World News",
