@@ -1,5 +1,16 @@
 const fs = require('fs');
 
+function decodeEntities(str) {
+    return str
+        .replace(/&amp;/g, '&')
+        .replace(/&quot;/g, '"')
+        .replace(/&apos;/g, "'")
+        .replace(/&#39;/g, "'")
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)));
+}
+
 async function fetchHighUtilityMatrix() {
     let socialPulse = [];
     let financeTrends = [];
@@ -13,9 +24,13 @@ async function fetchHighUtilityMatrix() {
     try {
         console.log("Parsing Social Pulse streams from r/popular...");
         const response = await fetch('https://www.reddit.com/r/popular/.rss?limit=15', {
-            headers: { 'User-Agent': 'Mozilla/5.0 (DailyHitMetrics Bot; contact@dailyhitmetrics.com)' }
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+                'Accept': 'application/rss+xml, application/xml, text/xml, */*'
+            }
         });
-        
+
+        console.log(`Social Pulse RSS status: ${response.status}`);
         if (response.ok) {
             const xmlText = await response.text();
             const xmlItems = xmlText.split('<entry>');
@@ -64,9 +79,13 @@ async function fetchHighUtilityMatrix() {
         console.log("Parsing Finance Trends from market discussion engines...");
         // Scrapes consolidated high-fidelity retail trading and investment boards
         const response = await fetch('https://www.reddit.com/r/stocks+investing+options/.rss?limit=15', {
-            headers: { 'User-Agent': 'Mozilla/5.0 (DailyHitMetrics Bot; contact@dailyhitmetrics.com)' }
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+                'Accept': 'application/rss+xml, application/xml, text/xml, */*'
+            }
         });
-        
+
+        console.log(`Finance Trends RSS status: ${response.status}`);
         if (response.ok) {
             const xmlText = await response.text();
             const xmlItems = xmlText.split('<entry>');
