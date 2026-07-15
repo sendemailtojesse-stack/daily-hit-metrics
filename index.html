@@ -173,6 +173,32 @@
             background-color: #f0ebe0;
         }
 
+        /* ── IMAGE ── */
+        .img-col {
+            width: 64px;
+            text-align: center;
+            vertical-align: middle;
+            padding: 10px 10px 10px 16px;
+        }
+
+        .article-img {
+            width: 56px;
+            height: 40px;
+            object-fit: cover;
+            border: 0.5px solid #c8b89a;
+            display: block;
+        }
+
+        .article-img-fallback {
+            width: 56px;
+            height: 40px;
+            object-fit: contain;
+            padding: 6px;
+            background: #f0ebe0;
+            border: 0.5px solid #c8b89a;
+            display: block;
+        }
+
         /* ── ROW ELEMENTS ── */
         .rank-col {
             font-family: 'Quantico', sans-serif;
@@ -289,8 +315,9 @@
     <table class="scoreboard">
         <thead>
             <tr>
+                <th style="width: 7%">Image</th>
                 <th style="width: 5%">No.</th>
-                <th style="width: 55%">Dispatch &amp; Context</th>
+                <th style="width: 48%">Dispatch &amp; Context</th>
                 <th style="width: 14%">Circulation</th>
                 <th style="width: 13%">Momentum</th>
             </tr>
@@ -393,7 +420,7 @@
                 if (item.category !== lastCategory) {
                     lastCategory = item.category;
                     const bannerRow = document.createElement('tr');
-                    bannerRow.innerHTML = `<td colspan="4" class="section-banner">${SECTION_LABELS[item.category] || item.category}</td>`;
+                    bannerRow.innerHTML = `<td colspan="5" class="section-banner">${SECTION_LABELS[item.category] || item.category}</td>`;
                     tableBody.appendChild(bannerRow);
                 }
 
@@ -404,6 +431,14 @@
                 const targetUrl = item.url || '#';
 
                 row.innerHTML = `
+                    <td class="img-col">
+                        <img
+                            src="${item.image || ''}"
+                            class="article-img"
+                            onerror="this.onerror=null; this.className='article-img-fallback'; this.src='https://logo.clearbit.com/' + (new URL('${item.url}').hostname.replace('www.',''));"
+                            alt=""
+                        >
+                    </td>
                     <td class="rank-col">${item.rank}</td>
                     <td>
                         <div class="entity-title">
