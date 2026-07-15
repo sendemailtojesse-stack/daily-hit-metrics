@@ -113,14 +113,25 @@
             font-variant-numeric: tabular-nums;
         }
 
+        @keyframes marquee {
+            0%   { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
         .masthead-tagline {
             font-family: 'Libre Baskerville', serif;
             font-size: 0.65rem;
             letter-spacing: 0.12em;
             text-transform: uppercase;
             color: #5a3e2b;
-            text-align: center;
             padding: 0 1rem;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .masthead-tagline span {
+            display: inline-block;
+            animation: marquee 12s linear infinite;
         }
 
         .sync-countdown {
@@ -338,7 +349,7 @@
             <hr class="masthead-rule">
             <div class="masthead-bottom">
                 <div class="masthead-dateline" id="live-clock">Syncing dispatches...</div>
-                <div class="masthead-tagline">All the data fit to print</div>
+                <div class="masthead-tagline"><span>All the data fit to print</span></div>
                 <div class="sync-countdown" id="countdown-clock">Next dispatch: --:--</div>
             </div>
             <div class="masthead-thick-rule"></div>
