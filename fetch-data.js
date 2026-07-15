@@ -106,6 +106,10 @@ async function fetchHighUtilityMatrix() {
                     const rawDesc = source.name === 'The Guardian'
                         ? (items[0].desc || '').replace(/\s+/g, ' ').trim()
                         : (items[0].desc || `Breaking news from ${source.name}.`);
+                    if (source.name === 'The Guardian') {
+                        console.log(`Guardian desc length: ${rawDesc.length}`);
+                        console.log(`Guardian desc sample: ${rawDesc.substring(0, 200)}`);
+                    }
                     const trend = rawDesc || `Developing story from ${source.name}.`;
                     worldNews.push({
                         site: items[0].title || `${source.name} News`,
