@@ -52,26 +52,8 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
         if (title.length > 120) title = title.substring(0, 117) + "...";
         const linkMatch = itemStr.match(/<link>([^<]+)<\/link>/) || itemStr.match(/<link\s+href=["']([^"']+)["']/);
         const url = linkMatch ? linkMatch[1].trim() : fallbackUrl;
-
-        // Try clean description fields first, fall back to stripping HTML from description
-        let desc = "";
-        const mediaDesc = itemStr.match(/<media:description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/media:description>/s);
-        const dcDesc = itemStr.match(/<dc:description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/dc:description>/s);
-        if (mediaDesc) {
-            desc = decodeEntities(mediaDesc[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()).substring(0, 160);
-        } else if (dcDesc) {
-            desc = decodeEntities(dcDesc[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()).substring(0, 160);
-        } else {
-            const descMatch = itemStr.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s);
-            const descRaw = descMatch ? descMatch[1] : "";
-            const fullDesc = decodeEntities(descRaw);
-            const firstParaMatch = fullDesc.match(/<p[^>]*>(.*?)<\/p>/s);
-            const firstParaText = firstParaMatch
-                ? firstParaMatch[1].replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim()
-                : fullDesc.replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim().substring(0, 160);
-            desc = firstParaText;
-        }
-
+        const descMatch = itemStr.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s);
+        const desc = descMatch ? decodeEntities(descMatch[1].replace(/<[^>]*>/g, '').trim()).substring(0, 160) : "";
         const image = extractImage(itemStr) || fallbackLogo;
         return { title, url, desc, image };
     });
@@ -121,13 +103,12 @@ async function fetchHighUtilityMatrix() {
             if (res.ok) {
                 const items = parseRssItems(await res.text(), 1, source.url, source.logo);
                 if (items.length > 0) {
-                    const trend = items[0].desc || `Breaking news from ${source.name}.`;
                     worldNews.push({
                         site: items[0].title || `${source.name} News`,
                         category: "World News",
                         dailyHits: "Global",
                         growth: "+" + (Math.random() * 5 + 1).toFixed(1) + "%",
-                        trend,
+                        trend: items[0].desc || `Breaking news from ${source.name}.`,
                         url: items[0].url,
                         image: items[0].image
                     });
@@ -190,43 +171,15 @@ async function fetchHighUtilityMatrix() {
         const res = await fetch('https://news.ycombinator.com/rss', { headers: BROWSER_HEADERS });
         console.log(`Hacker News RSS status: ${res.status}`);
         if (res.ok) {
-            const xmlText = await res.text();
-            const hnItems = xmlText.split('<item>');
-            hnItems.shift();
-            const parsed = hnItems.slice(0, 4).map(itemStr => {
-                const titleMatch = itemStr.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/s);
-                let title = titleMatch ? decodeEntities(titleMatch[1].replace(/<[^>]*>/g, '').trim()) : "";
-                if (title.length > 120) title = title.substring(0, 117) + "...";
-                const linkMatch = itemStr.match(/<link>([^<]+)<\/link>/);
-                const url = linkMatch ? linkMatch[1].trim() : 'https://news.ycombinator.com/';
-                const commentsMatch = itemStr.match(/<comments>([^<]+)<\/comments>/);
-                const commentsUrl = commentsMatch ? commentsMatch[1].trim() : '';
-                const idMatch = commentsUrl.match(/id=(\d+)/);
-                const hnId = idMatch ? idMatch[1] : null;
-                const image = extractImage(itemStr) || LOGOS.hn;
-                return { title, url, commentsUrl, hnId, image };
-            });
-
-            await Promise.all(parsed.map(async item => {
-                let commentCount = null;
-                if (item.hnId) {
-                    try {
-                        const apiRes = await fetch(`https://hacker-news.firebaseio.com/v0/item/${item.hnId}.json`);
-                        if (apiRes.ok) {
-                            const data = await apiRes.json();
-                            commentCount = data.descendants;
-                        }
-                    } catch (e) {}
-                }
-                techNews.push({
-                    site: item.title || "Hacker News",
-                    category: "Tech",
-                    dailyHits: Math.floor(Math.random() * 800 + 200) + " pts",
-                    growth: "+" + Math.floor(Math.random() * 30 + 5) + " pts/hr",
-                    trend: commentCount !== null ? `${commentCount} comment${commentCount !== 1 ? 's' : ''} on Hacker News.` : "Top story on Hacker News.",
-                    url: item.url,
-                    image: item.image
-                });
+            const items = parseRssItems(await res.text(), 4, 'https://news.ycombinator.com/', LOGOS.hn);
+            items.forEach(item => techNews.push({
+                site: item.title || "Hacker News",
+                category: "Tech",
+                dailyHits: Math.floor(Math.random() * 800 + 200) + " pts",
+                growth: "+" + Math.floor(Math.random() * 30 + 5) + " pts/hr",
+                trend: item.desc || "Top story on Hacker News.",
+                url: item.url,
+                image: item.image
             }));
         }
     } catch (e) { console.error('Hacker News Error:', e.message); }
@@ -266,7 +219,6 @@ async function fetchHighUtilityMatrix() {
 
     try {
         console.log("Parsing Video Games from r/gaming...");
-        await new Promise(r => setTimeout(r, 4000));
         const res = await fetch('https://www.reddit.com/r/gaming/.rss?limit=10', { headers: BROWSER_HEADERS });
         console.log(`r/gaming RSS status: ${res.status}`);
         if (res.ok) {
@@ -316,18 +268,16 @@ async function fetchHighUtilityMatrix() {
     // ==========================================
     try {
         console.log("Parsing Finance Trends from Reddit...");
-        await new Promise(r => setTimeout(r, 6000));
         const res = await fetch('https://www.reddit.com/r/stocks+investing+options/.rss?limit=15', { headers: BROWSER_HEADERS });
         console.log(`Finance Trends RSS status: ${res.status}`);
         if (res.ok) {
             const entries = parseAtomEntries(await res.text(), 4, 'https://www.reddit.com/r/stocks/', LOGOS.reddit);
-            const subredditMatch = (url) => { const m = url.match(/\/r\/([^/]+)\//); return m ? `r/${m[1]}` : 'r/stocks'; };
             entries.forEach(entry => financeTrends.push({
                 site: entry.title || "Market Discussion",
                 category: "Finance Trends",
                 dailyHits: `${Math.floor(Math.random() * 800 + 150)} Traders`,
                 growth: `${Math.random() > 0.35 ? "+" : "-"}${Math.floor(Math.random() * 25 + 5)} coms/min`,
-                trend: `Active discussion in ${subredditMatch(entry.url)} — retail traders parsing live market developments.`,
+                trend: "Active market discussion — retail traders parsing live developments.",
                 url: entry.url,
                 image: entry.image
             }));
@@ -335,13 +285,13 @@ async function fetchHighUtilityMatrix() {
     } catch (e) { console.error('Finance Error:', e.message); }
 
     if (financeTrends.length === 0) {
-        const mocks = ["Macro Index Data Release Analysis", "Options Chain Implied Volatility Shift", "Tech Sector Earnings Report Breakdown", "Treasury Yield Curve Movement"];
-        financeTrends = mocks.map((topic, i) => ({
+        const mocks = ["Macro Index Data Release Analysis", "Options Chain Volatility Shift", "Tech Sector Earnings Breakdown", "Treasury Yield Curve Movement"];
+        financeTrends = mocks.map(topic => ({
             site: topic,
             category: "Finance Trends",
             dailyHits: `${Math.floor(Math.random() * 400 + 100)} Traders`,
             growth: `${Math.random() > 0.5 ? "+" : "-"}${Math.floor(Math.random() * 20 + 5)} coms/min`,
-            trend: `Active discussion in r/stocks — retail traders parsing live market developments.`,
+            trend: "Market-moving community analysis parsing live execution metrics.",
             url: "https://www.reddit.com/r/stocks/",
             image: LOGOS.reddit
         }));

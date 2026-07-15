@@ -99,8 +99,8 @@
         }
 
         .masthead-bottom {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
             padding: 4px 2px 0;
         }
@@ -110,7 +110,6 @@
             font-size: 0.7rem;
             color: #5a3e2b;
             font-style: italic;
-            font-variant-numeric: tabular-nums;
         }
 
         .masthead-tagline {
@@ -119,8 +118,6 @@
             letter-spacing: 0.12em;
             text-transform: uppercase;
             color: #5a3e2b;
-            text-align: center;
-            padding: 0 1rem;
         }
 
         .sync-countdown {
@@ -129,8 +126,6 @@
             color: #2c1810;
             font-weight: 700;
             transition: color 0.2s ease;
-            text-align: right;
-            font-variant-numeric: tabular-nums;
         }
 
         .masthead-thick-rule {
@@ -349,11 +344,11 @@
     <table class="scoreboard">
         <thead>
             <tr>
-                <th style="width: 7%"></th>
-                <th style="width: 5%"></th>
+                <th style="width: 7%">Image</th>
+                <th style="width: 5%">No.</th>
                 <th style="width: 48%">Dispatch &amp; Context</th>
                 <th style="width: 14%">Circulation</th>
-                <th style="width: 13%; text-align: right;">Momentum</th>
+                <th style="width: 13%">Momentum</th>
             </tr>
         </thead>
         <tbody id="leaderboard-rows">
