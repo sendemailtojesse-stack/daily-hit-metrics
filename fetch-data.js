@@ -89,7 +89,7 @@ async function fetchHighUtilityMatrix() {
     // TIER 1: WORLD NEWS — Reuters, BBC, NPR, Al Jazeera (1 each)
     // ==========================================
     const worldSources = [
-        { url: 'https://feeds.reuters.com/reuters/topNews', name: 'Reuters', logo: LOGOS.reuters },
+        { url: 'https://news.google.com/rss/search?q=when:24h+allinurl:reuters.com&ceid=US:en&hl=en-US&gl=US', name: 'Reuters', logo: LOGOS.reuters },
         { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC News', logo: LOGOS.bbc },
         { url: 'https://feeds.npr.org/1001/rss.xml', name: 'NPR News', logo: LOGOS.npr },
         { url: 'https://www.aljazeera.com/xml/rss/all.xml', name: 'Al Jazeera', logo: LOGOS.aljazeera },
