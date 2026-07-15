@@ -250,6 +250,7 @@
             color: #5a3e2b;
             font-style: italic;
             line-height: 1.4;
+            margin-bottom: 6px;
         }
 
         .category-badge {
@@ -445,14 +446,14 @@
                 const targetUrl = item.url || '#';
 
                 const containsTrump = /trump/i.test(item.site) || /trump/i.test(item.trend);
-                const imageToShow = containsTrump
-                    ? null
-                    : (item.image || `https://www.google.com/s2/favicons?domain=${new URL(item.url).hostname}&sz=128`);
+                const host = (() => { try { return new URL(item.url).hostname.replace('www.',''); } catch(e) { return ''; } })();
+                const faviconUrl = `https://www.google.com/s2/favicons?domain=${host}&sz=128`;
+                const imageToShow = containsTrump ? null : (item.image || faviconUrl);
 
                 row.innerHTML = `
                     <td class="img-col">
                         ${containsTrump
-                            ? `<div class="article-img-placeholder" style="background:#888;">T</div>`
+                            ? `<img src="${faviconUrl}" class="article-img-logo" alt="" loading="lazy">`
                             : `<img
                                 src="${imageToShow}"
                                 class="article-img"
