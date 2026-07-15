@@ -6,7 +6,7 @@
     <title>Daily Hit Metrics - The Internet's Record of Record</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Unna:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -32,9 +32,25 @@
 
         /* ── MASTHEAD ── */
         .masthead {
-            
+            position: relative;
+            overflow: hidden;
             padding-bottom: 10px;
             margin-bottom: 0;
+        }
+
+        .globe-graphic {
+            position: absolute;
+            top: -30px;
+            left: -20px;
+            width: 260px;
+            height: 260px;
+            opacity: 0.13;
+            pointer-events: none;
+        }
+
+        .masthead-content {
+            position: relative;
+            z-index: 1;
         }
 
         .masthead-top-rule {
@@ -54,11 +70,11 @@
         }
 
         .masthead-title {
-            font-family: 'Unna', serif;
+            font-family: 'Quantico', sans-serif;
             font-size: 2.5rem;
             font-weight: 700;
             color: #2f3640;
-            letter-spacing: -0.5px;
+            letter-spacing: 0;
             line-height: 1;
             margin: 2px 0 8px;
             text-align: right;
@@ -115,8 +131,7 @@
             font-weight: 700;
             letter-spacing: 0.25em;
             text-transform: uppercase;
-            
-            padding: 6px 0;
+            padding: 6px 0 6px 12px;
         }
 
         /* ── TABLE ── */
@@ -159,16 +174,16 @@
 
         /* ── ROW ELEMENTS ── */
         .rank-col {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.6rem;
+            font-family: 'Quantico', sans-serif;
+            font-size: 1.4rem;
             font-weight: 700;
             color: #c8b89a;
             width: 50px;
-            
+            text-align: center;
         }
 
         .entity-title {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Libre Baskerville', serif;
             font-size: 1.05rem;
             font-weight: 700;
             color: #1a0f00;
@@ -183,7 +198,7 @@
         }
 
         .dispatch-link:hover {
-            color: #6b2d0f;
+            color: #3a6b4a;
             text-decoration: underline;
             text-underline-offset: 3px;
         }
@@ -214,7 +229,7 @@
             font-size: 0.88rem;
             font-weight: 700;
             color: #2c1810;
-            
+            text-align: right;
             white-space: nowrap;
         }
 
@@ -222,13 +237,13 @@
             font-family: 'Libre Baskerville', serif;
             font-size: 0.95rem;
             font-weight: 700;
-            
+            text-align: right;
             white-space: nowrap;
         }
 
         /* ── FOOTER ── */
         .footer-note {
-            
+            text-align: center;
             font-family: 'IM Fell English', serif;
             font-size: 0.7rem;
             font-style: italic;
@@ -243,16 +258,33 @@
 <div class="container">
 
     <div class="masthead">
-        <div class="masthead-top-rule"></div>
-        <div class="masthead-eyebrow">Est. 2026 &nbsp;✦&nbsp; The Internet's Record of Record</div>
-        <div class="masthead-title">Daily Hit Metrics</div>
-        <hr class="masthead-rule">
-        <div class="masthead-bottom">
-            <div class="masthead-dateline" id="live-clock">Syncing dispatches...</div>
-            <div class="masthead-tagline">All the data fit to print</div>
-            <div class="sync-countdown" id="countdown-clock">Next dispatch: --:--</div>
+
+        <svg class="globe-graphic" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="90" fill="none" stroke="#2c1810" stroke-width="2"/>
+            <ellipse cx="100" cy="100" rx="40" ry="90" fill="none" stroke="#2c1810" stroke-width="1.5"/>
+            <ellipse cx="100" cy="100" rx="70" ry="90" fill="none" stroke="#2c1810" stroke-width="1.5"/>
+            <line x1="10" y1="100" x2="190" y2="100" stroke="#2c1810" stroke-width="1.5"/>
+            <ellipse cx="100" cy="100" rx="90" ry="30" fill="none" stroke="#2c1810" stroke-width="1.2"/>
+            <ellipse cx="100" cy="100" rx="90" ry="60" fill="none" stroke="#2c1810" stroke-width="1"/>
+            <line x1="100" y1="10" x2="100" y2="190" stroke="#2c1810" stroke-width="1.2"/>
+            <path d="M30 60 Q50 50 70 65 Q85 75 100 60 Q115 45 130 58 Q150 70 170 60" fill="none" stroke="#3a6b4a" stroke-width="2"/>
+            <path d="M25 80 Q45 72 65 82 Q80 90 100 80 Q125 68 150 78 Q165 84 175 80" fill="none" stroke="#3a6b4a" stroke-width="1.5"/>
+            <path d="M20 120 Q50 112 80 118 Q100 122 120 115 Q145 108 175 118" fill="none" stroke="#3a6b4a" stroke-width="1.5"/>
+        </svg>
+
+        <div class="masthead-content">
+            <div class="masthead-top-rule"></div>
+            <div class="masthead-eyebrow">Est. 2026 &nbsp;✦&nbsp; The Internet's Record of Record</div>
+            <div class="masthead-title">Daily Hit Metrics</div>
+            <hr class="masthead-rule">
+            <div class="masthead-bottom">
+                <div class="masthead-dateline" id="live-clock">Syncing dispatches...</div>
+                <div class="masthead-tagline">All the data fit to print</div>
+                <div class="sync-countdown" id="countdown-clock">Next dispatch: --:--</div>
+            </div>
+            <div class="masthead-thick-rule"></div>
         </div>
-        <div class="masthead-thick-rule"></div>
+
     </div>
 
     <table class="scoreboard">
@@ -315,7 +347,7 @@
         pollingAttempts = 0;
         const clock = document.getElementById('countdown-clock');
         clock.innerText = 'Receiving dispatches...';
-        clock.style.color = '#4a7a4a';
+        clock.style.color = '#3a6b4a';
 
         pollingIntervalContainer = setInterval(async () => {
             pollingAttempts++;
