@@ -411,7 +411,7 @@
                             </a>
                         </div>
                         <div class="entity-summary">${item.trend}</div>
-                        <span class="category-badge">${item.category}</span>
+                        <span class="category-badge">${new URL(item.url).hostname.replace('www.','')}</span>
                     </td>
                     <td class="velocity-data">${item.dailyHits}</td>
                     <td class="growth-indicator" style="color: ${momentumColor};">${arrow} ${item.growth.replace(/^[+\-]/, '')}</td>
