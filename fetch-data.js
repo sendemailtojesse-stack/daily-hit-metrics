@@ -65,8 +65,10 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
             const descMatch = itemStr.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s);
             const descRaw = descMatch ? descMatch[1] : "";
             desc = decodeEntities(descRaw)
+                .replace(/<\/p>/gi, '. ')
                 .replace(/<[^>]*>/g, ' ')
                 .replace(/<[^>]*$/g, '')
+                .replace(/\.\s*\./g, '.')
                 .replace(/\s+/g, ' ')
                 .trim()
                 .substring(0, 160);
@@ -123,8 +125,10 @@ async function fetchHighUtilityMatrix() {
                 if (items.length > 0) {
                 const rawTrend = items[0].desc || `Breaking news from ${source.name}.`;
                     const trend = rawTrend
+                        .replace(/<\/p>/gi, '. ')
                         .replace(/<[^>]*>/g, ' ')
                         .replace(/<[^>]*$/g, '')
+                        .replace(/\.\s*\./g, '.')
                         .replace(/\s+/g, ' ')
                         .trim()
                         .substring(0, 160);
