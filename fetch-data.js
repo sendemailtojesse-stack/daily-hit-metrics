@@ -121,15 +121,7 @@ async function fetchHighUtilityMatrix() {
             if (res.ok) {
                 const items = parseRssItems(await res.text(), 1, source.url, source.logo);
                 if (items.length > 0) {
-                const rawTrend = items[0].desc || `Breaking news from ${source.name}.`;
-                    const fullTrend = decodeEntities(rawTrend);
-                    const firstParaMatch = fullTrend.match(/<p[^>]*>(.*?)<\/p>/s);
-                    const trend = firstParaMatch
-                        ? firstParaMatch[1].replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim()
-                        : fullTrend.replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim().substring(0, 160);
-                    if (source.name === 'The Guardian') {
-                        console.log(`Guardian final trend: "${trend}"`);
-                    }
+                    const trend = items[0].desc || `Breaking news from ${source.name}.`;
                     worldNews.push({
                         site: items[0].title || `${source.name} News`,
                         category: "World News",
@@ -274,7 +266,7 @@ async function fetchHighUtilityMatrix() {
 
     try {
         console.log("Parsing Video Games from r/gaming...");
-        await new Promise(r => setTimeout(r, 2000));
+        await new Promise(r => setTimeout(r, 4000));
         const res = await fetch('https://www.reddit.com/r/gaming/.rss?limit=10', { headers: BROWSER_HEADERS });
         console.log(`r/gaming RSS status: ${res.status}`);
         if (res.ok) {
@@ -324,7 +316,7 @@ async function fetchHighUtilityMatrix() {
     // ==========================================
     try {
         console.log("Parsing Finance Trends from Reddit...");
-        await new Promise(r => setTimeout(r, 2000));
+        await new Promise(r => setTimeout(r, 6000));
         const res = await fetch('https://www.reddit.com/r/stocks+investing+options/.rss?limit=15', { headers: BROWSER_HEADERS });
         console.log(`Finance Trends RSS status: ${res.status}`);
         if (res.ok) {
@@ -343,13 +335,13 @@ async function fetchHighUtilityMatrix() {
     } catch (e) { console.error('Finance Error:', e.message); }
 
     if (financeTrends.length === 0) {
-        const mocks = ["Macro Index Data Release Analysis", "Options Chain Volatility Shift", "Tech Sector Earnings Breakdown", "Treasury Yield Curve Movement"];
-        financeTrends = mocks.map(topic => ({
+        const mocks = ["Macro Index Data Release Analysis", "Options Chain Implied Volatility Shift", "Tech Sector Earnings Report Breakdown", "Treasury Yield Curve Movement"];
+        financeTrends = mocks.map((topic, i) => ({
             site: topic,
             category: "Finance Trends",
             dailyHits: `${Math.floor(Math.random() * 400 + 100)} Traders`,
             growth: `${Math.random() > 0.5 ? "+" : "-"}${Math.floor(Math.random() * 20 + 5)} coms/min`,
-            trend: "Market-moving community analysis parsing live execution metrics.",
+            trend: `Active discussion in r/stocks — retail traders parsing live market developments.`,
             url: "https://www.reddit.com/r/stocks/",
             image: LOGOS.reddit
         }));
