@@ -54,7 +54,11 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
         const url = linkMatch ? linkMatch[1].trim() : fallbackUrl;
         const descMatch = itemStr.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s);
         const descRaw = descMatch ? descMatch[1] : "";
-        const desc = decodeEntities(descRaw.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()).substring(0, 160);
+        const firstPara = descRaw.match(/<p[^>]*>(.*?)<\/p>/s);
+        const descClean = firstPara
+            ? firstPara[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()
+            : descRaw.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+        const desc = decodeEntities(descClean).substring(0, 160);
         const image = extractImage(itemStr) || fallbackLogo;
         return { title, url, desc, image };
     });
