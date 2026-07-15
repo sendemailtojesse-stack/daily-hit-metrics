@@ -39,6 +39,7 @@ async function fetchHighUtilityMatrix() {
             socialPulse = xmlItems.slice(0, 4).map((itemStr) => {
                 const titleMatch = itemStr.match(/<title>(.*?)<\/title>/);
                 let originalTitle = titleMatch ? decodeEntities(titleMatch[1].trim()) : "";
+                if (originalTitle.length > 120) originalTitle = originalTitle.substring(0, 117) + "...";
                 
                 // Extract precise direct web link to the Reddit discussion thread
                 const linkMatch = itemStr.match(/<link\s+href=["'](https:\/\/www\.reddit\.com\/r\/[^"']+)["']/);
@@ -94,6 +95,7 @@ async function fetchHighUtilityMatrix() {
             financeTrends = xmlItems.slice(0, 4).map((itemStr) => {
                 const titleMatch = itemStr.match(/<title>(.*?)<\/title>/);
                 let originalTitle = titleMatch ? decodeEntities(titleMatch[1].trim()) : "";
+                if (originalTitle.length > 120) originalTitle = originalTitle.substring(0, 117) + "...";
                 
                 const linkMatch = itemStr.match(/<link\s+href=["'](https:\/\/www\.reddit\.com\/r\/[^"']+)["']/);
                 const threadUrl = linkMatch ? linkMatch[1].trim() : "https://www.reddit.com/r/stocks/";
