@@ -2,15 +2,16 @@ name: Daily Hit Metrics Updater
 
 on:
   schedule:
-    - cron: '0 * * * *' # Wakes up automatically every single hour on the dot
-  workflow_dispatch: # Keeps your manual refresh button active
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # Forces GitHub's helper tools to execute on Node 24
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
       contents: write
     steps:
@@ -23,16 +24,8 @@ jobs:
           node-version: 24
 
       - name: Run data aggregation script
+        env:
+          CF_ACCOUNT_ID: 6e28c300aba6774b4357794886a90d38
+          CF_KV_NAMESPACE_ID: f214a5c040b64dbba5da9ad0dd58b88a
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
         run: node fetch-data.js
-
-      - name: Commit and Push Changes
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add data.json
-          git commit -m "Automated data pipeline update" || echo "No changes to commit"
-          git push
-
-      - name: Force Cloudflare Deployment Sync
-        run: |
-          curl -X POST "https://api.cloudflare.com/client/v4/workers/builds/deploy_hooks/ae899479-de1d-4671-8505-da948da9cb15"
