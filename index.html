@@ -480,7 +480,7 @@
 
     async function loadDashboard(isPollingCheck = false) {
         try {
-            const response = await fetch('data.json?t=' + Date.now());
+            const response = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/data?t=' + Date.now());
             const data = await response.json();
 
             if (isPollingCheck && data.lastUpdated === currentlyLoadedTimestamp) {
