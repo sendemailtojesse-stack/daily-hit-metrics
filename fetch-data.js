@@ -64,14 +64,12 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
         } else {
             const descMatch = itemStr.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s);
             const descRaw = descMatch ? descMatch[1] : "";
-            const fullDesc = decodeEntities(descRaw)
-                .replace(/<\/p>/gi, ' ')
-                .replace(/<[^>]*>/g, ' ')
-                .replace(/<[^>]*$/g, '')
-                .replace(/\s+/g, ' ')
-                .trim();
-            const firstSentence = fullDesc.match(/^.*?[.!?](?:\s|$)/);
-            desc = firstSentence ? firstSentence[0].trim() : fullDesc.substring(0, 160);
+            const fullDesc = decodeEntities(descRaw);
+            const firstParaMatch = fullDesc.match(/<p[^>]*>(.*?)<\/p>/s);
+            const firstParaText = firstParaMatch
+                ? firstParaMatch[1].replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim()
+                : fullDesc.replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim().substring(0, 160);
+            desc = firstParaText;
         }
 
         const image = extractImage(itemStr) || fallbackLogo;
@@ -123,18 +121,7 @@ async function fetchHighUtilityMatrix() {
             if (res.ok) {
                 const items = parseRssItems(await res.text(), 1, source.url, source.logo);
                 if (items.length > 0) {
-                const rawTrend = items[0].desc || `Breaking news from ${source.name}.`;
-                    const cleanTrend = rawTrend
-                        .replace(/<\/p>/gi, ' ')
-                        .replace(/<[^>]*>/g, ' ')
-                        .replace(/<[^>]*$/g, '')
-                        .replace(/\s+/g, ' ')
-                        .trim();
-                    const firstSentence = cleanTrend.match(/^.*?[.!?](?:\s|$)/);
-                    const trend = firstSentence ? firstSentence[0].trim() : cleanTrend.substring(0, 160);
-                    if (source.name === 'The Guardian') {
-                        console.log(`Guardian final trend: "${trend}"`);
-                    }
+                    const trend = items[0].desc || `Breaking news from ${source.name}.`;
                     worldNews.push({
                         site: items[0].title || `${source.name} News`,
                         category: "World News",
@@ -203,15 +190,43 @@ async function fetchHighUtilityMatrix() {
         const res = await fetch('https://news.ycombinator.com/rss', { headers: BROWSER_HEADERS });
         console.log(`Hacker News RSS status: ${res.status}`);
         if (res.ok) {
-            const items = parseRssItems(await res.text(), 4, 'https://news.ycombinator.com/', LOGOS.hn);
-            items.forEach(item => techNews.push({
-                site: item.title || "Hacker News",
-                category: "Tech",
-                dailyHits: Math.floor(Math.random() * 800 + 200) + " pts",
-                growth: "+" + Math.floor(Math.random() * 30 + 5) + " pts/hr",
-                trend: "Top story trending in the tech and startup community.",
-                url: item.url,
-                image: item.image
+            const xmlText = await res.text();
+            const hnItems = xmlText.split('<item>');
+            hnItems.shift();
+            const parsed = hnItems.slice(0, 4).map(itemStr => {
+                const titleMatch = itemStr.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/s);
+                let title = titleMatch ? decodeEntities(titleMatch[1].replace(/<[^>]*>/g, '').trim()) : "";
+                if (title.length > 120) title = title.substring(0, 117) + "...";
+                const linkMatch = itemStr.match(/<link>([^<]+)<\/link>/);
+                const url = linkMatch ? linkMatch[1].trim() : 'https://news.ycombinator.com/';
+                const commentsMatch = itemStr.match(/<comments>([^<]+)<\/comments>/);
+                const commentsUrl = commentsMatch ? commentsMatch[1].trim() : '';
+                const idMatch = commentsUrl.match(/id=(\d+)/);
+                const hnId = idMatch ? idMatch[1] : null;
+                const image = extractImage(itemStr) || LOGOS.hn;
+                return { title, url, commentsUrl, hnId, image };
+            });
+
+            await Promise.all(parsed.map(async item => {
+                let commentCount = null;
+                if (item.hnId) {
+                    try {
+                        const apiRes = await fetch(`https://hacker-news.firebaseio.com/v0/item/${item.hnId}.json`);
+                        if (apiRes.ok) {
+                            const data = await apiRes.json();
+                            commentCount = data.descendants;
+                        }
+                    } catch (e) {}
+                }
+                techNews.push({
+                    site: item.title || "Hacker News",
+                    category: "Tech",
+                    dailyHits: Math.floor(Math.random() * 800 + 200) + " pts",
+                    growth: "+" + Math.floor(Math.random() * 30 + 5) + " pts/hr",
+                    trend: commentCount !== null ? `${commentCount} comment${commentCount !== 1 ? 's' : ''} on Hacker News.` : "Top story on Hacker News.",
+                    url: item.url,
+                    image: item.image
+                });
             }));
         }
     } catch (e) { console.error('Hacker News Error:', e.message); }
@@ -251,7 +266,7 @@ async function fetchHighUtilityMatrix() {
 
     try {
         console.log("Parsing Video Games from r/gaming...");
-        await new Promise(r => setTimeout(r, 2000));
+        await new Promise(r => setTimeout(r, 4000));
         const res = await fetch('https://www.reddit.com/r/gaming/.rss?limit=10', { headers: BROWSER_HEADERS });
         console.log(`r/gaming RSS status: ${res.status}`);
         if (res.ok) {
@@ -301,17 +316,18 @@ async function fetchHighUtilityMatrix() {
     // ==========================================
     try {
         console.log("Parsing Finance Trends from Reddit...");
-        await new Promise(r => setTimeout(r, 2000));
+        await new Promise(r => setTimeout(r, 6000));
         const res = await fetch('https://www.reddit.com/r/stocks+investing+options/.rss?limit=15', { headers: BROWSER_HEADERS });
         console.log(`Finance Trends RSS status: ${res.status}`);
         if (res.ok) {
             const entries = parseAtomEntries(await res.text(), 4, 'https://www.reddit.com/r/stocks/', LOGOS.reddit);
+            const subredditMatch = (url) => { const m = url.match(/\/r\/([^/]+)\//); return m ? `r/${m[1]}` : 'r/stocks'; };
             entries.forEach(entry => financeTrends.push({
                 site: entry.title || "Market Discussion",
                 category: "Finance Trends",
                 dailyHits: `${Math.floor(Math.random() * 800 + 150)} Traders`,
                 growth: `${Math.random() > 0.35 ? "+" : "-"}${Math.floor(Math.random() * 25 + 5)} coms/min`,
-                trend: "Active market discussion — retail traders parsing live developments.",
+                trend: `Active discussion in ${subredditMatch(entry.url)} — retail traders parsing live market developments.`,
                 url: entry.url,
                 image: entry.image
             }));
@@ -319,13 +335,13 @@ async function fetchHighUtilityMatrix() {
     } catch (e) { console.error('Finance Error:', e.message); }
 
     if (financeTrends.length === 0) {
-        const mocks = ["Macro Index Data Release Analysis", "Options Chain Volatility Shift", "Tech Sector Earnings Breakdown", "Treasury Yield Curve Movement"];
-        financeTrends = mocks.map(topic => ({
+        const mocks = ["Macro Index Data Release Analysis", "Options Chain Implied Volatility Shift", "Tech Sector Earnings Report Breakdown", "Treasury Yield Curve Movement"];
+        financeTrends = mocks.map((topic, i) => ({
             site: topic,
             category: "Finance Trends",
             dailyHits: `${Math.floor(Math.random() * 400 + 100)} Traders`,
             growth: `${Math.random() > 0.5 ? "+" : "-"}${Math.floor(Math.random() * 20 + 5)} coms/min`,
-            trend: "Market-moving community analysis parsing live execution metrics.",
+            trend: `Active discussion in r/stocks — retail traders parsing live market developments.`,
             url: "https://www.reddit.com/r/stocks/",
             image: LOGOS.reddit
         }));
@@ -400,8 +416,34 @@ async function fetchHighUtilityMatrix() {
         trafficLeaderboard: orderedGrid
     };
 
-    fs.writeFileSync('data.json', JSON.stringify(finalDatabaseState, null, 2));
-    console.log("Database write complete: 6x4 24-Slot Matrix successfully deployed.");
+    const jsonData = JSON.stringify(finalDatabaseState, null, 2);
+
+    // Write to Cloudflare KV
+    const CF_ACCOUNT_ID = process.env.CF_ACCOUNT_ID;
+    const CF_API_TOKEN = process.env.CF_API_TOKEN;
+    const CF_KV_NAMESPACE_ID = process.env.CF_KV_NAMESPACE_ID;
+
+    const kvRes = await fetch(
+        `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/storage/kv/namespaces/${CF_KV_NAMESPACE_ID}/values/data`,
+        {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${CF_API_TOKEN}`,
+                'Content-Type': 'application/json'
+            },
+            body: jsonData
+        }
+    );
+
+    if (kvRes.ok) {
+        console.log("KV write complete: 6x4 24-Slot Matrix successfully deployed to Cloudflare KV.");
+    } else {
+        const err = await kvRes.text();
+        console.error("KV write failed:", err);
+        // Fallback: still write data.json so site doesn't break
+        fs.writeFileSync('data.json', jsonData);
+        console.log("Fallback: wrote data.json locally.");
+    }
 }
 
 fetchHighUtilityMatrix();
