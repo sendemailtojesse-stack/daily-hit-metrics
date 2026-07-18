@@ -245,41 +245,13 @@ async function fetchHighUtilityMatrix() {
     } catch (e) { console.error('Hacker News Error:', e.message); }
 
     try {
-        console.log("Parsing Tech from The Verge...");
-        const vergeRes = await fetch('https://www.theverge.com/rss/index.xml', { headers: BROWSER_HEADERS });
-        console.log(`The Verge RSS status: ${vergeRes.status}`);
-        if (vergeRes.ok) {
-            const xmlText = await vergeRes.text();
-            const vergeItems = xmlText.split('<entry>');
-            vergeItems.shift();
-            vergeItems.slice(0, 2).forEach(itemStr => {
-                const titleMatch = itemStr.match(/<title[^>]*>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/s);
-                let title = titleMatch ? decodeEntities(titleMatch[1].replace(/<[^>]*>/g, '').trim()) : "";
-                if (title.length > 120) title = title.substring(0, 117) + "...";
-                const linkMatch = itemStr.match(/<link[^>]+href=["']([^"']+)["']/);
-                const url = linkMatch ? linkMatch[1].trim() : 'https://www.theverge.com/';
-                const summaryMatch = itemStr.match(/<summary[^>]*>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/summary>/s);
-                const desc = summaryMatch ? ensurePeriod(truncateAtWord(decodeEntities(summaryMatch[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim())) ): "Latest consumer tech and gadget news from The Verge.";
-                const image = extractImage(itemStr) || 'https://www.google.com/s2/favicons?domain=theverge.com&sz=128';
-                techNews.push({
-                    site: title || "The Verge",
-                    category: "Tech",
-                    dailyHits: Math.floor(Math.random() * 5000 + 500).toLocaleString() + " views",
-                    growth: "+" + (Math.random() * 8 + 1).toFixed(1) + "%",
-                    trend: desc,
-                    url,
-                    image
-                });
-            });
-        }
-    } catch (e) { console.error('The Verge Error:', e.message); }
-
-    try {
         console.log("Parsing Tech from Ars Technica...");
         const arsRes = await fetch('https://feeds.arstechnica.com/arstechnica/index', { headers: BROWSER_HEADERS });
         console.log(`Ars Technica RSS status: ${arsRes.status}`);
         if (arsRes.ok) {
-            const items = parseRssItems(await arsRes.text(), 2, 'https://arstechnica.com/', 'https://www.google.com/s2/favicons?domain=arstechnica.com&sz=128');
+            const arsText = await arsRes.text();
+            const items = parseRssItems(arsText, 4, 'https://arstechnica.com/', 'https://www.google.com/s2/favicons?domain=arstechnica.com&sz=128');
+            console.log(`Ars Technica first item desc: "${items[0] ? items[0].desc : 'NO ITEMS'}"`);
             items.forEach(item => techNews.push({
                 site: item.title || "Ars Technica",
                 category: "Tech",
