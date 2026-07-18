@@ -2,6 +2,7 @@
   "name": "daily-hit-metrics",
   "compatibility_date": "2026-07-17",
   "assets": {
-    "directory": "./"
+    "directory": "./",
+    "exclude": [".git", ".github", "node_modules"]
   }
 }
