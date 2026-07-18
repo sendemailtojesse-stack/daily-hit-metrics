@@ -339,6 +339,36 @@
         }
 
         .nav-link-signup:hover { background: rgba(58, 107, 74, 0.18); color: #2c1810; }
+
+        .momentum-header {
+            position: relative;
+            cursor: help;
+            text-align: right;
+        }
+
+        .momentum-header .tooltip {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 120%;
+            width: 200px;
+            background: #2c1810;
+            color: #faf8f4;
+            font-family: 'IM Fell English', serif;
+            font-size: 0.55rem;
+            font-style: italic;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            text-transform: none;
+            padding: 8px 10px;
+            border-radius: 2px;
+            z-index: 100;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        .momentum-header:hover .tooltip { display: block; }
+
         .footer-note {
             text-align: center;
             font-family: 'IM Fell English', serif;
@@ -397,7 +427,7 @@
                 <th style="width: 5%"></th>
                 <th style="width: 48%">Dispatch &amp; Context</th>
                 <th style="width: 14%">Circulation</th>
-                <th style="width: 13%; text-align: right;">Momentum</th>
+                <th style="width: 13%;" class="momentum-header">Momentum<span class="tooltip" id="momentum-tooltip">Rate of engagement acceleration for this item.</span></th>
             </tr>
         </thead>
         <tbody id="leaderboard-rows">
@@ -415,7 +445,14 @@
     let pollingAttempts = 0;
     const MAX_POLL_ATTEMPTS = 10;
 
-    const SECTION_LABELS = {
+    const MOMENTUM_TOOLTIPS = {
+        'World News':       'Estimated share velocity — percentage growth in search and social coverage over the past hour.',
+        'Social Pulse':     'Upvotes per minute — rate of community engagement climbing on Reddit.',
+        'Finance Trends':   'Comments per minute — speed of retail trader discussion in market subreddits.',
+        'Tech':             'Points per hour — rate at which the Hacker News community is upvoting this story.',
+        'Video Games':      'Engagement velocity — views and comments accelerating across gaming platforms.',
+        'Popular Searches': 'Search growth rate — percentage increase in query volume over the past hour.'
+    };
         'World News':       'World News — Global Dispatches from The Guardian, BBC, NPR & Al Jazeera',
         'Social Pulse':     'Social Pulse — Viral Dispatches from the Public Square',
         'Tech':             'Tech — Top Stories from Hacker News',
@@ -507,6 +544,9 @@
                     }[item.category] || 'section-banner-world';
                     bannerRow.innerHTML = `<td colspan="5" class="section-banner ${bannerClass}">${SECTION_LABELS[item.category] || item.category}</td>`;
                     tableBody.appendChild(bannerRow);
+                    // Update momentum tooltip for this section
+                    const tooltipEl = document.getElementById('momentum-tooltip');
+                    if (tooltipEl) tooltipEl.textContent = MOMENTUM_TOOLTIPS[item.category] || '';
                 }
 
                 const row = document.createElement('tr');
