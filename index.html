@@ -376,7 +376,7 @@
             text-align: left;
         }
 
-        .momentum-header:hover .tooltip { display: block; }
+        .mobile-meta { display: none; }
 
         .footer-note {
             text-align: center;
@@ -413,20 +413,24 @@
             th.img-col, td.img-col,
             th.rank-col, td.rank-col { display: none; }
 
-            /* Table — prevent overflow */
+            /* Table — single column on mobile */
             .scoreboard { table-layout: auto; width: 100%; }
-            .scoreboard th { font-size: 0.5rem; padding: 6px 6px; white-space: nowrap; }
-            .scoreboard td { padding: 8px 6px; word-break: break-word; }
+            .scoreboard th { font-size: 0.5rem; padding: 6px 8px; }
+            .scoreboard td { padding: 8px 8px; }
 
-            /* Dispatch column gets all remaining space */
-            .scoreboard th:nth-child(3),
-            .scoreboard td:nth-child(3) { width: auto; }
-
-            /* Tighten Circulation and Momentum */
+            /* Hide Circulation and Momentum columns entirely */
             .scoreboard th:nth-child(4),
-            .scoreboard td:nth-child(4) { width: 25%; white-space: nowrap; }
+            .scoreboard td:nth-child(4),
             .scoreboard th:nth-child(5),
-            .scoreboard td:nth-child(5) { width: 20%; white-space: nowrap; }
+            .scoreboard td:nth-child(5) { display: none; }
+
+            /* Dispatch column takes full width */
+            .scoreboard th:nth-child(3),
+            .scoreboard td:nth-child(3) { width: 100%; }
+
+            /* Show inline metrics under title */
+            .mobile-meta { display: block; font-family: 'Libre Baskerville', serif; font-size: 0.6rem; color: #5a3e2b; margin-top: 4px; }
+            .mobile-meta-hidden { display: none; }
 
             /* Row content */
             .entity-title { font-size: 0.82rem; }
@@ -683,6 +687,7 @@
                         </div>
                         <div class="entity-summary">${item.trend}</div>
                         <span class="category-badge">${new URL(item.url).hostname.replace('www.','')}</span>
+                        <span class="mobile-meta">${item.dailyHits} &nbsp;·&nbsp; <span style="color:${momentumColor}">${arrow} ${item.growth.replace(/^[+\-]/, '')}</span></span>
                     </td>
                     <td class="velocity-data">${item.dailyHits}</td>
                     <td class="growth-indicator" style="color: ${momentumColor};">${arrow} ${item.growth.replace(/^[+\-]/, '')}</td>
