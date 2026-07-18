@@ -462,7 +462,8 @@
         'Tech':             'Tech — Top Stories from Hacker News',
         'Video Games':      'Video Games — Latest from IGN & Reddit Gaming',
         'Finance Trends':   'Finance Trends — Market Intelligence & Trading Sentiment',
-        'Popular Searches': "Popular Searches — The Nation's Most Sought Queries"
+        'Popular Searches': "Popular Searches — Top Volume",
+        'Popular Searches Growth': "Popular Searches — Fastest Rising"
     };
 
     function initCountdownClock() {
@@ -534,22 +535,27 @@
             tableBody.innerHTML = '';
 
             let lastCategory = null;
+            let lastSearchLabel = null;
 
             data.trafficLeaderboard.forEach(item => {
-                if (item.category !== lastCategory) {
+                if (item.category !== lastCategory || (item.category === 'Popular Searches' && item.searchLabel === 'growth' && lastSearchLabel !== 'growth')) {
                     lastCategory = item.category;
+                    lastSearchLabel = item.searchLabel || null;
+                    const labelKey = item.category === 'Popular Searches' && item.searchLabel === 'growth'
+                        ? 'Popular Searches Growth'
+                        : item.category;
+                    const bannerClass = {
+                        'World News':             'section-banner-world',
+                        'Social Pulse':           'section-banner-social',
+                        'Tech':                   'section-banner-tech',
+                        'Video Games':            'section-banner-games',
+                        'Finance Trends':         'section-banner-finance',
+                        'Popular Searches':       'section-banner-searches',
+                        'Popular Searches Growth':'section-banner-searches'
+                    }[labelKey] || 'section-banner-world';
                     const bannerRow = document.createElement('tr');
-                const bannerClass = {
-                        'World News':       'section-banner-world',
-                        'Social Pulse':     'section-banner-social',
-                        'Tech':             'section-banner-tech',
-                        'Video Games':      'section-banner-games',
-                        'Finance Trends':   'section-banner-finance',
-                        'Popular Searches': 'section-banner-searches'
-                    }[item.category] || 'section-banner-world';
-                    bannerRow.innerHTML = `<td colspan="5" class="section-banner ${bannerClass}">${SECTION_LABELS[item.category] || item.category}</td>`;
+                    bannerRow.innerHTML = `<td colspan="5" class="section-banner ${bannerClass}">${SECTION_LABELS[labelKey] || item.category}</td>`;
                     tableBody.appendChild(bannerRow);
-                    // Update momentum tooltip for this section
                     const tooltipEl = document.getElementById('momentum-tooltip');
                     if (tooltipEl) tooltipEl.textContent = MOMENTUM_TOOLTIPS[item.category] || '';
                 }

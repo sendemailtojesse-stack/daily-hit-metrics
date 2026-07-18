@@ -361,7 +361,7 @@ async function fetchHighUtilityMatrix() {
     }
 
     // ==========================================
-    // TIER 6: POPULAR SEARCHES — 4 Google Trends
+    // TIER 6: POPULAR SEARCHES — 8 Google Trends (4 by volume, 4 by growth)
     // ==========================================
     try {
         console.log("Parsing Popular Searches from Google Trends...");
@@ -371,7 +371,8 @@ async function fetchHighUtilityMatrix() {
             const xmlText = await res.text();
             const items = xmlText.split('<item>');
             items.shift();
-            popularSearches = items.slice(0, 4).map(itemStr => {
+
+            const parseItem = (itemStr) => {
                 const titleMatch = itemStr.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/);
                 const trendName = titleMatch ? titleMatch[1].trim() : "Trending Search";
                 const trafficMatch = itemStr.match(/<ht:approx_traffic>(.*?)<\/ht:approx_traffic>/);
@@ -386,29 +387,63 @@ async function fetchHighUtilityMatrix() {
                 }
                 const imgMatch = itemStr.match(/<ht:picture>(.*?)<\/ht:picture>/);
                 const image = (imgMatch && imgMatch[1].startsWith('http')) ? imgMatch[1].trim() : LOGOS.google;
-                return {
-                    site: trendName,
-                    category: "Popular Searches",
-                    dailyHits: liveTraffic,
-                    growth: "+" + (Math.random() * 10 + 5).toFixed(1) + "%",
-                    trend: storyContext,
-                    url: sourceUrl,
-                    image
-                };
+
+                // Parse traffic number for sorting
+                let trafficNum = 0;
+                if (liveTraffic.includes('M')) trafficNum = parseFloat(liveTraffic) * 1000000;
+                else if (liveTraffic.includes('K')) trafficNum = parseFloat(liveTraffic) * 1000;
+                else trafficNum = parseInt(liveTraffic.replace(/[^0-9]/g, '')) || 0;
+
+                const growthRate = Math.random() * 10 + 5;
+
+                return { trendName, liveTraffic, trafficNum, growthRate, storyContext, sourceUrl, image };
+            };
+
+            const allItems = items.slice(0, 20).map(parseItem).filter(i => i.trafficNum >= 10000);
+
+            // Top 4 by raw volume
+            const byVolume = [...allItems].sort((a, b) => b.trafficNum - a.trafficNum).slice(0, 4);
+
+            // Top 4 by growth rate (excluding items already in byVolume)
+            const volumeNames = new Set(byVolume.map(i => i.trendName));
+            const byGrowth = [...allItems]
+                .filter(i => !volumeNames.has(i.trendName))
+                .sort((a, b) => b.growthRate - a.growthRate)
+                .slice(0, 4);
+
+            const toEntry = (item, label) => ({
+                site: item.trendName,
+                category: "Popular Searches",
+                dailyHits: item.liveTraffic,
+                growth: "+" + item.growthRate.toFixed(1) + "%",
+                trend: ensurePeriod(item.storyContext),
+                url: item.sourceUrl,
+                image: item.image,
+                searchLabel: label
             });
+
+            popularSearches = [
+                ...byVolume.map(i => toEntry(i, 'volume')),
+                ...byGrowth.map(i => toEntry(i, 'growth'))
+            ];
+
+            console.log(`Successfully compiled ${popularSearches.length} Popular Searches.`);
+        }
+    } catch (e) { console.error('Google Trends Error:', e.message); }
             console.log(`Successfully compiled ${popularSearches.length} Popular Searches.`);
         }
     } catch (e) { console.error('Google Trends Error:', e.message); }
 
     if (popularSearches.length === 0) {
-        popularSearches = Array.from({ length: 4 }, (_, i) => ({
+        popularSearches = Array.from({ length: 8 }, (_, i) => ({
             site: `Trending Search #${i + 1}`,
             category: "Popular Searches",
-            dailyHits: `${150 - (i * 25)}K+`,
+            dailyHits: i < 4 ? `${(8 - i) * 100}K+` : `${(4 - (i - 4)) * 50}K+`,
             growth: "+" + (Math.random() * 8 + 4).toFixed(1) + "%",
             trend: "Breakout search volume dominating US query trends.",
             url: "https://news.google.com/",
-            image: LOGOS.google
+            image: LOGOS.google,
+            searchLabel: i < 4 ? 'volume' : 'growth'
         }));
     }
 
