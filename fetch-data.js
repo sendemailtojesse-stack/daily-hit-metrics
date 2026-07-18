@@ -356,6 +356,29 @@ async function fetchHighUtilityMatrix() {
     // ==========================================
     // TIER 5: FINANCE TRENDS — 4 Reddit
     // ==========================================
+    const financeContext = (title, subreddit) => {
+        const t = title.toLowerCase();
+        if (/earnings|revenue|profit|loss|eps|quarterly/.test(t))
+            return `Earnings report analysis in ${subreddit}.`;
+        if (/fed|federal reserve|interest rate|inflation|fomc|rate hike|rate cut/.test(t))
+            return `Federal Reserve and interest rate discussion in ${subreddit}.`;
+        if (/gdp|recession|economy|macro|unemployment|jobs report/.test(t))
+            return `Macroeconomic discussion in ${subreddit}.`;
+        if (/options|calls|puts|volatility|iv|theta|delta|expiry/.test(t))
+            return `Options trading discussion in ${subreddit}.`;
+        if (/crypto|bitcoin|ethereum|btc|eth|defi|blockchain/.test(t))
+            return `Cryptocurrency discussion in ${subreddit}.`;
+        if (/ipo|merger|acquisition|buyout|takeover|spinoff/.test(t))
+            return `Corporate action discussion in ${subreddit}.`;
+        if (/dividend|yield|bond|treasury|fixed income/.test(t))
+            return `Fixed income and dividend discussion in ${subreddit}.`;
+        if (/ai|artificial intelligence|semiconductor|chip|nvidia|tech sector/.test(t))
+            return `Technology sector discussion in ${subreddit}.`;
+        if (/short|squeeze|hedge|puts|bearish/.test(t))
+            return `Short selling and market positioning discussion in ${subreddit}.`;
+        return `Market discussion in ${subreddit}.`;
+    };
+
     try {
         console.log("Parsing Finance Trends from Reddit...");
         await new Promise(r => setTimeout(r, 6000));
@@ -363,13 +386,13 @@ async function fetchHighUtilityMatrix() {
         console.log(`Finance Trends RSS status: ${res.status}`);
         if (res.ok) {
             const entries = parseAtomEntries(await res.text(), 4, 'https://www.reddit.com/r/stocks/', LOGOS.reddit);
-            const subredditMatch = (url) => { const m = url.match(/\/r\/([^/]+)\//); return m ? `r/${m[1]}` : 'r/stocks'; };
+            const subredditName = (url) => { const m = url.match(/\/r\/([^/]+)\//); return m ? `r/${m[1]}` : 'r/stocks'; };
             entries.forEach(entry => financeTrends.push({
                 site: entry.title || "Market Discussion",
                 category: "Finance Trends",
                 dailyHits: `${Math.floor(Math.random() * 800 + 150)} Traders`,
                 growth: `${Math.random() > 0.35 ? "+" : "-"}${Math.floor(Math.random() * 25 + 5)} coms/min`,
-                trend: `Active discussion in ${subredditMatch(entry.url)} — retail traders parsing live market developments.`,
+                trend: financeContext(entry.title || '', subredditName(entry.url)),
                 url: entry.url,
                 image: entry.image
             }));
