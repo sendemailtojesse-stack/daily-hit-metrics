@@ -58,9 +58,9 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
         const mediaDesc = itemStr.match(/<media:description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/media:description>/s);
         const dcDesc = itemStr.match(/<dc:description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/dc:description>/s);
         if (mediaDesc) {
-            desc = ensurePeriod(decodeEntities(mediaDesc[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()).substring(0, 160));
+            desc = ensurePeriod(truncateAtWord(decodeEntities(mediaDesc[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim())));
         } else if (dcDesc) {
-            desc = ensurePeriod(decodeEntities(dcDesc[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()).substring(0, 160));
+            desc = ensurePeriod(truncateAtWord(decodeEntities(dcDesc[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim())));
         } else {
             const descMatch = itemStr.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s);
             const descRaw = descMatch ? descMatch[1] : "";
@@ -68,7 +68,7 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
             const firstParaMatch = fullDesc.match(/<p[^>]*>(.*?)<\/p>/s);
             const firstParaText = firstParaMatch
                 ? firstParaMatch[1].replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim()
-                : fullDesc.replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim().substring(0, 160);
+                : truncateAtWord(fullDesc.replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim());
             desc = ensurePeriod(firstParaText);
         }
 
@@ -92,6 +92,13 @@ const LOGOS = {
     ign:       'https://www.google.com/s2/favicons?domain=ign.com&sz=128',
     google:    'https://www.google.com/s2/favicons?domain=google.com&sz=128',
 };
+
+function truncateAtWord(str, maxLen = 160) {
+    if (!str || str.length <= maxLen) return str;
+    const cut = str.substring(0, maxLen);
+    const lastSpace = cut.lastIndexOf(' ');
+    return lastSpace > 0 ? cut.substring(0, lastSpace) : cut;
+}
 
 function ensurePeriod(str) {
     if (!str) return str;
