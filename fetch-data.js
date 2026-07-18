@@ -251,16 +251,25 @@ async function fetchHighUtilityMatrix() {
         if (arsRes.ok) {
             const arsText = await arsRes.text();
             const items = parseRssItems(arsText, 4, 'https://arstechnica.com/', 'https://www.google.com/s2/favicons?domain=arstechnica.com&sz=128');
-            console.log(`Ars Technica first item desc: "${items[0] ? items[0].desc : 'NO ITEMS'}"`);
-            items.forEach(item => techNews.push({
-                site: item.title || "Ars Technica",
-                category: "Tech",
-                dailyHits: Math.floor(Math.random() * 5000 + 500).toLocaleString() + " views",
-                growth: "+" + (Math.random() * 8 + 1).toFixed(1) + "%",
-                trend: ensurePeriod(item.desc || "In-depth technology and science reporting from Ars Technica."),
-                url: item.url,
-                image: item.image
-            }));
+            const arsRawItems = arsText.split('<item>');
+            arsRawItems.shift();
+            items.forEach((item, idx) => {
+                const rawItem = arsRawItems[idx] || '';
+                const contentMatch = rawItem.match(/<content:encoded>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/content:encoded>/s);
+                let desc = item.desc;
+                if (!desc && contentMatch) {
+                    desc = ensurePeriod(truncateAtWord(decodeEntities(contentMatch[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim())));
+                }
+                techNews.push({
+                    site: item.title || "Ars Technica",
+                    category: "Tech",
+                    dailyHits: Math.floor(Math.random() * 5000 + 500).toLocaleString() + " views",
+                    growth: "+" + (Math.random() * 8 + 1).toFixed(1) + "%",
+                    trend: desc || "In-depth technology and science reporting from Ars Technica.",
+                    url: item.url,
+                    image: item.image
+                });
+            });
         }
     } catch (e) { console.error('Ars Technica Error:', e.message); }
 
