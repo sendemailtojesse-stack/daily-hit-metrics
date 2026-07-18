@@ -154,13 +154,18 @@
         }
 
         .section-banner { color: #faf8f4; font-family: 'Libre Baskerville', serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; padding: 6px 0 6px 12px; }
-        .section-banner-world          { background: linear-gradient(to right, #254d33, transparent); }
-        .section-banner-social         { background: linear-gradient(to right, #6b6125, transparent); }
-        .section-banner-tech           { background: linear-gradient(to right, #4a5c3a, transparent); }
-        .section-banner-games          { background: linear-gradient(to right, #3d5c3a, transparent); }
-        .section-banner-finance        { background: linear-gradient(to right, #2d4a3e, transparent); }
-        .section-banner-searches-us    { background: linear-gradient(to right, #556b45, transparent); }
-        .section-banner-searches-global{ background: linear-gradient(to right, #7a6830, transparent); }
+        .section-banner-world             { background: linear-gradient(to right, #254d33, transparent); }
+        .section-banner-social            { background: linear-gradient(to right, #6b6125, transparent); }
+        .section-banner-tech              { background: linear-gradient(to right, #4a5c3a, transparent); }
+        .section-banner-games             { background: linear-gradient(to right, #3d5c3a, transparent); }
+        .section-banner-finance           { background: linear-gradient(to right, #2d4a3e, transparent); }
+        .section-banner-searches-us       { background: linear-gradient(to right, #556b45, transparent); }
+        .section-banner-searches-namerica { background: linear-gradient(to right, #6b7a30, transparent); }
+        .section-banner-searches-samerica { background: linear-gradient(to right, #7a6830, transparent); }
+        .section-banner-searches-europe   { background: linear-gradient(to right, #5a6b40, transparent); }
+        .section-banner-searches-africa   { background: linear-gradient(to right, #7a5a25, transparent); }
+        .section-banner-searches-asia     { background: linear-gradient(to right, #4a6b55, transparent); }
+        .section-banner-searches-oceania  { background: linear-gradient(to right, #6b7a55, transparent); }
 
         /* ── TABLE ── */
         .scoreboard {
@@ -458,15 +463,18 @@
     };
 
     const SECTION_LABELS = {
-        'World News':                   'World News — Global Dispatches from The Guardian, BBC, NPR & Al Jazeera',
-        'Social Pulse':                 'Social Pulse — Viral Dispatches from the Public Square',
-        'Tech':                         'Tech — Top Stories from Hacker News',
-        'Video Games':                  'Video Games — Latest from IGN & Reddit Gaming',
-        'Finance Trends':               'Finance Trends — Market Intelligence & Trading Sentiment',
-        'Popular Searches-us-volume':   'Popular Searches — United States · Top Volume',
-        'Popular Searches-us-growth':   'Popular Searches — United States · Fastest Rising',
-        'Popular Searches-global-volume': 'Popular Searches — Global · Top Volume',
-        'Popular Searches-global-growth': 'Popular Searches — Global · Fastest Rising'
+        'World News':                       'World News — Global Dispatches from The Guardian, BBC, NPR & Al Jazeera',
+        'Social Pulse':                     'Social Pulse — Viral Dispatches from the Public Square',
+        'Tech':                             'Tech — Top Stories from Hacker News',
+        'Video Games':                      'Video Games — Latest from IGN & Reddit Gaming',
+        'Finance Trends':                   'Finance Trends — Market Intelligence & Trading Sentiment',
+        'Popular Searches-us':              'Popular Searches — United States · Top Volume',
+        'Popular Searches-north-america':   'Popular Searches — North America · Top Volume',
+        'Popular Searches-south-america':   'Popular Searches — South America · Top Volume',
+        'Popular Searches-europe':          'Popular Searches — Europe · Top Volume',
+        'Popular Searches-africa':          'Popular Searches — Africa · Top Volume',
+        'Popular Searches-asia':            'Popular Searches — Asia · Top Volume',
+        'Popular Searches-oceania':         'Popular Searches — Oceania · Top Volume'
     };
 
     function initCountdownClock() {
@@ -548,15 +556,18 @@
                         ? `Popular Searches-${item.searchLabel}`
                         : item.category;
                     const bannerClass = {
-                        'World News':                     'section-banner-world',
-                        'Social Pulse':                   'section-banner-social',
-                        'Tech':                           'section-banner-tech',
-                        'Video Games':                    'section-banner-games',
-                        'Finance Trends':                 'section-banner-finance',
-                        'Popular Searches-us-volume':     'section-banner-searches-us',
-                        'Popular Searches-us-growth':     'section-banner-searches-us',
-                        'Popular Searches-global-volume': 'section-banner-searches-global',
-                        'Popular Searches-global-growth': 'section-banner-searches-global'
+                        'World News':                       'section-banner-world',
+                        'Social Pulse':                     'section-banner-social',
+                        'Tech':                             'section-banner-tech',
+                        'Video Games':                      'section-banner-games',
+                        'Finance Trends':                   'section-banner-finance',
+                        'Popular Searches-us':              'section-banner-searches-us',
+                        'Popular Searches-north-america':   'section-banner-searches-namerica',
+                        'Popular Searches-south-america':   'section-banner-searches-samerica',
+                        'Popular Searches-europe':          'section-banner-searches-europe',
+                        'Popular Searches-africa':          'section-banner-searches-africa',
+                        'Popular Searches-asia':            'section-banner-searches-asia',
+                        'Popular Searches-oceania':         'section-banner-searches-oceania'
                     }[labelKey] || 'section-banner-world';
                     const bannerRow = document.createElement('tr');
                     bannerRow.innerHTML = `<td colspan="5" class="section-banner ${bannerClass}">${SECTION_LABELS[labelKey] || item.category}</td>`;

@@ -361,9 +361,9 @@ async function fetchHighUtilityMatrix() {
     }
 
     // ==========================================
-    // TIER 6: POPULAR SEARCHES — 16 Google Trends (4x4 US + 4x4 Global)
+    // TIER 6: POPULAR SEARCHES — US + 6 Continents
     // ==========================================
-    const parseTrendsXml = (xmlText, geo) => {
+    const parseTrendsXml = (xmlText, region) => {
         const items = xmlText.split('<item>');
         items.shift();
         return items.slice(0, 20).map(itemStr => {
@@ -373,7 +373,7 @@ async function fetchHighUtilityMatrix() {
             const liveTraffic = trafficMatch ? trafficMatch[1].trim() : "1K+";
             const newsTitleMatch = itemStr.match(/<ht:news_item_title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/ht:news_item_title>/);
             let storyContext = newsTitleMatch ? decodeEntities(newsTitleMatch[1].replace(/<[^>]*>/g, '').trim()) : "";
-            if (!storyContext) storyContext = `Trending search across ${geo === 'US' ? 'United States' : 'global'} query volume.`;
+            if (!storyContext) storyContext = `Trending search across ${region} query volume.`;
             const urlMatch = itemStr.match(/<ht:news_item_url>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/ht:news_item_url>/);
             let sourceUrl = urlMatch ? urlMatch[1].trim() : "";
             if (!sourceUrl || sourceUrl.includes('trends.google.com')) {
@@ -385,61 +385,82 @@ async function fetchHighUtilityMatrix() {
             if (liveTraffic.includes('M')) trafficNum = parseFloat(liveTraffic) * 1000000;
             else if (liveTraffic.includes('K')) trafficNum = parseFloat(liveTraffic) * 1000;
             else trafficNum = parseInt(liveTraffic.replace(/[^0-9]/g, '')) || 0;
-            const growthRate = Math.random() * 10 + 5;
-            return { trendName, liveTraffic, trafficNum, growthRate, storyContext, sourceUrl, image };
-        }).filter(i => i.trafficNum >= 500);
+            return { trendName, liveTraffic, trafficNum, storyContext, sourceUrl, image };
+        }).filter(i => i.trafficNum >= 200);
     };
 
     const toSearchEntry = (item, label) => ({
         site: item.trendName,
         category: "Popular Searches",
         dailyHits: item.liveTraffic,
-        growth: "+" + item.growthRate.toFixed(1) + "%",
+        growth: "+" + (Math.random() * 10 + 5).toFixed(1) + "%",
         trend: ensurePeriod(item.storyContext),
         url: item.sourceUrl,
         image: item.image,
         searchLabel: label
     });
 
-    const splitByVolumeAndGrowth = (items) => {
-        const byVolume = [...items].sort((a, b) => b.trafficNum - a.trafficNum).slice(0, 4);
-        const volumeNames = new Set(byVolume.map(i => i.trendName));
-        const byGrowth = [...items].filter(i => !volumeNames.has(i.trendName)).sort((a, b) => b.growthRate - a.growthRate).slice(0, 4);
-        return { byVolume, byGrowth };
+    const fetchContinentTrends = async (geos, label, regionName) => {
+        const allItems = [];
+        for (const geo of geos) {
+            try {
+                const res = await fetch(`https://trends.google.com/trending/rss?geo=${geo}`, { headers: BROWSER_HEADERS });
+                if (res.ok) {
+                    allItems.push(...parseTrendsXml(await res.text(), regionName));
+                }
+            } catch (e) { console.error(`Trends ${geo} error:`, e.message); }
+        }
+        // Deduplicate by name, take top 4 by traffic
+        const seen = new Set();
+        const unique = allItems.filter(i => {
+            if (seen.has(i.trendName)) return false;
+            seen.add(i.trendName);
+            return true;
+        });
+        const top4 = unique.sort((a, b) => b.trafficNum - a.trafficNum).slice(0, 4);
+        popularSearches.push(...top4.map(i => toSearchEntry(i, label)));
+        console.log(`${regionName} trends compiled: ${top4.length} items`);
     };
 
+    // US (already separate sub-section)
     try {
-        console.log("Parsing US Popular Searches from Google Trends...");
+        console.log("Parsing US Popular Searches...");
         const usRes = await fetch('https://trends.google.com/trending/rss?geo=US', { headers: BROWSER_HEADERS });
         console.log(`Google Trends US status: ${usRes.status}`);
         if (usRes.ok) {
-            const { byVolume, byGrowth } = splitByVolumeAndGrowth(parseTrendsXml(await usRes.text(), 'US'));
-            popularSearches.push(...byVolume.map(i => toSearchEntry(i, 'us-volume')));
-            popularSearches.push(...byGrowth.map(i => toSearchEntry(i, 'us-growth')));
-            console.log(`US trends compiled: ${byVolume.length} volume + ${byGrowth.length} growth`);
+            const items = parseTrendsXml(await usRes.text(), 'United States');
+            const top4 = items.sort((a, b) => b.trafficNum - a.trafficNum).slice(0, 4);
+            popularSearches.push(...top4.map(i => toSearchEntry(i, 'us')));
+            console.log(`US trends compiled: ${top4.length} items`);
         }
     } catch (e) { console.error('Google Trends US Error:', e.message); }
 
-    try {
-        console.log("Parsing Global Popular Searches from Google Trends...");
-        const globalRes = await fetch('https://trends.google.com/trending/rss', { headers: BROWSER_HEADERS });
-        console.log(`Google Trends Global status: ${globalRes.status}`);
-        if (globalRes.ok) {
-            const { byVolume, byGrowth } = splitByVolumeAndGrowth(parseTrendsXml(await globalRes.text(), 'Global'));
-            popularSearches.push(...byVolume.map(i => toSearchEntry(i, 'global-volume')));
-            popularSearches.push(...byGrowth.map(i => toSearchEntry(i, 'global-growth')));
-            console.log(`Global trends compiled: ${byVolume.length} volume + ${byGrowth.length} growth`);
-        }
-    } catch (e) { console.error('Google Trends Global Error:', e.message); }
+    // North America
+    await fetchContinentTrends(['CA', 'MX'], 'north-america', 'North America');
+
+    // South America
+    await fetchContinentTrends(['BR', 'AR', 'CO', 'CL', 'PE'], 'south-america', 'South America');
+
+    // Europe
+    await fetchContinentTrends(['GB', 'DE', 'FR', 'IT', 'ES', 'PL', 'NL'], 'europe', 'Europe');
+
+    // Africa
+    await fetchContinentTrends(['NG', 'ZA', 'KE', 'EG', 'GH', 'ET'], 'africa', 'Africa');
+
+    // Asia
+    await fetchContinentTrends(['IN', 'JP', 'KR', 'ID', 'PH', 'PK', 'VN', 'TH'], 'asia', 'Asia');
+
+    // Oceania
+    await fetchContinentTrends(['AU', 'NZ'], 'oceania', 'Oceania');
 
     if (popularSearches.length === 0) {
-        const labels = ['us-volume', 'us-growth', 'global-volume', 'global-growth'];
-        popularSearches = Array.from({ length: 16 }, (_, i) => ({
+        const labels = ['us', 'north-america', 'south-america', 'europe', 'africa', 'asia', 'oceania'];
+        popularSearches = Array.from({ length: 28 }, (_, i) => ({
             site: `Trending Search #${i + 1}`,
             category: "Popular Searches",
             dailyHits: `${Math.floor(Math.random() * 50 + 5)}K+`,
             growth: "+" + (Math.random() * 8 + 4).toFixed(1) + "%",
-            trend: "Trending search dominating query volume.",
+            trend: "Trending search dominating regional query volume.",
             url: "https://news.google.com/",
             image: LOGOS.google,
             searchLabel: labels[Math.floor(i / 4)]
