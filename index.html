@@ -387,6 +387,57 @@
             margin-top: 16px;
             letter-spacing: 0.04em;
         }
+        /* ── MOBILE ── */
+        @media (max-width: 768px) {
+            html { font-size: 100%; }
+
+            body { padding: 10px 8px 40px; }
+
+            .container { padding: 12px 12px 20px; }
+
+            /* Masthead */
+            .masthead-bottom {
+                grid-template-columns: 1fr;
+                gap: 4px;
+                text-align: left;
+            }
+            .masthead-title { font-size: 1.6rem; }
+            .masthead-eyebrow { font-size: 0.55rem; }
+            .masthead-subtitle { font-size: 0.45rem; }
+            .masthead-tagline { text-align: left; padding: 0; }
+            .sync-countdown { text-align: left; }
+            .globe-graphic { width: 140px; height: 140px; }
+
+            /* Hide image and rank columns on mobile */
+            .img-col { display: none; }
+            .rank-col { display: none; }
+
+            /* Table */
+            .scoreboard th:first-child,
+            .scoreboard td:first-child,
+            .scoreboard th:nth-child(2),
+            .scoreboard td:nth-child(2) { display: none; }
+
+            .scoreboard th { font-size: 0.5rem; padding: 8px 10px; }
+            .scoreboard td { padding: 10px 10px; }
+
+            /* Row content */
+            .entity-title { font-size: 0.85rem; }
+            .entity-summary { font-size: 0.7rem; }
+            .category-badge { font-size: 0.4rem; }
+            .velocity-data { font-size: 0.75rem; }
+            .growth-indicator { font-size: 0.8rem; }
+
+            /* Section banners */
+            .section-banner { font-size: 0.5rem; letter-spacing: 0.12em; padding: 5px 0 5px 8px; }
+
+            /* Nav */
+            .top-nav { padding: 0 0 8px; gap: 0.6rem; }
+            .nav-link { font-size: 0.45rem; }
+
+            /* Tooltip — disable on mobile */
+            .momentum-header .tooltip { display: none !important; }
+        }
     </style>
 </head>
 <body>
