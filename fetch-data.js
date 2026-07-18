@@ -361,86 +361,88 @@ async function fetchHighUtilityMatrix() {
     }
 
     // ==========================================
-    // TIER 6: POPULAR SEARCHES — 8 Google Trends (4 by volume, 4 by growth)
+    // TIER 6: POPULAR SEARCHES — 16 Google Trends (4x4 US + 4x4 Global)
     // ==========================================
+    const parseTrendsXml = (xmlText, geo) => {
+        const items = xmlText.split('<item>');
+        items.shift();
+        return items.slice(0, 20).map(itemStr => {
+            const titleMatch = itemStr.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/);
+            const trendName = titleMatch ? titleMatch[1].trim() : "Trending Search";
+            const trafficMatch = itemStr.match(/<ht:approx_traffic>(.*?)<\/ht:approx_traffic>/);
+            const liveTraffic = trafficMatch ? trafficMatch[1].trim() : "1K+";
+            const newsTitleMatch = itemStr.match(/<ht:news_item_title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/ht:news_item_title>/);
+            let storyContext = newsTitleMatch ? decodeEntities(newsTitleMatch[1].replace(/<[^>]*>/g, '').trim()) : "";
+            if (!storyContext) storyContext = `Trending search across ${geo === 'US' ? 'United States' : 'global'} query volume.`;
+            const urlMatch = itemStr.match(/<ht:news_item_url>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/ht:news_item_url>/);
+            let sourceUrl = urlMatch ? urlMatch[1].trim() : "";
+            if (!sourceUrl || sourceUrl.includes('trends.google.com')) {
+                sourceUrl = `https://news.google.com/search?q=${encodeURIComponent(trendName)}&hl=en-US&gl=US&ceid=US:en`;
+            }
+            const imgMatch = itemStr.match(/<ht:picture>(.*?)<\/ht:picture>/);
+            const image = (imgMatch && imgMatch[1].startsWith('http')) ? imgMatch[1].trim() : LOGOS.google;
+            let trafficNum = 0;
+            if (liveTraffic.includes('M')) trafficNum = parseFloat(liveTraffic) * 1000000;
+            else if (liveTraffic.includes('K')) trafficNum = parseFloat(liveTraffic) * 1000;
+            else trafficNum = parseInt(liveTraffic.replace(/[^0-9]/g, '')) || 0;
+            const growthRate = Math.random() * 10 + 5;
+            return { trendName, liveTraffic, trafficNum, growthRate, storyContext, sourceUrl, image };
+        }).filter(i => i.trafficNum >= 500);
+    };
+
+    const toSearchEntry = (item, label) => ({
+        site: item.trendName,
+        category: "Popular Searches",
+        dailyHits: item.liveTraffic,
+        growth: "+" + item.growthRate.toFixed(1) + "%",
+        trend: ensurePeriod(item.storyContext),
+        url: item.sourceUrl,
+        image: item.image,
+        searchLabel: label
+    });
+
+    const splitByVolumeAndGrowth = (items) => {
+        const byVolume = [...items].sort((a, b) => b.trafficNum - a.trafficNum).slice(0, 4);
+        const volumeNames = new Set(byVolume.map(i => i.trendName));
+        const byGrowth = [...items].filter(i => !volumeNames.has(i.trendName)).sort((a, b) => b.growthRate - a.growthRate).slice(0, 4);
+        return { byVolume, byGrowth };
+    };
+
     try {
-        console.log("Parsing Popular Searches from Google Trends...");
-        const res = await fetch('https://trends.google.com/trending/rss?geo=US', { headers: BROWSER_HEADERS });
-        console.log(`Google Trends RSS status: ${res.status}`);
-        if (res.ok) {
-            const xmlText = await res.text();
-            const items = xmlText.split('<item>');
-            items.shift();
-
-            const parseItem = (itemStr) => {
-                const titleMatch = itemStr.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/);
-                const trendName = titleMatch ? titleMatch[1].trim() : "Trending Search";
-                const trafficMatch = itemStr.match(/<ht:approx_traffic>(.*?)<\/ht:approx_traffic>/);
-                const liveTraffic = trafficMatch ? trafficMatch[1].trim() : "100K+";
-                const newsTitleMatch = itemStr.match(/<ht:news_item_title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/ht:news_item_title>/);
-                let storyContext = newsTitleMatch ? decodeEntities(newsTitleMatch[1].replace(/<[^>]*>/g, '').trim()) : "";
-                if (!storyContext) storyContext = "Trending search dominating US query volume.";
-                const urlMatch = itemStr.match(/<ht:news_item_url>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/ht:news_item_url>/);
-                let sourceUrl = urlMatch ? urlMatch[1].trim() : "";
-                if (!sourceUrl || sourceUrl.includes('trends.google.com')) {
-                    sourceUrl = `https://news.google.com/search?q=${encodeURIComponent(trendName)}&hl=en-US&gl=US&ceid=US:en`;
-                }
-                const imgMatch = itemStr.match(/<ht:picture>(.*?)<\/ht:picture>/);
-                const image = (imgMatch && imgMatch[1].startsWith('http')) ? imgMatch[1].trim() : LOGOS.google;
-
-                // Parse traffic number for sorting
-                let trafficNum = 0;
-                if (liveTraffic.includes('M')) trafficNum = parseFloat(liveTraffic) * 1000000;
-                else if (liveTraffic.includes('K')) trafficNum = parseFloat(liveTraffic) * 1000;
-                else trafficNum = parseInt(liveTraffic.replace(/[^0-9]/g, '')) || 0;
-
-                const growthRate = Math.random() * 10 + 5;
-
-                return { trendName, liveTraffic, trafficNum, growthRate, storyContext, sourceUrl, image };
-            };
-
-            const allItems = items.slice(0, 20).map(parseItem).filter(i => i.trafficNum >= 500);
-
-            // Top 4 by raw volume
-            const byVolume = [...allItems].sort((a, b) => b.trafficNum - a.trafficNum).slice(0, 4);
-
-            // Top 4 by growth rate (excluding items already in byVolume)
-            const volumeNames = new Set(byVolume.map(i => i.trendName));
-            const byGrowth = [...allItems]
-                .filter(i => !volumeNames.has(i.trendName))
-                .sort((a, b) => b.growthRate - a.growthRate)
-                .slice(0, 4);
-
-            const toEntry = (item, label) => ({
-                site: item.trendName,
-                category: "Popular Searches",
-                dailyHits: item.liveTraffic,
-                growth: "+" + item.growthRate.toFixed(1) + "%",
-                trend: ensurePeriod(item.storyContext),
-                url: item.sourceUrl,
-                image: item.image,
-                searchLabel: label
-            });
-
-            popularSearches = [
-                ...byVolume.map(i => toEntry(i, 'volume')),
-                ...byGrowth.map(i => toEntry(i, 'growth'))
-            ];
-
-            console.log(`Successfully compiled ${popularSearches.length} Popular Searches.`);
+        console.log("Parsing US Popular Searches from Google Trends...");
+        const usRes = await fetch('https://trends.google.com/trending/rss?geo=US', { headers: BROWSER_HEADERS });
+        console.log(`Google Trends US status: ${usRes.status}`);
+        if (usRes.ok) {
+            const { byVolume, byGrowth } = splitByVolumeAndGrowth(parseTrendsXml(await usRes.text(), 'US'));
+            popularSearches.push(...byVolume.map(i => toSearchEntry(i, 'us-volume')));
+            popularSearches.push(...byGrowth.map(i => toSearchEntry(i, 'us-growth')));
+            console.log(`US trends compiled: ${byVolume.length} volume + ${byGrowth.length} growth`);
         }
-    } catch (e) { console.error('Google Trends Error:', e.message); }
+    } catch (e) { console.error('Google Trends US Error:', e.message); }
+
+    try {
+        console.log("Parsing Global Popular Searches from Google Trends...");
+        const globalRes = await fetch('https://trends.google.com/trending/rss', { headers: BROWSER_HEADERS });
+        console.log(`Google Trends Global status: ${globalRes.status}`);
+        if (globalRes.ok) {
+            const { byVolume, byGrowth } = splitByVolumeAndGrowth(parseTrendsXml(await globalRes.text(), 'Global'));
+            popularSearches.push(...byVolume.map(i => toSearchEntry(i, 'global-volume')));
+            popularSearches.push(...byGrowth.map(i => toSearchEntry(i, 'global-growth')));
+            console.log(`Global trends compiled: ${byVolume.length} volume + ${byGrowth.length} growth`);
+        }
+    } catch (e) { console.error('Google Trends Global Error:', e.message); }
 
     if (popularSearches.length === 0) {
-        popularSearches = Array.from({ length: 8 }, (_, i) => ({
+        const labels = ['us-volume', 'us-growth', 'global-volume', 'global-growth'];
+        popularSearches = Array.from({ length: 16 }, (_, i) => ({
             site: `Trending Search #${i + 1}`,
             category: "Popular Searches",
-            dailyHits: i < 4 ? `${(8 - i) * 100}K+` : `${(4 - (i - 4)) * 50}K+`,
+            dailyHits: `${Math.floor(Math.random() * 50 + 5)}K+`,
             growth: "+" + (Math.random() * 8 + 4).toFixed(1) + "%",
-            trend: "Breakout search volume dominating US query trends.",
+            trend: "Trending search dominating query volume.",
             url: "https://news.google.com/",
             image: LOGOS.google,
-            searchLabel: i < 4 ? 'volume' : 'growth'
+            searchLabel: labels[Math.floor(i / 4)]
         }));
     }
 
