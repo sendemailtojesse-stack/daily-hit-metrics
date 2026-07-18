@@ -430,9 +430,6 @@ async function fetchHighUtilityMatrix() {
             console.log(`Successfully compiled ${popularSearches.length} Popular Searches.`);
         }
     } catch (e) { console.error('Google Trends Error:', e.message); }
-            console.log(`Successfully compiled ${popularSearches.length} Popular Searches.`);
-        }
-    } catch (e) { console.error('Google Trends Error:', e.message); }
 
     if (popularSearches.length === 0) {
         popularSearches = Array.from({ length: 8 }, (_, i) => ({
