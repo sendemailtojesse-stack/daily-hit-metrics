@@ -406,7 +406,7 @@ async function fetchHighUtilityMatrix() {
             category: "Finance Trends",
             dailyHits: `${Math.floor(Math.random() * 400 + 100)} Traders`,
             growth: `${Math.random() > 0.5 ? "+" : "-"}${Math.floor(Math.random() * 20 + 5)} coms/min`,
-            trend: `Active discussion in r/stocks — retail traders parsing live market developments.`,
+            trend: financeContext(topic, 'r/stocks'),
             url: "https://www.reddit.com/r/stocks/",
             image: LOGOS.reddit
         }));
