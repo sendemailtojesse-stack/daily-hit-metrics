@@ -414,14 +414,19 @@
             th.rank-col, td.rank-col { display: none; }
 
             /* Table — prevent overflow */
-            .scoreboard { table-layout: fixed; width: 100%; }
-            .scoreboard th { font-size: 0.5rem; padding: 6px 8px; }
-            .scoreboard td { padding: 8px 8px; word-break: break-word; }
+            .scoreboard { table-layout: auto; width: 100%; }
+            .scoreboard th { font-size: 0.5rem; padding: 6px 6px; white-space: nowrap; }
+            .scoreboard td { padding: 8px 6px; word-break: break-word; }
 
-            /* Column widths on mobile */
-            .scoreboard th:nth-child(3) { width: auto; }
-            .scoreboard th:nth-child(4) { width: 28%; }
-            .scoreboard th:nth-child(5) { width: 22%; }
+            /* Dispatch column gets all remaining space */
+            .scoreboard th:nth-child(3),
+            .scoreboard td:nth-child(3) { width: auto; }
+
+            /* Tighten Circulation and Momentum */
+            .scoreboard th:nth-child(4),
+            .scoreboard td:nth-child(4) { width: 25%; white-space: nowrap; }
+            .scoreboard th:nth-child(5),
+            .scoreboard td:nth-child(5) { width: 20%; white-space: nowrap; }
 
             /* Row content */
             .entity-title { font-size: 0.82rem; }
