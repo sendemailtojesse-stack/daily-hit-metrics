@@ -399,10 +399,7 @@ async function fetchHighUtilityMatrix() {
                 return { trendName, liveTraffic, trafficNum, growthRate, storyContext, sourceUrl, image };
             };
 
-            const allItems = items.slice(0, 20).map(parseItem).filter(i => {
-                console.log(`Trends item: ${i.trendName} | traffic: ${i.liveTraffic} | num: ${i.trafficNum}`);
-                return i.trafficNum >= 10000;
-            });
+            const allItems = items.slice(0, 20).map(parseItem).filter(i => i.trafficNum >= 500);
 
             // Top 4 by raw volume
             const byVolume = [...allItems].sort((a, b) => b.trafficNum - a.trafficNum).slice(0, 4);
