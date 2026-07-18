@@ -58,9 +58,9 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
         const mediaDesc = itemStr.match(/<media:description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/media:description>/s);
         const dcDesc = itemStr.match(/<dc:description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/dc:description>/s);
         if (mediaDesc) {
-            desc = decodeEntities(mediaDesc[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()).substring(0, 160);
+            desc = ensurePeriod(decodeEntities(mediaDesc[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()).substring(0, 160));
         } else if (dcDesc) {
-            desc = decodeEntities(dcDesc[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()).substring(0, 160);
+            desc = ensurePeriod(decodeEntities(dcDesc[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()).substring(0, 160));
         } else {
             const descMatch = itemStr.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s);
             const descRaw = descMatch ? descMatch[1] : "";
@@ -69,7 +69,7 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
             const firstParaText = firstParaMatch
                 ? firstParaMatch[1].replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim()
                 : fullDesc.replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim().substring(0, 160);
-            desc = firstParaText;
+            desc = ensurePeriod(firstParaText);
         }
 
         const image = extractImage(itemStr) || fallbackLogo;
@@ -92,6 +92,12 @@ const LOGOS = {
     ign:       'https://www.google.com/s2/favicons?domain=ign.com&sz=128',
     google:    'https://www.google.com/s2/favicons?domain=google.com&sz=128',
 };
+
+function ensurePeriod(str) {
+    if (!str) return str;
+    const trimmed = str.trim();
+    return /[.!?]$/.test(trimmed) ? trimmed : trimmed + '.';
+}
 
 async function fetchHighUtilityMatrix() {
     let worldNews       = [];
@@ -121,7 +127,7 @@ async function fetchHighUtilityMatrix() {
             if (res.ok) {
                 const items = parseRssItems(await res.text(), 1, source.url, source.logo);
                 if (items.length > 0) {
-                    const trend = items[0].desc || `Breaking news from ${source.name}.`;
+                    const trend = ensurePeriod(items[0].desc || `Breaking news from ${source.name}.`);
                     worldNews.push({
                         site: items[0].title || `${source.name} News`,
                         category: "World News",
