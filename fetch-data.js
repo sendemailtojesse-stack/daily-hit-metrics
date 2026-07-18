@@ -103,7 +103,7 @@ function truncateAtWord(str, maxLen = 160) {
 function ensurePeriod(str) {
     if (!str) return str;
     const trimmed = str.trim();
-    return /[.!?]$/.test(trimmed) ? trimmed : trimmed + '.';
+    return /[.!?]$/.test(trimmed) ? trimmed : trimmed + '...';
 }
 
 async function fetchHighUtilityMatrix() {
