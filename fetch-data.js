@@ -236,7 +236,7 @@ async function fetchHighUtilityMatrix() {
                     category: "Tech",
                     dailyHits: Math.floor(Math.random() * 800 + 200) + " pts",
                     growth: "+" + Math.floor(Math.random() * 30 + 5) + " pts/hr",
-                    trend: commentCount !== null ? `${commentCount} comment${commentCount !== 1 ? 's' : ''} on Hacker News.` : "Top story on Hacker News.",
+                    trend: commentCount !== null ? `${commentCount} comment${commentCount !== 1 ? 's' : ''} on Hacker News` : "Top story on Hacker News",
                     url: item.url,
                     image: item.image
                 });
