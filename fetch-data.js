@@ -196,7 +196,7 @@ async function fetchHighUtilityMatrix() {
     }
 
     // ==========================================
-    // TIER 3: TECH — 4 Hacker News
+    // TIER 3: TECH — 4 Hacker News + 2 The Verge + 2 Ars Technica
     // ==========================================
     try {
         console.log("Parsing Tech from Hacker News...");
@@ -244,8 +244,44 @@ async function fetchHighUtilityMatrix() {
         }
     } catch (e) { console.error('Hacker News Error:', e.message); }
 
+    try {
+        console.log("Parsing Tech from The Verge...");
+        const vergeRes = await fetch('https://www.theverge.com/rss/index.xml', { headers: BROWSER_HEADERS });
+        console.log(`The Verge RSS status: ${vergeRes.status}`);
+        if (vergeRes.ok) {
+            const items = parseAtomEntries(await vergeRes.text(), 2, 'https://www.theverge.com/', 'https://www.google.com/s2/favicons?domain=theverge.com&sz=128');
+            items.forEach(item => techNews.push({
+                site: item.title || "The Verge",
+                category: "Tech",
+                dailyHits: Math.floor(Math.random() * 5000 + 500).toLocaleString() + " views",
+                growth: "+" + (Math.random() * 8 + 1).toFixed(1) + "%",
+                trend: ensurePeriod("Latest consumer tech and gadget news from The Verge."),
+                url: item.url,
+                image: item.image
+            }));
+        }
+    } catch (e) { console.error('The Verge Error:', e.message); }
+
+    try {
+        console.log("Parsing Tech from Ars Technica...");
+        const arsRes = await fetch('https://feeds.arstechnica.com/arstechnica/index', { headers: BROWSER_HEADERS });
+        console.log(`Ars Technica RSS status: ${arsRes.status}`);
+        if (arsRes.ok) {
+            const items = parseRssItems(await arsRes.text(), 2, 'https://arstechnica.com/', 'https://www.google.com/s2/favicons?domain=arstechnica.com&sz=128');
+            items.forEach(item => techNews.push({
+                site: item.title || "Ars Technica",
+                category: "Tech",
+                dailyHits: Math.floor(Math.random() * 5000 + 500).toLocaleString() + " views",
+                growth: "+" + (Math.random() * 8 + 1).toFixed(1) + "%",
+                trend: ensurePeriod(item.desc || "In-depth technology and science reporting from Ars Technica."),
+                url: item.url,
+                image: item.image
+            }));
+        }
+    } catch (e) { console.error('Ars Technica Error:', e.message); }
+
     if (techNews.length === 0) {
-        techNews = Array.from({ length: 4 }, (_, i) => ({
+        techNews = Array.from({ length: 8 }, (_, i) => ({
             site: `Tech Story #${i + 1}`,
             category: "Tech",
             dailyHits: Math.floor(Math.random() * 800 + 200) + " pts",
