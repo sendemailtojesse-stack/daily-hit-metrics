@@ -387,7 +387,6 @@
             margin-top: 16px;
             letter-spacing: 0.04em;
         }
-        /* ── MOBILE ── */
         @media (max-width: 768px) {
             html { font-size: 100%; }
 
@@ -411,25 +410,28 @@
             /* Hide image and rank columns on mobile */
             .img-col { display: none; }
             .rank-col { display: none; }
+            th.img-col, td.img-col,
+            th.rank-col, td.rank-col { display: none; }
 
-            /* Table */
-            .scoreboard th:first-child,
-            .scoreboard td:first-child,
-            .scoreboard th:nth-child(2),
-            .scoreboard td:nth-child(2) { display: none; }
+            /* Table — prevent overflow */
+            .scoreboard { table-layout: fixed; width: 100%; }
+            .scoreboard th { font-size: 0.5rem; padding: 6px 8px; }
+            .scoreboard td { padding: 8px 8px; word-break: break-word; }
 
-            .scoreboard th { font-size: 0.5rem; padding: 8px 10px; }
-            .scoreboard td { padding: 10px 10px; }
+            /* Column widths on mobile */
+            .scoreboard th:nth-child(3) { width: auto; }
+            .scoreboard th:nth-child(4) { width: 28%; }
+            .scoreboard th:nth-child(5) { width: 22%; }
 
             /* Row content */
-            .entity-title { font-size: 0.85rem; }
-            .entity-summary { font-size: 0.7rem; }
+            .entity-title { font-size: 0.82rem; }
+            .entity-summary { font-size: 0.68rem; }
             .category-badge { font-size: 0.4rem; }
-            .velocity-data { font-size: 0.75rem; }
-            .growth-indicator { font-size: 0.8rem; }
+            .velocity-data { font-size: 0.72rem; }
+            .growth-indicator { font-size: 0.75rem; }
 
             /* Section banners */
-            .section-banner { font-size: 0.5rem; letter-spacing: 0.12em; padding: 5px 0 5px 8px; }
+            .section-banner { font-size: 0.45rem; letter-spacing: 0.08em; padding: 5px 0 5px 8px; }
 
             /* Nav */
             .top-nav { padding: 0 0 8px; gap: 0.6rem; }
@@ -623,7 +625,8 @@
                         'Popular Searches-oceania':         'section-banner-searches-oceania'
                     }[labelKey] || 'section-banner-world';
                     const bannerRow = document.createElement('tr');
-                    bannerRow.innerHTML = `<td colspan="5" class="section-banner ${bannerClass}">${SECTION_LABELS[labelKey] || item.category}</td>`;
+                    const isMobile = window.innerWidth <= 768;
+                    bannerRow.innerHTML = `<td colspan="${isMobile ? 3 : 5}" class="section-banner ${bannerClass}">${SECTION_LABELS[labelKey] || item.category}</td>`;
                     tableBody.appendChild(bannerRow);
                     const tooltipEl = document.getElementById('momentum-tooltip');
                     if (tooltipEl) tooltipEl.textContent = MOMENTUM_TOOLTIPS[item.category] || '';
