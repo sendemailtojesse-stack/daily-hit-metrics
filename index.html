@@ -872,12 +872,14 @@
     const { createClient } = supabase;
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    function updateNav(user, firstName) {
+    function updateNav(user, firstName, tier) {
         const nav = document.getElementById('top-nav');
         if (user) {
             const displayName = firstName || user.email.split('@')[0];
+            const proBtn = tier === 'pro' ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro</span>` : `<a href="#" class="nav-link nav-link-signup" onclick="handleUpgrade(); return false;">Upgrade to Pro</a>`;
             nav.innerHTML = `
                 <span class="nav-user">Hi, ${displayName}</span>
+                ${proBtn}
                 <button class="nav-link-logout" onclick="handleLogout()">Logout</button>
             `;
         } else {
@@ -901,12 +903,25 @@
         } else {
             const { data: profile } = await supabaseClient
                 .from('profiles')
-                .select('first_name')
+                .select('first_name, subscription_tier')
                 .eq('id', data.user.id)
                 .single();
             closeModal('login-modal');
-            updateNav(data.user, profile?.first_name);
+            updateNav(data.user, profile?.first_name, profile?.subscription_tier);
         }
+    }
+
+    async function handleUpgrade() {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (!session) { openModal('login-modal'); return; }
+        const res = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/create-checkout-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: session.user.id, email: session.user.email })
+        });
+        const { url, error } = await res.json();
+        if (url) window.location.href = url;
+        else console.error('Checkout error:', error);
     }
 
     async function handleSignup() {
@@ -951,10 +966,10 @@
         if (session) {
             const { data: profile } = await supabaseClient
                 .from('profiles')
-                .select('first_name')
+                .select('first_name, subscription_tier')
                 .eq('id', session.user.id)
                 .single();
-            updateNav(session.user, profile?.first_name);
+            updateNav(session.user, profile?.first_name, profile?.subscription_tier);
         }
     });
 
@@ -963,10 +978,10 @@
         if (session) {
             const { data: profile } = await supabaseClient
                 .from('profiles')
-                .select('first_name')
+                .select('first_name, subscription_tier')
                 .eq('id', session.user.id)
                 .single();
-            updateNav(session.user, profile?.first_name);
+            updateNav(session.user, profile?.first_name, profile?.subscription_tier);
         } else {
             updateNav(null);
         }
