@@ -578,6 +578,8 @@
         <div class="modal">
             <h2>Create Account</h2>
             <div class="modal-msg" id="signup-msg"></div>
+            <input type="text" id="signup-firstname" placeholder="First name" autocomplete="given-name">
+            <input type="text" id="signup-lastname" placeholder="Last name" autocomplete="family-name">
             <input type="email" id="signup-email" placeholder="Email address" autocomplete="email">
             <input type="password" id="signup-password" placeholder="Password (min 6 characters)" autocomplete="new-password">
             <button class="modal-btn" onclick="handleSignup()">Create Account</button>
@@ -870,11 +872,12 @@
     const { createClient } = supabase;
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    function updateNav(user) {
+    function updateNav(user, firstName) {
         const nav = document.getElementById('top-nav');
         if (user) {
+            const displayName = firstName || user.email.split('@')[0];
             nav.innerHTML = `
-                <span class="nav-user">${user.email}</span>
+                <span class="nav-user">Hi, ${displayName}</span>
                 <button class="nav-link-logout" onclick="handleLogout()">Logout</button>
             `;
         } else {
@@ -896,22 +899,43 @@
             msg.className = 'modal-msg error';
             msg.textContent = error.message;
         } else {
+            const { data: profile } = await supabaseClient
+                .from('profiles')
+                .select('first_name')
+                .eq('id', data.user.id)
+                .single();
             closeModal('login-modal');
-            updateNav(data.user);
+            updateNav(data.user, profile?.first_name);
         }
     }
 
     async function handleSignup() {
+        const firstName = document.getElementById('signup-firstname').value.trim();
+        const lastName = document.getElementById('signup-lastname').value.trim();
         const email = document.getElementById('signup-email').value.trim();
         const password = document.getElementById('signup-password').value;
         const msg = document.getElementById('signup-msg');
+        if (!firstName) { msg.className = 'modal-msg error'; msg.textContent = 'Please enter your first name.'; return; }
         msg.className = 'modal-msg';
         msg.textContent = 'Creating account...';
-        const { data, error } = await supabaseClient.auth.signUp({ email, password });
+        const { data, error } = await supabaseClient.auth.signUp({
+            email,
+            password,
+            options: { emailRedirectTo: 'https://dailyhitmetrics.com/welcome.html' }
+        });
         if (error) {
             msg.className = 'modal-msg error';
             msg.textContent = error.message;
         } else {
+            // Save name to profile
+            if (data.user) {
+                await supabaseClient.from('profiles').upsert({
+                    id: data.user.id,
+                    email: email,
+                    first_name: firstName,
+                    last_name: lastName
+                });
+            }
             msg.className = 'modal-msg success';
             msg.textContent = 'Account created! Please check your email to confirm.';
         }
@@ -923,13 +947,29 @@
     }
 
     // Check session on load
-    supabaseClient.auth.getSession().then(({ data: { session } }) => {
-        if (session) updateNav(session.user);
+    supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
+        if (session) {
+            const { data: profile } = await supabaseClient
+                .from('profiles')
+                .select('first_name')
+                .eq('id', session.user.id)
+                .single();
+            updateNav(session.user, profile?.first_name);
+        }
     });
 
     // Listen for auth changes
-    supabaseClient.auth.onAuthStateChange((event, session) => {
-        updateNav(session ? session.user : null);
+    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+        if (session) {
+            const { data: profile } = await supabaseClient
+                .from('profiles')
+                .select('first_name')
+                .eq('id', session.user.id)
+                .single();
+            updateNav(session.user, profile?.first_name);
+        } else {
+            updateNav(null);
+        }
     });
 </script>
 
