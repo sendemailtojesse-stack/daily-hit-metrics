@@ -452,19 +452,145 @@
             /* Tooltip — disable on mobile */
             .momentum-header .tooltip { display: none !important; }
         }
+        /* ── AUTH MODAL ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: #faf8f4;
+            border: 1px solid #3a6b4a;
+            padding: 32px 36px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+        }
+        .modal h2 {
+            font-family: 'Quantico', sans-serif;
+            font-size: 1.1rem;
+            color: #2c1810;
+            margin-bottom: 20px;
+        }
+        .modal input {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            border: 1px solid #c8b89a;
+            background: #fff;
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.7rem;
+            color: #1a0f00;
+        }
+        .modal input:focus { outline: none; border-color: #3a6b4a; }
+        .modal-btn {
+            width: 100%;
+            padding: 10px;
+            background: #3a6b4a;
+            color: #faf8f4;
+            border: none;
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background 0.15s ease;
+        }
+        .modal-btn:hover { background: #254d33; }
+        .modal-close {
+            display: block;
+            text-align: center;
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.6rem;
+            color: #8a6a50;
+            cursor: pointer;
+            margin-top: 6px;
+        }
+        .modal-close:hover { color: #2c1810; }
+        .modal-msg {
+            font-family: 'IM Fell English', serif;
+            font-size: 0.65rem;
+            font-style: italic;
+            margin-bottom: 10px;
+            min-height: 18px;
+        }
+        .modal-msg.error { color: #8a1a1a; }
+        .modal-msg.success { color: #2a5a2a; }
+        .modal-switch {
+            text-align: center;
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.58rem;
+            color: #8a6a50;
+            margin-top: 12px;
+        }
+        .modal-switch a { color: #3a6b4a; cursor: pointer; text-decoration: underline; }
+
+        /* Auth nav state */
+        .nav-user {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.55rem;
+            color: #5a3e2b;
+            letter-spacing: 0.08em;
+        }
+        .nav-link-logout {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.55rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #8a1a1a;
+            text-decoration: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        .nav-link-logout:hover { color: #2c1810; }
     </style>
-    <meta name="google-site-verification" content="2zcPz7MSI3syoPrzq88f3yqGh_gnF8dlAB7hKv8pQCM" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> content="2zcPz7MSI3syoPrzq88f3yqGh_gnF8dlAB7hKv8pQCM" />
     <meta name="google-adsense-account" content="ca-pub-2354946193859243">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2354946193859243"
      crossorigin="anonymous"></script>
 </head>
 <body>
 
+    <!-- Auth Modals -->
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal">
+            <h2>Login</h2>
+            <div class="modal-msg" id="login-msg"></div>
+            <input type="email" id="login-email" placeholder="Email address" autocomplete="email">
+            <input type="password" id="login-password" placeholder="Password" autocomplete="current-password">
+            <button class="modal-btn" onclick="handleLogin()">Login</button>
+            <div class="modal-switch">Don't have an account? <a onclick="switchModal('login','signup')">Create one</a></div>
+            <span class="modal-close" onclick="closeModal('login-modal')">Cancel</span>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="signup-modal">
+        <div class="modal">
+            <h2>Create Account</h2>
+            <div class="modal-msg" id="signup-msg"></div>
+            <input type="email" id="signup-email" placeholder="Email address" autocomplete="email">
+            <input type="password" id="signup-password" placeholder="Password (min 6 characters)" autocomplete="new-password">
+            <button class="modal-btn" onclick="handleSignup()">Create Account</button>
+            <div class="modal-switch">Already have an account? <a onclick="switchModal('signup','login')">Login</a></div>
+            <span class="modal-close" onclick="closeModal('signup-modal')">Cancel</span>
+        </div>
+    </div>
+
 <div class="container">
 
-    <div class="top-nav">
-        <a href="#" class="nav-link">Login</a>
-        <a href="#" class="nav-link nav-link-signup">Create Account</a>
+    <div class="top-nav" id="top-nav">
+        <a href="#" class="nav-link" onclick="openModal('login-modal'); return false;">Login</a>
+        <a href="#" class="nav-link nav-link-signup" onclick="openModal('signup-modal'); return false;">Create Account</a>
     </div>
 
     <div class="masthead">
@@ -718,6 +844,87 @@
 
     loadDashboard();
     initCountdownClock();
+
+    // ── SUPABASE AUTH ──
+    const SUPABASE_URL = 'https://dljqwghiyjhombvflgfg.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsanF3Z2hpeWpob21idmZsZ2ZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3OTkzODQsImV4cCI6MjEwMDM3NTM4NH0.Be3zSr3ctcyuF7PUi25j2-szlt8ThPksxM_8OWbhCec';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    function openModal(id) {
+        document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+        document.getElementById(id === 'login-modal' ? 'login-msg' : 'signup-msg').textContent = '';
+    }
+
+    function switchModal(from, to) {
+        closeModal(from + '-modal');
+        openModal(to + '-modal');
+    }
+
+    function updateNav(user) {
+        const nav = document.getElementById('top-nav');
+        if (user) {
+            nav.innerHTML = `
+                <span class="nav-user">${user.email}</span>
+                <button class="nav-link-logout" onclick="handleLogout()">Logout</button>
+            `;
+        } else {
+            nav.innerHTML = `
+                <a href="#" class="nav-link" onclick="openModal('login-modal'); return false;">Login</a>
+                <a href="#" class="nav-link nav-link-signup" onclick="openModal('signup-modal'); return false;">Create Account</a>
+            `;
+        }
+    }
+
+    async function handleLogin() {
+        const email = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-password').value;
+        const msg = document.getElementById('login-msg');
+        msg.className = 'modal-msg';
+        msg.textContent = 'Signing in...';
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) {
+            msg.className = 'modal-msg error';
+            msg.textContent = error.message;
+        } else {
+            closeModal('login-modal');
+            updateNav(data.user);
+        }
+    }
+
+    async function handleSignup() {
+        const email = document.getElementById('signup-email').value.trim();
+        const password = document.getElementById('signup-password').value;
+        const msg = document.getElementById('signup-msg');
+        msg.className = 'modal-msg';
+        msg.textContent = 'Creating account...';
+        const { data, error } = await supabase.auth.signUp({ email, password });
+        if (error) {
+            msg.className = 'modal-msg error';
+            msg.textContent = error.message;
+        } else {
+            msg.className = 'modal-msg success';
+            msg.textContent = 'Account created! Please check your email to confirm.';
+        }
+    }
+
+    async function handleLogout() {
+        await supabase.auth.signOut();
+        updateNav(null);
+    }
+
+    // Check session on load
+    supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session) updateNav(session.user);
+    });
+
+    // Listen for auth changes
+    supabase.auth.onAuthStateChange((event, session) => {
+        updateNav(session ? session.user : null);
+    });
 </script>
 
 </body>
