@@ -864,6 +864,15 @@
         openModal(to + '-modal');
     }
 
+    // Stubs in case Supabase hasn't loaded yet
+    window.handleLogin = function() {
+        document.getElementById('login-msg').textContent = 'Loading, please try again in a moment.';
+    };
+    window.handleSignup = function() {
+        document.getElementById('signup-msg').textContent = 'Loading, please try again in a moment.';
+    };
+    window.handleLogout = function() {};
+
     // ── SUPABASE AUTH ──
     function initSupabase() {
         const SUPABASE_URL = 'https://dljqwghiyjhombvflgfg.supabase.co';
