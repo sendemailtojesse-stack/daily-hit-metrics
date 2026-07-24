@@ -27,12 +27,23 @@ export default {
             });
         }
 
+        // ── STRIPE TEST ──
+        if (url.pathname === '/api/stripe-test') {
+            const res = await fetch(`https://api.stripe.com/v1/prices/price_1TwTusJX6rSaATLsqh4YyUnC`, {
+                headers: { 'Authorization': `Bearer ${env.STRIPE_SECRET_KEY}` }
+            });
+            const data = await res.json();
+            return new Response(JSON.stringify({ status: res.status, keyPrefix: env.STRIPE_SECRET_KEY?.substring(0, 14), data }), {
+                headers: { 'Content-Type': 'application/json', ...corsHeaders }
+            });
+        }
+
         // ── STRIPE CHECKOUT ──
         if (url.pathname === '/api/create-checkout-session' && request.method === 'POST') {
             try {
                 const { userId, email } = await request.json();
 
-                const response = await fetch('https://api.stripe.com/v1/checkout/sessions', {
+                const stripeResponse = await fetch('https://api.stripe.com/v1/checkout/sessions', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${env.STRIPE_SECRET_KEY}`,
@@ -50,17 +61,17 @@ export default {
                     })
                 });
 
-                const session = await response.json();
+                const session = await stripeResponse.json();
+                console.log('Stripe status:', stripeResponse.status, 'Key prefix:', env.STRIPE_SECRET_KEY ? env.STRIPE_SECRET_KEY.substring(0, 12) : 'MISSING');
 
                 if (session.error) {
-                    return new Response(JSON.stringify({ error: session.error.message }), {
+                    return new Response(JSON.stringify({ error: session.error.message, status: stripeResponse.status }), {
                         status: 400,
                         headers: { 'Content-Type': 'application/json', ...corsHeaders }
                     });
                 }
 
-                return new Response(JSON.stringify({ url: session.url }), {
-                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                return new Response(JSON.stringify({ url: session.url }), {                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
                 });
 
             } catch (err) {
