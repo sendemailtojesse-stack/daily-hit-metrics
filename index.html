@@ -1035,6 +1035,20 @@
         updateNav(null);
     }
 
+    // Check for upgrade redirect from Pro sites
+    const urlParams = new URLSearchParams(window.location.search);
+    const upgradeFrom = urlParams.get('upgrade');
+    if (upgradeFrom) {
+        const siteNames = { sports: 'Sports', finance: 'Finance', politics: 'Politics', entertainment: 'Entertainment' };
+        const siteName = siteNames[upgradeFrom] || 'this section';
+        const banner = document.createElement('div');
+        banner.style.cssText = 'background:#edf4ef; border:1px solid #3a6b4a; color:#254d33; font-family:Libre Baskerville,serif; font-size:0.8rem; padding:12px 20px; text-align:center; margin-bottom:12px;';
+        banner.innerHTML = `Daily Hit Metrics <strong>${siteName}</strong> is a Pro feature. <a href="#" onclick="openModal('signup-modal'); return false;" style="color:#3a6b4a; font-weight:700;">Create a free account</a> or <a href="#" onclick="handleUpgrade(); return false;" style="color:#3a6b4a; font-weight:700;">Upgrade to Pro</a> to access it.`;
+        document.getElementById('main-content') ? 
+            document.querySelector('.container').insertBefore(banner, document.querySelector('.container').firstChild) :
+            document.querySelector('.container').insertBefore(banner, document.querySelector('.container').firstChild);
+    }
+
     // Initialize section nav as locked by default
     ['sports', 'finance', 'politics', 'entertainment'].forEach(section => {
         const el = document.getElementById(`nav-${section}`);
