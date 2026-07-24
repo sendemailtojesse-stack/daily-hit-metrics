@@ -75,6 +75,48 @@ export default {
         if (url.pathname === '/api/stripe-webhook' && request.method === 'POST') {
             try {
                 const body = await request.text();
+                const signature = request.headers.get('stripe-signature');
+
+                // Verify webhook signature
+                if (!signature || !env.STRIPE_WEBHOOK_SECRET) {
+                    return new Response('Webhook signature missing', { status: 400 });
+                }
+
+                // Parse signature header
+                const sigParts = {};
+                signature.split(',').forEach(part => {
+                    const [k, v] = part.split('=');
+                    sigParts[k] = v;
+                });
+                const timestamp = sigParts['t'];
+                const receivedSig = sigParts['v1'];
+
+                // Compute expected signature
+                const encoder = new TextEncoder();
+                const key = await crypto.subtle.importKey(
+                    'raw',
+                    encoder.encode(env.STRIPE_WEBHOOK_SECRET),
+                    { name: 'HMAC', hash: 'SHA-256' },
+                    false,
+                    ['sign']
+                );
+                const signedData = encoder.encode(`${timestamp}.${body}`);
+                const signatureBuffer = await crypto.subtle.sign('HMAC', key, signedData);
+                const expectedSig = Array.from(new Uint8Array(signatureBuffer))
+                    .map(b => b.toString(16).padStart(2, '0'))
+                    .join('');
+
+                // Reject if signature doesn't match
+                if (expectedSig !== receivedSig) {
+                    return new Response('Invalid webhook signature', { status: 400 });
+                }
+
+                // Reject if timestamp is too old (5 minutes)
+                const tolerance = 300;
+                if (Math.abs(Date.now() / 1000 - parseInt(timestamp)) > tolerance) {
+                    return new Response('Webhook timestamp too old', { status: 400 });
+                }
+
                 const event = JSON.parse(body);
 
                 if (event.type === 'checkout.session.completed') {
