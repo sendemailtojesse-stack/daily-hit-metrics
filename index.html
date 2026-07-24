@@ -452,7 +452,39 @@
             /* Tooltip — disable on mobile */
             .momentum-header .tooltip { display: none !important; }
         }
-        /* ── AUTH MODAL ── */
+        /* ── SECTION NAV ── */
+        .section-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 8px 0 10px;
+            border-bottom: 0.5px solid #d4c9b0;
+            margin-bottom: 10px;
+        }
+
+        .section-nav-link {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #3a6b4a;
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+
+        .section-nav-link:hover { color: #254d33; }
+
+        .section-nav-link.locked {
+            color: #c8b89a;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .section-nav-sep {
+            color: #d4c9b0;
+            font-size: 0.6rem;
+        }
         .modal-overlay {
             display: none;
             position: fixed;
@@ -594,6 +626,18 @@
         <a href="#" class="nav-link" onclick="openModal('login-modal'); return false;">Login</a>
         <span style="color:#d4c9b0; font-size:0.6rem;">|</span>
         <a href="#" class="nav-link nav-link-signup" onclick="openModal('signup-modal'); return false;">Create Account</a>
+    </div>
+
+    <div class="section-nav" id="section-nav" style="display:none;">
+        <a href="/" class="section-nav-link">News</a>
+        <span class="section-nav-sep">|</span>
+        <a href="#" class="section-nav-link locked" id="nav-sports">Sports</a>
+        <span class="section-nav-sep">|</span>
+        <a href="#" class="section-nav-link locked" id="nav-finance">Finance</a>
+        <span class="section-nav-sep">|</span>
+        <a href="#" class="section-nav-link locked" id="nav-politics">Politics</a>
+        <span class="section-nav-sep">|</span>
+        <a href="#" class="section-nav-link locked" id="nav-entertainment">Entertainment</a>
     </div>
 
     <div class="masthead">
@@ -875,9 +919,26 @@
 
     function updateNav(user, firstName, tier) {
         const nav = document.getElementById('top-nav');
+        const isPro = tier === 'pro';
+
+        // Update section nav links based on tier
+        const sectionNav = document.getElementById('section-nav');
+        if (isPro) {
+            sectionNav.style.display = 'flex';
+            ['sports', 'finance', 'politics', 'entertainment'].forEach(section => {
+                const el = document.getElementById(`nav-${section}`);
+                if (el) {
+                    el.classList.remove('locked');
+                    el.href = `https://${section}.dailyhitmetrics.com`;
+                }
+            });
+        } else {
+            sectionNav.style.display = 'none';
+        }
+
         if (user) {
             const displayName = firstName || user.email.split('@')[0];
-            const proBtn = tier === 'pro' ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro</span>` : `<a href="#" class="nav-link" style="text-transform:none; background:rgba(58,107,74,0.08); border:0.5px solid #3a6b4a; padding:4px 10px;" onclick="handleUpgrade(); return false;">Upgrade to Pro</a>`;
+            const proBtn = isPro ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro</span>` : `<a href="#" class="nav-link" style="text-transform:none; background:rgba(58,107,74,0.08); border:0.5px solid #3a6b4a; padding:4px 10px;" onclick="handleUpgrade(); return false;">Upgrade to Pro</a>`;
             nav.innerHTML = `
                 <span class="nav-user">Hi, ${displayName}</span>
                 <span style="color:#d4c9b0; font-size:0.6rem;">|</span>
