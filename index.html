@@ -915,10 +915,28 @@
     const SUPABASE_URL = 'https://dljqwghiyjhombvflgfg.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsanF3Z2hpeWpob21idmZsZ2ZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3OTkzODQsImV4cCI6MjEwMDM3NTM4NH0.Be3zSr3ctcyuF7PUi25j2-szlt8ThPksxM_8OWbhCec';
     const { createClient } = supabase;
+
+    // Cookie storage adapter for cross-subdomain session sharing
+    const cookieStorage = {
+        getItem: (key) => {
+            const match = document.cookie.match(new RegExp('(^| )' + key + '=([^;]+)'));
+            return match ? decodeURIComponent(match[2]) : null;
+        },
+        setItem: (key, value) => {
+            document.cookie = `${key}=${encodeURIComponent(value)}; domain=.dailyhitmetrics.com; path=/; max-age=604800; SameSite=Lax; Secure`;
+        },
+        removeItem: (key) => {
+            document.cookie = `${key}=; domain=.dailyhitmetrics.com; path=/; max-age=0`;
+        }
+    };
+
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
         auth: {
+            storage: cookieStorage,
             storageKey: 'dhm-auth',
-            storage: window.localStorage
+            autoRefreshToken: true,
+            persistSession: true,
+            detectSessionInUrl: false
         }
     });
 
