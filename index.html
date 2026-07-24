@@ -628,7 +628,7 @@
         <a href="#" class="nav-link nav-link-signup" onclick="openModal('signup-modal'); return false;">Create Account</a>
     </div>
 
-    <div class="section-nav" id="section-nav" style="display:none;">
+    <div class="section-nav" id="section-nav">
         <a href="/" class="section-nav-link">News</a>
         <span class="section-nav-sep">|</span>
         <a href="#" class="section-nav-link locked" id="nav-sports">Sports</a>
@@ -923,18 +923,19 @@
 
         // Update section nav links based on tier
         const sectionNav = document.getElementById('section-nav');
-        if (isPro) {
-            sectionNav.style.display = 'flex';
-            ['sports', 'finance', 'politics', 'entertainment'].forEach(section => {
-                const el = document.getElementById(`nav-${section}`);
-                if (el) {
+        sectionNav.style.display = 'flex';
+        ['sports', 'finance', 'politics', 'entertainment'].forEach(section => {
+            const el = document.getElementById(`nav-${section}`);
+            if (el) {
+                if (isPro) {
                     el.classList.remove('locked');
                     el.href = `https://${section}.dailyhitmetrics.com`;
+                } else {
+                    el.classList.add('locked');
+                    el.href = '#';
                 }
-            });
-        } else {
-            sectionNav.style.display = 'none';
-        }
+            }
+        });
 
         if (user) {
             const displayName = firstName || user.email.split('@')[0];
@@ -1031,6 +1032,12 @@
         await supabaseClient.auth.signOut();
         updateNav(null);
     }
+
+    // Initialize section nav as locked by default
+    ['sports', 'finance', 'politics', 'entertainment'].forEach(section => {
+        const el = document.getElementById(`nav-${section}`);
+        if (el) el.classList.add('locked');
+    });
 
     // Check session on load
     supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
