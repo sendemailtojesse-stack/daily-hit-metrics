@@ -1069,6 +1069,11 @@
                 .eq('id', session.user.id)
                 .single();
             updateNav(session.user, profile?.first_name, profile?.subscription_tier);
+            // Remove upgrade banner if Pro
+            if (profile?.subscription_tier === 'pro') {
+                const banner = document.getElementById('upgrade-banner');
+                if (banner) banner.remove();
+            }
         }
     });
 
