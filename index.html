@@ -876,7 +876,7 @@
         const nav = document.getElementById('top-nav');
         if (user) {
             const displayName = firstName || user.email.split('@')[0];
-            const proBtn = tier === 'pro' ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro</span>` : `<a href="#" class="nav-link nav-link-signup" onclick="handleUpgrade(); return false;">Upgrade to Pro</a>`;
+            const proBtn = tier === 'pro' ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro</span>` : `<a href="#" class="nav-link" style="text-transform:none; background:rgba(58,107,74,0.08); border:0.5px solid #3a6b4a; padding:4px 10px;" onclick="handleUpgrade(); return false;">Upgrade to Pro</a>`;
             nav.innerHTML = `
                 <span class="nav-user">Hi, ${displayName}</span>
                 ${proBtn}
