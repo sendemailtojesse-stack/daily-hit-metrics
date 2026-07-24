@@ -27,6 +27,20 @@ export default {
             });
         }
 
+        // ── SPORTS DATA API ──
+        if (url.pathname === '/api/sports') {
+            const data = await env.SPORTS_KV.get('data');
+            if (!data) {
+                return new Response(JSON.stringify({ error: 'No sports data available' }), {
+                    status: 404,
+                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
+                });
+            }
+            return new Response(data, {
+                headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache', ...corsHeaders }
+            });
+        }
+
         // ── STRIPE CHECKOUT ──
         if (url.pathname === '/api/create-checkout-session' && request.method === 'POST') {
             try {
