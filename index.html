@@ -921,6 +921,12 @@
         const nav = document.getElementById('top-nav');
         const isPro = tier === 'pro';
 
+        // Remove upgrade banner if user is Pro
+        if (isPro) {
+            const banner = document.getElementById('upgrade-banner');
+            if (banner) banner.remove();
+        }
+
         // Update section nav links based on tier
         const sectionNav = document.getElementById('section-nav');
         sectionNav.style.display = 'flex';
@@ -1042,11 +1048,10 @@
         const siteNames = { sports: 'Sports', finance: 'Finance', politics: 'Politics', entertainment: 'Entertainment' };
         const siteName = siteNames[upgradeFrom] || 'this section';
         const banner = document.createElement('div');
+        banner.id = 'upgrade-banner';
         banner.style.cssText = 'background:#edf4ef; border:1px solid #3a6b4a; color:#254d33; font-family:Libre Baskerville,serif; font-size:0.8rem; padding:12px 20px; text-align:center; margin-bottom:12px;';
         banner.innerHTML = `Daily Hit Metrics <strong>${siteName}</strong> is a Pro feature. <a href="javascript:void(0)" onclick="openModal('signup-modal')" style="color:#3a6b4a; font-weight:700;">Create a free account</a> or <a href="javascript:void(0)" onclick="handleUpgrade()" style="color:#3a6b4a; font-weight:700;">Upgrade to Pro</a> to access it.`;
-        document.getElementById('main-content') ? 
-            document.querySelector('.container').insertBefore(banner, document.querySelector('.container').firstChild) :
-            document.querySelector('.container').insertBefore(banner, document.querySelector('.container').firstChild);
+        document.querySelector('.container').insertBefore(banner, document.querySelector('.container').firstChild);
     }
 
     // Initialize section nav as locked by default
