@@ -27,17 +27,6 @@ export default {
             });
         }
 
-        // ── STRIPE TEST ──
-        if (url.pathname === '/api/stripe-test') {
-            const res = await fetch(`https://api.stripe.com/v1/prices/price_1TwTusJX6rSaATLsqh4YyUnC`, {
-                headers: { 'Authorization': `Bearer ${env.STRIPE_SECRET_KEY}` }
-            });
-            const data = await res.json();
-            return new Response(JSON.stringify({ status: res.status, keyPrefix: env.STRIPE_SECRET_KEY?.substring(0, 14), data }), {
-                headers: { 'Content-Type': 'application/json', ...corsHeaders }
-            });
-        }
-
         // ── STRIPE CHECKOUT ──
         if (url.pathname === '/api/create-checkout-session' && request.method === 'POST') {
             try {
