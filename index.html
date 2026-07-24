@@ -934,16 +934,8 @@
             if (el) {
                 if (isPro) {
                     el.classList.remove('locked');
-                    el.href = '#';
-                    el.onclick = async (e) => {
-                        e.preventDefault();
-                        const { data: { session } } = await supabaseClient.auth.getSession();
-                        if (session) {
-                            window.location.href = `https://${section}.dailyhitmetrics.com/#access_token=${session.access_token}&refresh_token=${session.refresh_token}&type=pro`;
-                        } else {
-                            window.location.href = `https://${section}.dailyhitmetrics.com/`;
-                        }
-                    };
+                    el.href = `https://${section}.dailyhitmetrics.com`;
+                    el.onclick = null;
                 } else {
                     el.classList.add('locked');
                     el.href = '#';
