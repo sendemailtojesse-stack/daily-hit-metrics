@@ -1,10 +1,14 @@
 export default {
     async fetch(request, env) {
         const url = new URL(request.url);
+        const hostname = url.hostname;
+
+        const origin = request.headers.get('Origin') || '';
+        const allowedOrigin = origin.endsWith('dailyhitmetrics.com') ? origin : 'https://dailyhitmetrics.com';
 
         // CORS headers
         const corsHeaders = {
-            'Access-Control-Allow-Origin': 'https://dailyhitmetrics.com',
+            'Access-Control-Allow-Origin': allowedOrigin,
             'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         };
@@ -13,7 +17,7 @@ export default {
             return new Response(null, { headers: corsHeaders });
         }
 
-        // ── DATA API ──
+        // ── API ROUTES ──
         if (url.pathname === '/api/data') {
             const data = await env.DAILY_HIT_METRICS_KV.get('data');
             if (!data) {
