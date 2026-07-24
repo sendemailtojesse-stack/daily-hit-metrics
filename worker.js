@@ -4,7 +4,8 @@ export default {
         const hostname = url.hostname;
 
         const origin = request.headers.get('Origin') || '';
-        const allowedOrigin = origin.endsWith('dailyhitmetrics.com') ? origin : 'https://dailyhitmetrics.com';
+        const isAllowed = origin.endsWith('dailyhitmetrics.com') || origin.endsWith('workers.dev');
+        const allowedOrigin = isAllowed ? origin : 'https://dailyhitmetrics.com';
 
         // CORS headers
         const corsHeaders = {
