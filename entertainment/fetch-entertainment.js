@@ -98,7 +98,7 @@ async function fetchEntertainmentMatrix() {
     const entertainmentSources = [
         { name: 'Variety', url: 'https://variety.com/feed/', logo: LOGOS.variety },
         { name: 'Hollywood Reporter', url: 'https://www.hollywoodreporter.com/feed/', logo: LOGOS.thr },
-        { name: 'Entertainment Weekly', url: 'https://feeds.feedburner.com/ew/news/', logo: LOGOS.ew },
+        { name: 'Deadline', url: 'https://deadline.com/feed/', logo: 'https://www.google.com/s2/favicons?domain=deadline.com&sz=128' },
     ];
 
     for (const source of entertainmentSources) {
