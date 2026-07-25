@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#1a2a1f"/>
+  <text x="256" y="185" font-family="Georgia, serif" font-size="52" font-weight="400" fill="#6db88a" text-anchor="middle" letter-spacing="5">DAILY HIT</text>
+  <line x1="76" y1="215" x2="436" y2="215" stroke="#3a6b4a" stroke-width="3"/>
+  <text x="256" y="340" font-family="Georgia, serif" font-size="132" font-weight="700" fill="#fafaf4" text-anchor="middle">DHM</text>
+  <line x1="76" y1="368" x2="436" y2="368" stroke="#3a6b4a" stroke-width="3"/>
+  <text x="256" y="420" font-family="Georgia, serif" font-size="42" fill="#6db88a" text-anchor="middle" letter-spacing="10">METRICS</text>
+</svg>
