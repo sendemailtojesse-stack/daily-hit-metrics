@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings - Daily Hit Metrics</title>
+    <title>Daily Hit Metrics - World News Aggregate Feed</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
@@ -14,106 +15,369 @@
         .site-title { font-family: 'Quantico', sans-serif; font-size: 1.4rem; font-weight: 700; color: #2f3640; text-align: right; margin-bottom: 4px; text-decoration: underline; text-underline-offset: 4px; }
         .site-title a { color: inherit; text-decoration: none; }
         .top-rule { border: none; border-top: 3px solid #2c1810; margin: 8px 0 28px; }
-        h1 { font-family: 'Quantico', sans-serif; font-size: 1.6rem; color: #2c1810; margin-bottom: 20px; }
-        h2 { font-family: 'Libre Baskerville', serif; font-size: 1rem; font-weight: 700; color: #2c1810; margin: 24px 0 8px; border-bottom: 1px solid #d4c9b0; padding-bottom: 4px; }
-        p { font-size: 0.9rem; line-height: 1.7; color: #2a1a0a; margin-bottom: 12px; }
-        .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 0.5px solid #e8e0d0; }
-        .setting-label { font-size: 0.85rem; color: #2a1a0a; }
-        .setting-value { font-size: 0.85rem; color: #5a3e2b; font-style: italic; }
-        .badge { display: inline-block; background: #edf4ef; color: #254d33; border: 1px solid #3a6b4a; font-size: 0.65rem; font-weight: 700; padding: 2px 8px; letter-spacing: 0.08em; }
-        .btn { display: inline-block; background: #3a6b4a; color: #faf8f4; font-family: 'Libre Baskerville', serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 24px; text-decoration: none; margin-top: 16px; cursor: pointer; border: none; transition: background 0.15s ease; }
-        .btn:hover { background: #254d33; }
-        .btn-danger { background: #8a1a1a; }
-        .btn-danger:hover { background: #5a0a0a; }
-        .footer-nav { margin-top: 36px; padding-top: 16px; border-top: 1px solid #d4c9b0; font-family: 'IM Fell English', serif; font-size: 0.8rem; color: #8a6a50; font-style: italic; text-align: center; }
+        h1 { font-family: 'Quantico', sans-serif; font-size: 1.4rem; color: #2c1810; margin-bottom: 6px; }
+        .page-sub { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.8rem; color: #5a3e2b; margin-bottom: 24px; }
+        h2 { font-family: 'Libre Baskerville', serif; font-size: 0.85rem; font-weight: 700; color: #2c1810; margin: 28px 0 14px; border-bottom: 1px solid #d4c9b0; padding-bottom: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+        /* ── SITE TABS ── */
+        .site-tabs { display: flex; gap: 0; margin-bottom: 20px; border-bottom: 2px solid #3a6b4a; }
+        .site-tab { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.85rem; color: #5a3e2b; padding: 8px 18px; cursor: pointer; border: 1px solid transparent; border-bottom: none; transition: all 0.15s; }
+        .site-tab:hover { color: #254d33; }
+        .site-tab.active { color: #254d33; font-weight: 700; background: #faf8f4; border-color: #3a6b4a; border-bottom-color: #faf8f4; margin-bottom: -2px; }
+        .site-panel { display: none; }
+        .site-panel.active { display: block; }
+
+        /* ── SECTION ROWS ── */
+        .section-row { display: grid; grid-template-columns: 1fr auto auto auto; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid #e8e0d0; }
+        .section-row:last-child { border-bottom: none; }
+        .section-name { font-size: 0.75rem; color: #2a1a0a; }
+        .section-label { font-size: 0.6rem; color: #8a6a50; font-style: italic; }
+        .toggle-wrap { display: flex; align-items: center; gap: 6px; }
+        .toggle { position: relative; width: 36px; height: 20px; }
+        .toggle input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; inset: 0; background: #c8b89a; border-radius: 20px; cursor: pointer; transition: 0.2s; }
+        .toggle-slider:before { content: ''; position: absolute; width: 14px; height: 14px; left: 3px; top: 3px; background: white; border-radius: 50%; transition: 0.2s; }
+        input:checked + .toggle-slider { background: #3a6b4a; }
+        input:checked + .toggle-slider:before { transform: translateX(16px); }
+        .count-select { font-family: 'Libre Baskerville', serif; font-size: 0.65rem; color: #2a1a0a; border: 1px solid #d4c9b0; background: #faf8f4; padding: 4px 6px; cursor: pointer; }
+        .color-wrap { display: flex; align-items: center; gap: 6px; }
+        .color-btn { font-family: 'Libre Baskerville', serif; font-size: 0.6rem; padding: 3px 8px; border: 1px solid #d4c9b0; cursor: pointer; background: #faf8f4; color: #5a3e2b; }
+        .color-btn.active { background: #3a6b4a; color: #faf8f4; border-color: #3a6b4a; }
+        .color-swatch { width: 20px; height: 20px; border: 1px solid #d4c9b0; cursor: pointer; border-radius: 2px; }
+
+        /* ── KEYWORD ALERTS ── */
+        .keyword-wrap { margin-top: 8px; }
+        .keyword-input-row { display: flex; gap: 8px; margin-bottom: 12px; }
+        .keyword-input { font-family: 'Libre Baskerville', serif; font-size: 0.7rem; border: 1px solid #d4c9b0; padding: 8px 12px; flex: 1; background: #faf8f4; color: #2a1a0a; }
+        .keyword-input:focus { outline: none; border-color: #3a6b4a; }
+        .keyword-add-btn { font-family: 'Libre Baskerville', serif; font-size: 0.65rem; font-weight: 700; background: #3a6b4a; color: #faf8f4; border: none; padding: 8px 16px; cursor: pointer; }
+        .keyword-add-btn:hover { background: #254d33; }
+        .keyword-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .keyword-tag { display: flex; align-items: center; gap: 6px; background: #edf4ef; border: 1px solid #3a6b4a; font-size: 0.65rem; color: #254d33; padding: 4px 10px; }
+        .keyword-remove { cursor: pointer; color: #8a1a1a; font-weight: 700; font-size: 0.7rem; }
+        .keyword-note { font-size: 0.6rem; color: #8a6a50; font-style: italic; margin-top: 10px; }
+
+        /* ── BUTTONS ── */
+        .btn-row { display: flex; gap: 12px; margin-top: 28px; align-items: center; }
+        .btn-save { font-family: 'Libre Baskerville', serif; font-size: 0.7rem; font-weight: 700; background: #3a6b4a; color: #faf8f4; border: none; padding: 12px 28px; cursor: pointer; transition: background 0.15s; }
+        .btn-save:hover { background: #254d33; }
+        .btn-reset { font-family: 'Libre Baskerville', serif; font-size: 0.7rem; background: none; color: #8a1a1a; border: 1px solid #8a1a1a; padding: 12px 20px; cursor: pointer; }
+        .btn-reset:hover { background: #8a1a1a; color: #faf8f4; }
+        .save-msg { font-size: 0.65rem; color: #3a6b4a; font-style: italic; opacity: 0; transition: opacity 0.3s; }
+        .save-msg.visible { opacity: 1; }
+
+        /* ── ACCOUNT ── */
+        .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 0.5px solid #e8e0d0; }
+        .setting-label { font-size: 0.8rem; color: #2a1a0a; }
+        .setting-value { font-size: 0.8rem; color: #5a3e2b; font-style: italic; }
+        .badge { display: inline-block; background: #edf4ef; color: #254d33; border: 1px solid #3a6b4a; font-size: 0.6rem; font-weight: 700; padding: 2px 8px; }
+        .footer-nav { margin-top: 36px; padding-top: 16px; border-top: 1px solid #d4c9b0; font-family: 'IM Fell English', serif; font-size: 0.75rem; color: #8a6a50; font-style: italic; text-align: center; }
         .footer-nav a { color: #3a6b4a; text-decoration: none; margin: 0 8px; }
-        #account-email { font-weight: 700; }
+        .btn-logout { font-family: 'Libre Baskerville', serif; font-size: 0.65rem; font-weight: 700; background: none; color: #8a1a1a; border: 1px solid #8a1a1a; padding: 8px 16px; cursor: pointer; margin-top: 20px; }
+        .btn-logout:hover { background: #8a1a1a; color: #faf8f4; }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="site-title"><a href="/">Daily Hit Metrics</a></div>
+    <div class="site-title"><a href="https://news.dailyhitmetrics.com">Daily Hit Metrics</a></div>
     <div class="top-rule"></div>
 
     <h1>Settings</h1>
+    <div class="page-sub">Customize your Daily Hit Metrics experience</div>
 
+    <!-- Account -->
     <h2>Account</h2>
-    <div class="setting-row">
-        <span class="setting-label">Name</span>
-        <span class="setting-value" id="account-name">—</span>
-    </div>
-    <div class="setting-row">
-        <span class="setting-label">Email</span>
-        <span class="setting-value" id="account-email">—</span>
-    </div>
-    <div class="setting-row">
-        <span class="setting-label">Subscription</span>
-        <span class="setting-value" id="account-tier"><span class="badge">✦ Pro</span></span>
+    <div class="setting-row"><span class="setting-label">Name</span><span class="setting-value" id="account-name">—</span></div>
+    <div class="setting-row"><span class="setting-label">Email</span><span class="setting-value" id="account-email">—</span></div>
+    <div class="setting-row"><span class="setting-label">Subscription</span><span class="setting-value"><span class="badge">✦ Pro</span></span></div>
+
+    <!-- Section Preferences -->
+    <h2>Section Preferences</h2>
+    <p style="font-size:0.7rem; color:#5a3e2b; margin-bottom:16px;">Choose which sections to display, how many articles to show, and whether to use a gradient or solid color banner. Use <em>Reset to Defaults</em> to restore the original layout at any time.</p>
+
+    <div class="site-tabs" id="prefs-tabs">
+        <div class="site-tab active" onclick="switchTab('prefs', 'news')">News</div>
+        <div class="site-tab" onclick="switchTab('prefs', 'sports')">Sports</div>
+        <div class="site-tab" onclick="switchTab('prefs', 'finance')">Finance</div>
+        <div class="site-tab" onclick="switchTab('prefs', 'politics')">Politics</div>
+        <div class="site-tab" onclick="switchTab('prefs', 'entertainment')">Entertainment</div>
     </div>
 
-    <h2>Subscription</h2>
-    <p>Your Pro subscription is managed through Stripe. To cancel or update your payment method, please contact us at <a href="mailto:jms@mpathtek.com">jms@mpathtek.com</a>.</p>
+    <div id="prefs-panel-news" class="site-panel active"></div>
+    <div id="prefs-panel-sports" class="site-panel"></div>
+    <div id="prefs-panel-finance" class="site-panel"></div>
+    <div id="prefs-panel-politics" class="site-panel"></div>
+    <div id="prefs-panel-entertainment" class="site-panel"></div>
 
-    <h2>Preferences</h2>
-    <p>Category preferences and email digest settings are coming soon.</p>
+    <div class="btn-row">
+        <button class="btn-save" onclick="saveSettings()">Save Preferences</button>
+        <button class="btn-reset" onclick="resetCurrentTab()">Reset to Defaults</button>
+        <span class="save-msg" id="save-msg">Saved successfully.</span>
+    </div>
 
+    <!-- Keyword Alerts -->
+    <h2>Keyword Email Alerts</h2>
+    <p style="font-size:0.7rem; color:#5a3e2b; margin-bottom:16px;">Add keywords to monitor across each site's article titles and descriptions. You'll receive an email when a match is found during the hourly update.</p>
+
+    <div class="site-tabs" id="kw-tabs">
+        <div class="site-tab active" onclick="switchTab('kw', 'news')">News</div>
+        <div class="site-tab" onclick="switchTab('kw', 'sports')">Sports</div>
+        <div class="site-tab" onclick="switchTab('kw', 'finance')">Finance</div>
+        <div class="site-tab" onclick="switchTab('kw', 'politics')">Politics</div>
+        <div class="site-tab" onclick="switchTab('kw', 'entertainment')">Entertainment</div>
+    </div>
+
+    <div id="kw-panel-news" class="site-panel active"><div class="keyword-wrap" id="kw-wrap-news"></div></div>
+    <div id="kw-panel-sports" class="site-panel"><div class="keyword-wrap" id="kw-wrap-sports"></div></div>
+    <div id="kw-panel-finance" class="site-panel"><div class="keyword-wrap" id="kw-wrap-finance"></div></div>
+    <div id="kw-panel-politics" class="site-panel"><div class="keyword-wrap" id="kw-wrap-politics"></div></div>
+    <div id="kw-panel-entertainment" class="site-panel"><div class="keyword-wrap" id="kw-wrap-entertainment"></div></div>
+
+    <div class="btn-row" style="margin-top:16px;">
+        <button class="btn-save" onclick="saveSettings()">Save Alerts</button>
+        <span class="save-msg" id="save-msg-kw">Saved successfully.</span>
+    </div>
+
+    <!-- Account Actions -->
     <h2>Account Actions</h2>
-    <button class="btn btn-danger" onclick="handleLogout()">Logout</button>
+    <p style="font-size:0.7rem; color:#5a3e2b;">To cancel your subscription or update payment info, contact <a href="mailto:jms@mpathtek.com" style="color:#3a6b4a;">jms@mpathtek.com</a>.</p>
+    <button class="btn-logout" onclick="handleLogout()">Logout</button>
 
     <div class="footer-nav">
-        <a href="/">Home</a> · <a href="/about.html">About</a> · <a href="/privacy.html">Privacy Policy</a> · <a href="/contact.html">Contact</a>
+        <a href="https://news.dailyhitmetrics.com">Home</a> · <a href="https://news.dailyhitmetrics.com/about.html">About</a> · <a href="https://news.dailyhitmetrics.com/privacy.html">Privacy</a> · <a href="https://news.dailyhitmetrics.com/contact.html">Contact</a>
         <br><br>© 2026 <a href="https://mpathtek.com">MpathTek</a> · All rights reserved
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-    const SUPABASE_URL = 'https://dljqwghiyjhombvflgfg.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsanF3Z2hpeWpob21idmZsZ2ZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3OTkzODQsImV4cCI6MjEwMDM3NTM4NH0.Be3zSr3ctcyuF7PUi25j2-szlt8ThPksxM_8OWbhCec';
-    const { createClient } = supabase;
+const SUPABASE_URL = 'https://dljqwghiyjhombvflgfg.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsanF3Z2hpeWpob21idmZsZ2ZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3OTkzODQsImV4cCI6MjEwMDM3NTM4NH0.Be3zSr3ctcyuF7PUi25j2-szlt8ThPksxM_8OWbhCec';
+const { createClient } = supabase;
 
-    const cookieStorage = {
-        getItem: (key) => {
-            const match = document.cookie.match(new RegExp('(^| )' + key + '=([^;]+)'));
-            return match ? decodeURIComponent(match[2]) : null;
+const cookieStorage = {
+    getItem: (key) => { const m = document.cookie.match(new RegExp('(^| )' + key + '=([^;]+)')); return m ? decodeURIComponent(m[2]) : null; },
+    setItem: (key, value) => { document.cookie = `${key}=${encodeURIComponent(value)}; domain=.dailyhitmetrics.com; path=/; max-age=604800; SameSite=Lax; Secure`; },
+    removeItem: (key) => { document.cookie = `${key}=; domain=.dailyhitmetrics.com; path=/; max-age=0`; }
+};
+
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: { storage: cookieStorage, storageKey: 'dhm-auth', autoRefreshToken: true, persistSession: true, detectSessionInUrl: false }
+});
+
+// ── DEFAULTS ──
+const DEFAULTS = {
+    news: {
+        sections: {
+            'World News':       { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#254d33' },
+            'Social Pulse':     { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#6b6125' },
+            'Tech':             { visible: true, articleCount: 8, color: 'gradient', gradientColor: '#4a5c3a' },
+            'Video Games':      { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#3d5c3a' },
+            'Finance Trends':   { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#2d4a3e' },
+            'Popular Searches': { visible: true, articleCount: 28, color: 'gradient', gradientColor: '#556b45' }
         },
-        setItem: (key, value) => {
-            document.cookie = `${key}=${encodeURIComponent(value)}; domain=.dailyhitmetrics.com; path=/; max-age=604800; SameSite=Lax; Secure`;
+        keywords: []
+    },
+    sports: {
+        sections: {
+            'Top Sports News':          { visible: true, articleCount: 6, color: 'gradient', gradientColor: '#1a4a6b' },
+            'American Football':        { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#4b3a1e' },
+            'Basketball':               { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#6b3a1a' },
+            'Soccer':                   { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#1a5c2a' },
+            'Baseball':                 { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#2a4a6b' },
+            'Trending Sports Searches': { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#4a3a6b' }
         },
-        removeItem: (key) => {
-            document.cookie = `${key}=; domain=.dailyhitmetrics.com; path=/; max-age=0`;
-        }
-    };
-
-    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
-        auth: { storage: cookieStorage, storageKey: 'dhm-auth', autoRefreshToken: true, persistSession: true, detectSessionInUrl: false }
-    });
-
-    supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
-        if (!session) {
-            window.location.href = '/';
-            return;
-        }
-        const { data: profile } = await supabaseClient
-            .from('profiles')
-            .select('first_name, last_name, subscription_tier')
-            .eq('id', session.user.id)
-            .single();
-
-        document.getElementById('account-email').textContent = session.user.email;
-        if (profile) {
-            const name = [profile.first_name, profile.last_name].filter(Boolean).join(' ');
-            document.getElementById('account-name').textContent = name || '—';
-            document.getElementById('account-tier').innerHTML = profile.subscription_tier === 'pro'
-                ? '<span class="badge">✦ Pro</span>'
-                : 'Free';
-        }
-    });
-
-    async function handleLogout() {
-        await supabaseClient.auth.signOut();
-        window.location.href = '/';
+        keywords: []
+    },
+    finance: {
+        sections: {
+            'Top Finance News':          { visible: true, articleCount: 6, color: 'gradient', gradientColor: '#1a3a5c' },
+            'Markets':                   { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#2a4a2a' },
+            'Crypto':                    { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#4a3a1a' },
+            'Personal Finance':          { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#2a3a5c' },
+            'Trending Finance Searches': { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#5c4a1a' }
+        },
+        keywords: []
+    },
+    politics: {
+        sections: {
+            'Top Political News':          { visible: true, articleCount: 6, color: 'gradient', gradientColor: '#3a1a4a' },
+            'US Politics':                 { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#4a1a1a' },
+            'International Politics':      { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#1a3a4a' },
+            'Trending Political Searches': { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#3a3a1a' }
+        },
+        keywords: []
+    },
+    entertainment: {
+        sections: {
+            'Top Entertainment News':          { visible: true, articleCount: 6, color: 'gradient', gradientColor: '#5c1a3a' },
+            'Movies & TV':                     { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#3a1a5c' },
+            'Music':                           { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#1a4a5c' },
+            'Trending Entertainment Searches': { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#5c4a1a' }
+        },
+        keywords: []
     }
+};
+
+let currentPrefs = JSON.parse(JSON.stringify(DEFAULTS));
+let currentUser = null;
+let activePrefsTab = 'news';
+let activeKwTab = 'news';
+
+// ── TAB SWITCHING ──
+function switchTab(group, site) {
+    document.querySelectorAll(`#${group}-tabs .site-tab`).forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.querySelectorAll(`[id^="${group}-panel-"]`).forEach(p => p.classList.remove('active'));
+    document.getElementById(`${group}-panel-${site}`).classList.add('active');
+    if (group === 'prefs') activePrefsTab = site;
+    else activeKwTab = site;
+}
+
+// ── RENDER SECTION PREFS ──
+function renderPrefsPanel(site) {
+    const panel = document.getElementById(`prefs-panel-${site}`);
+    const sitePref = currentPrefs[site];
+    panel.innerHTML = Object.entries(sitePref.sections).map(([name, cfg]) => `
+        <div class="section-row">
+            <div>
+                <div class="section-name">${name}</div>
+            </div>
+            <div class="toggle-wrap">
+                <span class="section-label">Show</span>
+                <label class="toggle">
+                    <input type="checkbox" ${cfg.visible ? 'checked' : ''} onchange="updatePref('${site}','${name}','visible',this.checked)">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div>
+                <span class="section-label">Articles</span>
+                <select class="count-select" onchange="updatePref('${site}','${name}','articleCount',parseInt(this.value))">
+                    ${[2,4,6,8,10].map(n => `<option value="${n}" ${cfg.articleCount === n ? 'selected' : ''}>${n}</option>`).join('')}
+                </select>
+            </div>
+            <div class="color-wrap">
+                <button class="color-btn ${cfg.color === 'gradient' ? 'active' : ''}" onclick="updatePref('${site}','${name}','color','gradient'); renderPrefsPanel('${site}')">Gradient</button>
+                <button class="color-btn ${cfg.color === 'solid' ? 'active' : ''}" onclick="updatePref('${site}','${name}','color','solid'); renderPrefsPanel('${site}')">Solid</button>
+                <input type="color" class="color-swatch" value="${cfg.gradientColor || '#3a6b4a'}" title="Banner color" onchange="updatePref('${site}','${name}','gradientColor',this.value)">
+            </div>
+        </div>
+    `).join('');
+}
+
+function updatePref(site, section, key, value) {
+    currentPrefs[site].sections[section][key] = value;
+}
+
+// ── RENDER KEYWORD PANEL ──
+function renderKeywordPanel(site) {
+    const wrap = document.getElementById(`kw-wrap-${site}`);
+    const keywords = currentPrefs[site].keywords || [];
+    wrap.innerHTML = `
+        <div class="keyword-input-row">
+            <input type="text" class="keyword-input" id="kw-input-${site}" placeholder="e.g. Tesla, Fed rate, Lakers..." onkeydown="if(event.key==='Enter') addKeyword('${site}')">
+            <button class="keyword-add-btn" onclick="addKeyword('${site}')">Add</button>
+        </div>
+        <div class="keyword-tags" id="kw-tags-${site}">
+            ${keywords.map(kw => `
+                <span class="keyword-tag">
+                    ${kw}
+                    <span class="keyword-remove" onclick="removeKeyword('${site}','${kw}')">✕</span>
+                </span>
+            `).join('')}
+        </div>
+        <p class="keyword-note">You'll receive an email when any of these keywords appear in article titles or descriptions during the hourly update.</p>
+    `;
+}
+
+function addKeyword(site) {
+    const input = document.getElementById(`kw-input-${site}`);
+    const kw = input.value.trim();
+    if (!kw) return;
+    if (!currentPrefs[site].keywords.includes(kw)) {
+        currentPrefs[site].keywords.push(kw);
+        renderKeywordPanel(site);
+    }
+    input.value = '';
+}
+
+function removeKeyword(site, kw) {
+    currentPrefs[site].keywords = currentPrefs[site].keywords.filter(k => k !== kw);
+    renderKeywordPanel(site);
+}
+
+// ── RESET ──
+function resetCurrentTab() {
+    if (confirm(`Reset ${activePrefsTab} settings to defaults?`)) {
+        currentPrefs[activePrefsTab].sections = JSON.parse(JSON.stringify(DEFAULTS[activePrefsTab].sections));
+        renderPrefsPanel(activePrefsTab);
+    }
+}
+
+// ── SAVE ──
+async function saveSettings() {
+    if (!currentUser) return;
+    const { error } = await supabaseClient
+        .from('profiles')
+        .update({ preferences: currentPrefs })
+        .eq('id', currentUser.id);
+
+    const msg = document.getElementById('save-msg');
+    const msgKw = document.getElementById('save-msg-kw');
+    if (!error) {
+        msg.textContent = 'Saved successfully.';
+        msgKw.textContent = 'Saved successfully.';
+        msg.classList.add('visible');
+        msgKw.classList.add('visible');
+        setTimeout(() => { msg.classList.remove('visible'); msgKw.classList.remove('visible'); }, 3000);
+    } else {
+        msg.textContent = 'Error saving. Please try again.';
+        msg.classList.add('visible');
+        setTimeout(() => msg.classList.remove('visible'), 3000);
+    }
+}
+
+// ── LOGOUT ──
+async function handleLogout() {
+    await supabaseClient.auth.signOut();
+    window.location.href = 'https://news.dailyhitmetrics.com';
+}
+
+// ── INIT ──
+supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
+    if (!session) { window.location.href = 'https://news.dailyhitmetrics.com'; return; }
+    currentUser = session.user;
+
+    const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('first_name, last_name, subscription_tier, preferences')
+        .eq('id', session.user.id)
+        .single();
+
+    if (profile?.subscription_tier !== 'pro') { window.location.href = 'https://news.dailyhitmetrics.com'; return; }
+
+    document.getElementById('account-email').textContent = session.user.email;
+    const name = [profile.first_name, profile.last_name].filter(Boolean).join(' ');
+    document.getElementById('account-name').textContent = name || '—';
+
+    // Merge saved prefs with defaults
+    if (profile?.preferences && Object.keys(profile.preferences).length > 0) {
+        for (const site of Object.keys(DEFAULTS)) {
+            if (profile.preferences[site]) {
+                currentPrefs[site] = {
+                    sections: { ...DEFAULTS[site].sections, ...profile.preferences[site].sections },
+                    keywords: profile.preferences[site].keywords || []
+                };
+            }
+        }
+    }
+
+    // Render all panels
+    for (const site of Object.keys(DEFAULTS)) {
+        renderPrefsPanel(site);
+        renderKeywordPanel(site);
+    }
+});
 </script>
 </body>
 </html>
