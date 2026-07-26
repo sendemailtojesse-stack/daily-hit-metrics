@@ -293,7 +293,7 @@ async function fetchHighUtilityMatrix() {
         const res = await fetch('https://feeds.feedburner.com/ign/news', { headers: BROWSER_HEADERS });
         console.log(`IGN RSS status: ${res.status}`);
         if (res.ok) {
-            const items = parseRssItems(await res.text(), 6, 'https://ign.com/', LOGOS.ign);
+            const items = parseRssItems(await res.text(), 1, 'https://ign.com/', LOGOS.ign);
             items.forEach(item => videoGames.push({
                 site: item.title || "IGN News",
                 category: "Video Games",
@@ -307,28 +307,45 @@ async function fetchHighUtilityMatrix() {
     } catch (e) { console.error('IGN Error:', e.message); }
 
     try {
+        console.log("Parsing Video Games from Kotaku...");
+        const kotakuRes = await fetch('https://kotaku.com/rss', { headers: BROWSER_HEADERS });
+        console.log(`Kotaku RSS status: ${kotakuRes.status}`);
+        if (kotakuRes.ok) {
+            const items = parseRssItems(await kotakuRes.text(), 1, 'https://kotaku.com/', 'https://www.google.com/s2/favicons?domain=kotaku.com&sz=128');
+            items.forEach(item => videoGames.push({
+                site: item.title || "Kotaku",
+                category: "Video Games",
+                dailyHits: Math.floor(Math.random() * 5000 + 500).toLocaleString() + " views",
+                growth: "+" + (Math.random() * 8 + 1).toFixed(1) + "%",
+                trend: item.desc || "Latest gaming news from Kotaku.",
+                url: item.url,
+                image: item.image
+            }));
+        }
+    } catch (e) { console.error('Kotaku Error:', e.message); }
+
+    try {
         console.log("Parsing Video Games from r/gaming...");
         await new Promise(r => setTimeout(r, 4000));
-        const res = await fetch('https://www.reddit.com/r/gaming/.rss?limit=10', { headers: BROWSER_HEADERS });
+        const res = await fetch('https://www.reddit.com/r/gaming+pcgaming+GameDeals+patientgamers/.rss?limit=15', { headers: BROWSER_HEADERS });
         console.log(`r/gaming RSS status: ${res.status}`);
         if (res.ok) {
             const xmlText = await res.text();
-            console.log(`r/gaming XML length: ${xmlText.length}`);
-            const entries = parseAtomEntries(xmlText, 1, 'https://www.reddit.com/r/gaming/', LOGOS.reddit);
-            console.log(`r/gaming entries parsed: ${entries.length}`);
+            const entries = parseAtomEntries(xmlText, 6, 'https://www.reddit.com/r/gaming/', LOGOS.reddit);
+            const subredditName = (url) => { const m = url.match(/\/r\/([^/]+)\//); return m ? `r/${m[1]}` : 'r/gaming'; };
             entries.forEach(entry => videoGames.push({
                 site: entry.title || "r/gaming",
                 category: "Video Games",
                 dailyHits: `${Math.floor(Math.random() * 3000 + 500).toLocaleString()} Coms`,
                 growth: "+" + Math.floor(Math.random() * 30 + 5) + " up/min",
-                trend: "Top post trending in r/gaming.",
+                trend: `Trending in ${subredditName(entry.url)} — top gaming discussion.`,
                 url: entry.url,
                 image: entry.image
             }));
         }
     } catch (e) { console.error('r/gaming Error:', e.message); }
 
-    // If r/gaming slot is missing, add a fallback entry
+    // If video games still short, add a fallback
     if (videoGames.length < 4) {
         videoGames.push({
             site: "Hot discussion in r/gaming",
@@ -342,7 +359,7 @@ async function fetchHighUtilityMatrix() {
     }
 
     if (videoGames.length === 0) {
-        videoGames = Array.from({ length: 4 }, (_, i) => ({
+        videoGames = Array.from({ length: 8 }, (_, i) => ({
             site: `Gaming Story #${i + 1}`,
             category: "Video Games",
             dailyHits: Math.floor(Math.random() * 5000 + 500).toLocaleString() + " views",
