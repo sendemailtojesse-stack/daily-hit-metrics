@@ -293,7 +293,7 @@ async function fetchHighUtilityMatrix() {
         const kotakuRes = await fetch('https://kotaku.com/rss', { headers: BROWSER_HEADERS });
         console.log(`Kotaku RSS status: ${kotakuRes.status}`);
         if (kotakuRes.ok) {
-            const items = parseRssItems(await kotakuRes.text(), 2, 'https://kotaku.com/', 'https://www.google.com/s2/favicons?domain=kotaku.com&sz=128');
+            const items = parseRssItems(await kotakuRes.text(), 1, 'https://kotaku.com/', 'https://www.google.com/s2/favicons?domain=kotaku.com&sz=128');
             items.forEach(item => videoGames.push({
                 site: item.title || "Kotaku",
                 category: "Video Games",
@@ -311,7 +311,7 @@ async function fetchHighUtilityMatrix() {
         const res = await fetch('https://feeds.feedburner.com/ign/news', { headers: BROWSER_HEADERS });
         console.log(`IGN RSS status: ${res.status}`);
         if (res.ok) {
-            const items = parseRssItems(await res.text(), 2, 'https://ign.com/', LOGOS.ign);
+            const items = parseRssItems(await res.text(), 1, 'https://ign.com/', LOGOS.ign);
             items.forEach(item => videoGames.push({
                 site: item.title || "IGN News",
                 category: "Video Games",
