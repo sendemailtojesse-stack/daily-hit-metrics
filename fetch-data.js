@@ -169,7 +169,7 @@ async function fetchHighUtilityMatrix() {
         const res = await fetch('https://www.reddit.com/r/popular/.rss?limit=15', { headers: BROWSER_HEADERS });
         console.log(`Social Pulse RSS status: ${res.status}`);
         if (res.ok) {
-            const entries = parseAtomEntries(await res.text(), 4, 'https://www.reddit.com/r/popular/', LOGOS.reddit);
+            const entries = parseAtomEntries(await res.text(), 8, 'https://www.reddit.com/r/popular/', LOGOS.reddit);
             const subredditMatch = (url) => { const m = url.match(/\/r\/([^/]+)\//); return m ? `r/${m[1]}` : 'r/popular'; };
             entries.forEach(entry => socialPulse.push({
                 site: entry.title || "Trending Discussion",
@@ -184,7 +184,7 @@ async function fetchHighUtilityMatrix() {
     } catch (e) { console.error('Social Pulse Error:', e.message); }
 
     if (socialPulse.length === 0) {
-        socialPulse = Array.from({ length: 4 }, (_, i) => ({
+        socialPulse = Array.from({ length: 8 }, (_, i) => ({
             site: `Trending Thread #${i + 1}`,
             category: "Social Pulse",
             dailyHits: `${Math.floor(Math.random() * 3000 + 1000)} Coms`,
@@ -206,7 +206,7 @@ async function fetchHighUtilityMatrix() {
             const xmlText = await res.text();
             const hnItems = xmlText.split('<item>');
             hnItems.shift();
-            const parsed = hnItems.slice(0, 4).map(itemStr => {
+            const parsed = hnItems.slice(0, 6).map(itemStr => {
                 const titleMatch = itemStr.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/s);
                 let title = titleMatch ? decodeEntities(titleMatch[1].replace(/<[^>]*>/g, '').trim()) : "";
                 if (title.length > 120) title = title.substring(0, 117) + "...";
@@ -250,7 +250,7 @@ async function fetchHighUtilityMatrix() {
         console.log(`Ars Technica RSS status: ${arsRes.status}`);
         if (arsRes.ok) {
             const arsText = await arsRes.text();
-            const items = parseRssItems(arsText, 4, 'https://arstechnica.com/', 'https://www.google.com/s2/favicons?domain=arstechnica.com&sz=128');
+            const items = parseRssItems(arsText, 6, 'https://arstechnica.com/', 'https://www.google.com/s2/favicons?domain=arstechnica.com&sz=128');
             const arsRawItems = arsText.split('<item>');
             arsRawItems.shift();
             items.forEach((item, idx) => {
@@ -274,7 +274,7 @@ async function fetchHighUtilityMatrix() {
     } catch (e) { console.error('Ars Technica Error:', e.message); }
 
     if (techNews.length === 0) {
-        techNews = Array.from({ length: 8 }, (_, i) => ({
+        techNews = Array.from({ length: 12 }, (_, i) => ({
             site: `Tech Story #${i + 1}`,
             category: "Tech",
             dailyHits: Math.floor(Math.random() * 800 + 200) + " pts",
@@ -293,7 +293,7 @@ async function fetchHighUtilityMatrix() {
         const res = await fetch('https://feeds.feedburner.com/ign/news', { headers: BROWSER_HEADERS });
         console.log(`IGN RSS status: ${res.status}`);
         if (res.ok) {
-            const items = parseRssItems(await res.text(), 3, 'https://ign.com/', LOGOS.ign);
+            const items = parseRssItems(await res.text(), 6, 'https://ign.com/', LOGOS.ign);
             items.forEach(item => videoGames.push({
                 site: item.title || "IGN News",
                 category: "Video Games",
@@ -385,7 +385,7 @@ async function fetchHighUtilityMatrix() {
         const res = await fetch('https://www.reddit.com/r/stocks+investing+options/.rss?limit=15', { headers: BROWSER_HEADERS });
         console.log(`Finance Trends RSS status: ${res.status}`);
         if (res.ok) {
-            const entries = parseAtomEntries(await res.text(), 4, 'https://www.reddit.com/r/stocks/', LOGOS.reddit);
+            const entries = parseAtomEntries(await res.text(), 8, 'https://www.reddit.com/r/stocks/', LOGOS.reddit);
             const subredditName = (url) => { const m = url.match(/\/r\/([^/]+)\//); return m ? `r/${m[1]}` : 'r/stocks'; };
             entries.forEach(entry => financeTrends.push({
                 site: entry.title || "Market Discussion",
