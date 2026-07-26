@@ -871,8 +871,21 @@
 
             let lastCategory = null;
             let lastSearchLabel = null;
+            const sectionCounts = {};
 
             data.trafficLeaderboard.forEach(item => {
+                // Get base category for prefs lookup
+                const baseCategory = item.category === 'Popular Searches' ? 'Popular Searches' : item.category;
+                const pref = getSectionPref(baseCategory);
+
+                // Skip hidden sections
+                if (!pref.visible) return;
+
+                // Track article count per section
+                if (!sectionCounts[baseCategory]) sectionCounts[baseCategory] = 0;
+                if (sectionCounts[baseCategory] >= pref.articleCount) return;
+                sectionCounts[baseCategory]++;
+
                 if (item.category !== lastCategory || (item.category === 'Popular Searches' && item.searchLabel !== lastSearchLabel)) {
                     lastCategory = item.category;
                     lastSearchLabel = item.searchLabel || null;
@@ -895,7 +908,11 @@
                     }[labelKey] || 'section-banner-world';
                     const bannerRow = document.createElement('tr');
                     const isMobile = window.innerWidth <= 768;
-                    bannerRow.innerHTML = `<td colspan="${isMobile ? 3 : 5}" class="section-banner ${bannerClass}">${SECTION_LABELS[labelKey] || item.category}</td>`;
+                    // Apply custom color if set
+                    const bannerStyle = pref.color === 'solid'
+                        ? `style="background:${pref.gradientColor};"`
+                        : `style="background:linear-gradient(to right, ${pref.gradientColor}, transparent);"`;
+                    bannerRow.innerHTML = `<td colspan="${isMobile ? 3 : 5}" class="section-banner ${bannerClass}" ${bannerStyle}>${SECTION_LABELS[labelKey] || item.category}</td>`;
                     tableBody.appendChild(bannerRow);
                     const tooltipEl = document.getElementById('momentum-tooltip');
                     if (tooltipEl) tooltipEl.textContent = MOMENTUM_TOOLTIPS[item.category] || '';
@@ -1185,6 +1202,34 @@
         if (el) el.classList.add('locked');
     });
 
+    // ── USER PREFERENCES ──
+    let userPrefs = null;
+
+    const NEWS_DEFAULTS = {
+        'World News':       { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#254d33' },
+        'Social Pulse':     { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#6b6125' },
+        'Tech':             { visible: true, articleCount: 8, color: 'gradient', gradientColor: '#4a5c3a' },
+        'Video Games':      { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#3d5c3a' },
+        'Finance Trends':   { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#2d4a3e' },
+        'Popular Searches': { visible: true, articleCount: 28, color: 'gradient', gradientColor: '#556b45' }
+    };
+
+    async function loadUserPrefs(userId) {
+        const { data: profile } = await supabaseClient
+            .from('profiles')
+            .select('preferences')
+            .eq('id', userId)
+            .single();
+        if (profile?.preferences?.news?.sections) {
+            userPrefs = { ...NEWS_DEFAULTS, ...profile.preferences.news.sections };
+        }
+    }
+
+    function getSectionPref(category) {
+        if (!userPrefs) return NEWS_DEFAULTS[category] || { visible: true, articleCount: 99, color: 'gradient', gradientColor: '#254d33' };
+        return userPrefs[category] || { visible: true, articleCount: 99, color: 'gradient', gradientColor: '#254d33' };
+    }
+
     // Check session on load
     supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
         if (session) {
@@ -1194,6 +1239,7 @@
                 .eq('id', session.user.id)
                 .single();
             updateNav(session.user, profile?.first_name, profile?.subscription_tier);
+            await loadUserPrefs(session.user.id);
         }
     });
 
