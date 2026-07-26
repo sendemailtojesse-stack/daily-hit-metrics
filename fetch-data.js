@@ -132,25 +132,25 @@ async function fetchHighUtilityMatrix() {
             const res = await fetch(source.url, { headers: BROWSER_HEADERS });
             console.log(`${source.name} RSS status: ${res.status}`);
             if (res.ok) {
-                const items = parseRssItems(await res.text(), 1, source.url, source.logo);
-                if (items.length > 0) {
-                    const trend = ensurePeriod(items[0].desc || `Breaking news from ${source.name}.`);
+                const items = parseRssItems(await res.text(), 2, source.url, source.logo);
+                items.forEach(item => {
+                    const trend = ensurePeriod(item.desc || `Breaking news from ${source.name}.`);
                     worldNews.push({
-                        site: items[0].title || `${source.name} News`,
+                        site: item.title || `${source.name} News`,
                         category: "World News",
                         dailyHits: "Global",
                         growth: "+" + (Math.random() * 5 + 1).toFixed(1) + "%",
                         trend,
-                        url: items[0].url,
-                        image: items[0].image
+                        url: item.url,
+                        image: item.image
                     });
-                }
+                });
             }
         } catch (e) { console.error(`${source.name} Error:`, e.message); }
     }
 
     if (worldNews.length === 0) {
-        worldNews = Array.from({ length: 4 }, (_, i) => ({
+        worldNews = Array.from({ length: 8 }, (_, i) => ({
             site: `World News Dispatch #${i + 1}`,
             category: "World News",
             dailyHits: "Global",
