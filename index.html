@@ -487,6 +487,65 @@
             color: #d4c9b0;
             font-size: 0.6rem;
         }
+        /* ── AGE GATE ── */
+        .age-gate-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(30, 20, 10, 0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .age-gate-overlay.active { display: flex; }
+        .age-gate-box {
+            background: #faf8f4;
+            border-left: 3px solid #3a6b4a;
+            border-right: 3px solid #3a6b4a;
+            max-width: 480px;
+            width: 100%;
+            padding: 40px 36px;
+            text-align: center;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+        }
+        .age-gate-title {
+            font-family: 'Quantico', sans-serif;
+            font-size: 1rem;
+            color: #254d33;
+            margin-bottom: 12px;
+            letter-spacing: 0.05em;
+        }
+        .age-gate-rule { border: none; border-top: 2px solid #2c1810; margin: 0 0 20px; }
+        .age-gate-text {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.7rem;
+            line-height: 1.8;
+            color: #2a1a0a;
+            margin-bottom: 24px;
+        }
+        .age-gate-btn {
+            background: #3a6b4a;
+            color: #faf8f4;
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border: none;
+            padding: 12px 32px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        .age-gate-btn:hover { background: #254d33; }
+        .age-gate-note {
+            font-family: 'IM Fell English', serif;
+            font-size: 0.55rem;
+            font-style: italic;
+            color: #8a6a50;
+            margin-top: 14px;
+        }
+
         .modal-overlay {
             display: none;
             position: fixed;
@@ -598,6 +657,17 @@
 <body>
 
     <!-- Auth Modals -->
+    <!-- Age Gate -->
+    <div class="age-gate-overlay" id="age-gate">
+        <div class="age-gate-box">
+            <div class="age-gate-title">Daily Hit Metrics</div>
+            <hr class="age-gate-rule">
+            <p class="age-gate-text">This site aggregates content from public sources including Reddit and other open networks, which may contain unmoderated community discussions. By continuing, you confirm that you are <strong>13 years of age or older</strong> and agree to our <a href="/terms.html" style="color:#3a6b4a;">Terms of Service</a>.</p>
+            <button class="age-gate-btn" onclick="confirmAge()">I Confirm — Continue</button>
+            <p class="age-gate-note">This confirmation is stored in your browser and will not be shown again.</p>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="login-modal">
         <div class="modal">
             <h2>Login</h2>
@@ -1093,6 +1163,21 @@
             document.querySelector('.container').insertBefore(banner, document.querySelector('.container').firstChild);
         });
     }
+
+    // ── AGE GATE ──
+    function confirmAge() {
+        document.cookie = 'dhm-age-confirmed=1; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure';
+        document.getElementById('age-gate').classList.remove('active');
+    }
+
+    function checkAgeGate() {
+        const confirmed = document.cookie.split(';').some(c => c.trim().startsWith('dhm-age-confirmed='));
+        if (!confirmed) {
+            document.getElementById('age-gate').classList.add('active');
+        }
+    }
+
+    checkAgeGate();
 
     // Initialize section nav as locked by default
     ['sports', 'finance', 'politics', 'entertainment'].forEach(section => {
