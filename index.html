@@ -980,7 +980,7 @@
         }
     }
 
-    loadDashboard();
+    // Dashboard will load after prefs are fetched (see second script block)
     initCountdownClock();
 </script>
 
@@ -1230,7 +1230,7 @@
         return userPrefs[category] || { visible: true, articleCount: 99, color: 'gradient', gradientColor: '#254d33' };
     }
 
-    // Check session on load
+    // Check session on load — fetch prefs first, then render dashboard
     supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
         if (session) {
             const { data: profile } = await supabaseClient
@@ -1241,6 +1241,7 @@
             updateNav(session.user, profile?.first_name, profile?.subscription_tier);
             await loadUserPrefs(session.user.id);
         }
+        loadDashboard(); // render dashboard after prefs are loaded (or as default if not logged in)
     });
 
     // Listen for auth changes
