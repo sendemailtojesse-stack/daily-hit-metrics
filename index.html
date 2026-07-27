@@ -151,21 +151,38 @@
 
         /* ── EDITORIAL SUMMARY ── */
         .editorial-box {
-            border: 1px solid #d4c9b0;
-            border-left: 3px solid #3a6b4a;
-            background: #f5f2ec;
-            padding: 18px 20px;
-            margin-bottom: 18px;
+            border-bottom: 0.5px solid #d4c9b0;
+            margin-bottom: 14px;
             display: none;
         }
-        .editorial-label {
-            font-family: 'Quantico', sans-serif;
-            font-size: 0.45rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: #3a6b4a;
-            margin-bottom: 8px;
+        .editorial-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 6px 0;
+            user-select: none;
         }
+        .editorial-label {
+            font-family: 'IM Fell English', serif;
+            font-style: italic;
+            font-size: 0.7rem;
+            color: #3a6b4a;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+        .editorial-arrow {
+            font-size: 0.55rem;
+            color: #3a6b4a;
+            transition: transform 0.2s ease;
+        }
+        .editorial-arrow.open { transform: rotate(180deg); }
+        .editorial-content {
+            display: none;
+            padding: 12px 0 14px;
+            border-top: 0.5px solid #e8e0d0;
+        }
+        .editorial-content.open { display: block; }
         .editorial-text {
             font-family: 'Libre Baskerville', serif;
             font-size: 0.6rem;
@@ -788,8 +805,13 @@
     </div>
 
     <div class="editorial-box" id="editorial-box">
-        <div class="editorial-label">✦ This Hour's Briefing</div>
-        <div class="editorial-text" id="editorial-text"></div>
+        <div class="editorial-toggle" onclick="toggleEditorial()">
+            <span class="editorial-label">✦ This Hour's Briefing</span>
+            <span class="editorial-arrow" id="editorial-arrow">▾</span>
+        </div>
+        <div class="editorial-content" id="editorial-content">
+            <div class="editorial-text" id="editorial-text"></div>
+        </div>
     </div>
 
     <table class="scoreboard">
@@ -1236,6 +1258,13 @@
             banner.innerHTML = `Daily Hit Metrics <strong>${siteName}</strong> is a Pro feature. <a href="javascript:void(0)" onclick="openModal('signup-modal')" style="color:#3a6b4a; font-weight:700;">Create a free account</a> or <a href="javascript:void(0)" onclick="handleUpgrade()" style="color:#3a6b4a; font-weight:700;">Upgrade to Pro</a> to access it.`;
             document.querySelector('.container').insertBefore(banner, document.querySelector('.container').firstChild);
         });
+    }
+
+    function toggleEditorial() {
+        const content = document.getElementById('editorial-content');
+        const arrow = document.getElementById('editorial-arrow');
+        content.classList.toggle('open');
+        arrow.classList.toggle('open');
     }
 
     // ── ZOOM CONTROL ──
