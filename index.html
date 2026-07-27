@@ -1210,7 +1210,7 @@
     }
 
     function applyZoom(level) {
-        document.querySelector('.container').style.zoom = level;
+        document.body.style.zoom = level;
         const btn = document.getElementById('zoom-btn');
         if (btn) btn.title = `Text size: ${Math.round(level * 100)}%`;
     }
