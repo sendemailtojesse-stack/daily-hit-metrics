@@ -1011,8 +1011,6 @@
                         : `style="background:linear-gradient(to right, ${pref.gradientColor}, transparent);"`;
                     bannerRow.innerHTML = `<td colspan="${isMobile ? 3 : 5}" class="section-banner ${bannerClass}" ${bannerStyle}>${SECTION_LABELS[labelKey] || item.category}</td>`;
                     tableBody.appendChild(bannerRow);
-                    const tooltipEl = document.getElementById('momentum-tooltip');
-                    if (tooltipEl) tooltipEl.textContent = MOMENTUM_TOOLTIPS[item.category] || '';
                 }
 
                 const row = document.createElement('tr');
