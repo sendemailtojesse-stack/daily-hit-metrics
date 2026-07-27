@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upgrade to Pro — Daily Hit Metrics</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="icon" href="https://news.dailyhitmetrics.com/favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
     <style>
@@ -38,7 +38,7 @@
         .divider { display: flex; align-items: center; gap: 12px; margin: 16px 0; }
         .divider-line { flex: 1; border: none; border-top: 1px solid #d4c9b0; }
         .divider-text { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.65rem; color: #8a6a50; }
-        #paypal-button-container-P-1H34297466581652ANJTXFIY { margin-top: 8px; }
+        #paypal-button-container-P-1H34297466581652ANJTXFIY { margin-top: 8px; max-width: 300px; margin-left: auto; margin-right: auto; }
         .footer-note { margin-top: 28px; padding-top: 16px; border-top: 1px solid #d4c9b0; font-family: 'IM Fell English', serif; font-size: 0.65rem; color: #8a6a50; font-style: italic; }
         @media (max-width: 600px) { .features-grid { grid-template-columns: 1fr; } .container { padding: 24px 20px 32px; } .headline { font-size: 1.4rem; } }
     </style>
@@ -90,7 +90,7 @@
     <div class="cta-block">
         <p>Your subscription begins immediately. Cancel anytime from your Stripe billing portal — no contracts, no commitments.</p>
         <button class="btn-subscribe" id="subscribe-btn" onclick="handleUpgrade()">Subscribe for $4.99 / month</button>
-        <div class="error-msg" id="upgrade-error">Something went wrong. Please try again or contact support.</div>
+        <div class="error-msg" id="upgrade-error"></div>
 
         <div class="divider">
             <div class="divider-line"></div>
@@ -99,6 +99,7 @@
         </div>
 
         <div id="paypal-button-container-P-1H34297466581652ANJTXFIY"></div>
+        <div class="error-msg" id="paypal-error"></div>
     </div>
 
     <a href="https://news.dailyhitmetrics.com" class="maybe-later">← Maybe later, return to News</a>
@@ -155,6 +156,7 @@
             btn.disabled = false;
             btn.textContent = 'Subscribe for $4.99 / month';
             errMsg.style.display = 'block';
+            errMsg.textContent = 'Something went wrong. Please try again or contact support.';
         }
     }
 
@@ -162,7 +164,7 @@
     function initPayPal() {
         if (typeof paypal === 'undefined') return;
         paypal.Buttons({
-            style: { shape: 'rect', color: 'blue', layout: 'vertical', label: 'subscribe', tagline: false },
+            style: { shape: 'rect', color: 'gold', layout: 'vertical', label: 'subscribe', tagline: false },
             createSubscription: function(data, actions) {
                 return actions.subscription.create({ plan_id: 'P-1H34297466581652ANJTXFIY' });
             },
@@ -180,9 +182,8 @@
                 }
             },
             onError: function(err) {
-                const errMsg = document.getElementById('upgrade-error');
-                errMsg.style.display = 'block';
-                errMsg.textContent = 'PayPal encountered an error. Please try again or use the card option above.';
+                const paypalErr = document.getElementById('paypal-error');
+                if (paypalErr) { paypalErr.style.display = 'block'; paypalErr.textContent = 'PayPal encountered an error. Please try again or use the card option above.'; }
             }
         }).render('#paypal-button-container-P-1H34297466581652ANJTXFIY');
     }
