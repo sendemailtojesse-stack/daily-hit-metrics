@@ -763,12 +763,13 @@ async function fetchHighUtilityMatrix() {
                     const keywords = user.preferences?.news?.keywords || [];
                     if (!keywords.length) continue;
 
-                    // Find matching articles
+                    // Find matching articles using word boundary matching
                     const matches = [];
                     for (const item of orderedGrid) {
                         const text = `${item.site} ${item.trend}`.toLowerCase();
                         for (const keyword of keywords) {
-                            if (text.includes(keyword.toLowerCase())) {
+                            const regex = new RegExp(`\\b${keyword.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`);
+                            if (regex.test(text)) {
                                 matches.push({ item, keyword });
                                 break;
                             }
