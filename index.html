@@ -750,7 +750,8 @@
             <input type="text" id="signup-firstname" placeholder="First name" autocomplete="given-name">
             <input type="text" id="signup-lastname" placeholder="Last name" autocomplete="family-name">
             <input type="email" id="signup-email" placeholder="Email address" autocomplete="email">
-            <input type="password" id="signup-password" placeholder="Password (min 6 characters)" autocomplete="new-password">
+            <input type="password" id="signup-password" placeholder="Password" autocomplete="new-password">
+            <div style="font-family:'Libre Baskerville',serif; font-size:0.55rem; color:#8a6a50; margin-top:-6px; margin-bottom:6px;">Minimum 8 characters, must include letters and numbers.</div>
             <button class="modal-btn" onclick="handleSignup()">Create Account</button>
             <div class="modal-switch">Already have an account? <a onclick="switchModal('signup','login')">Login</a></div>
             <span class="modal-close" onclick="closeModal('signup-modal')">Cancel</span>
