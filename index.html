@@ -811,7 +811,7 @@
             <span class="editorial-arrow" id="editorial-arrow">▾</span>
         </div>
         <div class="editorial-content" id="editorial-content">
-            <div class="editorial-text" id="editorial-text"><span style="font-family:'Quantico',sans-serif; font-size:0.5rem; letter-spacing:0.15em; color:#3a6b4a;">Editor's Summary:</span> <span id="editorial-body"></span></div>
+            <div class="editorial-text" id="editorial-text"><span style="font-family:'Quantico',sans-serif; font-size:0.65rem; letter-spacing:0.1em; color:#3a6b4a;">Editor's Summary:</span> <span id="editorial-body"></span></div>
         </div>
     </div>
 
@@ -938,7 +938,11 @@
 
             // Show editorial summary if available
             if (data.editorialSummary) {
-                document.getElementById('editorial-body').textContent = data.editorialSummary;
+                const text = data.editorialSummary;
+                const firstLetter = text.charAt(0);
+                const rest = text.slice(1);
+                document.getElementById('editorial-body').innerHTML = 
+                    `<span style="font-size:1rem; font-weight:700; color:#2c1810;">${firstLetter}</span>${rest}`;
                 document.getElementById('editorial-box').style.display = 'block';
             } else {
                 document.getElementById('editorial-box').style.display = 'none';
