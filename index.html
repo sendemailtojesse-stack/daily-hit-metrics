@@ -738,8 +738,8 @@
         <div class="modal">
             <h2>Login</h2>
             <div class="modal-msg" id="login-msg"></div>
-            <input type="email" id="login-email" placeholder="Email address" autocomplete="email">
-            <input type="password" id="login-password" placeholder="Password" autocomplete="current-password">
+            <input type="email" id="login-email" placeholder="Email address" autocomplete="email" onkeydown="if(event.key==='Enter') handleLogin()">
+            <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter') handleLogin()">
             <button class="modal-btn" onclick="handleLogin()">Login</button>
             <div class="modal-switch">Don't have an account? <a onclick="switchModal('login','signup')">Create one</a></div>
             <span class="modal-close" onclick="closeModal('login-modal')">Cancel</span>
