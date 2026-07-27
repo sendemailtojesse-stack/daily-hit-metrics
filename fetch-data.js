@@ -577,7 +577,7 @@ async function fetchHighUtilityMatrix() {
                     temperature: 0.7,
                     messages: [{
                         role: 'user',
-                        content: `You are the editor of Daily Hit Metrics, a real-time global news and trends aggregator. Based on the following trending stories from this hour, write a concise 250-300 word editorial briefing titled "This Hour's Briefing" that synthesizes the key themes and developments. Write in a sharp, authoritative newspaper editorial style. Do not use bullet points — write flowing prose. Do not mention Daily Hit Metrics by name in the body.\n\nTop stories this hour:\n${topStories}`
+                        content: `You are the editor of Daily Hit Metrics, a real-time global news and trends aggregator. Based on the following trending stories from this hour, write a concise 250-300 word editorial briefing that synthesizes the key themes and developments. Write in a sharp, authoritative newspaper editorial style. Do not use bullet points — write flowing prose. Do not include any title, heading, or label at the start — begin directly with the editorial text. Do not mention Daily Hit Metrics by name in the body.\n\nTop stories this hour:\n${topStories}`
                     }]
                 })
             });
