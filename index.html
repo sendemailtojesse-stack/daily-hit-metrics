@@ -149,6 +149,30 @@
             font-variant-numeric: tabular-nums;
         }
 
+        /* ── EDITORIAL SUMMARY ── */
+        .editorial-box {
+            border: 1px solid #d4c9b0;
+            border-left: 3px solid #3a6b4a;
+            background: #f5f2ec;
+            padding: 18px 20px;
+            margin-bottom: 18px;
+            display: none;
+        }
+        .editorial-label {
+            font-family: 'Quantico', sans-serif;
+            font-size: 0.45rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #3a6b4a;
+            margin-bottom: 8px;
+        }
+        .editorial-text {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.6rem;
+            line-height: 1.9;
+            color: #2a1a0a;
+        }
+
         .masthead-thick-rule {
             border: none;
             border-top: 3px solid #2c1810;
@@ -763,6 +787,11 @@
 
     </div>
 
+    <div class="editorial-box" id="editorial-box">
+        <div class="editorial-label">✦ This Hour's Briefing</div>
+        <div class="editorial-text" id="editorial-text"></div>
+    </div>
+
     <table class="scoreboard">
         <thead>
             <tr>
@@ -883,6 +912,14 @@
             }
 
             currentlyLoadedTimestamp = data.lastUpdated;
+
+            // Show editorial summary if available
+            if (data.editorialSummary) {
+                document.getElementById('editorial-text').textContent = data.editorialSummary;
+                document.getElementById('editorial-box').style.display = 'block';
+            } else {
+                document.getElementById('editorial-box').style.display = 'none';
+            }
 
             const tableBody = document.getElementById('leaderboard-rows');
             tableBody.innerHTML = '';
