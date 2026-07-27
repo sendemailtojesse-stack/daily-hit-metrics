@@ -82,9 +82,31 @@
 <div class="container">
     <div class="site-title"><a href="https://news.dailyhitmetrics.com">Daily Hit Metrics</a></div>
     <div class="top-rule"></div>
-    <div style="margin-bottom: 20px;">
-        <a href="https://news.dailyhitmetrics.com" style="font-family:'IM Fell English',serif; font-style:italic; font-size:0.75rem; color:#3a6b4a; text-decoration:none;">← Return to content</a>
+    <div style="margin-bottom: 20px;" id="return-link-wrap">
+        <a href="https://news.dailyhitmetrics.com" id="return-link" style="font-family:'IM Fell English',serif; font-style:italic; font-size:0.75rem; color:#3a6b4a; text-decoration:none;">← Return to content</a>
     </div>
+    <script>
+    (function() {
+        const params = new URLSearchParams(window.location.search);
+        const from = params.get('from');
+        const siteUrls = {
+            news: 'https://news.dailyhitmetrics.com',
+            sports: 'https://sports.dailyhitmetrics.com',
+            finance: 'https://finance.dailyhitmetrics.com',
+            politics: 'https://politics.dailyhitmetrics.com',
+            entertainment: 'https://entertainment.dailyhitmetrics.com'
+        };
+        const siteLabels = {
+            news: 'News', sports: 'Sports', finance: 'Finance',
+            politics: 'Politics', entertainment: 'Entertainment'
+        };
+        if (from && siteUrls[from]) {
+            const link = document.getElementById('return-link');
+            link.href = siteUrls[from];
+            link.textContent = `← Return to ${siteLabels[from]}`;
+        }
+    })();
+    </script>
 
     <h1>Settings</h1>
     <div class="page-sub">Customize your Daily Hit Metrics experience</div>
