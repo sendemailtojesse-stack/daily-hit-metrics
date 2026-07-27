@@ -730,9 +730,119 @@ async function fetchHighUtilityMatrix() {
     } else {
         const err = await kvRes.text();
         console.error("KV write failed:", err);
-        // Fallback: still write data.json so site doesn't break
         fs.writeFileSync('data.json', jsonData);
         console.log("Fallback: wrote data.json locally.");
+    }
+
+    // ── KEYWORD EMAIL ALERTS ──
+    try {
+        const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+        const RESEND_API_KEY = process.env.RESEND_API_KEY;
+        if (!SUPABASE_SERVICE_KEY || !RESEND_API_KEY) {
+            console.log("Keyword alerts skipped — missing SUPABASE_SERVICE_KEY or RESEND_API_KEY.");
+        } else {
+            console.log("Checking keyword alerts...");
+
+            // Fetch all Pro users with keywords set for news site
+            const usersRes = await fetch(
+                `https://dljqwghiyjhombvflgfg.supabase.co/rest/v1/profiles?subscription_tier=eq.pro&preferences->news->keywords=neq.[]&select=id,email,first_name,preferences`,
+                {
+                    headers: {
+                        'apikey': SUPABASE_SERVICE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+
+            if (usersRes.ok) {
+                const users = await usersRes.json();
+                console.log(`Found ${users.length} users with news keyword alerts.`);
+
+                for (const user of users) {
+                    const keywords = user.preferences?.news?.keywords || [];
+                    if (!keywords.length) continue;
+
+                    // Find matching articles
+                    const matches = [];
+                    for (const item of orderedGrid) {
+                        const text = `${item.site} ${item.trend}`.toLowerCase();
+                        for (const keyword of keywords) {
+                            if (text.includes(keyword.toLowerCase())) {
+                                matches.push({ item, keyword });
+                                break;
+                            }
+                        }
+                    }
+
+                    if (matches.length === 0) continue;
+
+                    // Build email body
+                    const matchList = matches.map(({ item, keyword }) =>
+                        `<tr>
+                            <td style="padding:10px 0; border-bottom:1px solid #e8e0d0;">
+                                <div style="font-family:Georgia,serif; font-size:14px; font-weight:700; color:#2c1810;">
+                                    <a href="${item.url}" style="color:#3a6b4a; text-decoration:none;">${item.site}</a>
+                                </div>
+                                <div style="font-family:Georgia,serif; font-size:12px; color:#5a3e2b; margin-top:4px;">${item.trend}</div>
+                                <div style="font-family:Georgia,serif; font-size:11px; color:#8a6a50; margin-top:4px;">
+                                    Matched keyword: <strong>${keyword}</strong> · ${item.category}
+                                </div>
+                            </td>
+                        </tr>`
+                    ).join('');
+
+                    const emailHtml = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="background:#484848; margin:0; padding:20px;">
+<div style="max-width:600px; margin:0 auto; background:#faf8f4; border-left:3px solid #3a6b4a; border-right:3px solid #3a6b4a; padding:32px 36px;">
+    <div style="font-family:'Georgia',serif; font-size:20px; font-weight:700; color:#2f3640; text-align:right; margin-bottom:4px;">Daily Hit Metrics</div>
+    <div style="border-top:3px solid #2c1810; margin:8px 0 24px;"></div>
+    <div style="font-family:Georgia,serif; font-size:13px; color:#5a3e2b; margin-bottom:20px;">
+        Hi ${user.first_name || 'there'},<br><br>
+        The following articles matched your keyword alerts on the <strong>News</strong> feed this hour:
+    </div>
+    <table style="width:100%; border-collapse:collapse;">
+        ${matchList}
+    </table>
+    <div style="margin-top:24px; font-family:Georgia,serif; font-size:11px; color:#8a6a50; border-top:1px solid #d4c9b0; padding-top:16px;">
+        You're receiving this because you set up keyword alerts on Daily Hit Metrics.<br>
+        Manage your alerts in <a href="https://news.dailyhitmetrics.com/settings.html" style="color:#3a6b4a;">Settings</a>.
+        <br><br>© 2026 MpathTek · All rights reserved
+    </div>
+</div>
+</body>
+</html>`;
+
+                    // Send via Resend
+                    const emailRes = await fetch('https://api.resend.com/emails', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${RESEND_API_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            from: 'Daily Hit Metrics <noreply@dailyhitmetrics.com>',
+                            to: user.email,
+                            subject: `Your keyword alert — ${matches.length} match${matches.length > 1 ? 'es' : ''} on Daily Hit Metrics News`,
+                            html: emailHtml
+                        })
+                    });
+
+                    if (emailRes.ok) {
+                        console.log(`Keyword alert sent to ${user.email} (${matches.length} matches).`);
+                    } else {
+                        console.error(`Failed to send alert to ${user.email}:`, await emailRes.text());
+                    }
+                }
+            } else {
+                console.error("Failed to fetch users for keyword alerts:", await usersRes.text());
+            }
+        }
+    } catch (e) {
+        console.error("Keyword alert error:", e.message);
     }
 }
 
