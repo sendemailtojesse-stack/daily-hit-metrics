@@ -82,8 +82,8 @@
 <div class="container">
     <div class="site-title"><a href="https://news.dailyhitmetrics.com">Daily Hit Metrics</a></div>
     <div class="top-rule"></div>
-    <div style="margin-bottom: 20px;" id="return-link-wrap">
-        <a href="https://news.dailyhitmetrics.com" id="return-link" style="font-family:'IM Fell English',serif; font-style:italic; font-size:0.75rem; color:#3a6b4a; text-decoration:none;">← Return to content</a>
+    <div style="margin-bottom: 20px;">
+        <a href="#" id="return-link" style="font-family:'IM Fell English',serif; font-style:italic; font-size:0.75rem; color:#3a6b4a; text-decoration:none;">← Return to content</a>
     </div>
     <script>
     (function() {
@@ -96,14 +96,34 @@
             politics: 'https://politics.dailyhitmetrics.com',
             entertainment: 'https://entertainment.dailyhitmetrics.com'
         };
+        const validSites = ['news', 'sports', 'finance', 'politics', 'entertainment'];
         const siteLabels = {
             news: 'News', sports: 'Sports', finance: 'Finance',
             politics: 'Politics', entertainment: 'Entertainment'
         };
-        if (from && siteUrls[from]) {
-            const link = document.getElementById('return-link');
-            link.href = siteUrls[from];
-            link.textContent = `← Return to ${siteLabels[from]}`;
+        const returnLink = document.getElementById('return-link');
+        returnLink.href = (from && siteUrls[from]) ? siteUrls[from] : 'https://news.dailyhitmetrics.com';
+        if (from && siteLabels[from]) returnLink.textContent = `← Return to ${siteLabels[from]}`;
+        
+        // Auto-select the correct tab when page loads
+        if (from && validSites.includes(from)) {
+            window.addEventListener('DOMContentLoaded', () => {
+                // Switch prefs tab
+                document.querySelectorAll('#prefs-tabs .site-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('[id^="prefs-panel-"]').forEach(p => p.classList.remove('active'));
+                const prefsTab = document.querySelector(`#prefs-tabs .site-tab[onclick*="'${from}'"]`);
+                if (prefsTab) prefsTab.classList.add('active');
+                const prefsPanel = document.getElementById(`prefs-panel-${from}`);
+                if (prefsPanel) prefsPanel.classList.add('active');
+
+                // Switch keyword tab
+                document.querySelectorAll('#kw-tabs .site-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('[id^="kw-panel-"]').forEach(p => p.classList.remove('active'));
+                const kwTab = document.querySelector(`#kw-tabs .site-tab[onclick*="'${from}'"]`);
+                if (kwTab) kwTab.classList.add('active');
+                const kwPanel = document.getElementById(`kw-panel-${from}`);
+                if (kwPanel) kwPanel.classList.add('active');
+            });
         }
     })();
     </script>
@@ -249,6 +269,15 @@ let currentPrefs = JSON.parse(JSON.stringify(DEFAULTS));
 let currentUser = null;
 let activePrefsTab = 'news';
 let activeKwTab = 'news';
+
+// Set active tabs from URL parameter
+(function() {
+    const p = new URLSearchParams(window.location.search).get('from');
+    if (p && ['news','sports','finance','politics','entertainment'].includes(p)) {
+        activePrefsTab = p;
+        activeKwTab = p;
+    }
+})();
 
 // ── TAB SWITCHING ──
 function switchTab(group, site) {
