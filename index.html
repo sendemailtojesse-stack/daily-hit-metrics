@@ -936,7 +936,7 @@
 
             currentlyLoadedTimestamp = data.lastUpdated;
 
-            // Show editorial summary if available
+            // Show editorial summary
             if (data.editorialSummary) {
                 const text = data.editorialSummary;
                 const firstLetter = text.charAt(0);
@@ -949,6 +949,17 @@
             }
 
             const tableBody = document.getElementById('leaderboard-rows');
+
+            // Use pre-rendered HTML if no user prefs customization needed
+            const hasCustomPrefs = userPrefs && Object.values(userPrefs).some(p =>
+                !p.visible || p.color === 'solid' ||
+                p.articleCount !== (NEWS_DEFAULTS[Object.keys(userPrefs).find(k => userPrefs[k] === p)] || {}).articleCount
+            );
+
+            if (!hasCustomPrefs && data.prerenderedHTML) {
+                tableBody.innerHTML = data.prerenderedHTML;
+                return true;
+            }
             tableBody.innerHTML = '';
 
             let lastCategory = null;
