@@ -28,7 +28,9 @@
         .feature-card p { font-size: 0.65rem; color: #5a3e2b; line-height: 1.6; margin: 0; }
         .feeds-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
         .feed-tag { font-family: 'Quantico', sans-serif; font-size: 0.45rem; letter-spacing: 0.1em; text-transform: uppercase; color: #faf8f4; background: #3a6b4a; padding: 5px 12px; }
-        .cta-block { background: #edf4ef; border: 1px solid #3a6b4a; padding: 24px 28px; margin-bottom: 20px; text-align: center; }
+        .cta-block { background: #edf4ef; border: 1px solid #3a6b4a; padding: 24px 28px; margin-bottom: 20px; }
+        .cta-block p { font-size: 0.7rem; color: #254d33; margin-bottom: 16px; line-height: 1.7; text-align: left; }
+        .cta-buttons { text-align: center; }
         .cta-block p { font-size: 0.7rem; color: #254d33; margin-bottom: 16px; line-height: 1.7; }
         .btn-subscribe { display: inline-block; background: #2c1810; color: #faf8f4; font-family: 'Quantico', sans-serif; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 14px 36px; cursor: pointer; border: none; transition: background 0.15s ease; }
         .btn-subscribe:hover { background: #3a6b4a; }
@@ -89,17 +91,19 @@
 
     <div class="cta-block">
         <p>Your subscription begins immediately. Cancel anytime from your Stripe billing portal — no contracts, no commitments.</p>
-        <button class="btn-subscribe" id="subscribe-btn" onclick="handleUpgrade()">Subscribe for $4.99 / month</button>
-        <div class="error-msg" id="upgrade-error"></div>
+        <div class="cta-buttons">
+            <button class="btn-subscribe" id="subscribe-btn" onclick="handleUpgrade()">Subscribe for $4.99 / month</button>
+            <div class="error-msg" id="upgrade-error"></div>
 
-        <div class="divider">
-            <div class="divider-line"></div>
-            <span class="divider-text">or pay with</span>
-            <div class="divider-line"></div>
+            <div class="divider">
+                <div class="divider-line"></div>
+                <span class="divider-text">or pay with</span>
+                <div class="divider-line"></div>
+            </div>
+
+            <div id="paypal-button-container-P-1H34297466581652ANJTXFIY"></div>
+            <div class="error-msg" id="paypal-error"></div>
         </div>
-
-        <div id="paypal-button-container-P-1H34297466581652ANJTXFIY"></div>
-        <div class="error-msg" id="paypal-error"></div>
     </div>
 
     <a href="https://news.dailyhitmetrics.com" class="maybe-later">← Maybe later, return to News</a>
