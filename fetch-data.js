@@ -641,8 +641,8 @@ async function fetchHighUtilityMatrix() {
         };
 
         const DEFAULT_COUNTS = {
-            'World News': 8, 'Social Pulse': 8, 'Tech': 12,
-            'Video Games': 10, 'Finance Trends': 8, 'Popular Searches': 28
+            'World News': 4, 'Social Pulse': 4, 'Tech': 8,
+            'Video Games': 4, 'Finance Trends': 4, 'Popular Searches': 28
         };
 
         let html = '';
