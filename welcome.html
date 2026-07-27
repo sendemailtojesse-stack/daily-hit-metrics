@@ -116,15 +116,23 @@
             const meta = session.user.user_metadata || {};
             const firstName = meta.first_name || '';
             const lastName = meta.last_name || '';
+            console.log('Session user metadata:', meta);
+            console.log('First name:', firstName, 'Last name:', lastName);
 
             // Create/update profile with name from metadata
-            await supabaseClient.from('profiles').upsert({
+            const { error: upsertError } = await supabaseClient.from('profiles').upsert({
                 id: session.user.id,
                 email: session.user.email,
                 first_name: firstName,
                 last_name: lastName,
                 subscription_tier: 'free'
             });
+
+            if (upsertError) {
+                console.error('Profile upsert error:', upsertError);
+            } else {
+                console.log('Profile created:', firstName, lastName);
+            }
 
             if (firstName) {
                 document.getElementById('user-name').textContent = firstName;
