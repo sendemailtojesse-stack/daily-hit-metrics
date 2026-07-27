@@ -1202,23 +1202,22 @@
     }
 
     // ── ZOOM CONTROL ──
-    const ZOOM_LEVELS = [100, 125, 150];
-    const BASE_FONT_SIZE = 144; // site base is 144%
+    const ZOOM_LEVELS = [1, 1.25, 1.5];
 
     function getZoom() {
-        const saved = document.cookie.match(/dhm-zoom=(\d+)/);
-        return saved ? parseInt(saved[1]) : 100;
+        const saved = document.cookie.match(/dhm-zoom=([\d.]+)/);
+        return saved ? parseFloat(saved[1]) : 1;
     }
 
-    function applyZoom(pct) {
-        document.documentElement.style.fontSize = (BASE_FONT_SIZE * pct / 100) + '%';
+    function applyZoom(level) {
+        document.querySelector('.container').style.zoom = level;
         const btn = document.getElementById('zoom-btn');
-        if (btn) btn.title = `Text size: ${pct}%`;
+        if (btn) btn.title = `Text size: ${Math.round(level * 100)}%`;
     }
 
     function cycleZoom() {
         const current = getZoom();
-        const idx = ZOOM_LEVELS.indexOf(current);
+        const idx = ZOOM_LEVELS.findIndex(z => Math.abs(z - current) < 0.01);
         const next = ZOOM_LEVELS[(idx + 1) % ZOOM_LEVELS.length];
         document.cookie = `dhm-zoom=${next}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
         applyZoom(next);
