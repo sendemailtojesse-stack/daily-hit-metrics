@@ -599,6 +599,113 @@ async function fetchHighUtilityMatrix() {
         console.error("Groq summary error:", e.message);
     }
 
+    // ── PRE-RENDER HTML TABLE ──
+    function generatePrerenderedHTML(data) {
+        const SECTION_LABELS = {
+            'World News':                       'World News — Global Dispatches from The Guardian, BBC, NPR & Al Jazeera',
+            'Social Pulse':                     'Social Pulse — Viral Dispatches from the Public Square',
+            'Tech':                             'Tech — Hacker News · Ars Technica',
+            'Video Games':                      'Video Games — Kotaku · IGN · Reddit Gaming',
+            'Finance Trends':                   'Finance Trends — Market Intelligence & Trading Sentiment',
+            'Popular Searches-us':              'Popular Searches — United States · Top Volume',
+            'Popular Searches-north-america':   'Popular Searches — North America · Top Volume',
+            'Popular Searches-south-america':   'Popular Searches — South America · Top Volume',
+            'Popular Searches-europe':          'Popular Searches — Europe · Top Volume',
+            'Popular Searches-africa':          'Popular Searches — Africa · Top Volume',
+            'Popular Searches-asia':            'Popular Searches — Asia · Top Volume',
+            'Popular Searches-oceania':         'Popular Searches — Oceania · Top Volume'
+        };
+
+        const BANNER_CLASSES = {
+            'World News':                       'section-banner-world',
+            'Social Pulse':                     'section-banner-social',
+            'Tech':                             'section-banner-tech',
+            'Video Games':                      'section-banner-games',
+            'Finance Trends':                   'section-banner-finance',
+            'Popular Searches-us':              'section-banner-searches-us',
+            'Popular Searches-north-america':   'section-banner-searches-namerica',
+            'Popular Searches-south-america':   'section-banner-searches-samerica',
+            'Popular Searches-europe':          'section-banner-searches-europe',
+            'Popular Searches-africa':          'section-banner-searches-africa',
+            'Popular Searches-asia':            'section-banner-searches-asia',
+            'Popular Searches-oceania':         'section-banner-searches-oceania'
+        };
+
+        const GRADIENT_COLORS = {
+            'World News':       '#254d33',
+            'Social Pulse':     '#6b6125',
+            'Tech':             '#4a5c3a',
+            'Video Games':      '#3d5c3a',
+            'Finance Trends':   '#2d4a3e',
+            'Popular Searches': '#556b45'
+        };
+
+        const DEFAULT_COUNTS = {
+            'World News': 8, 'Social Pulse': 8, 'Tech': 12,
+            'Video Games': 10, 'Finance Trends': 8, 'Popular Searches': 28
+        };
+
+        let html = '';
+        let lastCategory = null;
+        let lastSearchLabel = null;
+        const sectionCounts = {};
+
+        for (const item of data.trafficLeaderboard) {
+            const baseCategory = item.category === 'Popular Searches' ? 'Popular Searches' : item.category;
+            const maxCount = DEFAULT_COUNTS[baseCategory] || 4;
+            if (!sectionCounts[baseCategory]) sectionCounts[baseCategory] = 0;
+            if (sectionCounts[baseCategory] >= maxCount) continue;
+            sectionCounts[baseCategory]++;
+
+            if (item.category !== lastCategory || (item.category === 'Popular Searches' && item.searchLabel !== lastSearchLabel)) {
+                lastCategory = item.category;
+                lastSearchLabel = item.searchLabel || null;
+                const labelKey = item.category === 'Popular Searches'
+                    ? `Popular Searches-${item.searchLabel}`
+                    : item.category;
+                const bannerClass = BANNER_CLASSES[labelKey] || 'section-banner-world';
+                const gradientColor = GRADIENT_COLORS[baseCategory] || '#254d33';
+                const bannerStyle = `background:linear-gradient(to right, ${gradientColor}, transparent);`;
+                const label = SECTION_LABELS[labelKey] || item.category;
+                html += `<tr><td colspan="5" class="section-banner ${bannerClass}" style="${bannerStyle}">${label}</td></tr>`;
+            }
+
+            const isNegative = item.growth.startsWith('-');
+            const momentumColor = isNegative ? '#8a2a2a' : '#2a5a2a';
+            const arrow = isNegative ? '▼' : '▲';
+            const targetUrl = item.url || '#';
+            let host = '';
+            try { host = new URL(item.url).hostname.replace('www.', ''); } catch(e) {}
+            const faviconUrl = `https://www.google.com/s2/favicons?domain=${host}&sz=128`;
+            const containsTrump = /trump/i.test(item.site) || /trump/i.test(item.trend);
+            const imageToShow = containsTrump ? faviconUrl : (item.image || faviconUrl);
+            const imgTag = containsTrump
+                ? `<img src="${faviconUrl}" class="article-img-logo" alt="" loading="lazy">`
+                : `<img src="${imageToShow}" class="article-img" onerror="this.className='article-img-logo'; this.src='${faviconUrl}';" alt="" loading="lazy">`;
+
+            html += `<tr>
+                <td class="img-col">${imgTag}</td>
+                <td class="rank-col">${item.rank}</td>
+                <td>
+                    <div class="entity-title"><a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="dispatch-link">${item.site}</a></div>
+                    <div class="entity-summary">${item.trend}</div>
+                    <span class="category-badge">${host}</span>
+                    <span class="mobile-meta">${item.dailyHits} &nbsp;·&nbsp; <span style="color:${momentumColor}">${arrow} ${item.growth.replace(/^[+\-]/, '')}</span></span>
+                </td>
+                <td class="velocity-data">${item.dailyHits}</td>
+                <td class="growth-indicator" style="color:${momentumColor};">${arrow} ${item.growth.replace(/^[+\-]/, '')}</td>
+            </tr>`;
+        }
+        return html;
+    }
+
+    // Generate pre-rendered HTML and add to state
+    finalDatabaseState.prerenderedHTML = generatePrerenderedHTML(finalDatabaseState);
+    if (finalDatabaseState.editorialSummary) {
+        const text = finalDatabaseState.editorialSummary;
+        finalDatabaseState.prerenderedEditorial = `<span style="font-weight:700;color:#2c1810;">${text.charAt(0)}</span>${text.slice(1)}`;
+    }
+
     const jsonData = JSON.stringify(finalDatabaseState, null, 2);
 
     // Write to Cloudflare KV
