@@ -553,6 +553,52 @@ async function fetchHighUtilityMatrix() {
         trafficLeaderboard: orderedGrid
     };
 
+    // ── GROQ EDITORIAL SUMMARY ──
+    try {
+        console.log("Generating editorial summary via Groq...");
+        const GROQ_API_KEY = process.env.GROQ_API_KEY;
+        if (GROQ_API_KEY) {
+            // Build article context from top stories
+            const topStories = orderedGrid
+                .filter(item => ['World News', 'Social Pulse', 'Tech', 'Video Games', 'Finance Trends'].includes(item.category))
+                .slice(0, 15)
+                .map(item => `- [${item.category}] ${item.site}: ${item.trend}`)
+                .join('\n');
+
+            const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${GROQ_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: 'llama-3.3-70b-versatile',
+                    max_tokens: 400,
+                    temperature: 0.7,
+                    messages: [{
+                        role: 'user',
+                        content: `You are the editor of Daily Hit Metrics, a real-time global news and trends aggregator. Based on the following trending stories from this hour, write a concise 250-300 word editorial briefing titled "This Hour's Briefing" that synthesizes the key themes and developments. Write in a sharp, authoritative newspaper editorial style. Do not use bullet points — write flowing prose. Do not mention Daily Hit Metrics by name in the body.\n\nTop stories this hour:\n${topStories}`
+                    }]
+                })
+            });
+
+            if (groqRes.ok) {
+                const groqData = await groqRes.json();
+                const summary = groqData.choices?.[0]?.message?.content?.trim();
+                if (summary) {
+                    finalDatabaseState.editorialSummary = summary;
+                    console.log("Groq editorial summary generated successfully.");
+                }
+            } else {
+                console.error("Groq API error:", groqRes.status, await groqRes.text());
+            }
+        } else {
+            console.log("GROQ_API_KEY not set — skipping summary.");
+        }
+    } catch (e) {
+        console.error("Groq summary error:", e.message);
+    }
+
     const jsonData = JSON.stringify(finalDatabaseState, null, 2);
 
     // Write to Cloudflare KV
