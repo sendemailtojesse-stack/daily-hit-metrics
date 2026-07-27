@@ -1200,22 +1200,7 @@
     }
 
     async function handleUpgrade() {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        if (!session) { openModal('login-modal'); return; }
-        try {
-            const res = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/create-checkout-session', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: session.user.id, email: session.user.email })
-            });
-            const json = await res.json();
-            console.log('Checkout response:', json);
-            if (json.url) window.location.href = json.url;
-            else alert('Checkout error: ' + (json.error || 'Unknown error'));
-        } catch (err) {
-            console.error('Upgrade error:', err);
-            alert('Could not connect to checkout. Please try again.');
-        }
+        window.location.href = 'https://news.dailyhitmetrics.com/upgrade.html';
     }
 
     async function handleSignup() {
