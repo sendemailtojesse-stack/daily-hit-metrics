@@ -35,7 +35,10 @@
         .btn-subscribe:disabled { background: #8a6a50; cursor: not-allowed; }
         .maybe-later { display: block; font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.7rem; color: #8a6a50; text-decoration: none; margin-top: 14px; }
         .maybe-later:hover { color: #3a6b4a; }
-        .error-msg { font-family: 'Libre Baskerville', serif; font-size: 0.65rem; color: #8a1a1a; margin-top: 10px; display: none; }
+        .divider { display: flex; align-items: center; gap: 12px; margin: 16px 0; }
+        .divider-line { flex: 1; border: none; border-top: 1px solid #d4c9b0; }
+        .divider-text { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.65rem; color: #8a6a50; }
+        #paypal-button-container-P-1H34297466581652ANJTXFIY { margin-top: 8px; }
         .footer-note { margin-top: 28px; padding-top: 16px; border-top: 1px solid #d4c9b0; font-family: 'IM Fell English', serif; font-size: 0.65rem; color: #8a6a50; font-style: italic; }
         @media (max-width: 600px) { .features-grid { grid-template-columns: 1fr; } .container { padding: 24px 20px 32px; } .headline { font-size: 1.4rem; } }
     </style>
@@ -88,6 +91,14 @@
         <p>Your subscription begins immediately. Cancel anytime from your Stripe billing portal — no contracts, no commitments.</p>
         <button class="btn-subscribe" id="subscribe-btn" onclick="handleUpgrade()">Subscribe for $4.99 / month</button>
         <div class="error-msg" id="upgrade-error">Something went wrong. Please try again or contact support.</div>
+
+        <div class="divider">
+            <div class="divider-line"></div>
+            <span class="divider-text">or pay with</span>
+            <div class="divider-line"></div>
+        </div>
+
+        <div id="paypal-button-container-P-1H34297466581652ANJTXFIY"></div>
     </div>
 
     <a href="https://news.dailyhitmetrics.com" class="maybe-later">← Maybe later, return to News</a>
@@ -146,6 +157,36 @@
             errMsg.style.display = 'block';
         }
     }
+
+    // ── PAYPAL BUTTON ──
+    function initPayPal() {
+        if (typeof paypal === 'undefined') return;
+        paypal.Buttons({
+            style: { shape: 'rect', color: 'blue', layout: 'horizontal', label: 'subscribe', tagline: false },
+            createSubscription: function(data, actions) {
+                return actions.subscription.create({ plan_id: 'P-1H34297466581652ANJTXFIY' });
+            },
+            onApprove: async function(data, actions) {
+                try {
+                    const { data: { session } } = await supabaseClient.auth.getSession();
+                    if (session) {
+                        await supabaseClient.from('profiles').update({
+                            subscription_tier: 'pro'
+                        }).eq('id', session.user.id);
+                    }
+                    window.location.href = 'https://news.dailyhitmetrics.com/?upgraded=true';
+                } catch(e) {
+                    alert('Payment received! Please log out and back in to activate Pro access.');
+                }
+            },
+            onError: function(err) {
+                const errMsg = document.getElementById('upgrade-error');
+                errMsg.style.display = 'block';
+                errMsg.textContent = 'PayPal encountered an error. Please try again or use the card option above.';
+            }
+        }).render('#paypal-button-container-P-1H34297466581652ANJTXFIY');
+    }
 </script>
+<script src="https://www.paypal.com/sdk/js?client-id=ATi5X1KXYAHF59ZpUxJX0IRwEzLbJtA7Oe6I2GfImsx8oI73JHjONAmZMkDF_FfTxddutPBGW3aKl8zO&vault=true&intent=subscription" data-sdk-integration-source="button-factory" onload="initPayPal()"></script>
 </body>
 </html>
