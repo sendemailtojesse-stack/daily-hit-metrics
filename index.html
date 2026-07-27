@@ -754,7 +754,7 @@
             <input type="text" id="signup-lastname" placeholder="Last name" autocomplete="family-name">
             <input type="email" id="signup-email" placeholder="Email address" autocomplete="email">
             <div style="font-family:'Libre Baskerville',serif; font-size:0.55rem; color:#5a3e2b; margin-bottom:8px;">Password must be at least 8 characters and include both letters and numbers.</div>
-            <input type="password" id="signup-password" placeholder="Password" autocomplete="new-password">
+            <input type="password" id="signup-password" placeholder="Password" autocomplete="new-password" onkeydown="if(event.key==='Enter') handleSignup()">
             <button class="modal-btn" onclick="handleSignup()">Create Account</button>
             <div class="modal-switch">Already have an account? <a onclick="switchModal('signup','login')">Login</a></div>
             <span class="modal-close" onclick="closeModal('signup-modal')">Cancel</span>
@@ -762,6 +762,10 @@
     </div>
 
 <div class="container">
+
+    <div id="signup-success-banner" style="display:none; font-family:'Libre Baskerville',serif; font-size:0.7rem; color:#254d33; background:#edf4ef; border:1px solid #3a6b4a; padding:10px 16px; margin-bottom:12px;">
+        ✓ Account created! Please check your email to confirm your account.
+    </div>
 
     <div class="top-nav" id="top-nav">
         <button class="zoom-btn zoom-btn-left" id="zoom-btn" onclick="cycleZoom()" title="Adjust text size"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="4.5" stroke="#8a6a50" stroke-width="1.3"/><line x1="9" y1="9" x2="13" y2="13" stroke="#8a6a50" stroke-width="1.3" stroke-linecap="round"/></svg></button>
@@ -1249,6 +1253,12 @@
             }
             msg.className = 'modal-msg success';
             msg.textContent = 'Account created! Please check your email to confirm.';
+            // Close modal and show page-level banner
+            setTimeout(() => {
+                closeModal('signup-modal');
+                const banner = document.getElementById('signup-success-banner');
+                if (banner) banner.style.display = 'block';
+            }, 1000);
         }
     }
 
