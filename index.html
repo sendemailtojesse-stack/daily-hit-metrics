@@ -1150,7 +1150,7 @@
         if (user) {
             const displayName = firstName || user.email.split('@')[0];
             const proBtn = isPro ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro</span>` : `<a href="#" class="nav-link" style="text-transform:none; background:rgba(58,107,74,0.08); border:0.5px solid #3a6b4a; padding:4px 10px;" onclick="handleUpgrade(); return false;">Upgrade to Pro</a>`;
-            const settingsLink = isPro ? `<span style="color:#d4c9b0; font-size:0.6rem;">|</span><a href="/settings.html" class="nav-link">Settings</a>` : '';
+            const settingsLink = isPro ? `<span style="color:#d4c9b0; font-size:0.6rem;">|</span><a href="/settings.html?from=news" class="nav-link">Settings</a>` : '';
             nav.innerHTML = `
                 <button class="zoom-btn zoom-btn-left" id="zoom-btn" onclick="cycleZoom()" title="Adjust text size"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="4.5" stroke="#8a6a50" stroke-width="1.3"/><line x1="9" y1="9" x2="13" y2="13" stroke="#8a6a50" stroke-width="1.3" stroke-linecap="round"/></svg></button>
                 <span class="nav-user">Hi, ${displayName}</span>
