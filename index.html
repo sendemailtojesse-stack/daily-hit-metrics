@@ -158,6 +158,7 @@
         .editorial-toggle {
             display: flex;
             align-items: center;
+            justify-content: flex-end;
             gap: 8px;
             cursor: pointer;
             padding: 6px 0;
@@ -806,11 +807,11 @@
 
     <div class="editorial-box" id="editorial-box">
         <div class="editorial-toggle" onclick="toggleEditorial()">
-            <span class="editorial-label">✦ This Hour's Briefing</span>
+            <span class="editorial-label">✦ Editor's Article Summary</span>
             <span class="editorial-arrow" id="editorial-arrow">▾</span>
         </div>
         <div class="editorial-content" id="editorial-content">
-            <div class="editorial-text" id="editorial-text"></div>
+            <div class="editorial-text" id="editorial-text"><span style="font-family:'Quantico',sans-serif; font-size:0.5rem; letter-spacing:0.15em; color:#3a6b4a;">Editor's Summary:</span> <span id="editorial-body"></span></div>
         </div>
     </div>
 
@@ -937,7 +938,7 @@
 
             // Show editorial summary if available
             if (data.editorialSummary) {
-                document.getElementById('editorial-text').textContent = data.editorialSummary;
+                document.getElementById('editorial-body').textContent = data.editorialSummary;
                 document.getElementById('editorial-box').style.display = 'block';
             } else {
                 document.getElementById('editorial-box').style.display = 'none';
