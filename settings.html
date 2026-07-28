@@ -178,14 +178,19 @@
 
     <!-- Collapsible Email Editor -->
     <div class="setting-row" style="cursor:pointer; user-select:none;" onclick="toggleEmailEditor()">
-        <span class="setting-label">Email</span>
+        <span class="setting-label">Email <span id="email-arrow" style="font-size:0.6rem; color:#3a6b4a;">▾</span></span>
         <span class="setting-value" id="account-email">—</span>
-        <span id="email-arrow" style="font-size:0.6rem; color:#3a6b4a; margin-left:8px;">▾</span>
     </div>
     <div id="email-editor" style="display:none; background:#f5f2ec; border-left:2px solid #3a6b4a; padding:14px 16px; margin-bottom:12px;">
-        <div style="margin-bottom:10px;">
-            <div class="section-label" style="margin-bottom:4px;">New Email Address</div>
-            <input type="email" id="new-email" placeholder="Enter new email address" style="width:100%; font-family:'Libre Baskerville',serif; font-size:0.6rem; padding:8px 10px; border:1px solid #c8b89a; background:#faf8f4; color:#1a0f00;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+            <div>
+                <div class="section-label" style="margin-bottom:4px;">New Email Address</div>
+                <input type="email" id="new-email" placeholder="Enter new email address" style="width:100%; font-family:'Libre Baskerville',serif; font-size:0.6rem; padding:8px 10px; border:1px solid #c8b89a; background:#faf8f4; color:#1a0f00;">
+            </div>
+            <div>
+                <div class="section-label" style="margin-bottom:4px;">Re-enter Email Address</div>
+                <input type="email" id="confirm-email" placeholder="Confirm new email address" style="width:100%; font-family:'Libre Baskerville',serif; font-size:0.6rem; padding:8px 10px; border:1px solid #c8b89a; background:#faf8f4; color:#1a0f00;">
+            </div>
         </div>
         <button onclick="saveEmail()" style="font-family:'Quantico',sans-serif; font-size:0.45rem; letter-spacing:0.15em; text-transform:uppercase; background:#2c1810; color:#faf8f4; border:none; padding:8px 20px; cursor:pointer;">Update Email</button>
         <span id="email-save-msg" style="font-family:'IM Fell English',serif; font-size:0.6rem; font-style:italic; color:#3a6b4a; margin-left:10px; display:none;">Confirmation sent to new address.</span>
@@ -360,17 +365,20 @@ function toggleEmailEditor() {
 
 async function saveEmail() {
     const newEmail = document.getElementById('new-email').value.trim();
+    const confirmEmail = document.getElementById('confirm-email').value.trim();
     const saveMsg = document.getElementById('email-save-msg');
     const errMsg = document.getElementById('email-error-msg');
     saveMsg.style.display = 'none';
     errMsg.style.display = 'none';
 
-    if (!newEmail) return;
+    if (!newEmail || !confirmEmail) { errMsg.textContent = 'Please enter and confirm your new email address.'; errMsg.style.display = 'inline'; return; }
+    if (newEmail !== confirmEmail) { errMsg.textContent = 'Email addresses do not match. Please try again.'; errMsg.style.display = 'inline'; return; }
 
     const { error } = await supabaseClient.auth.updateUser({ email: newEmail });
     if (!error) {
         saveMsg.style.display = 'inline';
         document.getElementById('new-email').value = '';
+        document.getElementById('confirm-email').value = '';
     } else {
         errMsg.textContent = error.message;
         errMsg.style.display = 'inline';
