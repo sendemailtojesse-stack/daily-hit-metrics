@@ -12,7 +12,7 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { font-size: 132%; }
         body { background-color: #484848; color: #1a0f00; font-family: 'Libre Baskerville', Georgia, serif; padding: 45px 20px 75px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 1140px; background-color: #faf8f4; border-left: 1px solid #3a6b4a; border-right: 1px solid #3a6b4a; padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); }
+        .container { width: 100%; max-width: 1140px; background-color: #faf8f4; border-left: 1px solid #3a6b4a; border-right: 1px solid #3a6b4a; padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); transition: background-color 0.2s; }
         .site-title { font-family: 'Quantico', sans-serif; font-size: 1.4rem; font-weight: 700; color: #2f3640; text-align: right; margin-bottom: 4px; text-decoration: underline; text-underline-offset: 4px; }
         .site-title a { color: inherit; text-decoration: none; }
         .top-rule { border: none; border-top: 3px solid #2c1810; margin: 8px 0 28px; }
@@ -592,6 +592,19 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
         renderKeywordPanel(site);
     }
 });
+    // Apply theme from cookie
+    (function() {
+        const saved = document.cookie.match(/dhm-theme=([a-z]+)/);
+        const theme = saved ? saved[1] : 'twotone';
+        const container = document.querySelector('.container');
+        if (theme === 'twotone') {
+            container.style.backgroundColor = '#f0f4f8';
+            // Menu panels stay parchment via CSS — no change needed
+        } else if (theme === 'white') {
+            container.style.backgroundColor = '#f0f4f8';
+        }
+        // parchment = default #faf8f4, no change needed
+    })();
 </script>
 </body>
 </html>
