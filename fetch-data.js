@@ -132,7 +132,7 @@ async function fetchHighUtilityMatrix() {
             const res = await fetch(source.url, { headers: BROWSER_HEADERS });
             console.log(`${source.name} RSS status: ${res.status}`);
             if (res.ok) {
-                const items = parseRssItems(await res.text(), 2, source.url, source.logo);
+                const items = parseRssItems(await res.text(), 4, source.url, source.logo);
                 items.forEach(item => {
                     const trend = ensurePeriod(item.desc || `Breaking news from ${source.name}.`);
                     worldNews.push({
@@ -151,7 +151,7 @@ async function fetchHighUtilityMatrix() {
     }
 
     if (worldNews.length === 0) {
-        worldNews = Array.from({ length: 8 }, (_, i) => ({
+        worldNews = Array.from({ length: 16 }, (_, i) => ({
             site: `World News Dispatch #${i + 1}`,
             category: "World News",
             dailyHits: "Global",
