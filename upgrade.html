@@ -176,9 +176,11 @@
                 try {
                     const { data: { session } } = await supabaseClient.auth.getSession();
                     if (session) {
-                        await supabaseClient.from('profiles').update({
-                            subscription_tier: 'pro'
-                        }).eq('id', session.user.id);
+                        await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/paypal-upgrade', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ userId: session.user.id, subscriptionId: data.subscriptionID })
+                        });
                     }
                     window.location.href = 'https://news.dailyhitmetrics.com/?upgraded=true';
                 } catch(e) {
