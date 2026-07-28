@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Pro — Daily Hit Metrics</title>
+    <link rel="icon" href="https://news.dailyhitmetrics.com/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { font-size: 120%; }
+        body { background-color: #484848; color: #1a0f00; font-family: 'Libre Baskerville', Georgia, serif; padding: 36px 20px 60px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1030px; background-color: #faf8f4; border-left: 1px solid #3a6b4a; border-right: 1px solid #3a6b4a; padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); }
+        .site-title { font-family: 'Quantico', sans-serif; font-size: 1.4rem; font-weight: 700; color: #2f3640; text-align: right; margin-bottom: 4px; }
+        .top-rule { border: none; border-top: 3px solid #2c1810; margin: 8px 0 28px; }
+        .pro-badge { font-family: 'Quantico', sans-serif; font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase; color: #faf8f4; background: #3a6b4a; display: inline-block; padding: 4px 14px; margin-bottom: 16px; }
+        .headline { font-family: 'Quantico', sans-serif; font-size: 2rem; color: #2c1810; margin-bottom: 10px; line-height: 1.2; }
+        .user-name { color: #3a6b4a; }
+        .subhead { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.95rem; color: #5a3e2b; margin-bottom: 28px; line-height: 1.7; border-bottom: 1px solid #d4c9b0; padding-bottom: 24px; }
+        .section-label { font-family: 'Quantico', sans-serif; font-size: 0.45rem; letter-spacing: 0.2em; text-transform: uppercase; color: #3a6b4a; border-bottom: 1px solid #d4c9b0; padding-bottom: 6px; margin-bottom: 16px; margin-top: 24px; }
+        .feeds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+        .feed-card { background: #f0ebe0; border-left: 3px solid #3a6b4a; padding: 12px 16px; }
+        .feed-card a { font-family: 'Quantico', sans-serif; font-size: 0.6rem; color: #2c1810; text-decoration: none; letter-spacing: 0.05em; }
+        .feed-card a:hover { color: #3a6b4a; }
+        .feed-card p { font-size: 0.6rem; color: #5a3e2b; margin-top: 4px; line-height: 1.5; }
+        .close-note { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.8rem; color: #5a3e2b; margin-top: 28px; padding-top: 20px; border-top: 1px solid #d4c9b0; }
+        .close-note strong { font-style: normal; }
+        .footer-note { margin-top: 20px; font-family: 'IM Fell English', serif; font-size: 0.65rem; color: #8a6a50; font-style: italic; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="site-title">Daily Hit Metrics</div>
+    <div class="top-rule"></div>
+
+    <div class="pro-badge">✦ Pro Member</div>
+    <div class="headline">Welcome to Pro, <span class="user-name" id="user-name">there</span>.</div>
+    <div class="subhead">Your subscription is active. You now have full access to all five Daily Hit Metrics feeds, updated every hour with real-time news, editorial briefings, and keyword alerts.</div>
+
+    <div class="section-label">Your Pro feeds — now unlocked</div>
+
+    <div class="feeds-grid">
+        <div class="feed-card">
+            <a href="https://news.dailyhitmetrics.com">📰 News</a>
+            <p>World news, tech, social pulse, trending searches — the full global picture.</p>
+        </div>
+        <div class="feed-card">
+            <a href="https://sports.dailyhitmetrics.com">🏆 Sports</a>
+            <p>NFL, NBA, soccer, baseball and more — top sports stories every hour.</p>
+        </div>
+        <div class="feed-card">
+            <a href="https://finance.dailyhitmetrics.com">📈 Finance</a>
+            <p>Markets, crypto, personal finance and economic developments.</p>
+        </div>
+        <div class="feed-card">
+            <a href="https://politics.dailyhitmetrics.com">🏛 Politics</a>
+            <p>US and international political news from across the spectrum.</p>
+        </div>
+        <div class="feed-card">
+            <a href="https://entertainment.dailyhitmetrics.com">🎬 Entertainment</a>
+            <p>Film, TV, music and culture — the stories everyone's talking about.</p>
+        </div>
+        <div class="feed-card">
+            <a href="https://news.dailyhitmetrics.com/settings.html">⚙ Settings</a>
+            <p>Customize sections, set article counts, and configure keyword alerts.</p>
+        </div>
+    </div>
+
+    <div class="close-note"><strong>You may close this tab</strong> and return to Daily Hit Metrics to begin exploring your Pro feeds.</div>
+
+    <div class="footer-note">Questions or issues? Contact us at <a href="mailto:jms@mpathtek.com" style="color:#3a6b4a;">jms@mpathtek.com</a></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = 'https://dljqwghiyjhombvflgfg.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsanF3Z2hpeWpob21idmZsZ2ZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3OTkzODQsImV4cCI6MjEwMDM3NTM4NH0.Be3zSr3ctcyuF7PUi25j2-szlt8ThPksxM_8OWbhCec';
+
+    const cookieStorage = {
+        getItem: (key) => { const m = document.cookie.match(new RegExp('(^| )' + key + '=([^;]+)')); return m ? decodeURIComponent(m[2]) : null; },
+        setItem: (key, value) => { document.cookie = `${key}=${encodeURIComponent(value)}; domain=.dailyhitmetrics.com; path=/; max-age=604800; SameSite=Lax; Secure`; },
+        removeItem: (key) => { document.cookie = `${key}=; domain=.dailyhitmetrics.com; path=/; max-age=0`; }
+    };
+
+    const { createClient } = supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
+        auth: { storage: cookieStorage, storageKey: 'dhm-auth', autoRefreshToken: true, persistSession: true }
+    });
+
+    supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
+        if (session) {
+            const { data: profile } = await supabaseClient
+                .from('profiles')
+                .select('first_name')
+                .eq('id', session.user.id)
+                .single();
+            if (profile?.first_name) {
+                document.getElementById('user-name').textContent = profile.first_name;
+            }
+        }
+    });
+</script>
+</body>
+</html>
