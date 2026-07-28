@@ -40,7 +40,7 @@
         .divider { display: flex; align-items: center; gap: 12px; margin: 16px 0; }
         .divider-line { flex: 1; border: none; border-top: 1px solid #d4c9b0; }
         .divider-text { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.65rem; color: #8a6a50; }
-        #paypal-button-container-P-1H34297466581652ANJTXFIY { margin-top: 8px; max-width: 300px; margin-left: auto; margin-right: auto; }
+        #paypal-button-container-P-8YD19866MC332911GNJUATVY { margin-top: 8px; max-width: 300px; margin-left: auto; margin-right: auto; }
         .footer-note { margin-top: 28px; padding-top: 16px; border-top: 1px solid #d4c9b0; font-family: 'IM Fell English', serif; font-size: 0.65rem; color: #8a6a50; font-style: italic; }
         @media (max-width: 600px) { .features-grid { grid-template-columns: 1fr; } .container { padding: 24px 20px 32px; } .headline { font-size: 1.4rem; } }
     </style>
@@ -101,7 +101,7 @@
                 <div class="divider-line"></div>
             </div>
 
-            <div id="paypal-button-container-P-1H34297466581652ANJTXFIY"></div>
+            <div id="paypal-button-container-P-8YD19866MC332911GNJUATVY"></div>
             <div class="error-msg" id="paypal-error"></div>
         </div>
     </div>
@@ -170,7 +170,7 @@
         paypal.Buttons({
             style: { shape: 'rect', color: 'gold', layout: 'vertical', label: 'subscribe', tagline: false },
             createSubscription: function(data, actions) {
-                return actions.subscription.create({ plan_id: 'P-1H34297466581652ANJTXFIY' });
+                return actions.subscription.create({ plan_id: 'P-8YD19866MC332911GNJUATVY' });
             },
             onApprove: async function(data, actions) {
                 try {
@@ -191,9 +191,9 @@
                 const paypalErr = document.getElementById('paypal-error');
                 if (paypalErr) { paypalErr.style.display = 'block'; paypalErr.textContent = 'PayPal encountered an error. Please try again or use the card option above.'; }
             }
-        }).render('#paypal-button-container-P-1H34297466581652ANJTXFIY');
+        }).render('#paypal-button-container-P-8YD19866MC332911GNJUATVY');
     }
 </script>
-<script src="https://www.paypal.com/sdk/js?client-id=ATi5X1KXYAHF59ZpUxJX0IRwEzLbJtA7Oe6I2GfImsx8oI73JHjONAmZMkDF_FfTxddutPBGW3aKl8zO&vault=true&intent=subscription&disable-funding=credit,card" data-sdk-integration-source="button-factory" onload="initPayPal()"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AYdhs89i20luwJegLjNg4vSKlJt2s8gsEXCIIInoa7OMEke2cg_fMCVeyepgnzPJtAEvqgZUj-7pRz0N&vault=true&intent=subscription&disable-funding=credit,card" data-sdk-integration-source="button-factory" onload="initPayPal()"></script>
 </body>
 </html>
