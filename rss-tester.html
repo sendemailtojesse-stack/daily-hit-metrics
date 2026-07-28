@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSS Feed Tester — Daily Hit Metrics Admin</title>
+    <link rel="icon" href="https://news.dailyhitmetrics.com/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { font-size: 120%; }
+        body { background-color: #484848; color: #1a0f00; font-family: 'Libre Baskerville', Georgia, serif; padding: 36px 20px 60px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1100px; background-color: #faf8f4; border-left: 1px solid #3a6b4a; border-right: 1px solid #3a6b4a; padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); }
+        .site-title { font-family: 'Quantico', sans-serif; font-size: 1.4rem; font-weight: 700; color: #2f3640; text-align: right; margin-bottom: 4px; }
+        .top-rule { border: none; border-top: 3px solid #2c1810; margin: 8px 0 24px; }
+        .admin-badge { font-family: 'Quantico', sans-serif; font-size: 0.45rem; letter-spacing: 0.2em; text-transform: uppercase; color: #faf8f4; background: #8a1a1a; display: inline-block; padding: 3px 12px; margin-bottom: 12px; }
+        .page-title { font-family: 'Quantico', sans-serif; font-size: 1.6rem; color: #2c1810; margin-bottom: 6px; }
+        .page-sub { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.8rem; color: #5a3e2b; margin-bottom: 24px; border-bottom: 1px solid #d4c9b0; padding-bottom: 16px; }
+        .input-row { display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-start; flex-wrap: wrap; }
+        .url-input { flex: 1; min-width: 300px; font-family: 'Libre Baskerville', serif; font-size: 0.6rem; padding: 10px 12px; border: 1px solid #c8b89a; background: #faf8f4; color: #1a0f00; }
+        .url-input:focus { outline: none; border-color: #3a6b4a; }
+        .btn-test { font-family: 'Quantico', sans-serif; font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase; background: #2c1810; color: #faf8f4; border: none; padding: 10px 24px; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
+        .btn-test:hover { background: #3a6b4a; }
+        .btn-test:disabled { background: #8a6a50; cursor: not-allowed; }
+        .quick-picks { margin-bottom: 20px; }
+        .quick-label { font-family: 'Quantico', sans-serif; font-size: 0.4rem; letter-spacing: 0.15em; text-transform: uppercase; color: #8a6a50; margin-bottom: 8px; }
+        .quick-btn { font-family: 'Libre Baskerville', serif; font-size: 0.5rem; color: #3a6b4a; background: none; border: 0.5px solid #d4c9b0; padding: 4px 10px; cursor: pointer; margin: 3px; transition: all 0.15s; }
+        .quick-btn:hover { border-color: #3a6b4a; background: #edf4ef; }
+        .result-box { background: #f0ebe0; border-left: 3px solid #3a6b4a; padding: 16px 20px; margin-top: 20px; display: none; }
+        .result-header { font-family: 'Quantico', sans-serif; font-size: 0.45rem; letter-spacing: 0.15em; text-transform: uppercase; color: #3a6b4a; margin-bottom: 12px; }
+        .result-meta { font-size: 0.55rem; color: #5a3e2b; margin-bottom: 12px; font-style: italic; }
+        .item-card { background: #faf8f4; border: 1px solid #d4c9b0; padding: 10px 14px; margin-bottom: 8px; }
+        .item-title { font-weight: 700; font-size: 0.6rem; color: #2c1810; margin-bottom: 4px; }
+        .item-title a { color: #2c1810; text-decoration: none; }
+        .item-title a:hover { color: #3a6b4a; }
+        .item-desc { font-size: 0.55rem; color: #5a3e2b; line-height: 1.5; margin-bottom: 4px; }
+        .item-meta { font-size: 0.48rem; color: #8a6a50; }
+        .error-box { background: #fdf0f0; border-left: 3px solid #8a1a1a; padding: 12px 16px; margin-top: 16px; font-size: 0.6rem; color: #8a1a1a; display: none; }
+        .back-link { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.7rem; color: #3a6b4a; text-decoration: none; display: inline-block; margin-bottom: 20px; }
+        .back-link:hover { color: #2c1810; }
+        .nav-links { display: flex; gap: 16px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="site-title">Daily Hit Metrics</div>
+    <div class="top-rule"></div>
+    <div class="nav-links">
+        <a href="https://news.dailyhitmetrics.com" class="back-link">← Return to News</a>
+        <a href="https://news.dailyhitmetrics.com/rss-status.html" class="back-link">→ RSS Status Dashboard</a>
+    </div>
+    <div class="admin-badge">✦ Admin</div>
+    <div class="page-title">RSS Feed Tester</div>
+    <div class="page-sub">Enter any RSS feed URL to test it on demand and preview the returned articles.</div>
+
+    <div class="quick-picks">
+        <div class="quick-label">Quick picks</div>
+        <button class="quick-btn" onclick="testUrl('https://www.theguardian.com/world/rss')">The Guardian</button>
+        <button class="quick-btn" onclick="testUrl('https://feeds.bbci.co.uk/news/world/rss.xml')">BBC News</button>
+        <button class="quick-btn" onclick="testUrl('https://feeds.npr.org/1001/rss.xml')">NPR</button>
+        <button class="quick-btn" onclick="testUrl('https://www.aljazeera.com/xml/rss/all.xml')">Al Jazeera</button>
+        <button class="quick-btn" onclick="testUrl('https://news.ycombinator.com/rss')">Hacker News</button>
+        <button class="quick-btn" onclick="testUrl('https://feeds.arstechnica.com/arstechnica/index')">Ars Technica</button>
+        <button class="quick-btn" onclick="testUrl('https://kotaku.com/rss')">Kotaku</button>
+        <button class="quick-btn" onclick="testUrl('https://feeds.feedburner.com/ign/news')">IGN</button>
+        <button class="quick-btn" onclick="testUrl('https://www.reddit.com/r/popular/.rss?limit=15')">r/popular</button>
+        <button class="quick-btn" onclick="testUrl('https://www.reddit.com/r/gaming+pcgaming+patientgamers/.rss?limit=15')">r/gaming</button>
+        <button class="quick-btn" onclick="testUrl('https://www.cbssports.com/rss/headlines/nfl/')">CBS NFL</button>
+        <button class="quick-btn" onclick="testUrl('https://feeds.bbci.co.uk/sport/rss.xml')">BBC Sport</button>
+        <button class="quick-btn" onclick="testUrl('https://www.reddit.com/r/stocks+investing/.rss?limit=10')">r/stocks</button>
+        <button class="quick-btn" onclick="testUrl('https://trends.google.com/trending/rss?geo=US')">Google Trends US</button>
+    </div>
+
+    <div class="input-row">
+        <input type="url" class="url-input" id="rss-url" placeholder="https://example.com/rss" onkeydown="if(event.key==='Enter') runTest()">
+        <button class="btn-test" id="test-btn" onclick="runTest()">Test Feed</button>
+    </div>
+
+    <div class="error-box" id="error-box"></div>
+    <div class="result-box" id="result-box">
+        <div class="result-header" id="result-header"></div>
+        <div class="result-meta" id="result-meta"></div>
+        <div id="result-items"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = 'https://dljqwghiyjhombvflgfg.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsanF3Z2hpeWpob21idmZsZ2ZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3OTkzODQsImV4cCI6MjEwMDM3NTM4NH0.Be3zSr3ctcyuF7PUi25j2-szlt8ThPksxM_8OWbhCec';
+    const cookieStorage = {
+        getItem: (key) => { const m = document.cookie.match(new RegExp('(^| )' + key + '=([^;]+)')); return m ? decodeURIComponent(m[2]) : null; },
+        setItem: (key, value) => { document.cookie = `${key}=${encodeURIComponent(value)}; domain=.dailyhitmetrics.com; path=/; max-age=604800; SameSite=Lax; Secure`; },
+        removeItem: (key) => { document.cookie = `${key}=; domain=.dailyhitmetrics.com; path=/; max-age=0`; }
+    };
+    const { createClient } = supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
+        auth: { storage: cookieStorage, storageKey: 'dhm-auth', autoRefreshToken: true, persistSession: true }
+    });
+
+    // Admin gate
+    supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
+        if (!session) { window.location.href = 'https://news.dailyhitmetrics.com'; return; }
+        const { data: profile } = await supabaseClient.from('profiles').select('subscription_tier').eq('id', session.user.id).single();
+        if (profile?.subscription_tier !== 'admin') { window.location.href = 'https://news.dailyhitmetrics.com'; }
+    });
+
+    function testUrl(url) {
+        document.getElementById('rss-url').value = url;
+        runTest();
+    }
+
+    async function runTest() {
+        const url = document.getElementById('rss-url').value.trim();
+        if (!url) return;
+
+        const btn = document.getElementById('test-btn');
+        const errorBox = document.getElementById('error-box');
+        const resultBox = document.getElementById('result-box');
+        btn.disabled = true;
+        btn.textContent = 'Testing...';
+        errorBox.style.display = 'none';
+        resultBox.style.display = 'none';
+
+        const start = Date.now();
+        try {
+            const res = await fetch(`https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/rss-proxy?url=${encodeURIComponent(url)}`);
+            const latency = Date.now() - start;
+
+            if (!res.ok) {
+                errorBox.textContent = `Feed returned HTTP ${res.status} after ${latency}ms. The feed may be down, rate limiting, or blocking server requests.`;
+                errorBox.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = 'Test Feed';
+                return;
+            }
+
+            const xml = await res.text();
+            const items = parseRss(xml);
+
+            document.getElementById('result-header').textContent = `Feed results — ${items.length} items returned`;
+            document.getElementById('result-meta').textContent = `HTTP 200 OK · ${latency}ms · ${xml.length.toLocaleString()} bytes`;
+
+            if (items.length === 0) {
+                document.getElementById('result-items').innerHTML = '<p style="font-size:0.6rem; color:#8a6a50; font-style:italic;">Feed returned 200 OK but no parseable items were found. It may use an unusual format.</p>';
+            } else {
+                document.getElementById('result-items').innerHTML = items.slice(0, 10).map(item => `
+                    <div class="item-card">
+                        <div class="item-title"><a href="${item.url}" target="_blank" rel="noopener">${item.title || '(no title)'}</a></div>
+                        ${item.desc ? `<div class="item-desc">${item.desc.substring(0, 200)}${item.desc.length > 200 ? '...' : ''}</div>` : ''}
+                        <div class="item-meta">${item.url}</div>
+                    </div>`).join('');
+            }
+
+            resultBox.style.display = 'block';
+        } catch (e) {
+            errorBox.textContent = `Error: ${e.message}`;
+            errorBox.style.display = 'block';
+        }
+
+        btn.disabled = false;
+        btn.textContent = 'Test Feed';
+    }
+
+    function parseRss(xml) {
+        const items = [];
+        // Try RSS items
+        const rssItems = xml.split('<item>');
+        rssItems.shift();
+        for (const item of rssItems.slice(0, 10)) {
+            const title = (item.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/s) || [])[1]?.replace(/<[^>]*>/g, '').trim();
+            const link = (item.match(/<link>([^<]+)<\/link>/) || item.match(/<link[^>]+href=["']([^"']+)["']/) || [])[1]?.trim();
+            const desc = (item.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s) || [])[1]?.replace(/<[^>]*>/g, '').trim();
+            if (title || link) items.push({ title, url: link || '#', desc });
+        }
+        if (items.length > 0) return items;
+        // Try Atom entries
+        const atomItems = xml.split('<entry>');
+        atomItems.shift();
+        for (const item of atomItems.slice(0, 10)) {
+            const title = (item.match(/<title[^>]*>(.*?)<\/title>/s) || [])[1]?.replace(/<[^>]*>/g, '').trim();
+            const link = (item.match(/<link[^>]+href=["']([^"']+)["']/) || [])[1]?.trim();
+            const desc = (item.match(/<summary[^>]*>(.*?)<\/summary>/s) || [])[1]?.replace(/<[^>]*>/g, '').trim();
+            if (title || link) items.push({ title, url: link || '#', desc });
+        }
+        return items;
+    }
+</script>
+</body>
+</html>
