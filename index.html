@@ -1008,16 +1008,28 @@
             const sectionCounts = {};
 
             data.trafficLeaderboard.forEach(item => {
-                // Get base category for prefs lookup
                 const baseCategory = item.category === 'Popular Searches' ? 'Popular Searches' : item.category;
                 const pref = getSectionPref(baseCategory);
 
                 // Skip hidden sections
                 if (!pref.visible) return;
 
+                // Skip hidden sources
+                if (!isSourceVisible(pref, item.sourceName)) return;
+
                 // Track article count per section
                 if (!sectionCounts[baseCategory]) sectionCounts[baseCategory] = 0;
                 if (sectionCounts[baseCategory] >= pref.articleCount) return;
+
+                // Track per-source count
+                if (item.sourceName) {
+                    const srcKey = `${baseCategory}::${item.sourceName}`;
+                    if (!sectionCounts[srcKey]) sectionCounts[srcKey] = 0;
+                    const srcMax = getSourceCount(pref, item.sourceName);
+                    if (sectionCounts[srcKey] >= srcMax) return;
+                    sectionCounts[srcKey]++;
+                }
+
                 sectionCounts[baseCategory]++;
 
                 if (item.category !== lastCategory || (item.category === 'Popular Searches' && item.searchLabel !== lastSearchLabel)) {
@@ -1449,13 +1461,32 @@
             .eq('id', userId)
             .single();
         if (profile?.preferences?.news?.sections) {
-            userPrefs = { ...NEWS_DEFAULTS, ...profile.preferences.news.sections };
+            // Deep merge with defaults to ensure sources are always present
+            const saved = profile.preferences.news.sections;
+            userPrefs = {};
+            Object.keys(NEWS_DEFAULTS).forEach(section => {
+                userPrefs[section] = {
+                    ...NEWS_DEFAULTS[section],
+                    ...saved[section],
+                    sources: { ...(NEWS_DEFAULTS[section].sources || {}), ...(saved[section]?.sources || {}) }
+                };
+            });
         }
     }
 
     function getSectionPref(category) {
-        if (!userPrefs) return NEWS_DEFAULTS[category] || { visible: true, articleCount: 99, color: 'gradient', gradientColor: '#254d33' };
-        return userPrefs[category] || { visible: true, articleCount: 99, color: 'gradient', gradientColor: '#254d33' };
+        if (!userPrefs) return NEWS_DEFAULTS[category] || { visible: true, articleCount: 99, color: 'gradient', gradientColor: '#254d33', sources: {} };
+        return userPrefs[category] || { visible: true, articleCount: 99, color: 'gradient', gradientColor: '#254d33', sources: {} };
+    }
+
+    function isSourceVisible(pref, sourceName) {
+        if (!sourceName || !pref.sources || !pref.sources[sourceName]) return true;
+        return pref.sources[sourceName].visible !== false;
+    }
+
+    function getSourceCount(pref, sourceName) {
+        if (!sourceName || !pref.sources || !pref.sources[sourceName]) return 99;
+        return pref.sources[sourceName].count || 99;
     }
 
     // Check session on load — fetch prefs first, then render dashboard
