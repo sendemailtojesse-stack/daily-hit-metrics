@@ -1372,13 +1372,15 @@
         const scoreboard = document.querySelector('.scoreboard');
         if (theme === 'parchment') {
             if (container) container.style.backgroundColor = '#faf8f4';
+            if (scoreboard) scoreboard.style.backgroundColor = '#faf8f4';
             document.documentElement.style.setProperty('--bg-content', '#faf8f4');
         } else if (theme === 'twotone') {
             if (container) container.style.backgroundColor = '#f0f4f8';
-            document.documentElement.style.setProperty('--bg-content', '#faf8f4');
             if (scoreboard) scoreboard.style.backgroundColor = '#faf8f4';
+            document.documentElement.style.setProperty('--bg-content', '#faf8f4');
         } else if (theme === 'white') {
             if (container) container.style.backgroundColor = '#f0f4f8';
+            if (scoreboard) scoreboard.style.backgroundColor = '#f0f4f8';
             document.documentElement.style.setProperty('--bg-content', '#f0f4f8');
         }
         const btn = document.getElementById('theme-btn');
