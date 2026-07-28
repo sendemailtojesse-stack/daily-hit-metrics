@@ -1161,7 +1161,8 @@
 
     function updateNav(user, firstName, tier) {
         const nav = document.getElementById('top-nav');
-        const isPro = tier === 'pro';
+        const isPro = tier === 'pro' || tier === 'admin';
+        const isAdmin = tier === 'admin';
 
         // Update section nav links based on tier
         const sectionNav = document.getElementById('section-nav');
@@ -1182,15 +1183,25 @@
 
         if (user) {
             const displayName = firstName || user.email.split('@')[0];
-            const proBtn = isPro ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro</span>` : `<a href="#" class="nav-link" style="text-transform:none; background:rgba(58,107,74,0.08); border:0.5px solid #3a6b4a; padding:4px 10px;" onclick="handleUpgrade(); return false;">Upgrade to Pro</a>`;
+            const tierBtn = isAdmin
+                ? `<span class="nav-user" style="color:#8a1a1a;">✦ Admin</span>`
+                : isPro
+                ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro</span>`
+                : `<a href="#" class="nav-link" style="text-transform:none; background:rgba(58,107,74,0.08); border:0.5px solid #3a6b4a; padding:4px 10px;" onclick="handleUpgrade(); return false;">Upgrade to Pro</a>`;
             const settingsLink = isPro ? `<span style="color:#d4c9b0; font-size:0.6rem;">|</span><a href="/settings.html?from=news" class="nav-link">Settings</a>` : '';
+            const adminLinks = isAdmin ? `
+                <span style="color:#d4c9b0; font-size:0.6rem;">|</span>
+                <a href="/rss-status.html" class="nav-link">RSS Status</a>
+                <span style="color:#d4c9b0; font-size:0.6rem;">|</span>
+                <a href="/rss-tester.html" class="nav-link">RSS Tester</a>` : '';
             nav.innerHTML = `
                 <button class="zoom-btn zoom-btn-left" id="zoom-btn" onclick="cycleZoom()" title="Adjust text size"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="4.5" stroke="#8a6a50" stroke-width="1.3"/><line x1="9" y1="9" x2="13" y2="13" stroke="#8a6a50" stroke-width="1.3" stroke-linecap="round"/></svg></button>
                 <button class="theme-btn" id="theme-btn" onclick="cycleTheme()" title="Toggle background color"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#8a6a50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8.25V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M3 8.25v9.75A2.25 2.25 0 0 0 5.25 20.25h13.5A2.25 2.25 0 0 0 21 18V8.25"/></svg></button>
                 <span class="nav-user">Hi, ${displayName}</span>
                 <span style="color:#d4c9b0; font-size:0.6rem;">|</span>
-                ${proBtn}
+                ${tierBtn}
                 ${settingsLink}
+                ${adminLinks}
                 <span style="color:#d4c9b0; font-size:0.6rem;">|</span>
                 <button class="nav-link-logout" onclick="handleLogout()">Logout</button>
             `;
@@ -1296,7 +1307,7 @@
                     .select('subscription_tier')
                     .eq('id', session.user.id)
                     .single();
-                if (profile?.subscription_tier === 'pro' && siteUrl) {
+                if ((profile?.subscription_tier === 'pro' || profile?.subscription_tier === 'admin') && siteUrl) {
                     window.location.href = siteUrl;
                     return;
                 }
