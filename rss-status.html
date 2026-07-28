@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSS Feed Status — Daily Hit Metrics Admin</title>
+    <link rel="icon" href="https://news.dailyhitmetrics.com/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { font-size: 120%; }
+        body { background-color: #484848; color: #1a0f00; font-family: 'Libre Baskerville', Georgia, serif; padding: 36px 20px 60px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1100px; background-color: #faf8f4; border-left: 1px solid #3a6b4a; border-right: 1px solid #3a6b4a; padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); }
+        .site-title { font-family: 'Quantico', sans-serif; font-size: 1.4rem; font-weight: 700; color: #2f3640; text-align: right; margin-bottom: 4px; }
+        .top-rule { border: none; border-top: 3px solid #2c1810; margin: 8px 0 24px; }
+        .admin-badge { font-family: 'Quantico', sans-serif; font-size: 0.45rem; letter-spacing: 0.2em; text-transform: uppercase; color: #faf8f4; background: #8a1a1a; display: inline-block; padding: 3px 12px; margin-bottom: 12px; }
+        .page-title { font-family: 'Quantico', sans-serif; font-size: 1.6rem; color: #2c1810; margin-bottom: 6px; }
+        .page-sub { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.8rem; color: #5a3e2b; margin-bottom: 24px; border-bottom: 1px solid #d4c9b0; padding-bottom: 16px; }
+        .controls { display: flex; gap: 12px; align-items: center; margin-bottom: 24px; flex-wrap: wrap; }
+        .btn-check { font-family: 'Quantico', sans-serif; font-size: 0.5rem; letter-spacing: 0.15em; text-transform: uppercase; background: #2c1810; color: #faf8f4; border: none; padding: 10px 24px; cursor: pointer; transition: background 0.15s; }
+        .btn-check:hover { background: #3a6b4a; }
+        .btn-check:disabled { background: #8a6a50; cursor: not-allowed; }
+        .status-text { font-family: 'Libre Baskerville', serif; font-size: 0.6rem; color: #5a3e2b; font-style: italic; }
+        .section-label { font-family: 'Quantico', sans-serif; font-size: 0.45rem; letter-spacing: 0.2em; text-transform: uppercase; color: #3a6b4a; border-bottom: 1px solid #d4c9b0; padding-bottom: 6px; margin-bottom: 12px; margin-top: 24px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 8px; }
+        th { font-family: 'Quantico', sans-serif; font-size: 0.45rem; letter-spacing: 0.15em; text-transform: uppercase; color: #5a3e2b; padding: 8px 12px; text-align: left; background: #f0ebe0; border-bottom: 2px solid #3a6b4a; }
+        td { font-family: 'Libre Baskerville', serif; font-size: 0.55rem; padding: 8px 12px; border-bottom: 1px dashed #d4c9b0; vertical-align: middle; }
+        .feed-name { font-weight: 700; color: #2c1810; }
+        .feed-url { color: #8a6a50; font-size: 0.48rem; word-break: break-all; }
+        .status-badge { font-family: 'Quantico', sans-serif; font-size: 0.45rem; letter-spacing: 0.1em; padding: 3px 10px; display: inline-block; }
+        .status-ok { background: #edf4ef; color: #254d33; }
+        .status-error { background: #fdf0f0; color: #8a1a1a; }
+        .status-pending { background: #f5f2ec; color: #8a6a50; }
+        .status-429 { background: #fff8e8; color: #7a4a00; }
+        .latency { color: #5a3e2b; font-size: 0.5rem; }
+        .back-link { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.7rem; color: #3a6b4a; text-decoration: none; display: inline-block; margin-bottom: 20px; }
+        .back-link:hover { color: #2c1810; }
+        .summary-bar { display: flex; gap: 20px; margin-bottom: 20px; padding: 12px 16px; background: #f0ebe0; border-left: 3px solid #3a6b4a; flex-wrap: wrap; }
+        .summary-item { font-family: 'Quantico', sans-serif; font-size: 0.45rem; letter-spacing: 0.1em; text-transform: uppercase; }
+        .summary-item span { color: #3a6b4a; font-size: 0.7rem; display: block; }
+        .summary-item.errors span { color: #8a1a1a; }
+        .summary-item.warnings span { color: #7a4a00; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="site-title">Daily Hit Metrics</div>
+    <div class="top-rule"></div>
+    <a href="https://news.dailyhitmetrics.com" class="back-link">← Return to News</a>
+    <div class="admin-badge">✦ Admin</div>
+    <div class="page-title">RSS Feed Status</div>
+    <div class="page-sub">Live status check of all RSS and data sources across all five sites.</div>
+
+    <div class="controls">
+        <button class="btn-check" id="check-btn" onclick="checkAllFeeds()">Check All Feeds</button>
+        <span class="status-text" id="status-text">Click to run status check.</span>
+    </div>
+
+    <div class="summary-bar" id="summary-bar" style="display:none;">
+        <div class="summary-item"><span id="sum-total">0</span>Total Feeds</div>
+        <div class="summary-item"><span id="sum-ok">0</span>OK</div>
+        <div class="summary-item warnings"><span id="sum-429">0</span>Rate Limited</div>
+        <div class="summary-item errors"><span id="sum-error">0</span>Errors</div>
+    </div>
+
+    <div id="results"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = 'https://dljqwghiyjhombvflgfg.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRsanF3Z2hpeWpob21idmZsZ2ZnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3OTkzODQsImV4cCI6MjEwMDM3NTM4NH0.Be3zSr3ctcyuF7PUi25j2-szlt8ThPksxM_8OWbhCec';
+    const cookieStorage = {
+        getItem: (key) => { const m = document.cookie.match(new RegExp('(^| )' + key + '=([^;]+)')); return m ? decodeURIComponent(m[2]) : null; },
+        setItem: (key, value) => { document.cookie = `${key}=${encodeURIComponent(value)}; domain=.dailyhitmetrics.com; path=/; max-age=604800; SameSite=Lax; Secure`; },
+        removeItem: (key) => { document.cookie = `${key}=; domain=.dailyhitmetrics.com; path=/; max-age=0`; }
+    };
+    const { createClient } = supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
+        auth: { storage: cookieStorage, storageKey: 'dhm-auth', autoRefreshToken: true, persistSession: true }
+    });
+
+    // Admin gate
+    supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
+        if (!session) { window.location.href = 'https://news.dailyhitmetrics.com'; return; }
+        const { data: profile } = await supabaseClient.from('profiles').select('subscription_tier').eq('id', session.user.id).single();
+        if (profile?.subscription_tier !== 'admin') { window.location.href = 'https://news.dailyhitmetrics.com'; }
+    });
+
+    const ALL_FEEDS = [
+        // NEWS
+        { site: 'News', section: 'World News', name: 'The Guardian', url: 'https://www.theguardian.com/world/rss' },
+        { site: 'News', section: 'World News', name: 'BBC News', url: 'https://feeds.bbci.co.uk/news/world/rss.xml' },
+        { site: 'News', section: 'World News', name: 'NPR News', url: 'https://feeds.npr.org/1001/rss.xml' },
+        { site: 'News', section: 'World News', name: 'Al Jazeera', url: 'https://www.aljazeera.com/xml/rss/all.xml' },
+        { site: 'News', section: 'Social Pulse', name: 'r/popular', url: 'https://www.reddit.com/r/popular/.rss?limit=15' },
+        { site: 'News', section: 'Tech', name: 'Hacker News', url: 'https://news.ycombinator.com/rss' },
+        { site: 'News', section: 'Tech', name: 'Ars Technica', url: 'https://feeds.arstechnica.com/arstechnica/index' },
+        { site: 'News', section: 'Video Games', name: 'Kotaku', url: 'https://kotaku.com/rss' },
+        { site: 'News', section: 'Video Games', name: 'IGN', url: 'https://feeds.feedburner.com/ign/news' },
+        { site: 'News', section: 'Video Games', name: 'r/gaming', url: 'https://www.reddit.com/r/gaming+pcgaming+patientgamers/.rss?limit=15' },
+        { site: 'News', section: 'Finance Trends', name: 'r/stocks', url: 'https://www.reddit.com/r/stocks+investing+options/.rss?limit=15' },
+        { site: 'News', section: 'Popular Searches', name: 'Google Trends US', url: 'https://trends.google.com/trending/rss?geo=US' },
+        // SPORTS
+        { site: 'Sports', section: 'Top Sports', name: 'BBC Sport', url: 'https://feeds.bbci.co.uk/sport/rss.xml' },
+        { site: 'Sports', section: 'Top Sports', name: 'Sky Sports', url: 'https://www.skysports.com/rss/12040' },
+        { site: 'Sports', section: 'Top Sports', name: 'CBS Sports', url: 'https://www.cbssports.com/rss/headlines/' },
+        { site: 'Sports', section: 'American Football', name: 'CBS Sports NFL', url: 'https://www.cbssports.com/rss/headlines/nfl/' },
+        { site: 'Sports', section: 'American Football', name: 'r/nfl', url: 'https://www.reddit.com/r/nfl/.rss?limit=10' },
+        { site: 'Sports', section: 'Basketball', name: 'CBS Sports NBA', url: 'https://www.cbssports.com/rss/headlines/nba/' },
+        { site: 'Sports', section: 'Soccer', name: 'BBC Sport Football', url: 'https://feeds.bbci.co.uk/sport/football/rss.xml' },
+        { site: 'Sports', section: 'Soccer', name: 'Sky Sports Football', url: 'https://www.skysports.com/rss/12040' },
+        { site: 'Sports', section: 'Baseball', name: 'CBS Sports MLB', url: 'https://www.cbssports.com/rss/headlines/mlb/' },
+        { site: 'Sports', section: 'Trending Searches', name: 'Google Trends Sports', url: 'https://trends.google.com/trending/rss?geo=US&cat=20' },
+        // FINANCE
+        { site: 'Finance', section: 'Markets', name: 'r/stocks+investing', url: 'https://www.reddit.com/r/stocks+investing/.rss?limit=10' },
+        { site: 'Finance', section: 'Trending Searches', name: 'Google Trends Finance', url: 'https://trends.google.com/trending/rss?geo=US&cat=7' },
+        // POLITICS
+        { site: 'Politics', section: 'US Politics', name: 'r/politics', url: 'https://www.reddit.com/r/politics/.rss?limit=10' },
+        { site: 'Politics', section: 'Trending Searches', name: 'Google Trends Politics', url: 'https://trends.google.com/trending/rss?geo=US&cat=396' },
+        // ENTERTAINMENT
+        { site: 'Entertainment', section: 'Movies & TV', name: 'r/movies+television', url: 'https://www.reddit.com/r/movies+television/.rss?limit=10' },
+        { site: 'Entertainment', section: 'Trending Searches', name: 'Google Trends Entertainment', url: 'https://trends.google.com/trending/rss?geo=US&cat=3' },
+    ];
+
+    async function checkFeed(feed) {
+        const start = Date.now();
+        try {
+            const res = await fetch(`https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/rss-check?url=${encodeURIComponent(feed.url)}`);
+            const latency = Date.now() - start;
+            if (res.status === 200) return { ...feed, status: 200, latency };
+            if (res.status === 429) return { ...feed, status: 429, latency };
+            return { ...feed, status: res.status, latency };
+        } catch (e) {
+            return { ...feed, status: 'ERR', latency: Date.now() - start, error: e.message };
+        }
+    }
+
+    function statusBadge(status) {
+        if (status === 200) return `<span class="status-badge status-ok">✓ 200 OK</span>`;
+        if (status === 429) return `<span class="status-badge status-429">⚠ 429 Rate Limited</span>`;
+        if (status === 'ERR') return `<span class="status-badge status-error">✗ Error</span>`;
+        return `<span class="status-badge status-error">✗ ${status}</span>`;
+    }
+
+    async function checkAllFeeds() {
+        const btn = document.getElementById('check-btn');
+        const statusText = document.getElementById('status-text');
+        const results = document.getElementById('results');
+        btn.disabled = true;
+        btn.textContent = 'Checking...';
+        statusText.textContent = `Checking ${ALL_FEEDS.length} feeds...`;
+        results.innerHTML = '';
+
+        const checked = [];
+        for (const feed of ALL_FEEDS) {
+            statusText.textContent = `Checking ${feed.name} (${feed.site})...`;
+            const result = await checkFeed(feed);
+            checked.push(result);
+        }
+
+        // Summarize
+        const ok = checked.filter(f => f.status === 200).length;
+        const r429 = checked.filter(f => f.status === 429).length;
+        const errors = checked.filter(f => f.status !== 200 && f.status !== 429).length;
+
+        document.getElementById('sum-total').textContent = checked.length;
+        document.getElementById('sum-ok').textContent = ok;
+        document.getElementById('sum-429').textContent = r429;
+        document.getElementById('sum-error').textContent = errors;
+        document.getElementById('summary-bar').style.display = 'flex';
+
+        // Group by site
+        const sites = [...new Set(ALL_FEEDS.map(f => f.site))];
+        let html = '';
+        for (const site of sites) {
+            const siteFeeds = checked.filter(f => f.site === site);
+            html += `<div class="section-label">${site}</div>
+            <table>
+                <thead><tr><th>Feed</th><th>Section</th><th>Status</th><th>Latency</th></tr></thead>
+                <tbody>`;
+            for (const f of siteFeeds) {
+                html += `<tr>
+                    <td><div class="feed-name">${f.name}</div><div class="feed-url">${f.url}</div></td>
+                    <td>${f.section}</td>
+                    <td>${statusBadge(f.status)}</td>
+                    <td class="latency">${f.latency}ms</td>
+                </tr>`;
+            }
+            html += '</tbody></table>';
+        }
+        results.innerHTML = html;
+
+        btn.disabled = false;
+        btn.textContent = 'Check All Feeds';
+        statusText.textContent = `Last checked: ${new Date().toLocaleTimeString()} — ${ok} OK, ${r429} rate limited, ${errors} errors`;
+    }
+</script>
+</body>
+</html>
