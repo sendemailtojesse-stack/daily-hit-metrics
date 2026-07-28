@@ -1295,14 +1295,11 @@
         });
     }
 
+    let pwVisible = false;
     function togglePasswordVisibility() {
         const pw = document.getElementById('signup-password');
-        const toggle = document.getElementById('pw-toggle');
-        if (pw.type === 'password') {
-            pw.type = 'text';
-        } else {
-            pw.type = 'password';
-        }
+        pwVisible = !pwVisible;
+        pw.type = pwVisible ? 'text' : 'password';
     }
 
     function toggleEditorial() {
