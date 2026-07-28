@@ -1102,10 +1102,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
     // ── MODAL FUNCTIONS (global scope) ──
-    function openModal(id) {
-        document.getElementById(id).classList.add('active');
-    }
-
     function closeModal(id) {
         document.getElementById(id).classList.remove('active');
         const msgId = id === 'login-modal' ? 'login-msg' : 'signup-msg';
@@ -1300,6 +1296,15 @@
         const pw = document.getElementById('signup-password');
         pwVisible = !pwVisible;
         pw.type = pwVisible ? 'text' : 'password';
+    }
+
+    function openModal(id) {
+        document.getElementById(id).classList.add('active');
+        if (id === 'signup-modal') {
+            pwVisible = false;
+            const pw = document.getElementById('signup-password');
+            if (pw) pw.type = 'password';
+        }
     }
 
     function toggleEditorial() {
