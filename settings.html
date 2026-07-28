@@ -29,6 +29,13 @@
         .site-panel.active { display: block; }
 
         /* ── SECTION ROWS ── */
+        .source-list { background: #f5f2ec; border-left: 2px solid #d4c9b0; padding: 8px 12px 8px 16px; margin-top: -8px; margin-bottom: 8px; }
+        .source-list-label { font-family: 'Quantico', sans-serif; font-size: 0.4rem; letter-spacing: 0.15em; text-transform: uppercase; color: #8a6a50; margin-bottom: 6px; }
+        .source-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+        .source-name { font-family: 'Libre Baskerville', serif; font-size: 0.55rem; color: #2c1810; flex: 1; }
+        .count-select-sm { font-size: 0.5rem; padding: 2px 4px; border: 1px solid #c8b89a; background: #faf8f4; color: #1a0f00; width: 48px; }
+        .source-label-sm { font-family: 'Libre Baskerville', serif; font-size: 0.48rem; color: #8a6a50; }
+
         .section-row { display: grid; grid-template-columns: 1fr auto auto auto; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid #e8e0d0; }
         .section-row:last-child { border-bottom: none; }
         .section-name { font-size: 0.75rem; color: #2a1a0a; }
@@ -215,12 +222,24 @@ const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
 const DEFAULTS = {
     news: {
         sections: {
-            'World News':       { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#254d33' },
-            'Social Pulse':     { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#6b6125' },
-            'Tech':             { visible: true, articleCount: 8, color: 'gradient', gradientColor: '#4a5c3a' },
-            'Video Games':      { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#3d5c3a' },
-            'Finance Trends':   { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#2d4a3e' },
-            'Popular Searches': { visible: true, articleCount: 28, color: 'gradient', gradientColor: '#556b45' }
+            'World News':       { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#254d33',
+                sources: { 'The Guardian': { visible: true, count: 1 }, 'BBC News': { visible: true, count: 1 }, 'NPR News': { visible: true, count: 1 }, 'Al Jazeera': { visible: true, count: 1 } }
+            },
+            'Social Pulse':     { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#6b6125',
+                sources: { 'r/popular': { visible: true, count: 4 } }
+            },
+            'Tech':             { visible: true, articleCount: 8, color: 'gradient', gradientColor: '#4a5c3a',
+                sources: { 'Hacker News': { visible: true, count: 4 }, 'Ars Technica': { visible: true, count: 4 } }
+            },
+            'Video Games':      { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#3d5c3a',
+                sources: { 'Kotaku': { visible: true, count: 1 }, 'IGN': { visible: true, count: 1 }, 'r/gaming': { visible: true, count: 1 }, 'r/pcgaming': { visible: true, count: 1 }, 'r/patientgamers': { visible: true, count: 1 } }
+            },
+            'Finance Trends':   { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#2d4a3e',
+                sources: { 'r/stocks': { visible: true, count: 2 }, 'r/investing': { visible: true, count: 1 }, 'r/options': { visible: true, count: 1 } }
+            },
+            'Popular Searches': { visible: true, articleCount: 28, color: 'gradient', gradientColor: '#556b45',
+                sources: { 'Google Trends': { visible: true, count: 28 } }
+            }
         },
         keywords: []
     },
@@ -293,7 +312,26 @@ function switchTab(group, site) {
 function renderPrefsPanel(site) {
     const panel = document.getElementById(`prefs-panel-${site}`);
     const sitePref = currentPrefs[site];
-    panel.innerHTML = Object.entries(sitePref.sections).map(([name, cfg]) => `
+    panel.innerHTML = Object.entries(sitePref.sections).map(([name, cfg]) => {
+        const sources = cfg.sources || {};
+        const sourceRows = Object.entries(sources).length > 0 ? `
+            <div class="source-list">
+                <div class="source-list-label">Sources</div>
+                ${Object.entries(sources).map(([srcName, srcCfg]) => `
+                <div class="source-row">
+                    <label class="toggle" title="${srcName}">
+                        <input type="checkbox" ${srcCfg.visible ? 'checked' : ''} onchange="updateSourcePref('${site}','${name}','${srcName}','visible',this.checked)">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="source-name">${srcName}</span>
+                    <select class="count-select count-select-sm" onchange="updateSourcePref('${site}','${name}','${srcName}','count',parseInt(this.value))">
+                        ${[1,2,3,4,6].map(n => `<option value="${n}" ${srcCfg.count === n ? 'selected' : ''}>${n}</option>`).join('')}
+                    </select>
+                    <span class="source-label-sm">articles</span>
+                </div>`).join('')}
+            </div>` : '';
+
+        return `
         <div class="section-row">
             <div>
                 <div class="section-name">${name}</div>
@@ -317,11 +355,18 @@ function renderPrefsPanel(site) {
                 <input type="color" class="color-swatch" value="${cfg.gradientColor || '#3a6b4a'}" title="Banner color" onchange="updatePref('${site}','${name}','gradientColor',this.value)">
             </div>
         </div>
-    `).join('');
+        ${sourceRows}`;
+    }).join('');
 }
 
 function updatePref(site, section, key, value) {
     currentPrefs[site].sections[section][key] = value;
+}
+
+function updateSourcePref(site, section, sourceName, key, value) {
+    if (!currentPrefs[site].sections[section].sources) currentPrefs[site].sections[section].sources = {};
+    if (!currentPrefs[site].sections[section].sources[sourceName]) currentPrefs[site].sections[section].sources[sourceName] = { visible: true, count: 1 };
+    currentPrefs[site].sections[section].sources[sourceName][key] = value;
 }
 
 // ── RENDER KEYWORD PANEL ──
