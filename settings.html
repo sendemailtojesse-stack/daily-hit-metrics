@@ -140,9 +140,44 @@
 
     <!-- Account -->
     <h2>Account</h2>
-    <div class="setting-row"><span class="setting-label">Name</span><span class="setting-value" id="account-name">—</span></div>
     <div class="setting-row"><span class="setting-label">Email</span><span class="setting-value" id="account-email">—</span></div>
     <div class="setting-row"><span class="setting-label">Subscription</span><span class="setting-value"><span class="badge">✦ Pro</span></span></div>
+
+    <!-- Collapsible Name Editor -->
+    <div class="setting-row" style="cursor:pointer; user-select:none;" onclick="toggleNameEditor()">
+        <span class="setting-label">Name</span>
+        <span class="setting-value" id="account-name">—</span>
+        <span id="name-arrow" style="font-size:0.6rem; color:#3a6b4a; margin-left:8px;">▾</span>
+    </div>
+    <div id="name-editor" style="display:none; background:#f5f2ec; border-left:2px solid #3a6b4a; padding:14px 16px; margin-bottom:12px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+            <div>
+                <div class="section-label" style="margin-bottom:4px;">Salutation</div>
+                <select id="name-salutation" style="width:100%; font-family:'Libre Baskerville',serif; font-size:0.6rem; padding:8px 10px; border:1px solid #c8b89a; background:#faf8f4; color:#1a0f00;">
+                    <option value="">None</option>
+                    <option value="Mr.">Mr.</option>
+                    <option value="Mrs.">Mrs.</option>
+                    <option value="Ms.">Ms.</option>
+                    <option value="Dr.">Dr.</option>
+                    <option value="Prof.">Prof.</option>
+                </select>
+            </div>
+            <div>
+                <div class="section-label" style="margin-bottom:4px;">First Name</div>
+                <input type="text" id="name-first" placeholder="First name" style="width:100%; font-family:'Libre Baskerville',serif; font-size:0.6rem; padding:8px 10px; border:1px solid #c8b89a; background:#faf8f4; color:#1a0f00;">
+            </div>
+            <div>
+                <div class="section-label" style="margin-bottom:4px;">Middle Name / Initial</div>
+                <input type="text" id="name-middle" placeholder="Middle name or initial" style="width:100%; font-family:'Libre Baskerville',serif; font-size:0.6rem; padding:8px 10px; border:1px solid #c8b89a; background:#faf8f4; color:#1a0f00;">
+            </div>
+            <div>
+                <div class="section-label" style="margin-bottom:4px;">Last Name</div>
+                <input type="text" id="name-last" placeholder="Last name" style="width:100%; font-family:'Libre Baskerville',serif; font-size:0.6rem; padding:8px 10px; border:1px solid #c8b89a; background:#faf8f4; color:#1a0f00;">
+            </div>
+        </div>
+        <button onclick="saveName()" style="font-family:'Quantico',sans-serif; font-size:0.45rem; letter-spacing:0.15em; text-transform:uppercase; background:#2c1810; color:#faf8f4; border:none; padding:8px 20px; cursor:pointer;">Save Name</button>
+        <span id="name-save-msg" style="font-family:'IM Fell English',serif; font-size:0.6rem; font-style:italic; color:#3a6b4a; margin-left:10px; display:none;">Saved.</span>
+    </div>
 
     <!-- Section Preferences -->
     <h2>Section Preferences</h2>
@@ -300,6 +335,36 @@ let activeKwTab = 'news';
 })();
 
 // ── TAB SWITCHING ──
+function toggleNameEditor() {
+    const editor = document.getElementById('name-editor');
+    const arrow = document.getElementById('name-arrow');
+    const open = editor.style.display === 'none';
+    editor.style.display = open ? 'block' : 'none';
+    arrow.textContent = open ? '▴' : '▾';
+}
+
+async function saveName() {
+    const salutation = document.getElementById('name-salutation').value;
+    const firstName = document.getElementById('name-first').value.trim();
+    const middleName = document.getElementById('name-middle').value.trim();
+    const lastName = document.getElementById('name-last').value.trim();
+    const msg = document.getElementById('name-save-msg');
+
+    const { error } = await supabaseClient.from('profiles').update({
+        salutation: salutation || null,
+        first_name: firstName || null,
+        middle_name: middleName || null,
+        last_name: lastName || null
+    }).eq('id', currentUser.id);
+
+    if (!error) {
+        const nameParts = [salutation, firstName, middleName, lastName].filter(Boolean);
+        document.getElementById('account-name').textContent = nameParts.join(' ') || '—';
+        msg.style.display = 'inline';
+        setTimeout(() => { msg.style.display = 'none'; }, 2000);
+    }
+}
+
 function switchTab(group, site) {
     document.querySelectorAll(`#${group}-tabs .site-tab`).forEach(t => t.classList.remove('active'));
     event.target.classList.add('active');
@@ -451,15 +516,21 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
 
     const { data: profile } = await supabaseClient
         .from('profiles')
-        .select('first_name, last_name, subscription_tier, preferences')
+        .select('first_name, last_name, middle_name, salutation, subscription_tier, preferences')
         .eq('id', session.user.id)
         .single();
 
-    if (profile?.subscription_tier !== 'pro') { window.location.href = 'https://news.dailyhitmetrics.com'; return; }
+    if (profile?.subscription_tier !== 'pro' && profile?.subscription_tier !== 'admin') { window.location.href = 'https://news.dailyhitmetrics.com'; return; }
 
     document.getElementById('account-email').textContent = session.user.email;
-    const name = [profile.first_name, profile.last_name].filter(Boolean).join(' ');
-    document.getElementById('account-name').textContent = name || '—';
+    const nameParts = [profile.salutation, profile.first_name, profile.middle_name, profile.last_name].filter(Boolean);
+    document.getElementById('account-name').textContent = nameParts.join(' ') || '—';
+
+    // Populate name editor fields
+    if (profile.salutation) document.getElementById('name-salutation').value = profile.salutation;
+    if (profile.first_name) document.getElementById('name-first').value = profile.first_name;
+    if (profile.middle_name) document.getElementById('name-middle').value = profile.middle_name;
+    if (profile.last_name) document.getElementById('name-last').value = profile.last_name;
 
     // Merge saved prefs with defaults
     if (profile?.preferences && Object.keys(profile.preferences).length > 0) {
