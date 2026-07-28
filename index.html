@@ -1370,12 +1370,12 @@
     applyZoom(getZoom());
 
     // ── THEME TOGGLE ──
-    const THEMES = ['parchment', 'twotone', 'white'];
-    const THEME_LABELS = { parchment: 'Two-tone view', twotone: 'All cool white', white: 'All parchment' };
+    const THEMES = ['twotone', 'parchment', 'white'];
+    const THEME_LABELS = { twotone: 'All parchment', parchment: 'All cool white', white: 'Two-tone view' };
 
     function getTheme() {
         const saved = document.cookie.match(/dhm-theme=([a-z]+)/);
-        return saved ? saved[1] : 'parchment';
+        return saved ? saved[1] : 'twotone';
     }
 
     function applyTheme(theme) {
