@@ -765,7 +765,7 @@
             <div style="font-family:'Libre Baskerville',serif; font-size:0.55rem; color:#5a3e2b; margin-bottom:0; margin-top:14px;">Password must be at least eight characters and include both letters and numbers. Or allow browser to specify password.</div>
             <div style="position:relative; margin-top:26px;">
                 <input type="password" id="signup-password" placeholder="Password" autocomplete="new-password" onkeydown="if(event.key==='Enter') handleSignup()" style="width:100%; padding-right:36px;">
-                <span onclick="togglePasswordVisibility()" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; color:#8a6a50; font-size:0.75rem; user-select:none;" id="pw-toggle">👁</span>
+                <span onclick="togglePasswordVisibility()" style="position:absolute; right:10px; top:0; bottom:0; display:flex; align-items:center; cursor:pointer; color:#8a6a50; font-size:0.75rem; user-select:none;" id="pw-toggle">👁</span>
             </div>
             <button class="modal-btn" onclick="handleSignup()">Create Account</button>
             <div class="modal-switch">Already have an account? <a onclick="switchModal('signup','login')">Login</a></div>
