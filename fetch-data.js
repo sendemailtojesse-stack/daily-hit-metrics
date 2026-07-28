@@ -137,6 +137,7 @@ async function fetchHighUtilityMatrix() {
                     const trend = ensurePeriod(item.desc || `Breaking news from ${source.name}.`);
                     worldNews.push({
                         site: item.title || `${source.name} News`,
+                        sourceName: source.name,
                         category: "World News",
                         dailyHits: "Global",
                         growth: "+" + (Math.random() * 5 + 1).toFixed(1) + "%",
@@ -173,6 +174,7 @@ async function fetchHighUtilityMatrix() {
             const subredditMatch = (url) => { const m = url.match(/\/r\/([^/]+)\//); return m ? `r/${m[1]}` : 'r/popular'; };
             entries.forEach(entry => socialPulse.push({
                 site: entry.title || "Trending Discussion",
+                sourceName: 'r/popular',
                 category: "Social Pulse",
                 dailyHits: `${Math.floor(Math.random() * 4000 + 1200).toLocaleString()} Coms`,
                 growth: "+" + Math.floor(Math.random() * 40 + 20) + " up/min",
@@ -233,6 +235,7 @@ async function fetchHighUtilityMatrix() {
                 }
                 techNews.push({
                     site: item.title || "Hacker News",
+                    sourceName: 'Hacker News',
                     category: "Tech",
                     dailyHits: Math.floor(Math.random() * 800 + 200) + " pts",
                     growth: "+" + Math.floor(Math.random() * 30 + 5) + " pts/hr",
@@ -262,6 +265,7 @@ async function fetchHighUtilityMatrix() {
                 }
                 techNews.push({
                     site: item.title || "Ars Technica",
+                    sourceName: 'Ars Technica',
                     category: "Tech",
                     dailyHits: Math.floor(Math.random() * 5000 + 500).toLocaleString() + " views",
                     growth: "+" + (Math.random() * 8 + 1).toFixed(1) + "%",
@@ -296,6 +300,7 @@ async function fetchHighUtilityMatrix() {
             const items = parseRssItems(await kotakuRes.text(), 1, 'https://kotaku.com/', 'https://www.google.com/s2/favicons?domain=kotaku.com&sz=128');
             items.forEach(item => videoGames.push({
                 site: item.title || "Kotaku",
+                sourceName: 'Kotaku',
                 category: "Video Games",
                 dailyHits: Math.floor(Math.random() * 5000 + 500).toLocaleString() + " views",
                 growth: "+" + (Math.random() * 8 + 1).toFixed(1) + "%",
@@ -314,6 +319,7 @@ async function fetchHighUtilityMatrix() {
             const items = parseRssItems(await res.text(), 1, 'https://ign.com/', LOGOS.ign);
             items.forEach(item => videoGames.push({
                 site: item.title || "IGN News",
+                sourceName: 'IGN',
                 category: "Video Games",
                 dailyHits: Math.floor(Math.random() * 5000 + 500).toLocaleString() + " views",
                 growth: "+" + (Math.random() * 8 + 1).toFixed(1) + "%",
@@ -335,6 +341,7 @@ async function fetchHighUtilityMatrix() {
             const subredditName = (url) => { const m = url.match(/\/r\/([^/]+)\//); return m ? `r/${m[1]}` : 'r/gaming'; };
             entries.forEach(entry => videoGames.push({
                 site: entry.title || "r/gaming",
+                sourceName: subredditName(entry.url),
                 category: "Video Games",
                 dailyHits: `${Math.floor(Math.random() * 3000 + 500).toLocaleString()} Coms`,
                 growth: "+" + Math.floor(Math.random() * 30 + 5) + " up/min",
@@ -406,6 +413,7 @@ async function fetchHighUtilityMatrix() {
             const subredditName = (url) => { const m = url.match(/\/r\/([^/]+)\//); return m ? `r/${m[1]}` : 'r/stocks'; };
             entries.forEach(entry => financeTrends.push({
                 site: entry.title || "Market Discussion",
+                sourceName: subredditName(entry.url),
                 category: "Finance Trends",
                 dailyHits: `${Math.floor(Math.random() * 800 + 150)} Traders`,
                 growth: `${Math.random() > 0.35 ? "+" : "-"}${Math.floor(Math.random() * 25 + 5)} coms/min`,
@@ -460,6 +468,7 @@ async function fetchHighUtilityMatrix() {
 
     const toSearchEntry = (item, label) => ({
         site: item.trendName,
+        sourceName: 'Google Trends',
         category: "Popular Searches",
         dailyHits: item.liveTraffic,
         growth: "+" + (Math.random() * 10 + 5).toFixed(1) + "%",
