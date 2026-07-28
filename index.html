@@ -774,7 +774,16 @@
             <h2>Create Account</h2>
             <p style="font-family:'Libre Baskerville',serif; font-size:0.6rem; color:#5a3e2b; margin-bottom:0;">Please enter your First name, Last name, and Email address.</p>
             <div class="modal-msg" id="signup-msg"></div>
+            <select id="signup-salutation" style="width:100%; font-family:'Libre Baskerville',serif; font-size:0.6rem; padding:8px 10px; border:1px solid #c8b89a; background:#faf8f4; color:#1a0f00; margin-bottom:12px;">
+                <option value="">Salutation (optional)</option>
+                <option value="Mr.">Mr.</option>
+                <option value="Mrs.">Mrs.</option>
+                <option value="Ms.">Ms.</option>
+                <option value="Dr.">Dr.</option>
+                <option value="Prof.">Prof.</option>
+            </select>
             <input type="text" id="signup-firstname" placeholder="First name" autocomplete="given-name" style="margin-top:-6px;">
+            <input type="text" id="signup-middlename" placeholder="Middle Name (or initial) — optional" autocomplete="additional-name">
             <input type="text" id="signup-lastname" placeholder="Last name" autocomplete="family-name">
             <input type="email" id="signup-email" placeholder="Email address" autocomplete="email">
             <div style="font-family:'Libre Baskerville',serif; font-size:0.55rem; color:#5a3e2b; margin-bottom:0; margin-top:14px;">Password must be at least eight characters and include both letters and numbers. Or allow browser to specify password.</div>
@@ -1253,6 +1262,8 @@
     async function handleSignup() {
         const firstName = document.getElementById('signup-firstname').value.trim();
         const lastName = document.getElementById('signup-lastname').value.trim();
+        const middleName = document.getElementById('signup-middlename').value.trim();
+        const salutation = document.getElementById('signup-salutation').value;
         const email = document.getElementById('signup-email').value.trim();
         const password = document.getElementById('signup-password').value;
         const msg = document.getElementById('signup-msg');
@@ -1266,7 +1277,9 @@
                 emailRedirectTo: 'https://news.dailyhitmetrics.com/welcome.html',
                 data: {
                     first_name: firstName,
-                    last_name: lastName
+                    last_name: lastName,
+                    middle_name: middleName || null,
+                    salutation: salutation || null
                 }
             }
         });
@@ -1280,7 +1293,9 @@
                     id: data.user.id,
                     email: email,
                     first_name: firstName,
-                    last_name: lastName
+                    last_name: lastName,
+                    middle_name: middleName || null,
+                    salutation: salutation || null
                 });
             }
             msg.className = 'modal-msg success';
