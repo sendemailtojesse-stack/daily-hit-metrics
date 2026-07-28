@@ -297,7 +297,7 @@ async function fetchHighUtilityMatrix() {
         const kotakuRes = await fetch('https://kotaku.com/rss', { headers: BROWSER_HEADERS });
         console.log(`Kotaku RSS status: ${kotakuRes.status}`);
         if (kotakuRes.ok) {
-            const items = parseRssItems(await kotakuRes.text(), 1, 'https://kotaku.com/', 'https://www.google.com/s2/favicons?domain=kotaku.com&sz=128');
+            const items = parseRssItems(await kotakuRes.text(), 4, 'https://kotaku.com/', 'https://www.google.com/s2/favicons?domain=kotaku.com&sz=128');
             items.forEach(item => videoGames.push({
                 site: item.title || "Kotaku",
                 sourceName: 'Kotaku',
@@ -316,7 +316,7 @@ async function fetchHighUtilityMatrix() {
         const res = await fetch('https://feeds.feedburner.com/ign/news', { headers: BROWSER_HEADERS });
         console.log(`IGN RSS status: ${res.status}`);
         if (res.ok) {
-            const items = parseRssItems(await res.text(), 1, 'https://ign.com/', LOGOS.ign);
+            const items = parseRssItems(await res.text(), 4, 'https://ign.com/', LOGOS.ign);
             items.forEach(item => videoGames.push({
                 site: item.title || "IGN News",
                 sourceName: 'IGN',
@@ -352,10 +352,10 @@ async function fetchHighUtilityMatrix() {
         }
     } catch (e) { console.error('r/gaming Error:', e.message); }
 
-    // Pad to at least 4 with fallbacks if Reddit 429'd
     while (videoGames.length < 4) {
         videoGames.push({
             site: "Hot discussion in r/gaming",
+            sourceName: 'r/gaming',
             category: "Video Games",
             dailyHits: `${Math.floor(Math.random() * 3000 + 500).toLocaleString()} Coms`,
             growth: "+" + Math.floor(Math.random() * 30 + 5) + " up/min",
