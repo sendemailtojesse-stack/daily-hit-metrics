@@ -990,11 +990,14 @@
 
             const tableBody = document.getElementById('leaderboard-rows');
 
-            // Use pre-rendered HTML if no user prefs customization needed
-            const hasCustomPrefs = userPrefs && Object.values(userPrefs).some(p =>
+            // Use pre-rendered HTML only if no user prefs customization needed
+            const hasCustomSources = userPrefs && Object.values(userPrefs).some(p =>
+                p.sources && Object.values(p.sources).some(s => !s.visible || s.count !== undefined)
+            );
+            const hasCustomPrefs = hasCustomSources || (userPrefs && Object.values(userPrefs).some(p =>
                 !p.visible || p.color === 'solid' ||
                 p.articleCount !== (NEWS_DEFAULTS[Object.keys(userPrefs).find(k => userPrefs[k] === p)] || {}).articleCount
-            );
+            ));
 
             if (!hasCustomPrefs && data.prerenderedHTML) {
                 tableBody.innerHTML = data.prerenderedHTML;
@@ -1481,7 +1484,8 @@
 
     function isSourceVisible(pref, sourceName) {
         if (!sourceName || !pref.sources || !pref.sources[sourceName]) return true;
-        return pref.sources[sourceName].visible !== false;
+        const src = pref.sources[sourceName];
+        return src.visible !== false && src.count !== 0;
     }
 
     function getSourceCount(pref, sourceName) {
