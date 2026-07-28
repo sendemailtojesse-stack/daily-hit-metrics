@@ -325,7 +325,7 @@ function renderPrefsPanel(site) {
                     </label>
                     <span class="source-name">${srcName}</span>
                     <select class="count-select count-select-sm" onchange="updateSourcePref('${site}','${name}','${srcName}','count',parseInt(this.value))">
-                        ${[1,2,3,4,6].map(n => `<option value="${n}" ${srcCfg.count === n ? 'selected' : ''}>${n}</option>`).join('')}
+                        ${[0,1,2,3,4,6].map(n => `<option value="${n}" ${srcCfg.count === n ? 'selected' : ''}>${n}</option>`).join('')}
                     </select>
                     <span class="source-label-sm">articles</span>
                 </div>`).join('')}
