@@ -112,6 +112,8 @@
             const meta = session.user.user_metadata || {};
             const firstName = meta.first_name || '';
             const lastName = meta.last_name || '';
+            const middleName = meta.middle_name || '';
+            const salutation = meta.salutation || '';
             console.log('Session user metadata:', meta);
             console.log('First name:', firstName, 'Last name:', lastName);
 
@@ -121,6 +123,8 @@
                 email: session.user.email,
                 first_name: firstName,
                 last_name: lastName,
+                middle_name: middleName || null,
+                salutation: salutation || null,
                 subscription_tier: 'free'
             });
 
