@@ -207,6 +207,29 @@
     </div>
 
     <div class="setting-row"><span class="setting-label">Subscription</span><span class="setting-value"><span class="badge" id="subscription-badge">✦ Pro</span></span></div>
+    <div class="setting-row"><span class="setting-label"></span><span class="setting-value"><a href="#" onclick="openPwModal(); return false;" style="font-family:'IM Fell English',serif; font-style:italic; font-size:0.7rem; color:#3a6b4a; text-decoration:underline; text-underline-offset:3px;">Change password</a></span></div>
+
+    <!-- Change Password Modal -->
+    <div id="pw-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+        <div style="background:#faf8f4; border-left:3px solid #3a6b4a; border-right:3px solid #3a6b4a; padding:32px 36px; width:90%; max-width:480px; box-shadow:0 4px 24px rgba(0,0,0,0.3);">
+            <h3 style="font-family:'Quantico',sans-serif; font-size:0.9rem; color:#2c1810; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #d4c9b0;">Change Password</h3>
+            <div style="margin-bottom:12px;">
+                <div class="section-label" style="margin-bottom:4px;">New Password</div>
+                <input type="password" id="new-password" placeholder="Enter new password" style="width:100%; font-family:'Libre Baskerville',serif; font-size:0.6rem; padding:8px 10px; border:1px solid #c8b89a; background:#faf8f4; color:#1a0f00;">
+            </div>
+            <div style="margin-bottom:8px;">
+                <div class="section-label" style="margin-bottom:4px;">Re-enter New Password</div>
+                <input type="password" id="confirm-password" placeholder="Confirm new password" style="width:100%; font-family:'Libre Baskerville',serif; font-size:0.6rem; padding:8px 10px; border:1px solid #c8b89a; background:#faf8f4; color:#1a0f00;">
+            </div>
+            <div style="font-family:'Libre Baskerville',serif; font-size:0.5rem; color:#8a6a50; margin-bottom:14px;">Must be at least eight characters and include both letters and numbers.</div>
+            <div id="pw-error-msg" style="font-family:'IM Fell English',serif; font-size:0.6rem; font-style:italic; color:#8a1a1a; display:none; margin-bottom:8px;"></div>
+            <div id="pw-save-msg" style="font-family:'IM Fell English',serif; font-size:0.6rem; font-style:italic; color:#3a6b4a; display:none; margin-bottom:8px;">Password updated successfully.</div>
+            <div style="display:flex; gap:12px;">
+                <button onclick="savePassword()" style="font-family:'Quantico',sans-serif; font-size:0.45rem; letter-spacing:0.15em; text-transform:uppercase; background:#2c1810; color:#faf8f4; border:none; padding:8px 20px; cursor:pointer;">Update Password</button>
+                <button onclick="closePwModal()" style="font-family:'Quantico',sans-serif; font-size:0.45rem; letter-spacing:0.15em; text-transform:uppercase; background:none; color:#8a6a50; border:1px solid #d4c9b0; padding:8px 20px; cursor:pointer;">Cancel</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Section Preferences -->
     <h2>Section Preferences</h2>
@@ -421,6 +444,44 @@ async function saveName() {
         document.getElementById('account-name').textContent = nameParts.join(' ') || '—';
         msg.style.display = 'inline';
         setTimeout(() => { msg.style.display = 'none'; }, 2000);
+    }
+}
+
+function openPwModal() {
+    const modal = document.getElementById('pw-modal');
+    modal.style.display = 'flex';
+    document.getElementById('new-password').value = '';
+    document.getElementById('confirm-password').value = '';
+    document.getElementById('pw-error-msg').style.display = 'none';
+    document.getElementById('pw-save-msg').style.display = 'none';
+}
+
+function closePwModal() {
+    document.getElementById('pw-modal').style.display = 'none';
+}
+
+async function savePassword() {
+    const newPw = document.getElementById('new-password').value;
+    const confirmPw = document.getElementById('confirm-password').value;
+    const errMsg = document.getElementById('pw-error-msg');
+    const saveMsg = document.getElementById('pw-save-msg');
+    errMsg.style.display = 'none';
+    saveMsg.style.display = 'none';
+
+    if (!newPw || !confirmPw) { errMsg.textContent = 'Please enter and confirm your new password.'; errMsg.style.display = 'block'; return; }
+    if (newPw !== confirmPw) { errMsg.textContent = 'Passwords do not match. Please try again.'; errMsg.style.display = 'block'; return; }
+    if (newPw.length < 8) { errMsg.textContent = 'Password must be at least eight characters.'; errMsg.style.display = 'block'; return; }
+    if (!/[a-zA-Z]/.test(newPw) || !/[0-9]/.test(newPw)) { errMsg.textContent = 'Password must include both letters and numbers.'; errMsg.style.display = 'block'; return; }
+
+    const { error } = await supabaseClient.auth.updateUser({ password: newPw });
+    if (!error) {
+        saveMsg.style.display = 'block';
+        document.getElementById('new-password').value = '';
+        document.getElementById('confirm-password').value = '';
+        setTimeout(() => closePwModal(), 1500);
+    } else {
+        errMsg.textContent = error.message;
+        errMsg.style.display = 'block';
     }
 }
 
