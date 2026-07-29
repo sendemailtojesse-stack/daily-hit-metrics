@@ -1235,6 +1235,9 @@
                 <a href="#" class="nav-link nav-link-signup" onclick="openModal('signup-modal'); return false;">Create Account</a>
             `;
         }
+        // Re-apply zoom and theme since nav buttons were rebuilt
+        applyZoom(getZoom());
+        applyTheme(getTheme());
     }
 
     async function handleLogin() {
