@@ -570,7 +570,7 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
         .eq('id', session.user.id)
         .single();
 
-    if (profile?.subscription_tier !== 'pro' && profile?.subscription_tier !== 'admin') { window.location.href = 'https://news.dailyhitmetrics.com'; return; }
+    if (profile?.subscription_tier !== 'pro' && profile?.subscription_tier !== 'pro_plus' && profile?.subscription_tier !== 'admin') { window.location.href = 'https://news.dailyhitmetrics.com'; return; }
 
     document.getElementById('account-email').textContent = session.user.email;
     const nameParts = [profile.salutation, profile.first_name, profile.middle_name, profile.last_name].filter(Boolean);
