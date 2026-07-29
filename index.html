@@ -1179,8 +1179,9 @@
 
     function updateNav(user, firstName, tier) {
         const nav = document.getElementById('top-nav');
-        const isPro = tier === 'pro' || tier === 'admin';
+        const isPro = tier === 'pro' || tier === 'pro_plus' || tier === 'admin';
         const isAdmin = tier === 'admin';
+        const isProPlus = tier === 'pro_plus';
 
         // Update section nav links based on tier
         const sectionNav = document.getElementById('section-nav');
@@ -1203,6 +1204,8 @@
             const displayName = firstName || user.email.split('@')[0];
             const tierBtn = isAdmin
                 ? `<span class="nav-user" style="color:#8a1a1a;">✦ Admin</span>`
+                : isProPlus
+                ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro+</span>`
                 : isPro
                 ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro</span>`
                 : `<a href="#" class="nav-link" style="text-transform:none; background:rgba(58,107,74,0.08); border:0.5px solid #3a6b4a; padding:4px 10px;" onclick="handleUpgrade(); return false;">Upgrade to Pro</a>`;
@@ -1331,7 +1334,7 @@
                     .select('subscription_tier')
                     .eq('id', session.user.id)
                     .single();
-                if ((profile?.subscription_tier === 'pro' || profile?.subscription_tier === 'admin') && siteUrl) {
+                if ((profile?.subscription_tier === 'pro' || profile?.subscription_tier === 'pro_plus' || profile?.subscription_tier === 'admin') && siteUrl) {
                     window.location.href = siteUrl;
                     return;
                 }
