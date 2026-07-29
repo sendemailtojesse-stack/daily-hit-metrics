@@ -24,7 +24,7 @@
         .site-title a { color: inherit; text-decoration: none; }
         .top-rule { border: none; border-top: 3px solid #2c1810; margin: 8px 0 28px; }
         h1 { font-family: 'Quantico', sans-serif; font-size: 1.4rem; color: #2c1810; margin-bottom: 6px; }
-        .page-sub { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.8rem; color: #5a3e2b; margin-bottom: 24px; }
+        .page-sub { font-family: 'IM Fell English', serif; font-style: normal; font-size: 0.8rem; color: #5a3e2b; margin-bottom: 24px; }
         h2 { font-family: 'Libre Baskerville', serif; font-size: 0.85rem; font-weight: 700; color: #2c1810; margin: 28px 0 14px; border-bottom: 1px solid #d4c9b0; padding-bottom: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
 
         /* ── SITE TABS ── */
@@ -99,7 +99,7 @@
     <div class="site-title"><a href="https://news.dailyhitmetrics.com">Daily Hit Metrics</a></div>
     <div class="top-rule"></div>
     <div class="settings-nav-row">
-        <a href="#" id="return-link" style="font-family:'IM Fell English',serif; font-style:italic; font-size:0.75rem; color:#3a6b4a; text-decoration:none;">← Return to content</a>
+        <a href="#" id="return-link" style="font-family:'IM Fell English',serif; font-style:italic; font-size:0.75rem; color:#3a6b4a; text-decoration:none;">← <span style="text-decoration:underline; text-underline-offset:3px;" id="return-link-text">Return to content</span></a>
     </div>
     <script>
     (function() {
@@ -119,7 +119,7 @@
         };
         const returnLink = document.getElementById('return-link');
         returnLink.href = (from && siteUrls[from]) ? siteUrls[from] : 'https://news.dailyhitmetrics.com';
-        if (from && siteLabels[from]) returnLink.textContent = `← Return to ${siteLabels[from]}`;
+        if (from && siteLabels[from]) document.getElementById('return-link-text').textContent = `Return to ${siteLabels[from]}`;
         
         // Auto-select the correct tab when page loads
         if (from && validSites.includes(from)) {
