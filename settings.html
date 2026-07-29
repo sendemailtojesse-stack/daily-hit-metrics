@@ -13,6 +13,13 @@
         html { font-size: 132%; }
         body { background-color: #484848; color: #1a0f00; font-family: 'Libre Baskerville', Georgia, serif; padding: 45px 20px 75px; display: flex; justify-content: center; }
         .container { width: 100%; max-width: 1140px; background-color: #faf8f4; border-left: 1px solid #3a6b4a; border-right: 1px solid #3a6b4a; padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); transition: background-color 0.2s; }
+        .zoom-btn { background:none; border:none; padding:2px 4px; cursor:pointer; opacity:0.6; transition:opacity 0.15s; display:flex; align-items:center; }
+        .zoom-btn:hover { opacity:1; }
+        .zoom-btn-left { position:absolute; left:0; }
+        .theme-btn { position:absolute; left:28px; background:none; border:none; padding:2px 4px; cursor:pointer; opacity:0.6; transition:opacity 0.15s; display:flex; align-items:center; }
+        .theme-btn:hover { opacity:1; }
+        .settings-nav-row { position:relative; display:flex; justify-content:flex-end; align-items:center; margin-bottom:16px; min-height:24px; }
+
         .site-title { font-family: 'Quantico', sans-serif; font-size: 1.4rem; font-weight: 700; color: #2f3640; text-align: right; margin-bottom: 4px; text-decoration: underline; text-underline-offset: 4px; }
         .site-title a { color: inherit; text-decoration: none; }
         .top-rule { border: none; border-top: 3px solid #2c1810; margin: 8px 0 28px; }
@@ -89,7 +96,9 @@
 <div class="container">
     <div class="site-title"><a href="https://news.dailyhitmetrics.com">Daily Hit Metrics</a></div>
     <div class="top-rule"></div>
-    <div style="margin-bottom: 20px;">
+    <div class="settings-nav-row">
+        <button class="zoom-btn zoom-btn-left" id="zoom-btn" onclick="cycleZoom()" title="Adjust text size"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="4.5" stroke="#8a6a50" stroke-width="1.3"/><line x1="9" y1="9" x2="13" y2="13" stroke="#8a6a50" stroke-width="1.3" stroke-linecap="round"/></svg></button>
+        <button class="theme-btn" id="theme-btn" onclick="cycleTheme()" title="Toggle background color"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#8a6a50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8.25V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M3 8.25v9.75A2.25 2.25 0 0 0 5.25 20.25h13.5A2.25 2.25 0 0 0 21 18V8.25"/></svg></button>
         <a href="#" id="return-link" style="font-family:'IM Fell English',serif; font-style:italic; font-size:0.75rem; color:#3a6b4a; text-decoration:none;">← Return to content</a>
     </div>
     <script>
@@ -197,7 +206,7 @@
         <span id="email-error-msg" style="font-family:'IM Fell English',serif; font-size:0.6rem; font-style:italic; color:#8a1a1a; margin-left:10px; display:none;"></span>
     </div>
 
-    <div class="setting-row"><span class="setting-label">Subscription</span><span class="setting-value"><span class="badge">✦ Pro</span></span></div>
+    <div class="setting-row"><span class="setting-label">Subscription</span><span class="setting-value"><span class="badge" id="subscription-badge">✦ Pro</span></span></div>
 
     <!-- Section Preferences -->
     <h2>Section Preferences</h2>
@@ -572,6 +581,9 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
 
     if (profile?.subscription_tier !== 'pro' && profile?.subscription_tier !== 'pro_plus' && profile?.subscription_tier !== 'admin') { window.location.href = 'https://news.dailyhitmetrics.com'; return; }
 
+    const tierLabel = profile.subscription_tier === 'pro_plus' ? '✦ Pro+' : profile.subscription_tier === 'admin' ? '✦ Admin' : '✦ Pro';
+    document.getElementById('subscription-badge').textContent = tierLabel;
+
     document.getElementById('account-email').textContent = session.user.email;
     const nameParts = [profile.salutation, profile.first_name, profile.middle_name, profile.last_name].filter(Boolean);
     document.getElementById('account-name').textContent = nameParts.join(' ') || '—';
@@ -600,19 +612,24 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
         renderKeywordPanel(site);
     }
 });
-    // Apply theme from cookie
-    (function() {
-        const saved = document.cookie.match(/dhm-theme=([a-z]+)/);
-        const theme = saved ? saved[1] : 'twotone';
+    // ── ZOOM CONTROL ──
+    const ZOOM_LEVELS = [1, 1.02, 1.04, 1.06, 1.08];
+    function getZoom() { const s = document.cookie.match(/dhm-zoom=([\d.]+)/); return s ? parseFloat(s[1]) : 1; }
+    function applyZoom(level) { document.body.style.zoom = level; }
+    function cycleZoom() { const c = getZoom(); const i = ZOOM_LEVELS.findIndex(z => Math.abs(z-c)<0.01); const n = ZOOM_LEVELS[(i+1)%ZOOM_LEVELS.length]; document.cookie = `dhm-zoom=${n}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`; applyZoom(n); }
+    applyZoom(getZoom());
+
+    // ── THEME TOGGLE ──
+    const THEMES = ['twotone', 'parchment', 'white'];
+    const THEME_COLORS = { twotone: '#f0f4f8', parchment: '#faf8f4', white: '#f0f4f8' };
+    function getTheme() { const s = document.cookie.match(/dhm-theme=([a-z]+)/); return s ? s[1] : 'twotone'; }
+    function applyThemeSettings(theme) {
         const container = document.querySelector('.container');
-        if (theme === 'twotone') {
-            container.style.backgroundColor = '#f0f4f8';
-            // Menu panels stay parchment via CSS — no change needed
-        } else if (theme === 'white') {
-            container.style.backgroundColor = '#f0f4f8';
-        }
-        // parchment = default #faf8f4, no change needed
-    })();
+        if (theme === 'parchment') { container.style.backgroundColor = '#faf8f4'; }
+        else { container.style.backgroundColor = '#f0f4f8'; }
+    }
+    function cycleTheme() { const c = getTheme(); const i = THEMES.indexOf(c); const n = THEMES[(i+1)%THEMES.length]; document.cookie = `dhm-theme=${n}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`; applyThemeSettings(n); }
+    applyThemeSettings(getTheme());
 </script>
 </body>
 </html>
