@@ -1482,9 +1482,31 @@
         document.documentElement.style.setProperty('--title-font', `'${fontName}', sans-serif`);
     }
 
+    function applyUnderlines(mastheadUl, articleUl) {
+        // Masthead underline — the decorative rule beneath the title
+        const mastheadRule = document.querySelector('.masthead-thick-rule');
+        if (mastheadRule) mastheadRule.style.display = mastheadUl ? '' : 'none';
+        // Article title hover underline
+        const styleId = 'dhm-ul-style';
+        let el = document.getElementById(styleId);
+        if (!el) { el = document.createElement('style'); el.id = styleId; document.head.appendChild(el); }
+        el.textContent = articleUl ? '' : '.dispatch-link:hover { text-decoration: none !important; }';
+    }
+
+    function getSavedUnderlines() {
+        const mu = document.cookie.match(/dhm-masthead-ul=([01])/);
+        const au = document.cookie.match(/dhm-article-ul=([01])/);
+        return {
+            mastheadUl: mu ? mu[1] === '1' : true,
+            articleUl: au ? au[1] === '1' : true
+        };
+    }
+
     // Apply saved fonts on load
     applyFont(getSavedFont(), getSavedFontSize());
     applyTitleFont(getSavedTitleFont());
+    const { mastheadUl, articleUl } = getSavedUnderlines();
+    applyUnderlines(mastheadUl, articleUl);
 
     // ── AGE GATE ──
     function confirmAge() {
@@ -1549,6 +1571,14 @@
             const titleFont = profile.preferences.typography.titleFont;
             applyTitleFont(titleFont);
             document.cookie = `dhm-title-font=${encodeURIComponent(titleFont)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+        }
+        if (profile?.preferences?.typography) {
+            const t = profile.preferences.typography;
+            const mUl = t.mastheadUnderline !== undefined ? t.mastheadUnderline : true;
+            const aUl = t.articleUnderline !== undefined ? t.articleUnderline : true;
+            applyUnderlines(mUl, aUl);
+            document.cookie = `dhm-masthead-ul=${mUl ? '1' : '0'}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+            document.cookie = `dhm-article-ul=${aUl ? '1' : '0'}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
         }
     }
 
