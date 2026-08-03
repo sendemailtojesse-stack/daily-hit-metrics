@@ -12,8 +12,8 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { font-size: 132%; }
         body { background-color: #484848; color: #1a0f00; font-family: 'Libre Baskerville', Georgia, serif; padding: 45px 20px 75px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 1140px; background-color: #faf8f4; border-left: 5px solid #2c1810; border-right: 1px solid #3a6b4a; padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); transition: background-color 0.2s; position: relative; }
-        .container::after { content: ''; position: fixed; top: 0; bottom: 0; width: 1px; background-color: #a8ff3e; opacity: 0.35; right: calc(50% - 610px); pointer-events: none; }
+        .container { width: 100%; max-width: 1200px; background-color: #faf8f4; border-left: 5px solid #2c1810; border-right: 1px solid #3a6b4a; padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); transition: background-color 0.2s; position: relative; }
+        .container::after { content: ''; position: fixed; top: 0; bottom: 0; width: 1px; background-color: #a8ff3e; opacity: 0.35; right: calc(50% - 640px); pointer-events: none; }
         .zoom-btn { background:none; border:none; padding:2px 4px; cursor:pointer; opacity:0.6; transition:opacity 0.15s; display:flex; align-items:center; }
         .zoom-btn:hover { opacity:1; }
         .zoom-btn-left { position:absolute; left:48px; top:36px; }
@@ -931,7 +931,7 @@ function showTypographyIfProPlus(tier) {
 }
 
     // ── ZOOM CONTROL ──
-    const ZOOM_LEVELS = [1, 1.02, 1.04, 1.06, 1.08, 1.12];
+    const ZOOM_LEVELS = [1, 1.02, 1.04, 1.06, 1.08, 1.10, 1.12];
     function getZoom() { const s = document.cookie.match(/dhm-zoom=([\d.]+)/); return s ? parseFloat(s[1]) : 1; }
     function applyZoom(level) { document.body.style.zoom = level; const btn = document.getElementById('zoom-btn'); if (btn) btn.title = `Text size: ${Math.round(level * 100)}%`; }
     function cycleZoom() { const c = getZoom(); const i = ZOOM_LEVELS.findIndex(z => Math.abs(z-c)<0.01); const n = ZOOM_LEVELS[(i+1)%ZOOM_LEVELS.length]; document.cookie = `dhm-zoom=${n}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`; applyZoom(n); }
