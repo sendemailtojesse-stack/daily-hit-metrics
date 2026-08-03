@@ -287,7 +287,7 @@
     </div>
 
     <!-- Typography (Pro+) -->
-    <h2 id="typography-section" style="display:none;">Typography <span style="font-family:'Quantico',sans-serif; font-size:0.4rem; letter-spacing:0.15em; background:#3a6b4a; color:#faf8f4; padding:2px 8px; vertical-align:middle;">✦ PRO+</span></h2>
+    <h2 id="typography-section" style="display:none;">Typography <span style="font-family:'Quantico',sans-serif; font-size:0.4rem; letter-spacing:0.15em; background:#8a1a1a; color:#faf8f4; padding:2px 8px; vertical-align:middle;">✦ ADMIN</span></h2>
     <div id="typography-panel" style="display:none;">
         <p style="font-size:0.7rem; color:#5a3e2b; margin-bottom:16px;">Choose a typeface for article titles and body text across all Daily Hit Metrics feeds.</p>
         <div id="font-grid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:16px;"></div>
@@ -913,7 +913,7 @@ window.saveFont = async function() {
 }
 
 function showTypographyIfProPlus(tier) {
-    if (tier === 'pro_plus' || tier === 'admin') {
+    if (tier === 'admin') {
         document.getElementById('typography-section').style.display = 'block';
         document.getElementById('typography-panel').style.display = 'block';
         renderFontGrid();
