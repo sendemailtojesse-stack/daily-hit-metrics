@@ -7,7 +7,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,wght@0,400;0,700;1,400&family=Bitter:ital,wght@0,400;0,700;1,400&family=Roboto+Slab:wght@400;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Spectral:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Vollkorn:ital,wght@0,400;0,700;1,400&family=Alegreya:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;700&family=Abril+Fatface&family=Josefin+Slab:wght@400;700&family=Oswald:wght@400;700&family=Ultra&family=Yeseva+One&family=Rozha+One&family=Libre+Caslon+Display&family=Rufina:wght@400;700&family=Monoton&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,wght@0,400;0,700;1,400&family=Bitter:ital,wght@0,400;0,700;1,400&family=Roboto+Slab:wght@400;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Spectral:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Vollkorn:ital,wght@0,400;0,700;1,400&family=Alegreya:ital,wght@0,400;0,700;1,400&family=UnifrakturMaguntia&family=Cinzel+Decorative:wght@400;700&family=IM+Fell+DW+Pica&family=Almendra+Display&family=Caesar+Dressing&family=Uncial+Antiqua&family=Pirata+One&family=Metamorphous&family=Cardo:ital,wght@0,400;0,700;1,400&family=GFS+Didot&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { font-size: 132%; }
@@ -765,18 +765,16 @@ async function revertTypography() {
 
 const DISPLAY_FONTS = [
     { name: 'Quantico', label: 'Quantico', preview: 'Default — clean & bold' },
-    { name: 'Playfair Display', label: 'Playfair Display', preview: 'Elegant high-contrast' },
-    { name: 'Cormorant Garamond', label: 'Cormorant Garamond', preview: 'Refined & classical' },
-    { name: 'Cinzel', label: 'Cinzel', preview: 'Roman — authoritative' },
-    { name: 'Abril Fatface', label: 'Abril Fatface', preview: 'Bold editorial punch' },
-    { name: 'Josefin Slab', label: 'Josefin Slab', preview: 'Geometric slab' },
-    { name: 'Oswald', label: 'Oswald', preview: 'Condensed newspaper' },
-    { name: 'Ultra', label: 'Ultra', preview: 'Heavy display' },
-    { name: 'Yeseva One', label: 'Yeseva One', preview: 'Refined book titling' },
-    { name: 'Rozha One', label: 'Rozha One', preview: 'Bold magazine display' },
-    { name: 'Libre Caslon Display', label: 'Libre Caslon Display', preview: 'Classic American' },
-    { name: 'Rufina', label: 'Rufina', preview: 'Elegant editorial' },
-    { name: 'Monoton', label: 'Monoton', preview: 'Modern retro' }
+    { name: 'UnifrakturMaguntia', label: 'UnifrakturMaguntia', preview: 'Authentic blackletter' },
+    { name: 'Cinzel Decorative', label: 'Cinzel Decorative', preview: 'Ornate Roman capitals' },
+    { name: 'IM Fell DW Pica', label: 'IM Fell DW Pica', preview: 'Old English printing' },
+    { name: 'Almendra Display', label: 'Almendra Display', preview: 'Calligraphic elegance' },
+    { name: 'Caesar Dressing', label: 'Caesar Dressing', preview: 'Decorative Roman' },
+    { name: 'Uncial Antiqua', label: 'Uncial Antiqua', preview: 'Medieval manuscript' },
+    { name: 'Pirata One', label: 'Pirata One', preview: 'Old printing press' },
+    { name: 'Metamorphous', label: 'Metamorphous', preview: 'Classical decorative' },
+    { name: 'Cardo', label: 'Cardo', preview: 'Scholarly classical' },
+    { name: 'GFS Didot', label: 'GFS Didot', preview: 'Greek neoclassical' }
 ];
 
 window.selectedTitleFont = 'Quantico';
