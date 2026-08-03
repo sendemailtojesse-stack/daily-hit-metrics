@@ -738,16 +738,13 @@ async function saveSettings() {
         const section = firstRow.dataset.section;
         if (!site || !section || !currentPrefs[site]?.sections[section]) return;
         const existingSources = currentPrefs[site].sections[section].sources;
+        const domOrder = Array.from(rows).map(r => r.dataset.source).filter(Boolean);
         const reordered = {};
-        rows.forEach(row => {
-            const srcName = row.dataset.source;
-            if (srcName && existingSources[srcName]) {
-                reordered[srcName] = existingSources[srcName];
-            }
-        });
-        if (Object.keys(reordered).length > 0) {
-            currentPrefs[site].sections[section].sources = reordered;
-        }
+        domOrder.forEach(k => { if (existingSources[k]) reordered[k] = existingSources[k]; });
+        Object.keys(existingSources).forEach(k => { if (!reordered[k]) reordered[k] = existingSources[k]; });
+        currentPrefs[site].sections[section].sources = reordered;
+        // Store explicit order array to survive JSON round-trip
+        currentPrefs[site].sections[section].sourceOrder = domOrder;
     });
 
     const prefsToSave = JSON.parse(JSON.stringify(currentPrefs));
@@ -833,8 +830,12 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
                     const savedSrc = savedSec.sources || {};
                     const defaultSrc = DEFAULTS[site].sections[section].sources || {};
                     const mergedSources = {};
-                    // Saved source order first within each section
-                    Object.keys(savedSrc).forEach(k => { mergedSources[k] = { ...defaultSrc[k], ...savedSrc[k] }; });
+                    // Use explicit sourceOrder array if present, otherwise fall back to object key order
+                    const order = savedSec.sourceOrder || Object.keys(savedSrc);
+                    order.forEach(k => {
+                        if (savedSrc[k]) mergedSources[k] = { ...defaultSrc[k], ...savedSrc[k] };
+                        else if (defaultSrc[k]) mergedSources[k] = defaultSrc[k];
+                    });
                     // Append any new default sources not yet in saved
                     Object.keys(defaultSrc).forEach(k => { if (!mergedSources[k]) mergedSources[k] = defaultSrc[k]; });
                     mergedSections[section] = { ...DEFAULTS[site].sections[section], ...savedSec, sources: mergedSources };
