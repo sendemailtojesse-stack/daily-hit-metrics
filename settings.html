@@ -39,7 +39,11 @@
         /* ── SECTION ROWS ── */
         .source-list { background: #f5f2ec; border-left: 2px solid #d4c9b0; border-top: 1px solid #d4c9b0; padding: 8px 12px 8px 16px; margin-top: -8px; margin-bottom: 8px; }
         .source-list-label { font-family: 'Quantico', sans-serif; font-size: 0.4rem; letter-spacing: 0.15em; text-transform: uppercase; color: #8a6a50; margin-bottom: 6px; }
-        .source-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+        .source-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; cursor: default; }
+        .drag-handle { cursor: grab; color: #c8b89a; font-size: 0.7rem; padding: 0 2px; user-select: none; }
+        .drag-handle:active { cursor: grabbing; }
+        .source-row.dragging { opacity: 0.4; }
+        .source-row.drag-over { border-top: 2px solid #3a6b4a; }
         .source-name { font-family: 'Libre Baskerville', serif; font-size: 0.55rem; color: #2c1810; flex: 1; }
         .count-select-sm { font-size: 0.5rem; padding: 2px 4px; border: 1px solid #c8b89a; background: #faf8f4; color: #1a0f00; width: 48px; }
         .source-label-sm { font-family: 'Libre Baskerville', serif; font-size: 0.48rem; color: #8a6a50; }
@@ -542,6 +546,66 @@ async function savePassword() {
     }
 }
 
+function updateSourcePref(site, section, sourceName, key, value) {
+    if (!currentPrefs[site].sections[section].sources) currentPrefs[site].sections[section].sources = {};
+    if (!currentPrefs[site].sections[section].sources[sourceName]) currentPrefs[site].sections[section].sources[sourceName] = { visible: true, count: 1 };
+    currentPrefs[site].sections[section].sources[sourceName][key] = value;
+}
+
+// ── DRAG TO REORDER SOURCES ──
+let dragSrc = null;
+
+document.addEventListener('dragstart', e => {
+    const row = e.target.closest('.source-row');
+    if (!row) return;
+    dragSrc = row;
+    setTimeout(() => row.classList.add('dragging'), 0);
+});
+
+document.addEventListener('dragend', e => {
+    const row = e.target.closest('.source-row');
+    if (row) row.classList.remove('dragging');
+    document.querySelectorAll('.source-row').forEach(r => r.classList.remove('drag-over'));
+    dragSrc = null;
+});
+
+document.addEventListener('dragover', e => {
+    e.preventDefault();
+    const row = e.target.closest('.source-row');
+    if (!row || row === dragSrc) return;
+    document.querySelectorAll('.source-row').forEach(r => r.classList.remove('drag-over'));
+    row.classList.add('drag-over');
+});
+
+document.addEventListener('drop', e => {
+    e.preventDefault();
+    const target = e.target.closest('.source-row');
+    if (!target || !dragSrc || target === dragSrc) return;
+    target.classList.remove('drag-over');
+
+    const site = dragSrc.dataset.site;
+    const section = dragSrc.dataset.section;
+    const srcName = dragSrc.dataset.source;
+    const targetName = target.dataset.source;
+
+    // Reorder sources in currentPrefs
+    const sources = currentPrefs[site].sections[section].sources;
+    const keys = Object.keys(sources);
+    const fromIdx = keys.indexOf(srcName);
+    const toIdx = keys.indexOf(targetName);
+    if (fromIdx === -1 || toIdx === -1) return;
+
+    keys.splice(fromIdx, 1);
+    keys.splice(toIdx, 0, srcName);
+
+    const reordered = {};
+    keys.forEach(k => { reordered[k] = sources[k]; });
+    currentPrefs[site].sections[section].sources = reordered;
+
+    // Re-render
+    renderPrefsPanel(site);
+});
+
 function switchTab(group, site) {
     document.querySelectorAll(`#${group}-tabs .site-tab`).forEach(t => t.classList.remove('active'));
     event.target.classList.add('active');
@@ -561,14 +625,15 @@ function renderPrefsPanel(site) {
             <div class="source-list">
                 <div class="source-list-label">Sources</div>
                 ${Object.entries(sources).map(([srcName, srcCfg]) => `
-                <div class="source-row">
+                <div class="source-row" draggable="true" data-site="${site}" data-section="${name}" data-source="${srcName}">
+                    <span class="drag-handle" title="Drag to reorder">⠿</span>
                     <label class="toggle" title="${srcName}">
                         <input type="checkbox" ${srcCfg.visible ? 'checked' : ''} onchange="updateSourcePref('${site}','${name}','${srcName}','visible',this.checked)">
                         <span class="toggle-slider"></span>
                     </label>
                     <span class="source-name">${srcName}</span>
                     <select class="count-select count-select-sm" onchange="updateSourcePref('${site}','${name}','${srcName}','count',parseInt(this.value))">
-                        ${[1,2,3,4,6].map(n => `<option value="${n}" ${srcCfg.count === n ? 'selected' : ''}>${n}</option>`).join('')}
+                        ${[1,2,3,4,5,6,7,8,10,12,14].map(n => `<option value="${n}" ${srcCfg.count === n ? 'selected' : ''}>${n}</option>`).join('')}
                     </select>
                     <span class="source-label-sm">articles</span>
                 </div>`).join('')}
@@ -589,7 +654,7 @@ function renderPrefsPanel(site) {
             <div>
                 <span class="section-label">Articles</span>
                 <select class="count-select" onchange="updatePref('${site}','${name}','articleCount',parseInt(this.value))">
-                    ${[2,4,6,8,10].map(n => `<option value="${n}" ${cfg.articleCount === n ? 'selected' : ''}>${n}</option>`).join('')}
+                    ${[2,4,6,8,10,12,14].map(n => `<option value="${n}" ${cfg.articleCount === n ? 'selected' : ''}>${n}</option>`).join('')}
                 </select>
             </div>
             <div class="color-wrap">
@@ -606,11 +671,6 @@ function updatePref(site, section, key, value) {
     currentPrefs[site].sections[section][key] = value;
 }
 
-function updateSourcePref(site, section, sourceName, key, value) {
-    if (!currentPrefs[site].sections[section].sources) currentPrefs[site].sections[section].sources = {};
-    if (!currentPrefs[site].sections[section].sources[sourceName]) currentPrefs[site].sections[section].sources[sourceName] = { visible: true, count: 1 };
-    currentPrefs[site].sections[section].sources[sourceName][key] = value;
-}
 
 // ── RENDER KEYWORD PANEL ──
 function renderKeywordPanel(site) {
