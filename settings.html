@@ -7,7 +7,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,wght@0,400;0,700;1,400&family=Bitter:ital,wght@0,400;0,700;1,400&family=Roboto+Slab:wght@400;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Spectral:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Vollkorn:ital,wght@0,400;0,700;1,400&family=Alegreya:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { font-size: 132%; }
@@ -281,6 +281,15 @@
     <div class="btn-row" style="margin-top:16px;">
         <button class="btn-save" onclick="saveSettings()">Save Alerts</button>
         <span class="save-msg" id="save-msg-kw">Saved successfully.</span>
+    </div>
+
+    <!-- Typography (Pro+) -->
+    <h2 id="typography-section" style="display:none;">Typography <span style="font-family:'Quantico',sans-serif; font-size:0.4rem; letter-spacing:0.15em; background:#3a6b4a; color:#faf8f4; padding:2px 8px; vertical-align:middle;">✦ PRO+</span></h2>
+    <div id="typography-panel" style="display:none;">
+        <p style="font-size:0.7rem; color:#5a3e2b; margin-bottom:16px;">Choose a typeface for article titles and body text across all Daily Hit Metrics feeds.</p>
+        <div id="font-grid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:16px;"></div>
+        <button class="btn-save" onclick="saveFont()">Save Typography</button>
+        <span id="font-save-msg" style="font-family:'IM Fell English',serif; font-size:0.6rem; font-style:italic; color:#3a6b4a; margin-left:10px; display:none;">Saved.</span>
     </div>
 
     <!-- Account Actions -->
@@ -648,6 +657,12 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
 
     const tierLabel = profile.subscription_tier === 'pro_plus' ? '✦ Pro+' : profile.subscription_tier === 'admin' ? '✦ Admin' : '✦ Pro';
     document.getElementById('subscription-badge').textContent = tierLabel;
+    showTypographyIfProPlus(profile.subscription_tier);
+
+    // Load saved font preference
+    if (profile?.preferences?.typography?.font) {
+        selectedFont = profile.preferences.typography.font;
+    }
 
     document.getElementById('account-email').textContent = session.user.email;
     const nameParts = [profile.salutation, profile.first_name, profile.middle_name, profile.last_name].filter(Boolean);
@@ -677,6 +692,74 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
         renderKeywordPanel(site);
     }
 });
+// ── TYPOGRAPHY ──
+const FONT_LIST = [
+    { name: 'Libre Baskerville', label: 'Libre Baskerville', preview: 'Classic editorial serif' },
+    { name: 'Playfair Display', label: 'Playfair Display', preview: 'Elegant & high contrast' },
+    { name: 'Merriweather', label: 'Merriweather', preview: 'Readable & refined' },
+    { name: 'Lora', label: 'Lora', preview: 'Warm & contemporary' },
+    { name: 'EB Garamond', label: 'EB Garamond', preview: 'Old-world classical' },
+    { name: 'Crimson Text', label: 'Crimson Text', preview: 'Literary & bookish' },
+    { name: 'Source Serif 4', label: 'Source Serif 4', preview: 'Clean & modern' },
+    { name: 'Newsreader', label: 'Newsreader', preview: 'Designed for news' },
+    { name: 'Bitter', label: 'Bitter', preview: 'Sturdy slab serif' },
+    { name: 'Roboto Slab', label: 'Roboto Slab', preview: 'Modern & versatile' },
+    { name: 'PT Serif', label: 'PT Serif', preview: 'Neutral & neutral' },
+    { name: 'Spectral', label: 'Spectral', preview: 'Digital editorial' },
+    { name: 'Cormorant Garamond', label: 'Cormorant Garamond', preview: 'Refined & elegant' },
+    { name: 'Vollkorn', label: 'Vollkorn', preview: 'Book-like warmth' },
+    { name: 'Alegreya', label: 'Alegreya', preview: 'Humanist & lively' }
+];
+
+let selectedFont = 'Libre Baskerville';
+
+function getSavedFont() {
+    const saved = document.cookie.match(/dhm-font=([^;]+)/);
+    return saved ? decodeURIComponent(saved[1]) : 'Libre Baskerville';
+}
+
+function renderFontGrid() {
+    const grid = document.getElementById('font-grid');
+    if (!grid) return;
+    selectedFont = getSavedFont();
+    grid.innerHTML = FONT_LIST.map(f => `
+        <div onclick="selectFont('${f.name}')" id="font-card-${f.name.replace(/\s/g,'_')}"
+            style="border:2px solid ${selectedFont === f.name ? '#3a6b4a' : '#d4c9b0'}; background:${selectedFont === f.name ? '#edf4ef' : '#faf8f4'}; padding:10px 12px; cursor:pointer; transition:all 0.15s;">
+            <div style="font-family:'${f.name}',Georgia,serif; font-size:0.9rem; color:#2c1810; font-weight:700; margin-bottom:3px;">${f.label}</div>
+            <div style="font-family:'${f.name}',Georgia,serif; font-size:0.6rem; color:#5a3e2b; font-style:italic;">${f.preview}</div>
+        </div>`).join('');
+}
+
+function selectFont(fontName) {
+    selectedFont = fontName;
+    renderFontGrid();
+}
+
+async function saveFont() {
+    const msg = document.getElementById('font-save-msg');
+    msg.style.display = 'none';
+
+    // Save to cookie
+    document.cookie = `dhm-font=${encodeURIComponent(selectedFont)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+
+    // Save to Supabase preferences
+    const { data: profile } = await supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single();
+    const prefs = profile?.preferences || {};
+    prefs.typography = { font: selectedFont };
+    await supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
+
+    msg.style.display = 'inline';
+    setTimeout(() => { msg.style.display = 'none'; }, 2000);
+}
+
+function showTypographyIfProPlus(tier) {
+    if (tier === 'pro_plus' || tier === 'admin') {
+        document.getElementById('typography-section').style.display = 'block';
+        document.getElementById('typography-panel').style.display = 'block';
+        renderFontGrid();
+    }
+}
+
     // ── ZOOM CONTROL ──
     const ZOOM_LEVELS = [1, 1.02, 1.04, 1.06, 1.08];
     function getZoom() { const s = document.cookie.match(/dhm-zoom=([\d.]+)/); return s ? parseFloat(s[1]) : 1; }
