@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,wght@0,400;0,700;1,400&family=Bitter:ital,wght@0,400;0,700;1,400&family=Roboto+Slab:wght@400;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Spectral:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Vollkorn:ital,wght@0,400;0,700;1,400&family=Alegreya:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-content: #faf8f4; --article-font: 'Libre Baskerville', Georgia, serif; }
+        :root { --bg-content: #faf8f4; --article-font: 'Libre Baskerville', Georgia, serif; --article-font-size: 1.05rem; }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -303,7 +303,7 @@
 
         .entity-title {
             font-family: var(--article-font);
-            font-size: 1.05rem;
+            font-size: var(--article-font-size);
             font-weight: 700;
             color: #1a0f00;
             line-height: 1.3;
@@ -1463,12 +1463,18 @@
         return saved ? decodeURIComponent(saved[1]) : 'Libre Baskerville';
     }
 
-    function applyFont(fontName) {
+    function getSavedFontSize() {
+        const saved = document.cookie.match(/dhm-font-size=([\d.]+)/);
+        return saved ? parseFloat(saved[1]) : 1.05;
+    }
+
+    function applyFont(fontName, fontSize) {
         document.documentElement.style.setProperty('--article-font', `'${fontName}', Georgia, serif`);
+        if (fontSize) document.documentElement.style.setProperty('--article-font-size', `${fontSize}rem`);
     }
 
     // Apply saved font on load
-    applyFont(getSavedFont());
+    applyFont(getSavedFont(), getSavedFontSize());
 
     // ── AGE GATE ──
     function confirmAge() {
@@ -1524,8 +1530,10 @@
         // Apply saved font preference
         if (profile?.preferences?.typography?.font) {
             const fontName = profile.preferences.typography.font;
-            applyFont(fontName);
+            const fontSize = profile.preferences.typography.fontSize || 1.05;
+            applyFont(fontName, fontSize);
             document.cookie = `dhm-font=${encodeURIComponent(fontName)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+            document.cookie = `dhm-font-size=${fontSize}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
         }
     }
 
