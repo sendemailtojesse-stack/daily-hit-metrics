@@ -661,7 +661,7 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
 
     // Load saved font preference
     if (profile?.preferences?.typography?.font) {
-        selectedFont = profile.preferences.typography.font;
+        window.selectedFont = profile.preferences.typography.font;
     }
 
     document.getElementById('account-email').textContent = session.user.email;
@@ -711,7 +711,7 @@ window.FONT_LIST = [
     { name: 'Alegreya', label: 'Alegreya', preview: 'Humanist & lively' }
 ];
 
-let selectedFont = 'Libre Baskerville';
+window.selectedFont = 'Libre Baskerville';
 
 function getSavedFont() {
     const saved = document.cookie.match(/dhm-font=([^;]+)/);
@@ -721,17 +721,17 @@ function getSavedFont() {
 function renderFontGrid() {
     const grid = document.getElementById('font-grid');
     if (!grid) return;
-    selectedFont = getSavedFont();
+    window.selectedFont = getSavedFont();
     grid.innerHTML = FONT_LIST.map(f => `
         <div onclick="window.selectFont('${f.name}')" id="font-card-${f.name.replace(/\s/g,'_')}"
-            style="border:2px solid ${selectedFont === f.name ? '#3a6b4a' : '#d4c9b0'}; background:${selectedFont === f.name ? '#edf4ef' : '#faf8f4'}; padding:10px 12px; cursor:pointer; transition:all 0.15s;">
+            style="border:2px solid ${window.selectedFont === f.name ? '#3a6b4a' : '#d4c9b0'}; background:${window.selectedFont === f.name ? '#edf4ef' : '#faf8f4'}; padding:10px 12px; cursor:pointer; transition:all 0.15s;">
             <div style="font-family:'${f.name}',Georgia,serif; font-size:0.9rem; color:#2c1810; font-weight:700; margin-bottom:3px;">${f.label}</div>
             <div style="font-family:'${f.name}',Georgia,serif; font-size:0.6rem; color:#5a3e2b; font-style:italic;">${f.preview}</div>
         </div>`).join('');
 }
 
 window.selectFont = function(fontName) {
-    selectedFont = fontName;
+    window.selectedFont = fontName;
     renderFontGrid();
 }
 
@@ -745,7 +745,7 @@ window.saveFont = async function() {
     // Save to Supabase preferences
     const { data: profile } = await supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single();
     const prefs = profile?.preferences || {};
-    prefs.typography = { font: selectedFont };
+    prefs.typography = { font: window.selectedFont };
     await supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
 
     msg.style.display = 'inline';
