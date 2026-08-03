@@ -781,6 +781,7 @@
             <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter') handleLogin()">
             <button class="modal-btn" onclick="handleLogin()">Login</button>
             <div class="modal-switch">Don't have an account? <a onclick="switchModal('login','signup')">Create one</a></div>
+            <div class="modal-switch"><a onclick="handleForgotPassword()">Forgot password?</a></div>
             <span class="modal-close" onclick="closeModal('login-modal')">Cancel</span>
         </div>
     </div>
@@ -1271,6 +1272,28 @@
         // Re-apply zoom and theme since nav buttons were rebuilt
         applyZoom(getZoom());
         applyTheme(getTheme());
+    }
+
+    async function handleForgotPassword() {
+        const email = document.getElementById('login-email').value.trim();
+        const msg = document.getElementById('login-msg');
+        if (!email) {
+            msg.className = 'modal-msg error';
+            msg.textContent = 'Please enter your email address first.';
+            return;
+        }
+        msg.className = 'modal-msg';
+        msg.textContent = 'Sending reset link...';
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+            redirectTo: 'https://news.dailyhitmetrics.com/settings.html'
+        });
+        if (!error) {
+            msg.className = 'modal-msg';
+            msg.textContent = 'Password reset email sent. Check your inbox.';
+        } else {
+            msg.className = 'modal-msg error';
+            msg.textContent = error.message;
+        }
     }
 
     async function handleLogin() {
