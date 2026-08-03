@@ -309,8 +309,15 @@
                     <input type="checkbox" id="toggle-article-underline" style="width:16px; height:16px; cursor:pointer;">
                     Underline article titles on hover
                 </label>
+                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:0.7rem; color:#2c1810;">
+                    <input type="checkbox" id="toggle-article-underline-always" style="width:16px; height:16px; cursor:pointer;">
+                    Always underline article titles
+                </label>
             </div>
         </div>
+
+        <div style="margin-bottom:16px;">
+            <div class="section-label" style="margin-bottom:8px;">Font Size</div>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
                 <button class="font-size-btn" data-size="0.9" onclick="selectFontSize(0.9)">Small</button>
                 <button class="font-size-btn" data-size="1.05" onclick="selectFontSize(1.05)">Default</button>
@@ -766,12 +773,14 @@ async function revertTypography() {
     document.cookie = `dhm-title-font=${encodeURIComponent('Quantico')}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
     const { data: profile } = await supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single();
     const prefs = profile?.preferences || {};
-    prefs.typography = { font: 'Libre Baskerville', fontSize: 1.05, titleFont: 'Quantico', mastheadUnderline: true, articleUnderline: true };
+    prefs.typography = { font: 'Libre Baskerville', fontSize: 1.05, titleFont: 'Quantico', mastheadUnderline: true, articleUnderline: true, articleUnderlineAlways: false };
     await supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
     document.getElementById('toggle-masthead-underline').checked = true;
     document.getElementById('toggle-article-underline').checked = true;
+    document.getElementById('toggle-article-underline-always').checked = false;
     document.cookie = `dhm-masthead-ul=1; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
     document.cookie = `dhm-article-ul=1; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+    document.cookie = `dhm-article-ul-always=0; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
     await supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
     const msg = document.getElementById('font-save-msg');
     msg.textContent = 'Reverted to default.';
@@ -883,6 +892,7 @@ window.saveFont = async function() {
 
     const mastheadUnderline = document.getElementById('toggle-masthead-underline').checked;
     const articleUnderline = document.getElementById('toggle-article-underline').checked;
+    const articleUnderlineAlways = document.getElementById('toggle-article-underline-always').checked;
 
     // Save to cookie
     document.cookie = `dhm-font=${encodeURIComponent(window.selectedFont)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
@@ -890,11 +900,12 @@ window.saveFont = async function() {
     document.cookie = `dhm-title-font=${encodeURIComponent(window.selectedTitleFont)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
     document.cookie = `dhm-masthead-ul=${mastheadUnderline ? '1' : '0'}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
     document.cookie = `dhm-article-ul=${articleUnderline ? '1' : '0'}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+    document.cookie = `dhm-article-ul-always=${articleUnderlineAlways ? '1' : '0'}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
 
     // Save to Supabase preferences
     const { data: profile } = await supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single();
     const prefs = profile?.preferences || {};
-    prefs.typography = { font: window.selectedFont, fontSize: window.selectedFontSize, titleFont: window.selectedTitleFont, mastheadUnderline, articleUnderline };
+    prefs.typography = { font: window.selectedFont, fontSize: window.selectedFontSize, titleFont: window.selectedTitleFont, mastheadUnderline, articleUnderline, articleUnderlineAlways };
     await supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
 
     msg.style.display = 'inline';
@@ -911,8 +922,10 @@ function showTypographyIfProPlus(tier) {
         // Initialize underline checkboxes from saved prefs
         const mu = document.cookie.match(/dhm-masthead-ul=([01])/);
         const au = document.cookie.match(/dhm-article-ul=([01])/);
+        const aua = document.cookie.match(/dhm-article-ul-always=([01])/);
         document.getElementById('toggle-masthead-underline').checked = mu ? mu[1] === '1' : true;
         document.getElementById('toggle-article-underline').checked = au ? au[1] === '1' : true;
+        document.getElementById('toggle-article-underline-always').checked = aua ? aua[1] === '1' : false;
     }
 }
 
