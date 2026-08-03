@@ -77,6 +77,9 @@
         .btn-save { font-family: 'Libre Baskerville', serif; font-size: 0.7rem; font-weight: 700; background: #3a6b4a; color: #faf8f4; border: none; padding: 12px 28px; cursor: pointer; transition: background 0.15s; }
         .btn-save:hover { background: #254d33; }
         .btn-reset { font-family: 'Libre Baskerville', serif; font-size: 0.7rem; background: none; color: #8a1a1a; border: 1px solid #8a1a1a; padding: 12px 20px; cursor: pointer; }
+        .font-size-btn { font-family: 'Quantico', sans-serif; font-size: 0.45rem; letter-spacing: 0.1em; text-transform: uppercase; background: #faf8f4; color: #5a3e2b; border: 1px solid #d4c9b0; padding: 6px 14px; cursor: pointer; transition: all 0.15s; }
+        .font-size-btn:hover { border-color: #3a6b4a; color: #3a6b4a; }
+        .font-size-btn.active { background: #edf4ef; border-color: #3a6b4a; color: #3a6b4a; font-weight: 700; }
         .btn-reset:hover { background: #8a1a1a; color: #faf8f4; }
         .save-msg { font-size: 0.65rem; color: #3a6b4a; font-style: italic; opacity: 0; transition: opacity 0.3s; }
         .save-msg.visible { opacity: 1; }
@@ -288,8 +291,23 @@
     <div id="typography-panel" style="display:none;">
         <p style="font-size:0.7rem; color:#5a3e2b; margin-bottom:16px;">Choose a typeface for article titles and body text across all Daily Hit Metrics feeds.</p>
         <div id="font-grid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:16px;"></div>
-        <button class="btn-save" onclick="window.saveFont()">Save Typography</button>
-        <span id="font-save-msg" style="font-family:'IM Fell English',serif; font-size:0.6rem; font-style:italic; color:#3a6b4a; margin-left:10px; display:none;">Saved.</span>
+
+        <div style="margin-bottom:16px;">
+            <div class="section-label" style="margin-bottom:8px;">Font Size</div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="font-size-btn" data-size="0.9" onclick="selectFontSize(0.9)">Small</button>
+                <button class="font-size-btn" data-size="1.05" onclick="selectFontSize(1.05)">Default</button>
+                <button class="font-size-btn" data-size="1.15" onclick="selectFontSize(1.15)">Medium</button>
+                <button class="font-size-btn" data-size="1.25" onclick="selectFontSize(1.25)">Large</button>
+                <button class="font-size-btn" data-size="1.4" onclick="selectFontSize(1.4)">X-Large</button>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+            <button class="btn-save" onclick="window.saveFont()">Save Typography</button>
+            <button class="btn-reset" onclick="revertTypography()">Revert to Default</button>
+            <span id="font-save-msg" style="font-family:'IM Fell English',serif; font-size:0.6rem; font-style:italic; color:#3a6b4a; display:none;">Saved.</span>
+        </div>
     </div>
 
     <!-- Account Actions -->
@@ -693,6 +711,46 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
     }
 });
 // ── TYPOGRAPHY ──
+window.selectedFontSize = 1.05; // default
+
+function getSavedFontSize() {
+    const saved = document.cookie.match(/dhm-font-size=([\d.]+)/);
+    return saved ? parseFloat(saved[1]) : 1.05;
+}
+
+function selectFontSize(size) {
+    window.selectedFontSize = size;
+    document.querySelectorAll('.font-size-btn').forEach(btn => {
+        btn.classList.toggle('active', parseFloat(btn.getAttribute('data-size')) === size);
+    });
+}
+
+function highlightActiveFontSize() {
+    const size = getSavedFontSize();
+    window.selectedFontSize = size;
+    document.querySelectorAll('.font-size-btn').forEach(btn => {
+        btn.classList.toggle('active', parseFloat(btn.getAttribute('data-size')) === size);
+    });
+}
+
+async function revertTypography() {
+    window.selectedFont = 'Libre Baskerville';
+    window.selectedFontSize = 1.05;
+    renderFontGrid();
+    highlightActiveFontSize();
+    // Save defaults
+    document.cookie = `dhm-font=${encodeURIComponent('Libre Baskerville')}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+    document.cookie = `dhm-font-size=1.05; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+    const { data: profile } = await supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single();
+    const prefs = profile?.preferences || {};
+    prefs.typography = { font: 'Libre Baskerville', fontSize: 1.05 };
+    await supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
+    const msg = document.getElementById('font-save-msg');
+    msg.textContent = 'Reverted to default.';
+    msg.style.display = 'inline';
+    setTimeout(() => { msg.style.display = 'none'; msg.textContent = 'Saved.'; }, 2000);
+}
+
 window.FONT_LIST = [
     { name: 'Libre Baskerville', label: 'Libre Baskerville', preview: 'Classic editorial serif' },
     { name: 'Playfair Display', label: 'Playfair Display', preview: 'Elegant & high contrast' },
@@ -752,12 +810,13 @@ window.saveFont = async function() {
     msg.style.display = 'none';
 
     // Save to cookie
-    document.cookie = `dhm-font=${encodeURIComponent(selectedFont)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+    document.cookie = `dhm-font=${encodeURIComponent(window.selectedFont)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+    document.cookie = `dhm-font-size=${window.selectedFontSize}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
 
     // Save to Supabase preferences
     const { data: profile } = await supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single();
     const prefs = profile?.preferences || {};
-    prefs.typography = { font: window.selectedFont };
+    prefs.typography = { font: window.selectedFont, fontSize: window.selectedFontSize };
     await supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
 
     msg.style.display = 'inline';
@@ -769,6 +828,7 @@ function showTypographyIfProPlus(tier) {
         document.getElementById('typography-section').style.display = 'block';
         document.getElementById('typography-panel').style.display = 'block';
         renderFontGrid();
+        highlightActiveFontSize();
     }
 }
 
