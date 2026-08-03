@@ -757,10 +757,6 @@ async function saveSettings() {
         .from('profiles')
         .update({ preferences: prefsToSave })
         .eq('id', currentUser.id);
-    const { error } = await supabaseClient
-        .from('profiles')
-        .update({ preferences: prefsToSave })
-        .eq('id', currentUser.id);
 
     const msg = document.getElementById('save-msg');
     const msgKw = document.getElementById('save-msg-kw');
