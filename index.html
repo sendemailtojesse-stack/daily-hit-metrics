@@ -1482,11 +1482,9 @@
     }
 
     function applyUnderlines(mastheadUl, articleUl, articleUlAlways) {
-        const mastheadRule = document.querySelector('.masthead-thick-rule');
-        if (mastheadRule) {
-            mastheadRule.style.visibility = mastheadUl ? 'visible' : 'hidden';
-            mastheadRule.style.margin = mastheadUl ? '8px 0 0' : '0';
-            mastheadRule.style.height = mastheadUl ? '' : '0';
+        const mastheadTitle = document.querySelector('.masthead-title');
+        if (mastheadTitle) {
+            mastheadTitle.style.textDecoration = mastheadUl ? 'underline' : 'none';
         }
         const styleId = 'dhm-ul-style';
         let el = document.getElementById(styleId);
