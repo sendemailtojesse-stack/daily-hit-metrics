@@ -288,7 +288,7 @@
     <div id="typography-panel" style="display:none;">
         <p style="font-size:0.7rem; color:#5a3e2b; margin-bottom:16px;">Choose a typeface for article titles and body text across all Daily Hit Metrics feeds.</p>
         <div id="font-grid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:16px;"></div>
-        <button class="btn-save" onclick="saveFont()">Save Typography</button>
+        <button class="btn-save" onclick="window.saveFont()">Save Typography</button>
         <span id="font-save-msg" style="font-family:'IM Fell English',serif; font-size:0.6rem; font-style:italic; color:#3a6b4a; margin-left:10px; display:none;">Saved.</span>
     </div>
 
@@ -693,7 +693,7 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
     }
 });
 // ── TYPOGRAPHY ──
-const FONT_LIST = [
+window.FONT_LIST = [
     { name: 'Libre Baskerville', label: 'Libre Baskerville', preview: 'Classic editorial serif' },
     { name: 'Playfair Display', label: 'Playfair Display', preview: 'Elegant & high contrast' },
     { name: 'Merriweather', label: 'Merriweather', preview: 'Readable & refined' },
@@ -723,19 +723,19 @@ function renderFontGrid() {
     if (!grid) return;
     selectedFont = getSavedFont();
     grid.innerHTML = FONT_LIST.map(f => `
-        <div onclick="selectFont('${f.name}')" id="font-card-${f.name.replace(/\s/g,'_')}"
+        <div onclick="window.selectFont('${f.name}')" id="font-card-${f.name.replace(/\s/g,'_')}"
             style="border:2px solid ${selectedFont === f.name ? '#3a6b4a' : '#d4c9b0'}; background:${selectedFont === f.name ? '#edf4ef' : '#faf8f4'}; padding:10px 12px; cursor:pointer; transition:all 0.15s;">
             <div style="font-family:'${f.name}',Georgia,serif; font-size:0.9rem; color:#2c1810; font-weight:700; margin-bottom:3px;">${f.label}</div>
             <div style="font-family:'${f.name}',Georgia,serif; font-size:0.6rem; color:#5a3e2b; font-style:italic;">${f.preview}</div>
         </div>`).join('');
 }
 
-function selectFont(fontName) {
+window.selectFont = function(fontName) {
     selectedFont = fontName;
     renderFontGrid();
 }
 
-async function saveFont() {
+window.saveFont = async function() {
     const msg = document.getElementById('font-save-msg');
     msg.style.display = 'none';
 
