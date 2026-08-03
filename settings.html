@@ -760,7 +760,7 @@ async function saveSettings() {
         .select('preferences');
 
     console.log('Save error:', error);
-    console.log('Update result rows:', updateResult?.length, 'World News sources:', Object.keys(updateResult?.[0]?.preferences?.news?.sections?.['World News']?.sources || {}));
+    console.log('Update result rows:', updateResult?.length);
 
     const msg = document.getElementById('save-msg');
     const msgKw = document.getElementById('save-msg-kw');
@@ -792,7 +792,9 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
         .from('profiles')
         .select('first_name, last_name, middle_name, salutation, subscription_tier, preferences')
         .eq('id', session.user.id)
-        .single();
+        .limit(1)
+        .throwOnError()
+        .then(r => ({ data: r.data?.[0] }));
 
     if (profile?.subscription_tier !== 'pro' && profile?.subscription_tier !== 'pro_plus' && profile?.subscription_tier !== 'admin') { window.location.href = 'https://news.dailyhitmetrics.com'; return; }
 
