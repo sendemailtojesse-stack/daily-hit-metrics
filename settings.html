@@ -892,8 +892,12 @@ async function revertTypography() {
     document.cookie = `dhm-title-font=${encodeURIComponent('Quantico')}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
     const { data: profile } = await supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single();
     const prefs = profile?.preferences || {};
-    prefs.typography = { font: 'Libre Baskerville', fontSize: 1.05, titleFont: 'Quantico', mastheadUnderline: true, articleUnderline: true, articleUnderlineAlways: false };
-    await supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
+    const defaultTypography = { font: 'Libre Baskerville', fontSize: 1.05, titleFont: 'Quantico', mastheadUnderline: true, articleUnderline: true, articleUnderlineAlways: false };
+    await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/typography', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(defaultTypography)
+    });
     document.getElementById('toggle-masthead-underline').checked = true;
     document.getElementById('toggle-article-underline').checked = true;
     document.getElementById('toggle-article-underline-always').checked = false;
@@ -1013,7 +1017,16 @@ window.saveFont = async function() {
     const articleUnderline = document.getElementById('toggle-article-underline').checked;
     const articleUnderlineAlways = document.getElementById('toggle-article-underline-always').checked;
 
-    // Save to cookie
+    const typography = {
+        font: window.selectedFont,
+        fontSize: window.selectedFontSize,
+        titleFont: window.selectedTitleFont,
+        mastheadUnderline,
+        articleUnderline,
+        articleUnderlineAlways
+    };
+
+    // Save cookies for immediate local effect
     document.cookie = `dhm-font=${encodeURIComponent(window.selectedFont)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
     document.cookie = `dhm-font-size=${window.selectedFontSize}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
     document.cookie = `dhm-title-font=${encodeURIComponent(window.selectedTitleFont)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
@@ -1021,11 +1034,12 @@ window.saveFont = async function() {
     document.cookie = `dhm-article-ul=${articleUnderline ? '1' : '0'}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
     document.cookie = `dhm-article-ul-always=${articleUnderlineAlways ? '1' : '0'}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
 
-    // Save to Supabase preferences
-    const { data: profile } = await supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single();
-    const prefs = profile?.preferences || {};
-    prefs.typography = { font: window.selectedFont, fontSize: window.selectedFontSize, titleFont: window.selectedTitleFont, mastheadUnderline, articleUnderline, articleUnderlineAlways };
-    await supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
+    // Save to global KV via Worker (applies to all users)
+    await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/typography', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(typography)
+    });
 
     msg.style.display = 'inline';
     setTimeout(() => { msg.style.display = 'none'; }, 2000);
