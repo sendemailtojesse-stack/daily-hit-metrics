@@ -1036,7 +1036,8 @@
                 if (aCategory !== bCategory) return 0;
                 const pref = getSectionPref(aCategory);
                 if (!pref.sources) return 0;
-                const sourceKeys = Object.keys(pref.sources);
+                // Use explicit sourceOrder array if present, otherwise fall back to object keys
+                const sourceKeys = pref.sourceOrder || Object.keys(pref.sources);
                 const aIdx = sourceKeys.indexOf(a.sourceName);
                 const bIdx = sourceKeys.indexOf(b.sourceName);
                 if (aIdx === -1 && bIdx === -1) return 0;
@@ -1588,20 +1589,21 @@
             const saved = profile.preferences.news.sections;
             userPrefs = {};
             Object.keys(NEWS_DEFAULTS).forEach(section => {
-                const savedSources = saved[section]?.sources || {};
-                const defaultSources = NEWS_DEFAULTS[section].sources || {};
-                // Preserve saved order, then append any new default sources not yet in saved
+                const savedSrc = saved[section]?.sources || {};
+                const savedOrder = saved[section]?.sourceOrder || Object.keys(savedSrc);
                 const mergedSources = {};
-                Object.keys(savedSources).forEach(k => {
-                    mergedSources[k] = { ...defaultSources[k], ...savedSources[k] };
+                savedOrder.forEach(k => {
+                    if (savedSrc[k]) mergedSources[k] = { ...(NEWS_DEFAULTS[section]?.sources?.[k] || {}), ...savedSrc[k] };
+                    else if (NEWS_DEFAULTS[section]?.sources?.[k]) mergedSources[k] = NEWS_DEFAULTS[section].sources[k];
                 });
-                Object.keys(defaultSources).forEach(k => {
-                    if (!mergedSources[k]) mergedSources[k] = defaultSources[k];
+                Object.keys(NEWS_DEFAULTS[section]?.sources || {}).forEach(k => {
+                    if (!mergedSources[k]) mergedSources[k] = NEWS_DEFAULTS[section].sources[k];
                 });
                 userPrefs[section] = {
                     ...NEWS_DEFAULTS[section],
                     ...saved[section],
-                    sources: mergedSources
+                    sources: mergedSources,
+                    sourceOrder: savedOrder
                 };
             });
         }
