@@ -313,11 +313,10 @@
         .dispatch-link {
             color: #1a0f00;
             text-decoration: none;
-            transition: color 0.15s ease;
         }
 
         .dispatch-link:hover {
-            color: #3a6b4a;
+            color: #1a0f00;
             text-decoration: underline;
             text-underline-offset: 3px;
         }
@@ -1484,7 +1483,11 @@
 
     function applyUnderlines(mastheadUl, articleUl, articleUlAlways) {
         const mastheadRule = document.querySelector('.masthead-thick-rule');
-        if (mastheadRule) mastheadRule.style.display = mastheadUl ? '' : 'none';
+        if (mastheadRule) {
+            mastheadRule.style.visibility = mastheadUl ? 'visible' : 'hidden';
+            mastheadRule.style.margin = mastheadUl ? '8px 0 0' : '0';
+            mastheadRule.style.height = mastheadUl ? '' : '0';
+        }
         const styleId = 'dhm-ul-style';
         let el = document.getElementById(styleId);
         if (!el) { el = document.createElement('style'); el.id = styleId; document.head.appendChild(el); }
