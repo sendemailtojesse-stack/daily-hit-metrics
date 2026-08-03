@@ -781,26 +781,29 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
     if (profile.middle_name) document.getElementById('name-middle').value = profile.middle_name;
     if (profile.last_name) document.getElementById('name-last').value = profile.last_name;
 
-    // Merge saved prefs with defaults — preserve saved source order
+    // Load saved prefs — fully preserve saved section and source order
     if (profile?.preferences && Object.keys(profile.preferences).length > 0) {
         for (const site of Object.keys(DEFAULTS)) {
             if (profile.preferences[site]) {
                 const savedSections = profile.preferences[site].sections || {};
                 const mergedSections = {};
-                // Start with saved sections to preserve order
+
+                // First: iterate saved sections in saved order
                 for (const section of Object.keys(savedSections)) {
                     const savedSrc = savedSections[section].sources || {};
                     const defaultSrc = (DEFAULTS[site].sections[section] || {}).sources || {};
-                    // Preserve saved source order, append any new defaults not yet saved
                     const mergedSources = {};
+                    // Saved source order first
                     Object.keys(savedSrc).forEach(k => { mergedSources[k] = { ...defaultSrc[k], ...savedSrc[k] }; });
+                    // Append any new default sources not yet in saved
                     Object.keys(defaultSrc).forEach(k => { if (!mergedSources[k]) mergedSources[k] = defaultSrc[k]; });
-                    mergedSections[section] = { ...DEFAULTS[site].sections[section], ...savedSections[section], sources: mergedSources };
+                    mergedSections[section] = { ...(DEFAULTS[site].sections[section] || {}), ...savedSections[section], sources: mergedSources };
                 }
                 // Append any default sections not in saved
                 for (const section of Object.keys(DEFAULTS[site].sections)) {
-                    if (!mergedSections[section]) mergedSections[section] = DEFAULTS[site].sections[section];
+                    if (!mergedSections[section]) mergedSections[section] = { ...DEFAULTS[site].sections[section] };
                 }
+
                 currentPrefs[site] = {
                     sections: mergedSections,
                     keywords: profile.preferences[site].keywords || []
