@@ -723,8 +723,11 @@ function resetCurrentTab() {
 }
 
 // ── SAVE ──
+let _savePending = false;
 async function saveSettings() {
-    if (!currentUser) return;
+    if (!currentUser || _savePending) return;
+    _savePending = true;
+    setTimeout(() => { _savePending = false; }, 1000);
     const prefsToSave = JSON.parse(JSON.stringify(currentPrefs));
     const { error } = await supabaseClient
         .from('profiles')
