@@ -559,7 +559,7 @@
 
         .section-nav-link {
             font-family: 'IM Fell English', serif;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             font-weight: 400;
             font-style: italic;
             letter-spacing: 0.05em;
@@ -1417,7 +1417,7 @@
 
     // ── THEME TOGGLE ──
     const THEMES = ['twotone', 'parchment', 'white'];
-    const THEME_LABELS = { twotone: 'All parchment', parchment: 'All cool white', white: 'Two-tone view' };
+    const THEME_LABELS = { twotone: 'Color: Newspaper & Parchment', parchment: 'Color: Parchment', white: 'Color: Newspaper' };
 
     function getTheme() {
         const saved = document.cookie.match(/dhm-theme=([a-z]+)/);
@@ -1441,7 +1441,7 @@
             document.documentElement.style.setProperty('--bg-content', '#f0f4f8');
         }
         const btn = document.getElementById('theme-btn');
-        if (btn) btn.title = THEME_LABELS[theme] || 'Toggle theme';
+        if (btn) btn.title = THEME_LABELS[theme] || 'Toggle color scheme';
     }
 
     function cycleTheme() {
