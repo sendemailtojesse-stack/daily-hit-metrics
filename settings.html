@@ -604,7 +604,10 @@ document.addEventListener('drop', e => {
 
     // Reorder DOM directly without re-rendering
     const parent = target.parentNode;
-    if (fromIdx < toIdx) {
+    const allRows = Array.from(parent.querySelectorAll('.source-row'));
+    const domFromIdx = allRows.indexOf(dragSrc);
+    const domToIdx = allRows.indexOf(target);
+    if (domFromIdx < domToIdx) {
         parent.insertBefore(dragSrc, target.nextSibling);
     } else {
         parent.insertBefore(dragSrc, target);
@@ -723,11 +726,8 @@ function resetCurrentTab() {
 }
 
 // ── SAVE ──
-let _savePending = false;
 async function saveSettings() {
-    if (!currentUser || _savePending) return;
-    _savePending = true;
-    setTimeout(() => { _savePending = false; }, 1000);
+    if (!currentUser) return;
 
     // Read actual DOM order for sources before saving
     document.querySelectorAll('.source-list').forEach(list => {
@@ -751,6 +751,12 @@ async function saveSettings() {
     });
 
     const prefsToSave = JSON.parse(JSON.stringify(currentPrefs));
+    console.log('Saving World News sources:', Object.keys(prefsToSave.news.sections['World News'].sources));
+
+    const { error } = await supabaseClient
+        .from('profiles')
+        .update({ preferences: prefsToSave })
+        .eq('id', currentUser.id);
     const { error } = await supabaseClient
         .from('profiles')
         .update({ preferences: prefsToSave })
