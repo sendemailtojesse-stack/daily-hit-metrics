@@ -1563,11 +1563,35 @@
         };
     }
 
+    // ── FONT PREFERENCE — load global typography from Worker ──
+    async function loadGlobalTypography() {
+        try {
+            const res = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/typography');
+            if (res.ok) {
+                const t = await res.json();
+                if (t.font) applyFont(t.font, t.fontSize || 1.05);
+                if (t.titleFont) applyTitleFont(t.titleFont);
+                applyUnderlines(
+                    t.mastheadUnderline !== undefined ? t.mastheadUnderline : true,
+                    t.articleUnderline !== undefined ? t.articleUnderline : true,
+                    t.articleUnderlineAlways !== undefined ? t.articleUnderlineAlways : false
+                );
+            }
+        } catch(e) {
+            // Fall back to cookies if Worker unavailable
+            applyFont(getSavedFont(), getSavedFontSize());
+            applyTitleFont(getSavedTitleFont());
+            const { mastheadUl, articleUl, articleUlAlways } = getSavedUnderlines();
+            applyUnderlines(mastheadUl, articleUl, articleUlAlways);
+        }
+    }
+
     // Apply saved fonts on load
     applyFont(getSavedFont(), getSavedFontSize());
     applyTitleFont(getSavedTitleFont());
     const { mastheadUl, articleUl, articleUlAlways } = getSavedUnderlines();
     applyUnderlines(mastheadUl, articleUl, articleUlAlways);
+    loadGlobalTypography();
 
     // ── AGE GATE ──
     function confirmAge() {
@@ -1631,28 +1655,7 @@
             });
         }
         // Apply saved font preference
-        if (profile?.preferences?.typography?.font) {
-            const fontName = profile.preferences.typography.font;
-            const fontSize = profile.preferences.typography.fontSize || 1.05;
-            applyFont(fontName, fontSize);
-            document.cookie = `dhm-font=${encodeURIComponent(fontName)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
-            document.cookie = `dhm-font-size=${fontSize}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
-        }
-        if (profile?.preferences?.typography?.titleFont) {
-            const titleFont = profile.preferences.typography.titleFont;
-            applyTitleFont(titleFont);
-            document.cookie = `dhm-title-font=${encodeURIComponent(titleFont)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
-        }
-        if (profile?.preferences?.typography) {
-            const t = profile.preferences.typography;
-            const mUl = t.mastheadUnderline !== undefined ? t.mastheadUnderline : true;
-            const aUl = t.articleUnderline !== undefined ? t.articleUnderline : true;
-            const aUlAlways = t.articleUnderlineAlways !== undefined ? t.articleUnderlineAlways : false;
-            applyUnderlines(mUl, aUl, aUlAlways);
-            document.cookie = `dhm-masthead-ul=${mUl ? '1' : '0'}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
-            document.cookie = `dhm-article-ul=${aUl ? '1' : '0'}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
-            document.cookie = `dhm-article-ul-always=${aUlAlways ? '1' : '0'}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
-        }
+        // Font/typography is now global — loaded from Worker KV, not per-user prefs
     }
 
     function getSectionPref(category) {
