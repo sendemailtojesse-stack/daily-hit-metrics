@@ -723,11 +723,23 @@ function renderFontGrid() {
     if (!grid) return;
     window.selectedFont = getSavedFont();
     grid.innerHTML = FONT_LIST.map(f => `
-        <div onclick="window.selectFont('${f.name}')" id="font-card-${f.name.replace(/\s/g,'_')}"
+        <div class="font-card" data-font="${f.name}"
             style="border:2px solid ${window.selectedFont === f.name ? '#3a6b4a' : '#d4c9b0'}; background:${window.selectedFont === f.name ? '#edf4ef' : '#faf8f4'}; padding:10px 12px; cursor:pointer; transition:all 0.15s;">
             <div style="font-family:'${f.name}',Georgia,serif; font-size:0.9rem; color:#2c1810; font-weight:700; margin-bottom:3px;">${f.label}</div>
             <div style="font-family:'${f.name}',Georgia,serif; font-size:0.6rem; color:#5a3e2b; font-style:italic;">${f.preview}</div>
         </div>`).join('');
+
+    // Attach click listeners after DOM is built
+    grid.querySelectorAll('.font-card').forEach(card => {
+        card.addEventListener('click', function() {
+            window.selectedFont = this.getAttribute('data-font');
+            grid.querySelectorAll('.font-card').forEach(c => {
+                const isSelected = c.getAttribute('data-font') === window.selectedFont;
+                c.style.border = `2px solid ${isSelected ? '#3a6b4a' : '#d4c9b0'}`;
+                c.style.background = isSelected ? '#edf4ef' : '#faf8f4';
+            });
+        });
+    });
 }
 
 window.selectFont = function(fontName) {
