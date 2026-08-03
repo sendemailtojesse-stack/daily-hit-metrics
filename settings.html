@@ -602,8 +602,13 @@ document.addEventListener('drop', e => {
     keys.forEach(k => { reordered[k] = sources[k]; });
     currentPrefs[site].sections[section].sources = reordered;
 
-    // Re-render
-    renderPrefsPanel(site);
+    // Reorder DOM directly without re-rendering
+    const parent = target.parentNode;
+    if (fromIdx < toIdx) {
+        parent.insertBefore(dragSrc, target.nextSibling);
+    } else {
+        parent.insertBefore(dragSrc, target);
+    }
 });
 
 function switchTab(group, site) {
@@ -720,9 +725,10 @@ function resetCurrentTab() {
 // ── SAVE ──
 async function saveSettings() {
     if (!currentUser) return;
+    const prefsToSave = JSON.parse(JSON.stringify(currentPrefs));
     const { error } = await supabaseClient
         .from('profiles')
-        .update({ preferences: currentPrefs })
+        .update({ preferences: prefsToSave })
         .eq('id', currentUser.id);
 
     const msg = document.getElementById('save-msg');
