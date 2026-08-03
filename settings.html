@@ -758,6 +758,12 @@ async function saveSettings() {
         .update({ preferences: prefsToSave })
         .eq('id', currentUser.id);
 
+    console.log('Save error:', error);
+
+    // Verify what Supabase actually stored
+    const { data: verify } = await supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single();
+    console.log('Supabase after save:', Object.keys(verify?.preferences?.news?.sections?.['World News']?.sources || {}));
+
     const msg = document.getElementById('save-msg');
     const msgKw = document.getElementById('save-msg-kw');
     if (!error) {
