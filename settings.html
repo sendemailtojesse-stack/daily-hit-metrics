@@ -728,6 +728,28 @@ async function saveSettings() {
     if (!currentUser || _savePending) return;
     _savePending = true;
     setTimeout(() => { _savePending = false; }, 1000);
+
+    // Read actual DOM order for sources before saving
+    document.querySelectorAll('.source-list').forEach(list => {
+        const rows = list.querySelectorAll('.source-row');
+        if (!rows.length) return;
+        const firstRow = rows[0];
+        const site = firstRow.dataset.site;
+        const section = firstRow.dataset.section;
+        if (!site || !section || !currentPrefs[site]?.sections[section]) return;
+        const existingSources = currentPrefs[site].sections[section].sources;
+        const reordered = {};
+        rows.forEach(row => {
+            const srcName = row.dataset.source;
+            if (srcName && existingSources[srcName]) {
+                reordered[srcName] = existingSources[srcName];
+            }
+        });
+        if (Object.keys(reordered).length > 0) {
+            currentPrefs[site].sections[section].sources = reordered;
+        }
+    });
+
     const prefsToSave = JSON.parse(JSON.stringify(currentPrefs));
     const { error } = await supabaseClient
         .from('profiles')
