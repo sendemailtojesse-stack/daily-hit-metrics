@@ -725,11 +725,22 @@ function removeKeyword(site, kw) {
 }
 
 // ── RESET ──
-function resetCurrentTab() {
-    if (confirm(`Reset ${activePrefsTab} settings to defaults?`)) {
-        currentPrefs[activePrefsTab].sections = JSON.parse(JSON.stringify(DEFAULTS[activePrefsTab].sections));
-        renderPrefsPanel(activePrefsTab);
-    }
+async function resetCurrentTab() {
+    if (!confirm(`Reset ${activePrefsTab} settings to defaults?`)) return;
+    try {
+        const res = await fetch(`https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/defaults?site=${activePrefsTab}`);
+        if (res.ok) {
+            const kvDefaults = await res.json();
+            if (kvDefaults?.sections && Object.keys(kvDefaults.sections).length > 0) {
+                currentPrefs[activePrefsTab].sections = JSON.parse(JSON.stringify(kvDefaults.sections));
+                renderPrefsPanel(activePrefsTab);
+                return;
+            }
+        }
+    } catch(e) {}
+    // Fall back to hardcoded defaults if KV not available
+    currentPrefs[activePrefsTab].sections = JSON.parse(JSON.stringify(DEFAULTS[activePrefsTab].sections));
+    renderPrefsPanel(activePrefsTab);
 }
 
 // ── SAVE ──
@@ -769,6 +780,21 @@ async function saveSettings() {
     const msg = document.getElementById('save-msg');
     const msgKw = document.getElementById('save-msg-kw');
     if (!error) {
+        // If admin, also save as global site defaults
+        if (currentUser && prefsToSave) {
+            const profile = await supabaseClient.from('profiles').select('subscription_tier').eq('id', currentUser.id).single();
+            if (profile?.data?.subscription_tier === 'admin') {
+                for (const site of Object.keys(prefsToSave)) {
+                    if (prefsToSave[site]?.sections) {
+                        await fetch(`https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/defaults?site=${site}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(prefsToSave[site])
+                        });
+                    }
+                }
+            }
+        }
         msg.textContent = 'Saved successfully.';
         msgKw.textContent = 'Saved successfully.';
         msg.classList.add('visible');
