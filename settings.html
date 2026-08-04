@@ -802,12 +802,25 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
     document.getElementById('subscription-badge').textContent = tierLabel;
     showTypographyIfProPlus(profile.subscription_tier);
 
-    // Load saved font preference
-    if (profile?.preferences?.typography?.font) {
-        window.selectedFont = profile.preferences.typography.font;
-    }
-    if (profile?.preferences?.typography?.titleFont) {
-        window.selectedTitleFont = profile.preferences.typography.titleFont;
+    // Load global typography from Worker KV for admin panel
+    if (profile.subscription_tier === 'admin') {
+        try {
+            const res = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/typography');
+            if (res.ok) {
+                const t = await res.json();
+                if (t.font) window.selectedFont = t.font;
+                if (t.fontSize) window.selectedFontSize = t.fontSize;
+                if (t.titleFont) window.selectedTitleFont = t.titleFont;
+                if (document.getElementById('toggle-masthead-underline')) {
+                    document.getElementById('toggle-masthead-underline').checked = t.mastheadUnderline !== false;
+                    document.getElementById('toggle-article-underline').checked = t.articleUnderline !== false;
+                    document.getElementById('toggle-article-underline-always').checked = !!t.articleUnderlineAlways;
+                }
+                renderFontGrid();
+                renderTitleFontGrid();
+                highlightActiveFontSize();
+            }
+        } catch(e) { console.log('Typography KV load error:', e); }
     }
 
     document.getElementById('account-email').textContent = session.user.email;
