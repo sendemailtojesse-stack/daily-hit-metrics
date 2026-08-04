@@ -1538,11 +1538,13 @@
         document.documentElement.style.setProperty('--title-font', `'${fontName}', sans-serif`);
     }
 
-    function applyUnderlines(mastheadUl, articleUl, articleUlAlways) {
+    function applyUnderlines(mastheadUl, articleUl, articleUlAlways, mpathTekUl) {
         const mastheadTitle = document.querySelector('.masthead-title');
         if (mastheadTitle) {
             mastheadTitle.style.textDecoration = mastheadUl ? 'underline' : 'none';
         }
+        const mpathTekLink = document.querySelector('.masthead-subtitle a');
+        if (mpathTekLink) mpathTekLink.style.textDecoration = (mpathTekUl !== false) ? 'underline' : 'none';
         const styleId = 'dhm-ul-style';
         let el = document.getElementById(styleId);
         if (!el) { el = document.createElement('style'); el.id = styleId; document.head.appendChild(el); }
@@ -1574,15 +1576,15 @@
                 applyUnderlines(
                     t.mastheadUnderline !== undefined ? t.mastheadUnderline : true,
                     t.articleUnderline !== undefined ? t.articleUnderline : true,
-                    t.articleUnderlineAlways !== undefined ? t.articleUnderlineAlways : false
+                    t.articleUnderlineAlways !== undefined ? t.articleUnderlineAlways : false,
+                    t.mpathTekUnderline !== undefined ? t.mpathTekUnderline : true
                 );
             }
         } catch(e) {
-            // Fall back to cookies if Worker unavailable
             applyFont(getSavedFont(), getSavedFontSize());
             applyTitleFont(getSavedTitleFont());
             const { mastheadUl, articleUl, articleUlAlways } = getSavedUnderlines();
-            applyUnderlines(mastheadUl, articleUl, articleUlAlways);
+            applyUnderlines(mastheadUl, articleUl, articleUlAlways, true);
         }
     }
 
