@@ -669,7 +669,9 @@ function renderPrefsPanel(site) {
             <div>
                 <span class="section-label">Articles</span>
                 <select class="count-select" onchange="updatePref('${site}','${name}','articleCount',parseInt(this.value))">
-                    ${[2,4,6,8,10,12,14].map(n => `<option value="${n}" ${cfg.articleCount === n ? 'selected' : ''}>${n}</option>`).join('')}
+                    ${section === 'Popular Searches' 
+                        ? [2,4,6,8,10,12,14,16,20,24,28,32,36,40].map(n => `<option value="${n}" ${cfg.articleCount === n ? 'selected' : ''}>${n}</option>`).join('')
+                        : [2,4,6,8,10,12,14].map(n => `<option value="${n}" ${cfg.articleCount === n ? 'selected' : ''}>${n}</option>`).join('')}
                 </select>
             </div>
             <div class="color-wrap">
