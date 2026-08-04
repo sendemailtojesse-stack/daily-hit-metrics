@@ -959,7 +959,9 @@ function getSavedTitleFont() {
 function renderTitleFontGrid() {
     const grid = document.getElementById('title-font-grid');
     if (!grid) return;
-    window.selectedTitleFont = getSavedTitleFont();
+    if (!window.selectedTitleFont || window.selectedTitleFont === 'Quantico') {
+        window.selectedTitleFont = getSavedTitleFont();
+    }
     grid.innerHTML = DISPLAY_FONTS.map(f => `
         <div class="title-font-card" data-font="${f.name}"
             style="border:2px solid ${window.selectedTitleFont === f.name ? '#3a6b4a' : '#d4c9b0'}; background:${window.selectedTitleFont === f.name ? '#edf4ef' : '#faf8f4'}; padding:10px 12px; cursor:pointer; transition:all 0.15s;">
@@ -1007,7 +1009,10 @@ function getSavedFont() {
 function renderFontGrid() {
     const grid = document.getElementById('font-grid');
     if (!grid) return;
-    window.selectedFont = getSavedFont();
+    // Use already-set selectedFont (from KV), fall back to cookie only if not set
+    if (!window.selectedFont || window.selectedFont === 'Libre Baskerville') {
+        window.selectedFont = getSavedFont();
+    }
     grid.innerHTML = FONT_LIST.map(f => `
         <div class="font-card" data-font="${f.name}"
             style="border:2px solid ${window.selectedFont === f.name ? '#3a6b4a' : '#d4c9b0'}; background:${window.selectedFont === f.name ? '#edf4ef' : '#faf8f4'}; padding:10px 12px; cursor:pointer; transition:all 0.15s;">
