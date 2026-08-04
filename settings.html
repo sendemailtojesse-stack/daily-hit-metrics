@@ -897,10 +897,12 @@ function selectFontSize(size) {
 }
 
 function highlightActiveFontSize() {
-    const size = getSavedFontSize();
-    window.selectedFontSize = size;
+    // Use already-set selectedFontSize (from KV), fall back to cookie only if at default
+    if (!window.selectedFontSize || window.selectedFontSize === 1.05) {
+        window.selectedFontSize = getSavedFontSize();
+    }
     document.querySelectorAll('.font-size-btn').forEach(btn => {
-        btn.classList.toggle('active', parseFloat(btn.getAttribute('data-size')) === size);
+        btn.classList.toggle('active', parseFloat(btn.getAttribute('data-size')) === window.selectedFontSize);
     });
 }
 
