@@ -3,40 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Daily Hit Metrics</title>
+    <title>About — Daily Hit Metrics</title>
+    <link rel="icon" href="https://news.dailyhitmetrics.com/favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: #484848; color: #1a0f00; font-family: 'Libre Baskerville', Georgia, serif; padding: 36px 20px 60px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 860px; background-color: #faf8f4; border-left: 1px solid #3a6b4a; border-right: 1px solid #3a6b4a; padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); }
-        .site-title { font-family: 'Quantico', sans-serif; font-size: 1.4rem; font-weight: 700; color: #2f3640; text-align: right; margin-bottom: 4px; text-decoration: underline; text-underline-offset: 4px; }
+        html { font-size: 132%; }
+        body { background-color: #484848; color: #1a0f00; font-family: 'Libre Baskerville', Georgia, serif; padding: 45px 20px 75px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1200px; background-color: #faf8f4; border-left: 5px solid #2c1810; border-right: 1px solid #3a6b4a; padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); position: relative; }
+        .container::after { content: ''; position: fixed; top: 0; bottom: 0; width: 1px; background-color: #a8ff3e; opacity: 0.35; right: calc(50% - 640px); pointer-events: none; }
+        .site-title { font-family: 'Quantico', sans-serif; font-size: 1.4rem; font-weight: 700; color: #2f3640; text-align: right; margin-bottom: 4px; }
         .site-title a { color: inherit; text-decoration: none; }
-        .top-rule { border: none; border-top: 3px solid #2c1810; margin: 8px 0 28px; }
-        h1 { font-family: 'Quantico', sans-serif; font-size: 1.6rem; color: #2c1810; margin-bottom: 20px; }
-        h2 { font-family: 'Libre Baskerville', serif; font-size: 1rem; font-weight: 700; color: #2c1810; margin: 24px 0 8px; border-bottom: 1px solid #d4c9b0; padding-bottom: 4px; }
-        p { font-size: 0.9rem; line-height: 1.7; color: #2a1a0a; margin-bottom: 12px; }
+        .top-rule { border: none; border-top: 3px solid #2c1810; margin: 8px 0 0; }
+        .page-nav-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0; padding-top: 16px; }
+        h1 { font-family: 'Quantico', sans-serif; font-size: 1.6rem; color: #2c1810; margin-bottom: 2px; }
+        .page-sub { font-family: 'IM Fell English', serif; font-style: normal; font-size: 0.9rem; color: #5a3e2b; margin-bottom: 0; }
+        .return-link { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.75rem; color: #3a6b4a; text-decoration: none; white-space: nowrap; padding-top: 8px; }
+        .return-link span { text-decoration: underline; text-underline-offset: 3px; }
+        .divider { height: 20px; }
+        h2 { font-family: 'Quantico', sans-serif; font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: #3a6b4a; border-bottom: 1px solid #d4c9b0; padding-bottom: 6px; margin: 28px 0 12px; }
+        p { font-size: 0.7rem; line-height: 1.8; color: #2a1a0a; margin-bottom: 12px; }
+        strong { color: #2c1810; }
         a { color: #3a6b4a; }
-        .footer-nav { margin-top: 36px; padding-top: 16px; border-top: 1px solid #d4c9b0; font-family: 'IM Fell English', serif; font-size: 0.8rem; color: #8a6a50; font-style: italic; text-align: center; }
-        .footer-nav a { color: #3a6b4a; text-decoration: none; margin: 0 8px; }
+        .why-box { background: #f0ebe0; border-left: 3px solid #2c1810; padding: 16px 20px; margin: 20px 0; }
+        .why-box p { font-family: 'IM Fell English', serif; font-size: 0.75rem; font-style: italic; line-height: 1.8; color: #2c1810; margin: 0; }
+        .footer-note { text-align: center; font-family: 'IM Fell English', serif; font-size: 0.7rem; font-style: italic; color: #8a6a50; margin-top: 16px; letter-spacing: 0.04em; }
+        hr.footer-rule { border: none; border-top: 1px solid #d4c9b0; margin: 28px 0 16px; }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="site-title"><a href="/">Daily Hit Metrics</a></div>
+    <div class="site-title"><a href="https://news.dailyhitmetrics.com">Daily Hit Metrics</a></div>
     <div class="top-rule"></div>
 
-    <h1>About Daily Hit Metrics</h1>
+    <div class="page-nav-row">
+        <div>
+            <h1>About</h1>
+            <div class="page-sub">Daily Hit Metrics — what it is, how it works, and why it matters</div>
+        </div>
+        <a href="https://news.dailyhitmetrics.com" class="return-link">← <span>Return to News</span></a>
+    </div>
+    <div class="divider"></div>
 
-    <p>Daily Hit Metrics is a real-time internet pulse tracker that aggregates trending content from across the web and presents it in a single, clean dashboard — updated every hour, around the clock.</p>
+    <h2>What Is Daily Hit Metrics</h2>
+    <p>Daily Hit Metrics is a real-time internet pulse tracker that aggregates trending content from across the web and presents it in a single, clean dashboard — updated every hour, around the clock. Rather than limiting your view to one region, one outlet, or one algorithm's opinion of what matters, Daily Hit Metrics draws from dozens of sources across five verticals to give you a broad, honest picture of what the world is paying attention to right now.</p>
+
+    <h2>Why Read Global News</h2>
+    <div class="why-box">
+        <p>Reading global news daily sharpens critical thinking and expands awareness of the world beyond your immediate surroundings. When events unfold in one region — a policy shift, a natural disaster, a market movement — the effects ripple across interconnected economies, governments, and societies. Understanding these relationships builds the kind of informed perspective that improves decision-making, deepens empathy, and raises awareness of how all nations function as a single, interdependent global collective. Engaging with news in this format — global rather than directly regional or local — trains the mind to think in systems, to recognize cause and effect across borders, and to see the larger patterns that shape daily life everywhere on earth.</p>
+    </div>
 
     <h2>What We Track</h2>
-    <p>Our platform monitors six categories of trending activity across the internet:</p>
     <p><strong>World News</strong> — Breaking and developing stories from The Guardian, BBC News, NPR, and Al Jazeera, covering major global events as they unfold.</p>
     <p><strong>Social Pulse</strong> — The most engaging discussions happening on Reddit's most active communities, tracking viral conversations and mass social engagement in real time.</p>
     <p><strong>Tech</strong> — Top stories from Hacker News and Ars Technica, reflecting what the technology and startup community is reading and discussing.</p>
-    <p><strong>Video Games</strong> — The latest from IGN and the r/gaming community, covering releases, announcements, and discussions in the gaming world.</p>
+    <p><strong>Video Games</strong> — The latest from IGN, Kotaku, and the r/gaming community, covering releases, announcements, and discussions in the gaming world.</p>
     <p><strong>Finance Trends</strong> — Active market discussions from retail investor communities on Reddit, covering stocks, options, macroeconomics, and trading activity.</p>
     <p><strong>Popular Searches</strong> — What people around the world are searching for right now, broken down by continent using Google Trends data from the United States, North America, South America, Europe, Africa, Asia, and Oceania.</p>
 
@@ -47,12 +70,16 @@
     <p>Daily Hit Metrics is a product of <a href="https://mpathtek.com" target="_blank" rel="noopener noreferrer">MpathTek</a>, a technology company focused on building data-driven tools that make information more accessible and actionable.</p>
 
     <h2>Contact</h2>
-    <p>For inquiries, partnerships, or feedback, please visit our <a href="/contact.html">Contact page</a>.</p>
+    <p>For inquiries, partnerships, or feedback, please visit our <a href="/contact.html">Contact page</a> or email <a href="mailto:jms@mpathtek.com">jms@mpathtek.com</a>.</p>
 
-    <div class="footer-nav">
-        <a href="/">Home</a> · <a href="/privacy.html">Privacy Policy</a> · <a href="/terms.html">Terms of Service</a> · <a href="/contact.html">Contact</a>
-        <br><br>© 2026 <a href="https://mpathtek.com">MpathTek</a> · All rights reserved
+    <hr class="footer-rule">
+    <div class="footer-note">All dispatches sourced from open networks &amp; public indices &nbsp;·&nbsp; Updated hourly on the hour &nbsp;·&nbsp; dailyhitmetrics.com</div>
+    <div class="footer-note" style="margin-top: 8px;">
+        <a href="/about.html" style="color:#3a6b4a; text-decoration:none;">About</a> &nbsp;·&nbsp;
+        <a href="/privacy.html" style="color:#3a6b4a; text-decoration:none;">Privacy Policy</a> &nbsp;·&nbsp;
+        <a href="/contact.html" style="color:#3a6b4a; text-decoration:none;">Contact</a>
     </div>
+    <div class="footer-note" style="margin-top:6px;">&copy; 2026 <a href="https://mpathtek.com" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:none;">MpathTek</a> &nbsp;·&nbsp; All rights reserved</div>
 </div>
 </body>
 </html>
