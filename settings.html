@@ -310,6 +310,10 @@
                     Show underline beneath masthead title "Daily Hit Metrics"
                 </label>
                 <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:0.7rem; color:#2c1810;">
+                    <input type="checkbox" id="toggle-mpathtek-underline" style="width:16px; height:16px; cursor:pointer;">
+                    Show underline beneath masthead "MpathTek" link
+                </label>
+                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:0.7rem; color:#2c1810;">
                     <input type="checkbox" id="toggle-article-underline" style="width:16px; height:16px; cursor:pointer;">
                     Underline article titles on hover
                 </label>
@@ -800,7 +804,6 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
 
     const tierLabel = profile.subscription_tier === 'pro_plus' ? '✦ Pro+' : profile.subscription_tier === 'admin' ? '✦ Admin' : '✦ Pro';
     document.getElementById('subscription-badge').textContent = tierLabel;
-    showTypographyIfProPlus(profile.subscription_tier);
 
     // Load global typography from Worker KV for admin panel
     if (profile.subscription_tier === 'admin') {
@@ -811,16 +814,23 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
                 if (t.font) window.selectedFont = t.font;
                 if (t.fontSize) window.selectedFontSize = t.fontSize;
                 if (t.titleFont) window.selectedTitleFont = t.titleFont;
+                // Show panel first, then populate with saved values
+                showTypographyIfProPlus(profile.subscription_tier);
                 if (document.getElementById('toggle-masthead-underline')) {
                     document.getElementById('toggle-masthead-underline').checked = t.mastheadUnderline !== false;
+                    document.getElementById('toggle-mpathtek-underline').checked = t.mpathTekUnderline !== false;
                     document.getElementById('toggle-article-underline').checked = t.articleUnderline !== false;
                     document.getElementById('toggle-article-underline-always').checked = !!t.articleUnderlineAlways;
                 }
-                renderFontGrid();
-                renderTitleFontGrid();
-                highlightActiveFontSize();
+            } else {
+                showTypographyIfProPlus(profile.subscription_tier);
             }
-        } catch(e) { console.log('Typography KV load error:', e); }
+        } catch(e) {
+            console.log('Typography KV load error:', e);
+            showTypographyIfProPlus(profile.subscription_tier);
+        }
+    } else {
+        showTypographyIfProPlus(profile.subscription_tier);
     }
 
     document.getElementById('account-email').textContent = session.user.email;
@@ -906,7 +916,7 @@ async function revertTypography() {
     document.cookie = `dhm-title-font=${encodeURIComponent('Quantico')}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
     const { data: profile } = await supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single();
     const prefs = profile?.preferences || {};
-    const defaultTypography = { font: 'Libre Baskerville', fontSize: 1.05, titleFont: 'Quantico', mastheadUnderline: true, articleUnderline: true, articleUnderlineAlways: false };
+    const defaultTypography = { font: 'Libre Baskerville', fontSize: 1.05, titleFont: 'Quantico', mastheadUnderline: true, mpathTekUnderline: true, articleUnderline: true, articleUnderlineAlways: false };
     await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/typography', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1028,6 +1038,7 @@ window.saveFont = async function() {
     msg.style.display = 'none';
 
     const mastheadUnderline = document.getElementById('toggle-masthead-underline').checked;
+    const mpathTekUnderline = document.getElementById('toggle-mpathtek-underline').checked;
     const articleUnderline = document.getElementById('toggle-article-underline').checked;
     const articleUnderlineAlways = document.getElementById('toggle-article-underline-always').checked;
 
@@ -1036,6 +1047,7 @@ window.saveFont = async function() {
         fontSize: window.selectedFontSize,
         titleFont: window.selectedTitleFont,
         mastheadUnderline,
+        mpathTekUnderline,
         articleUnderline,
         articleUnderlineAlways
     };
