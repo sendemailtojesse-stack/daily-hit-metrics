@@ -183,6 +183,27 @@
             padding: 6px 0;
             user-select: none;
         }
+        .why-read-wrap { position: relative; margin-right: auto; display: flex; align-items: center; }
+        .why-read-icon { cursor: default; opacity: 0.5; transition: opacity 0.15s; display: flex; align-items: center; }
+        .why-read-icon:hover { opacity: 1; }
+        .why-read-tooltip {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 24px;
+            width: 340px;
+            background: #2c1810;
+            color: #faf8f4;
+            font-family: 'IM Fell English', serif;
+            font-size: 0.65rem;
+            font-style: italic;
+            line-height: 1.6;
+            padding: 10px 14px;
+            z-index: 100;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
+        .why-read-icon:hover + .why-read-tooltip,
+        .why-read-wrap:hover .why-read-tooltip { display: block; }
         .editorial-label {
             font-family: 'IM Fell English', serif;
             font-style: normal;
@@ -873,6 +894,12 @@
 
     <div class="editorial-box" id="editorial-box">
         <div class="editorial-toggle" onclick="toggleEditorial()">
+            <span class="why-read-wrap">
+                <span class="why-read-icon" onclick="event.stopPropagation()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#8a6a50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>
+                </span>
+                <span class="why-read-tooltip">Reading global news daily sharpens critical thinking and expands awareness of the world beyond your immediate surroundings. When events unfold in one region — a policy shift, a natural disaster, a market movement — the effects ripple across interconnected economies, governments, and societies. Understanding these relationships builds the kind of informed perspective that improves decision-making, deepens empathy, and raises awareness of how all nations function as a single, interdependent global collective.</span>
+            </span>
             <span class="editorial-label">Editor's Article Summary - News</span>
             <span class="editorial-arrow" id="editorial-arrow">▾</span>
         </div>
