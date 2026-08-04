@@ -1619,7 +1619,7 @@
     // ── USER PREFERENCES ──
     let userPrefs = null;
 
-    const NEWS_DEFAULTS = {
+    const HARDCODED_DEFAULTS = {
         'World News':       { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#254d33' },
         'Social Pulse':     { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#6b6125' },
         'Tech':             { visible: true, articleCount: 8, color: 'gradient', gradientColor: '#4a5c3a' },
@@ -1627,6 +1627,21 @@
         'Finance Trends':   { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#2d4a3e' },
         'Popular Searches': { visible: true, articleCount: 28, color: 'gradient', gradientColor: '#556b45' }
     };
+
+    let NEWS_DEFAULTS = HARDCODED_DEFAULTS;
+
+    // Load admin-set site defaults from KV
+    async function loadSiteDefaults() {
+        try {
+            const res = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/defaults?site=news');
+            if (res.ok) {
+                const kv = await res.json();
+                if (kv?.sections && Object.keys(kv.sections).length > 0) {
+                    NEWS_DEFAULTS = kv.sections;
+                }
+            }
+        } catch(e) {}
+    }
 
     async function loadUserPrefs(userId) {
         const { data: profile } = await supabaseClient
@@ -1678,6 +1693,8 @@
 
     // Check session on load — fetch prefs first, then render dashboard
     supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
+        // Load admin-set site defaults first
+        await loadSiteDefaults();
         if (session) {
             const { data: profile } = await supabaseClient
                 .from('profiles')
