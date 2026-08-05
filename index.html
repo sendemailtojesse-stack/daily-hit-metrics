@@ -1072,6 +1072,7 @@
                 }
 
                 sectionCounts[baseCategory]++;
+                const displayRank = sectionCounts[baseCategory];
 
                 if (item.category !== lastCategory || (item.category === 'Popular Searches' && item.searchLabel !== lastSearchLabel)) {
                     lastCategory = item.category;
@@ -1140,7 +1141,7 @@
                             >`
                         }
                     </td>
-                    <td class="rank-col">${toRoman(item.rank)}</td>
+                    <td class="rank-col">${toRoman(displayRank)}</td>
                     <td>
                         <div class="entity-title">
                             <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="dispatch-link">
