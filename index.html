@@ -310,12 +310,13 @@
 
         /* ── ROW ELEMENTS ── */
         .rank-col {
-            font-family: 'Quantico', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 700;
+            font-family: 'IM Fell English', serif;
+            font-size: 0.85rem;
+            font-style: italic;
             color: #c8b89a;
             width: 50px;
             text-align: center;
+            letter-spacing: 0.05em;
         }
 
         .entity-title {
@@ -1139,7 +1140,7 @@
                             >`
                         }
                     </td>
-                    <td class="rank-col">${item.rank}</td>
+                    <td class="rank-col">${toRoman(item.rank)}</td>
                     <td>
                         <div class="entity-title">
                             <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="dispatch-link">
@@ -1514,7 +1515,15 @@
         { name: 'Alegreya', label: 'Alegreya' }
     ];
 
-    function getSavedFont() {
+    function toRoman(num) {
+        const vals = [1000,900,500,400,100,90,50,40,10,9,5,4,1];
+        const syms = ['M','CM','D','CD','C','XC','L','XL','X','IX','V','IV','I'];
+        let result = '';
+        for (let i = 0; i < vals.length; i++) {
+            while (num >= vals[i]) { result += syms[i]; num -= vals[i]; }
+        }
+        return result;
+    }
         const saved = document.cookie.match(/dhm-font=([^;]+)/);
         return saved ? decodeURIComponent(saved[1]) : 'Libre Baskerville';
     }
