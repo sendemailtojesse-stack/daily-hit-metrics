@@ -1072,7 +1072,10 @@
                 }
 
                 sectionCounts[baseCategory]++;
-                const displayRank = sectionCounts[baseCategory];
+                const rankKey = `${baseCategory}::${item.sourceName || ''}`;
+                if (!sectionCounts[rankKey]) sectionCounts[rankKey] = 0;
+                sectionCounts[rankKey]++;
+                const displayRank = sectionCounts[rankKey];
 
                 if (item.category !== lastCategory || (item.category === 'Popular Searches' && item.searchLabel !== lastSearchLabel)) {
                     lastCategory = item.category;
