@@ -410,7 +410,14 @@ async function fetchHighUtilityMatrix() {
         console.log(`Finance Trends RSS status: ${res.status}`);
         if (res.ok) {
             const entries = parseAtomEntries(await res.text(), 8, 'https://www.reddit.com/r/stocks/', LOGOS.reddit);
-            const subredditName = (url) => { const m = url.match(/\/r\/([^/]+)\//); return m ? `r/${m[1]}` : 'r/stocks'; };
+            const subredditName = (url) => {
+                const m = url.match(/\/r\/([^/+]+)/);
+                if (!m) return 'r/stocks';
+                const sub = m[1].toLowerCase();
+                if (sub.includes('invest')) return 'r/investing';
+                if (sub.includes('option')) return 'r/options';
+                return `r/${m[1]}`;
+            };
             entries.forEach(entry => financeTrends.push({
                 site: entry.title || "Market Discussion",
                 sourceName: subredditName(entry.url),
@@ -426,8 +433,10 @@ async function fetchHighUtilityMatrix() {
 
     if (financeTrends.length === 0) {
         const mocks = ["Macro Index Data Release Analysis", "Options Chain Implied Volatility Shift", "Tech Sector Earnings Report Breakdown", "Treasury Yield Curve Movement"];
+        const mockSources = ['r/stocks', 'r/options', 'r/stocks', 'r/investing'];
         financeTrends = mocks.map((topic, i) => ({
             site: topic,
+            sourceName: mockSources[i],
             category: "Finance Trends",
             dailyHits: `${Math.floor(Math.random() * 400 + 100)} Traders`,
             growth: `${Math.random() > 0.5 ? "+" : "-"}${Math.floor(Math.random() * 20 + 5)} coms/min`,
