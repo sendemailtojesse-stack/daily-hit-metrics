@@ -579,7 +579,7 @@ async function fetchHighUtilityMatrix() {
 
     // Assign per-section rank restarting at 1 for each category
     const sectionCounters = {};
-    trafficLeaderboard.forEach(item => {
+    orderedGrid.forEach(item => {
         const key = item.category + (item.searchLabel ? '-' + item.searchLabel : '');
         if (!sectionCounters[key]) sectionCounters[key] = 0;
         sectionCounters[key]++;
