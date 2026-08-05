@@ -575,7 +575,16 @@ async function fetchHighUtilityMatrix() {
         ...videoGames,
         ...financeTrends,
         ...popularSearches
-    ].map((item, index) => ({ rank: index + 1, ...item }));
+    ].map((item, index) => ({ globalRank: index + 1, ...item }));
+
+    // Assign per-section rank restarting at 1 for each category
+    const sectionCounters = {};
+    trafficLeaderboard.forEach(item => {
+        const key = item.category + (item.searchLabel ? '-' + item.searchLabel : '');
+        if (!sectionCounters[key]) sectionCounters[key] = 0;
+        sectionCounters[key]++;
+        item.rank = sectionCounters[key];
+    });
 
     const finalDatabaseState = {
         lastUpdated: new Date().toISOString(),
