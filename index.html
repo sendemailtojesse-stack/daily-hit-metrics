@@ -1524,6 +1524,8 @@
         }
         return result;
     }
+
+    function getSavedFont() {
         const saved = document.cookie.match(/dhm-font=([^;]+)/);
         return saved ? decodeURIComponent(saved[1]) : 'Libre Baskerville';
     }
