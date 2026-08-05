@@ -466,9 +466,19 @@ async function fetchHighUtilityMatrix() {
         }).filter(i => i.trafficNum >= 200);
     };
 
+    const REGION_LABELS = {
+        'us': 'Google Trends US',
+        'north-america': 'Google Trends North America',
+        'south-america': 'Google Trends South America',
+        'europe': 'Google Trends Europe',
+        'africa': 'Google Trends Africa',
+        'asia': 'Google Trends Asia',
+        'oceania': 'Google Trends Oceania'
+    };
+
     const toSearchEntry = (item, label) => ({
         site: item.trendName,
-        sourceName: 'Google Trends',
+        sourceName: REGION_LABELS[label] || 'Google Trends',
         category: "Popular Searches",
         dailyHits: item.liveTraffic,
         growth: "+" + (Math.random() * 10 + 5).toFixed(1) + "%",
@@ -535,6 +545,7 @@ async function fetchHighUtilityMatrix() {
         const labels = ['us', 'north-america', 'south-america', 'europe', 'africa', 'asia', 'oceania'];
         popularSearches = Array.from({ length: 28 }, (_, i) => ({
             site: `Trending Search #${i + 1}`,
+            sourceName: REGION_LABELS[labels[Math.floor(i / 4)]] || 'Google Trends',
             category: "Popular Searches",
             dailyHits: `${Math.floor(Math.random() * 50 + 5)}K+`,
             growth: "+" + (Math.random() * 8 + 4).toFixed(1) + "%",
