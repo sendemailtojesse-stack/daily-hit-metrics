@@ -394,7 +394,15 @@ const DEFAULTS = {
                 sources: { 'r/stocks': { visible: true, count: 2 }, 'r/investing': { visible: true, count: 1 }, 'r/options': { visible: true, count: 1 } }
             },
             'Popular Searches': { visible: true, articleCount: 28, color: 'gradient', gradientColor: '#556b45',
-                sources: { 'Google Trends': { visible: true, count: 28 } }
+                sources: {
+                    'Google Trends US':            { visible: true, count: 4 },
+                    'Google Trends North America': { visible: true, count: 4 },
+                    'Google Trends South America': { visible: true, count: 4 },
+                    'Google Trends Europe':        { visible: true, count: 4 },
+                    'Google Trends Africa':        { visible: true, count: 4 },
+                    'Google Trends Asia':          { visible: true, count: 4 },
+                    'Google Trends Oceania':       { visible: true, count: 4 }
+                }
             }
         },
         keywords: []
