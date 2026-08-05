@@ -1709,7 +1709,6 @@
 
     // Listen for auth changes
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
-        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') return; // handled by getSession
         if (session) {
             const { data: profile } = await supabaseClient
                 .from('profiles')
@@ -1717,11 +1716,8 @@
                 .eq('id', session.user.id)
                 .single();
             updateNav(session.user, profile?.first_name, profile?.subscription_tier);
-            await loadUserPrefs(session.user.id);
-            loadDashboard();
         } else {
             updateNav(null);
-            loadDashboard();
         }
     });
 </script>
