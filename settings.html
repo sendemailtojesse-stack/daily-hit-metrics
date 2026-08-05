@@ -409,12 +409,18 @@ const DEFAULTS = {
     },
     sports: {
         sections: {
-            'Top Sports News':          { visible: true, articleCount: 6, color: 'gradient', gradientColor: '#1a4a6b' },
-            'American Football':        { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#4b3a1e' },
-            'Basketball':               { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#6b3a1a' },
-            'Soccer':                   { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#1a5c2a' },
-            'Baseball':                 { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#2a4a6b' },
-            'Trending Sports Searches': { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#4a3a6b' }
+            'Top Sports News':          { visible: true, articleCount: 6, color: 'gradient', gradientColor: '#1a4a6b',
+                sources: { 'BBC Sport': { visible: true, count: 2 }, 'Sky Sports': { visible: true, count: 2 }, 'CBS Sports': { visible: true, count: 2 } } },
+            'American Football':        { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#4b3a1e',
+                sources: { 'CBS Sports NFL': { visible: true, count: 2 }, 'r/nfl': { visible: true, count: 2 } } },
+            'Basketball':               { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#6b3a1a',
+                sources: { 'CBS Sports NBA': { visible: true, count: 4 } } },
+            'Soccer':                   { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#1a5c2a',
+                sources: { 'BBC Sport Football': { visible: true, count: 2 }, 'Sky Sports Football': { visible: true, count: 2 } } },
+            'Baseball':                 { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#2a4a6b',
+                sources: { 'CBS Sports MLB': { visible: true, count: 4 } } },
+            'Trending Sports Searches': { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#4a3a6b',
+                sources: { 'Google Trends Sports': { visible: true, count: 4 } } }
         },
         keywords: []
     },
