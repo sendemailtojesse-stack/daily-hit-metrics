@@ -1072,7 +1072,7 @@
                 }
 
                 sectionCounts[baseCategory]++;
-                const rankKey = `${baseCategory}::${item.sourceName || ''}`;
+                const rankKey = `rank::${baseCategory}::${item.sourceName || ''}`;
                 if (!sectionCounts[rankKey]) sectionCounts[rankKey] = 0;
                 sectionCounts[rankKey]++;
                 const displayRank = sectionCounts[rankKey];
