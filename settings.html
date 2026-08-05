@@ -919,7 +919,6 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
 
     // Render all panels
     for (const site of Object.keys(DEFAULTS)) {
-        console.log(`Rendering ${site}, Top Sports sources:`, site === 'sports' ? JSON.stringify(currentPrefs.sports?.sections?.['Top Sports News']?.sources) : 'n/a');
         renderPrefsPanel(site);
         renderKeywordPanel(site);
     }
