@@ -1045,7 +1045,7 @@
 
             if (!hasCustomPrefs && data.prerenderedHTML) {
                 tableBody.innerHTML = data.prerenderedHTML;
-                applyTheme(getTheme()); // reapply theme after content injection
+                applyNewspaperShade(getNewspaperShade()); // reapply shade after content injection
                 return true;
             }
             tableBody.innerHTML = '';
@@ -1299,7 +1299,7 @@
         }
         // Re-apply zoom and theme since nav buttons were rebuilt
         applyZoom(getZoom());
-        applyTheme(getTheme());
+        applyNewspaperShade(getNewspaperShade());
         setZoomVisibility(tier);
     }
 
@@ -1522,46 +1522,54 @@
     const _themeBtn = document.querySelector('.theme-btn');
     if (_themeBtn) _themeBtn.style.left = '0';
 
-    // ── THEME TOGGLE ──
-    const THEMES = ['twotone', 'parchment', 'white'];
-    const THEME_LABELS = { twotone: 'Color: Newspaper & Parchment', parchment: 'Color: Parchment', white: 'Color: Newspaper' };
+    // ── NEWSPAPER COLOR CYCLE ──
+    const NEWSPAPER_SHADES = ['#f0f0f0', '#f2f2f2', '#f4f4f4', '#f5f7f9', '#f7f8f9', '#f8f9fa', '#fafafa'];
 
-    function getTheme() {
-        const saved = document.cookie.match(/dhm-theme=([a-z]+)/);
-        return saved ? saved[1] : 'twotone';
+    function getNewspaperShade() {
+        const saved = document.cookie.match(/dhm-newspaper=([^;]+)/);
+        return saved ? decodeURIComponent(saved[1]) : '#f8f9fa';
     }
 
-    function applyTheme(theme) {
+    function applyNewspaperShade(shade) {
         const container = document.querySelector('.container');
-        const scoreboard = document.querySelector('.scoreboard');
-        if (theme === 'parchment') {
-            if (container) container.style.backgroundColor = '#faf8f4';
-            if (scoreboard) scoreboard.style.backgroundColor = '#faf8f4';
-            document.documentElement.style.setProperty('--bg-content', '#faf8f4');
-        } else if (theme === 'twotone') {
-            if (container) container.style.backgroundColor = '#f8f9fa';
-            if (scoreboard) scoreboard.style.backgroundColor = '#f6f3ee';
-            document.documentElement.style.setProperty('--bg-content', '#f6f3ee');
-        } else if (theme === 'white') {
-            if (container) container.style.backgroundColor = '#f0f4f8';
-            if (scoreboard) scoreboard.style.backgroundColor = '#f0f4f8';
-            document.documentElement.style.setProperty('--bg-content', '#f0f4f8');
+        if (container) container.style.backgroundColor = shade;
+        document.cookie = `dhm-newspaper=${encodeURIComponent(shade)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+        const btn = document.querySelector('.theme-btn');
+        if (btn) {
+            const idx = NEWSPAPER_SHADES.indexOf(shade);
+            btn.title = `Newspaper shade: ${idx + 1} of ${NEWSPAPER_SHADES.length}`;
         }
-        const btn = document.getElementById('theme-btn');
-        if (btn) btn.title = THEME_LABELS[theme] || 'Toggle color scheme';
+        // Save to Supabase if logged in
+        if (currentUser) {
+            supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single().then(({ data }) => {
+                const prefs = data?.preferences || {};
+                prefs.newspaperShade = shade;
+                supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
+            });
+        }
     }
 
     function cycleTheme() {
-        if (!currentUser) return;
-        const current = getTheme();
-        const idx = THEMES.indexOf(current);
-        const next = THEMES[(idx + 1) % THEMES.length];
-        document.cookie = `dhm-theme=${next}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
-        applyTheme(next);
+        const current = getNewspaperShade();
+        const idx = NEWSPAPER_SHADES.indexOf(current);
+        const next = NEWSPAPER_SHADES[(idx + 1) % NEWSPAPER_SHADES.length];
+        applyNewspaperShade(next);
     }
 
+    // Load user's saved newspaper shade from Supabase prefs (called from loadUserPrefs)
+    function applyUserNewspaperShade(prefs) {
+        if (prefs?.newspaperShade) {
+            applyNewspaperShade(prefs.newspaperShade);
+        } else {
+            applyNewspaperShade(getNewspaperShade());
+        }
+    }
+
+    // Apply on initial load from cookie
+    applyNewspaperShade(getNewspaperShade());
+
     // Apply saved theme on load
-    applyTheme(getTheme());
+    applyNewspaperShade(getNewspaperShade());
 
     // ── FONT PREFERENCE ──
     const FONTS = [
@@ -1749,7 +1757,10 @@
                 };
             });
         }
-        // Apply saved font preference
+        // Apply saved newspaper shade
+        if (profile?.preferences?.newspaperShade) {
+            applyNewspaperShade(profile.preferences.newspaperShade);
+        }
         // Font/typography is now global — loaded from Worker KV, not per-user prefs
     }
 
