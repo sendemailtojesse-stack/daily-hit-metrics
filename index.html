@@ -1485,20 +1485,22 @@
 
     function setZoomVisibility(tier) {
         const btn = document.getElementById('zoom-btn');
-        if (!btn) return;
+        const themeBtn = document.querySelector('.theme-btn');
         if (tier === 'admin') {
-            btn.style.display = 'flex';
-            btn.style.pointerEvents = 'auto';
-            btn.style.cursor = 'pointer';
-            btn.style.opacity = '';
+            if (btn) { btn.style.display = 'flex'; btn.style.pointerEvents = 'auto'; btn.style.cursor = 'pointer'; btn.style.opacity = ''; }
+            if (themeBtn) themeBtn.style.left = '28px';
         } else {
-            btn.style.display = 'none';
+            if (btn) btn.style.display = 'none';
+            if (themeBtn) themeBtn.style.left = '0';
         }
     }
 
     // Apply zoom on load — zoom button hidden until auth resolves
     applyZoom(getZoom());
     setZoomVisibility(null);
+    // Theme button starts at far left until we know if admin
+    const _themeBtn = document.querySelector('.theme-btn');
+    if (_themeBtn) _themeBtn.style.left = '0';
 
     // ── THEME TOGGLE ──
     const THEMES = ['twotone', 'parchment', 'white'];
