@@ -1215,7 +1215,7 @@ function showTypographyIfProPlus(tier) {
 
     // ── ZOOM CONTROL ──
     const ZOOM_LEVELS = [1, 1.02, 1.04, 1.06, 1.08, 1.10, 1.12];
-    function getZoom() { const s = document.cookie.match(/dhm-zoom=([\d.]+)/); return s ? parseFloat(s[1]) : 1; }
+    function getZoom() { const s = document.cookie.match(/dhm-zoom=([\d.]+)/); return s ? parseFloat(s[1]) : 1.12; }
     function applyZoom(level) { document.body.style.zoom = level; const btn = document.getElementById('zoom-btn'); if (btn) btn.title = `Text size: ${Math.round(level * 100)}%`; }
     function cycleZoom() { const c = getZoom(); const i = ZOOM_LEVELS.findIndex(z => Math.abs(z-c)<0.01); const n = ZOOM_LEVELS[(i+1)%ZOOM_LEVELS.length]; document.cookie = `dhm-zoom=${n}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`; applyZoom(n); }
     applyZoom(getZoom());
