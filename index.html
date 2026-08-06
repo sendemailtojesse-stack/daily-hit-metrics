@@ -1460,11 +1460,11 @@
     }
 
     // ── ZOOM CONTROL ──
-    const ZOOM_LEVELS = [1, 1.02, 1.04, 1.06, 1.08, 1.10, 1.12];
+    const ZOOM_LEVELS = [1, 1.02, 1.04, 1.06, 1.08, 1.10, 1.12, 1.16, 1.20];
 
     function getZoom() {
         const saved = document.cookie.match(/dhm-zoom=([\d.]+)/);
-        return saved ? parseFloat(saved[1]) : 1.12;
+        return saved ? parseFloat(saved[1]) : 1.20;
     }
 
     function applyZoom(level) {
