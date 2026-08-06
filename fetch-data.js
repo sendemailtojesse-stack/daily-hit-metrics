@@ -77,6 +77,22 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
     });
 }
 
+
+const WORKER_RSS_PROXY = 'https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/rss-proxy';
+const fetchRSS = async (url, retries = 2) => {
+    const proxyUrl = `${WORKER_RSS_PROXY}?url=${encodeURIComponent(url)}`;
+    for (let i = 0; i <= retries; i++) {
+        try {
+            const res = await fetch(proxyUrl);
+            if (res.ok || res.status === 404) return res;
+            if (i < retries) await new Promise(r => setTimeout(r, 3000));
+        } catch(e) {
+            if (i === retries) throw e;
+            await new Promise(r => setTimeout(r, 3000));
+        }
+    }
+};
+
 const BROWSER_HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
     'Accept': 'application/rss+xml, application/xml, text/xml, */*'
@@ -129,7 +145,7 @@ async function fetchHighUtilityMatrix() {
     for (const source of worldSources) {
         try {
             console.log(`Parsing World News from ${source.name}...`);
-            const res = await fetch(source.url, { headers: BROWSER_HEADERS });
+            const res = await fetchRSS(source.url);
             console.log(`${source.name} RSS status: ${res.status}`);
             if (res.ok) {
                 const items = parseRssItems(await res.text(), 4, source.url, source.logo);
@@ -167,7 +183,7 @@ async function fetchHighUtilityMatrix() {
     // ==========================================
     try {
         console.log("Parsing Social Pulse from r/popular...");
-        const res = await fetch('https://www.reddit.com/r/popular/.rss?limit=15', { headers: BROWSER_HEADERS });
+        const res = await fetchRSS('https://www.reddit.com/r/popular/.rss?limit=15');
         console.log(`Social Pulse RSS status: ${res.status}`);
         if (res.ok) {
             const entries = parseAtomEntries(await res.text(), 8, 'https://www.reddit.com/r/popular/', LOGOS.reddit);
@@ -202,7 +218,7 @@ async function fetchHighUtilityMatrix() {
     // ==========================================
     try {
         console.log("Parsing Tech from Hacker News...");
-        const res = await fetch('https://news.ycombinator.com/rss', { headers: BROWSER_HEADERS });
+        const res = await fetchRSS('https://news.ycombinator.com/rss');
         console.log(`Hacker News RSS status: ${res.status}`);
         if (res.ok) {
             const xmlText = await res.text();
@@ -249,7 +265,7 @@ async function fetchHighUtilityMatrix() {
 
     try {
         console.log("Parsing Tech from Ars Technica...");
-        const arsRes = await fetch('https://feeds.arstechnica.com/arstechnica/index', { headers: BROWSER_HEADERS });
+        const arsRes = await fetchRSS('https://feeds.arstechnica.com/arstechnica/index');
         console.log(`Ars Technica RSS status: ${arsRes.status}`);
         if (arsRes.ok) {
             const arsText = await arsRes.text();
@@ -294,7 +310,7 @@ async function fetchHighUtilityMatrix() {
     // ==========================================
     try {
         console.log("Parsing Video Games from Kotaku...");
-        const kotakuRes = await fetch('https://kotaku.com/rss', { headers: BROWSER_HEADERS });
+        const kotakuRes = await fetchRSS('https://kotaku.com/rss');
         console.log(`Kotaku RSS status: ${kotakuRes.status}`);
         if (kotakuRes.ok) {
             const items = parseRssItems(await kotakuRes.text(), 4, 'https://kotaku.com/', 'https://www.google.com/s2/favicons?domain=kotaku.com&sz=128');
@@ -313,7 +329,7 @@ async function fetchHighUtilityMatrix() {
 
     try {
         console.log("Parsing Video Games from IGN...");
-        const res = await fetch('https://feeds.feedburner.com/ign/news', { headers: BROWSER_HEADERS });
+        const res = await fetchRSS('https://feeds.feedburner.com/ign/news');
         console.log(`IGN RSS status: ${res.status}`);
         if (res.ok) {
             const items = parseRssItems(await res.text(), 4, 'https://ign.com/', LOGOS.ign);
@@ -333,7 +349,7 @@ async function fetchHighUtilityMatrix() {
     try {
         console.log("Parsing Video Games from Reddit gaming...");
         await new Promise(r => setTimeout(r, 4000));
-        const res = await fetch('https://www.reddit.com/r/gaming+pcgaming+patientgamers/.rss?limit=15', { headers: BROWSER_HEADERS });
+        const res = await fetchRSS('https://www.reddit.com/r/gaming+pcgaming+patientgamers/.rss?limit=15');
         console.log(`r/gaming RSS status: ${res.status}`);
         if (res.ok) {
             const xmlText = await res.text();
@@ -406,7 +422,7 @@ async function fetchHighUtilityMatrix() {
     try {
         console.log("Parsing Finance Trends from Reddit...");
         await new Promise(r => setTimeout(r, 6000));
-        const res = await fetch('https://www.reddit.com/r/stocks+investing+options/.rss?limit=15', { headers: BROWSER_HEADERS });
+        const res = await fetchRSS('https://www.reddit.com/r/stocks+investing+options/.rss?limit=15');
         console.log(`Finance Trends RSS status: ${res.status}`);
         if (res.ok) {
             const entries = parseAtomEntries(await res.text(), 8, 'https://www.reddit.com/r/stocks/', LOGOS.reddit);
