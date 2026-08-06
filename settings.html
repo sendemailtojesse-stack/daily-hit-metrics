@@ -457,10 +457,22 @@ const DEFAULTS = {
     },
     politics: {
         sections: {
-            'Top Political News':          { visible: true, articleCount: 6, color: 'gradient', gradientColor: '#3a1a4a' },
-            'US Politics':                 { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#4a1a1a' },
-            'International Politics':      { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#1a3a4a' },
-            'Trending Political Searches': { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#3a3a1a' }
+            'Top Political News':          { visible: true, articleCount: 6, color: 'gradient', gradientColor: '#3a1a4a',
+                sources: { 'The Guardian Politics': { visible: true, count: 2 }, 'NPR Politics': { visible: true, count: 2 }, 'BBC News Politics': { visible: true, count: 2 } } },
+            'US Politics':                 { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#4a1a1a',
+                sources: { 'r/politics': { visible: true, count: 4 } } },
+            'International Politics':      { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#1a3a4a',
+                sources: { 'BBC News World': { visible: true, count: 2 }, 'Al Jazeera': { visible: true, count: 2 } } },
+            'Trending Political Searches': { visible: true, articleCount: 28, color: 'gradient', gradientColor: '#3a3a1a',
+                sources: {
+                    'Google Trends Politics US':            { visible: true, count: 4 },
+                    'Google Trends Politics North America': { visible: true, count: 4 },
+                    'Google Trends Politics South America': { visible: true, count: 4 },
+                    'Google Trends Politics Europe':        { visible: true, count: 4 },
+                    'Google Trends Politics Africa':        { visible: true, count: 4 },
+                    'Google Trends Politics Asia':          { visible: true, count: 4 },
+                    'Google Trends Politics Oceania':       { visible: true, count: 4 }
+                } }
         },
         keywords: []
     },
@@ -683,7 +695,7 @@ function renderPrefsPanel(site) {
                     </label>
                     <span class="source-name">${srcName}</span>
                     <select class="count-select count-select-sm" onchange="updateSourcePref('${site}','${name}','${srcName}','count',parseInt(this.value))">
-                        ${(name === 'Popular Searches' || name === 'Trending Sports Searches' || name === 'Trending Finance Searches' ? [1,2,4,6,8,10,12,14,16,20,24,28,32,36,40] : [1,2,3,4,5,6,7,8,10,12,14]).map(n => `<option value="${n}" ${srcCfg.count === n ? 'selected' : ''}>${n}</option>`).join('')}
+                        ${(name === 'Popular Searches' || name === 'Trending Sports Searches' || name === 'Trending Finance Searches' || name === 'Trending Political Searches' ? [1,2,4,6,8,10,12,14,16,20,24,28,32,36,40] : [1,2,3,4,5,6,7,8,10,12,14]).map(n => `<option value="${n}" ${srcCfg.count === n ? 'selected' : ''}>${n}</option>`).join('')}
                     </select>
                     <span class="source-label-sm">articles</span>
                 </div>`).join('')}
@@ -704,7 +716,7 @@ function renderPrefsPanel(site) {
             <div>
                 <span class="section-label">Articles</span>
                 <select class="count-select" onchange="updatePref('${site}','${name}','articleCount',parseInt(this.value))">
-                    ${(name === 'Popular Searches' || name === 'Trending Sports Searches' || name === 'Trending Finance Searches')
+                    ${(name === 'Popular Searches' || name === 'Trending Sports Searches' || name === 'Trending Finance Searches' || name === 'Trending Political Searches')
                         ? [2,4,6,8,10,12,14,16,20,24,28,32,36,40].map(n => `<option value="${n}" ${cfg.articleCount === n ? 'selected' : ''}>${n}</option>`).join('')
                         : [2,4,6,8,10,12,14].map(n => `<option value="${n}" ${cfg.articleCount === n ? 'selected' : ''}>${n}</option>`).join('')}
                 </select>
