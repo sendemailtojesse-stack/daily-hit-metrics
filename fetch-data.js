@@ -349,11 +349,11 @@ async function fetchHighUtilityMatrix() {
     try {
         console.log("Parsing Video Games from Reddit gaming...");
         await new Promise(r => setTimeout(r, 4000));
-        const res = await fetchRSS('https://www.reddit.com/r/gaming+pcgaming+patientgamers/.rss?limit=15');
+        const res = await fetchRSS('https://www.reddit.com/r/gaming+pcgaming+patientgamers/.rss?limit=20');
         console.log(`r/gaming RSS status: ${res.status}`);
         if (res.ok) {
             const xmlText = await res.text();
-            const entries = parseAtomEntries(xmlText, 6, 'https://www.reddit.com/r/gaming/', LOGOS.reddit);
+            const entries = parseAtomEntries(xmlText, 20, 'https://www.reddit.com/r/gaming/', LOGOS.reddit);
             const subredditName = (url) => { const m = url.match(/\/r\/([^/]+)\//); return m ? `r/${m[1]}` : 'r/gaming'; };
             entries.forEach(entry => videoGames.push({
                 site: entry.title || "r/gaming",
