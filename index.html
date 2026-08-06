@@ -1479,8 +1479,27 @@
         const current = getZoom();
         const idx = ZOOM_LEVELS.findIndex(z => Math.abs(z - current) < 0.01);
         const next = ZOOM_LEVELS[(idx + 1) % ZOOM_LEVELS.length];
+        // Save to KV so all users get the same zoom
+        fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/zoom', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ zoom: next })
+        });
         document.cookie = `dhm-zoom=${next}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
         applyZoom(next);
+    }
+
+    async function loadGlobalZoom() {
+        try {
+            const res = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/zoom');
+            if (res.ok) {
+                const data = await res.json();
+                if (data.zoom) {
+                    applyZoom(data.zoom);
+                    document.cookie = `dhm-zoom=${data.zoom}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+                }
+            }
+        } catch(e) {}
     }
 
     function setZoomVisibility(tier) {
@@ -1497,6 +1516,7 @@
 
     // Apply zoom on load — zoom button hidden until auth resolves
     applyZoom(getZoom());
+    loadGlobalZoom();
     setZoomVisibility(null);
     // Theme button starts at far left until we know if admin
     const _themeBtn = document.querySelector('.theme-btn');
