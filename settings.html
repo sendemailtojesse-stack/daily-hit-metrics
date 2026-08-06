@@ -935,6 +935,13 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
         renderPrefsPanel(site);
         renderKeywordPanel(site);
     }
+
+    // Re-render after short delay to catch any timing issues
+    setTimeout(() => {
+        for (const site of Object.keys(DEFAULTS)) {
+            renderPrefsPanel(site);
+        }
+    }, 500);
 });
 // ── TYPOGRAPHY ──
 window.selectedFontSize = 1.05; // default
