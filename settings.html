@@ -478,10 +478,22 @@ const DEFAULTS = {
     },
     entertainment: {
         sections: {
-            'Top Entertainment News':          { visible: true, articleCount: 6, color: 'gradient', gradientColor: '#5c1a3a' },
-            'Movies & TV':                     { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#3a1a5c' },
-            'Music':                           { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#1a4a5c' },
-            'Trending Entertainment Searches': { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#5c4a1a' }
+            'Top Entertainment News':          { visible: true, articleCount: 6, color: 'gradient', gradientColor: '#5c1a3a',
+                sources: { 'Variety': { visible: true, count: 2 }, 'Hollywood Reporter': { visible: true, count: 2 }, 'Deadline': { visible: true, count: 2 } } },
+            'Movies & TV':                     { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#3a1a5c',
+                sources: { 'r/movies': { visible: true, count: 4 } } },
+            'Music':                           { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#1a4a5c',
+                sources: { 'Rolling Stone': { visible: true, count: 2 }, 'Pitchfork': { visible: true, count: 2 }, 'NME': { visible: true, count: 2 }, 'Billboard': { visible: true, count: 2 } } },
+            'Trending Entertainment Searches': { visible: true, articleCount: 28, color: 'gradient', gradientColor: '#5c4a1a',
+                sources: {
+                    'Google Trends Entertainment US':            { visible: true, count: 4 },
+                    'Google Trends Entertainment North America': { visible: true, count: 4 },
+                    'Google Trends Entertainment South America': { visible: true, count: 4 },
+                    'Google Trends Entertainment Europe':        { visible: true, count: 4 },
+                    'Google Trends Entertainment Africa':        { visible: true, count: 4 },
+                    'Google Trends Entertainment Asia':          { visible: true, count: 4 },
+                    'Google Trends Entertainment Oceania':       { visible: true, count: 4 }
+                } }
         },
         keywords: []
     }
@@ -695,7 +707,7 @@ function renderPrefsPanel(site) {
                     </label>
                     <span class="source-name">${srcName}</span>
                     <select class="count-select count-select-sm" onchange="updateSourcePref('${site}','${name}','${srcName}','count',parseInt(this.value))">
-                        ${(name === 'Popular Searches' || name === 'Trending Sports Searches' || name === 'Trending Finance Searches' || name === 'Trending Political Searches' ? [1,2,4,6,8,10,12,14,16,20,24,28,32,36,40] : [1,2,3,4,5,6,7,8,10,12,14]).map(n => `<option value="${n}" ${srcCfg.count === n ? 'selected' : ''}>${n}</option>`).join('')}
+                        ${(name === 'Popular Searches' || name === 'Trending Sports Searches' || name === 'Trending Finance Searches' || name === 'Trending Political Searches' || name === 'Trending Entertainment Searches' ? [1,2,4,6,8,10,12,14,16,20,24,28,32,36,40] : [1,2,3,4,5,6,7,8,10,12,14]).map(n => `<option value="${n}" ${srcCfg.count === n ? 'selected' : ''}>${n}</option>`).join('')}
                     </select>
                     <span class="source-label-sm">articles</span>
                 </div>`).join('')}
@@ -716,7 +728,7 @@ function renderPrefsPanel(site) {
             <div>
                 <span class="section-label">Articles</span>
                 <select class="count-select" onchange="updatePref('${site}','${name}','articleCount',parseInt(this.value))">
-                    ${(name === 'Popular Searches' || name === 'Trending Sports Searches' || name === 'Trending Finance Searches' || name === 'Trending Political Searches')
+                    ${(name === 'Popular Searches' || name === 'Trending Sports Searches' || name === 'Trending Finance Searches' || name === 'Trending Political Searches' || name === 'Trending Entertainment Searches')
                         ? [2,4,6,8,10,12,14,16,20,24,28,32,36,40].map(n => `<option value="${n}" ${cfg.articleCount === n ? 'selected' : ''}>${n}</option>`).join('')
                         : [2,4,6,8,10,12,14].map(n => `<option value="${n}" ${cfg.articleCount === n ? 'selected' : ''}>${n}</option>`).join('')}
                 </select>
