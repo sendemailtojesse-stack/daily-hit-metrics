@@ -1770,15 +1770,19 @@
     }
 
     // Check session on load — fetch prefs first, then render dashboard
+    let currentUser = null;
+    let currentTier = null;
     supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
         // Load admin-set site defaults first
         await loadSiteDefaults();
         if (session) {
+            currentUser = session.user;
             const { data: profile } = await supabaseClient
                 .from('profiles')
                 .select('first_name, subscription_tier')
                 .eq('id', session.user.id)
                 .single();
+            currentTier = profile?.subscription_tier;
             updateNav(session.user, profile?.first_name, profile?.subscription_tier);
             await loadUserPrefs(session.user.id);
         }
@@ -1788,13 +1792,17 @@
     // Listen for auth changes
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
         if (session) {
+            currentUser = session.user;
             const { data: profile } = await supabaseClient
                 .from('profiles')
                 .select('first_name, subscription_tier')
                 .eq('id', session.user.id)
                 .single();
+            currentTier = profile?.subscription_tier;
             updateNav(session.user, profile?.first_name, profile?.subscription_tier);
         } else {
+            currentUser = null;
+            currentTier = null;
             updateNav(null);
         }
     });
