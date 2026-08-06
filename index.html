@@ -1539,14 +1539,6 @@
             const idx = NEWSPAPER_SHADES.indexOf(shade);
             btn.title = `Newspaper shade: ${idx + 1} of ${NEWSPAPER_SHADES.length}`;
         }
-        // Save to Supabase if logged in
-        if (currentUser) {
-            supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single().then(({ data }) => {
-                const prefs = data?.preferences || {};
-                prefs.newspaperShade = shade;
-                supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
-            });
-        }
     }
 
     function cycleTheme() {
@@ -1554,6 +1546,14 @@
         const idx = NEWSPAPER_SHADES.indexOf(current);
         const next = NEWSPAPER_SHADES[(idx + 1) % NEWSPAPER_SHADES.length];
         applyNewspaperShade(next);
+        // Save to Supabase preferences
+        if (currentUser) {
+            supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single().then(({ data }) => {
+                const prefs = data?.preferences || {};
+                prefs.newspaperShade = next;
+                supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
+            });
+        }
     }
 
     // Load user's saved newspaper shade from Supabase prefs (called from loadUserPrefs)
@@ -1566,9 +1566,6 @@
     }
 
     // Apply on initial load from cookie
-    applyNewspaperShade(getNewspaperShade());
-
-    // Apply saved theme on load
     applyNewspaperShade(getNewspaperShade());
 
     // ── FONT PREFERENCE ──
