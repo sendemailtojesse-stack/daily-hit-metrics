@@ -15,6 +15,18 @@
         html, body { overflow-x: hidden; }
         @media (max-width: 1024px) {
             .container::after { display: none !important; }
+            .section-banner-world             { background: #254d33 !important; }
+            .section-banner-social            { background: #6b6125 !important; }
+            .section-banner-tech              { background: #4a5c3a !important; }
+            .section-banner-games             { background: #3d5c3a !important; }
+            .section-banner-finance           { background: #2d4a3e !important; }
+            .section-banner-searches-us       { background: #556b45 !important; }
+            .section-banner-searches-namerica { background: #6b7a30 !important; }
+            .section-banner-searches-samerica { background: #2d4a3e !important; }
+            .section-banner-searches-europe   { background: #5a6b40 !important; }
+            .section-banner-searches-africa   { background: #4a6b55 !important; }
+            .section-banner-searches-asia     { background: #8a4a15 !important; }
+            .section-banner-searches-oceania  { background: #6b7a55 !important; }
         }
 
         html { font-size: 144%; }
@@ -862,7 +874,7 @@
 
         <div class="masthead-content">
             <div class="masthead-top-rule"></div>
-            <div class="masthead-eyebrow">Est 2026 &nbsp;✦&nbsp; Global Index of What Matters Now</div>
+            <div class="masthead-eyebrow">Est. 2026 &nbsp;✦&nbsp; Global Index of What Matters Now</div>
             <div class="masthead-title">Daily Hit Metrics</div>
             <div class="masthead-subtitle" style="text-transform: none; font-variant: normal;"><a href="https://mpathtek.com" target="_blank" rel="noopener noreferrer" class="mpathtek-link" style="color: inherit; text-decoration: none; text-transform: none; font-variant: normal;">MpathTek</a></div>
             <hr class="masthead-rule">
@@ -1281,6 +1293,7 @@
         // Re-apply zoom and theme since nav buttons were rebuilt
         applyZoom(getZoom());
         applyTheme(getTheme());
+        setSwatchInteractivity(!!user);
     }
 
     async function handleForgotPassword() {
@@ -1453,7 +1466,15 @@
         if (btn) btn.title = `Text size: ${Math.round(level * 100)}%`;
     }
 
+    function setSwatchInteractivity(loggedIn) {
+        document.querySelectorAll('.zoom-btn, .theme-btn').forEach(btn => {
+            btn.style.pointerEvents = loggedIn ? 'auto' : 'none';
+            btn.style.cursor = loggedIn ? 'pointer' : 'default';
+        });
+    }
+
     function cycleZoom() {
+        if (!currentUser) return;
         const current = getZoom();
         const idx = ZOOM_LEVELS.findIndex(z => Math.abs(z - current) < 0.01);
         const next = ZOOM_LEVELS[(idx + 1) % ZOOM_LEVELS.length];
@@ -1461,8 +1482,9 @@
         applyZoom(next);
     }
 
-    // Apply saved zoom on load
+    // Apply saved zoom on load — disable swatches until auth resolves
     applyZoom(getZoom());
+    setSwatchInteractivity(false);
 
     // ── THEME TOGGLE ──
     const THEMES = ['twotone', 'parchment', 'white'];
@@ -1494,6 +1516,7 @@
     }
 
     function cycleTheme() {
+        if (!currentUser) return;
         const current = getTheme();
         const idx = THEMES.indexOf(current);
         const next = THEMES[(idx + 1) % THEMES.length];
