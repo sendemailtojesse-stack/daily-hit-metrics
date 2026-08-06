@@ -421,11 +421,13 @@ async function fetchHighUtilityMatrix() {
 
     try {
         console.log("Parsing Finance Trends from Reddit...");
-        await new Promise(r => setTimeout(r, 6000));
+        await new Promise(r => setTimeout(r, 2000));
         const res = await fetchRSS('https://www.reddit.com/r/stocks+investing+options/.rss?limit=25');
         console.log(`Finance Trends RSS status: ${res.status}`);
         if (res.ok) {
-            const entries = parseAtomEntries(await res.text(), 25, 'https://www.reddit.com/r/stocks/', LOGOS.reddit);
+            const xmlText = await res.text();
+            const entries = parseAtomEntries(xmlText, 25, 'https://www.reddit.com/r/stocks/', LOGOS.reddit);
+            console.log(`Finance Reddit entries parsed: ${entries.length}`);
             const subredditName = (url) => {
                 const m = url.match(/\/r\/([^/+]+)/);
                 if (!m) return 'r/stocks';
