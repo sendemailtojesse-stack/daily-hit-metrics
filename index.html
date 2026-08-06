@@ -12,6 +12,7 @@
         :root { --bg-content: #faf8f4; --article-font: 'Libre Baskerville', Georgia, serif; --article-font-size: 1.05rem; --title-font: 'Quantico', sans-serif; }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { overflow-x: hidden; }
 
         html { font-size: 144%; }
 
@@ -483,12 +484,12 @@
             margin-top: 16px;
             letter-spacing: 0.04em;
         }
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             html { font-size: 100%; }
 
-            body { padding: 10px 8px 40px; }
+            body { padding: 10px 8px 40px; overflow-x: hidden; }
 
-            .container { padding: 12px 12px 20px; }
+            .container { padding: 12px 12px 20px; max-width: 100%; overflow-x: hidden; }
 
             /* Masthead */
             .masthead-bottom {
@@ -1444,7 +1445,7 @@
     }
 
     function applyZoom(level) {
-        document.body.style.zoom = window.innerWidth > 900 ? level : 1;
+        document.body.style.zoom = window.innerWidth > 1024 ? level : 1;
         const btn = document.getElementById('zoom-btn');
         if (btn) btn.title = `Text size: ${Math.round(level * 100)}%`;
     }
