@@ -623,12 +623,6 @@ async function fetchHighUtilityMatrix() {
                 .map(item => `- [${item.category}] ${item.site}: ${item.trend}`)
                 .join('\n');
 
-            // Save top 3 images for display alongside summary
-            const editorialImages = topStoryItems
-                .filter(item => item.image && !item.image.includes('favicon') && !item.image.includes('google.com/s2'))
-                .slice(0, 3)
-                .map(item => ({ url: item.image, title: item.site, category: item.category }));
-
             const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                 method: 'POST',
                 headers: {
@@ -651,7 +645,6 @@ async function fetchHighUtilityMatrix() {
                 const summary = groqData.choices?.[0]?.message?.content?.trim();
                 if (summary) {
                     finalDatabaseState.editorialSummary = summary;
-                    finalDatabaseState.editorialImages = editorialImages;
                     console.log("Groq editorial summary generated successfully.");
                 }
             } else {
