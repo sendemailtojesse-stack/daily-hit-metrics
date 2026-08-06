@@ -1300,7 +1300,7 @@
         // Re-apply zoom and theme since nav buttons were rebuilt
         applyZoom(getZoom());
         applyTheme(getTheme());
-        setSwatchInteractivity(!!user);
+        setZoomVisibility(tier);
     }
 
     async function handleForgotPassword() {
@@ -1460,24 +1460,18 @@
     }
 
     // ── ZOOM CONTROL ──
-    const ZOOM_LEVELS = [1, 1.02, 1.04, 1.06, 1.08, 1.10, 1.12, 1.16, 1.20];
+    const ZOOM_LEVELS = [1.16, 1.18, 1.20, 1.22, 1.24, 1.26, 1.28, 1.30];
+    const DEFAULT_ZOOM = 1.20;
 
     function getZoom() {
         const saved = document.cookie.match(/dhm-zoom=([\d.]+)/);
-        return saved ? parseFloat(saved[1]) : 1.20;
+        return saved ? parseFloat(saved[1]) : DEFAULT_ZOOM;
     }
 
     function applyZoom(level) {
         document.body.style.zoom = window.innerWidth > 1024 ? level : 1;
         const btn = document.getElementById('zoom-btn');
         if (btn) btn.title = `Text size: ${Math.round(level * 100)}%`;
-    }
-
-    function setSwatchInteractivity(loggedIn) {
-        document.querySelectorAll('.zoom-btn, .theme-btn').forEach(btn => {
-            btn.style.pointerEvents = loggedIn ? 'auto' : 'none';
-            btn.style.cursor = loggedIn ? 'pointer' : 'default';
-        });
     }
 
     function cycleZoom() {
@@ -1489,9 +1483,22 @@
         applyZoom(next);
     }
 
-    // Apply saved zoom on load — disable swatches until auth resolves
+    function setZoomVisibility(tier) {
+        const btn = document.getElementById('zoom-btn');
+        if (!btn) return;
+        if (tier === 'admin') {
+            btn.style.display = 'flex';
+            btn.style.pointerEvents = 'auto';
+            btn.style.cursor = 'pointer';
+            btn.style.opacity = '';
+        } else {
+            btn.style.display = 'none';
+        }
+    }
+
+    // Apply zoom on load — zoom button hidden until auth resolves
     applyZoom(getZoom());
-    setSwatchInteractivity(false);
+    setZoomVisibility(null);
 
     // ── THEME TOGGLE ──
     const THEMES = ['twotone', 'parchment', 'white'];
