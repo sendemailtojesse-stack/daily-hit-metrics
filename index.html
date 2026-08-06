@@ -1022,24 +1022,17 @@
             // Show editorial summary
             if (data.editorialSummary) {
                 const text = data.editorialSummary;
-                const firstLetter = text.charAt(0);
-                const rest = text.slice(1);
-
-                // Build image strip if available
-                let imgStrip = '';
-                if (data.editorialImages && data.editorialImages.length > 0) {
-                    imgStrip = `<div style="display:flex; gap:8px; margin-bottom:10px;">` +
-                        data.editorialImages.map(img => 
-                            `<div style="flex:1; min-width:0;">
-                                <img src="${img.url}" alt="${img.title}" 
-                                    style="width:100%; height:80px; object-fit:cover; border:1px solid #d4c9b0; display:block;"
-                                    onerror="this.parentElement.style.display='none'">
-                            </div>`
-                        ).join('') + `</div>`;
-                }
-
-                document.getElementById('editorial-body').innerHTML = 
-                    imgStrip + `<span style="font-weight:700; color:#2c1810;">${firstLetter}</span>${rest}`;
+                // Format outline — bold any short lines that look like headings
+                const formatted = text.split('\n').map(line => {
+                    const trimmed = line.trim();
+                    if (!trimmed) return '<br>';
+                    // Lines that are short (under 60 chars) and don't end with a period are headings
+                    if (trimmed.length < 60 && !trimmed.endsWith('.') && !trimmed.endsWith(',')) {
+                        return `<div style="font-family:'Quantico',sans-serif; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:#3a6b4a; margin-top:10px; margin-bottom:2px;">${trimmed}</div>`;
+                    }
+                    return `<div style="margin-bottom:4px;">${trimmed}</div>`;
+                }).join('');
+                document.getElementById('editorial-body').innerHTML = formatted;
                 document.getElementById('editorial-box').style.display = 'block';
             } else {
                 document.getElementById('editorial-box').style.display = 'none';

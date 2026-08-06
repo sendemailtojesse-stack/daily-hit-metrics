@@ -641,7 +641,7 @@ async function fetchHighUtilityMatrix() {
                     temperature: 0.9,
                     messages: [{
                         role: 'user',
-                        content: `You are the uplifting editor of Daily Hit Metrics, a real-time global news aggregator. Based on the following trending stories, write a 250-300 word editorial briefing that finds the hopeful thread — human resilience, cooperation, ingenuity, and progress — woven through even the most challenging headlines. Acknowledge difficulty honestly but pivot toward possibility. Write with warmth and genuine optimism, not saccharine positivity. Flowing prose, no bullet points, no title or heading — begin directly with the text. Do not mention Daily Hit Metrics by name.\n\nTop stories this hour:\n${topStories}`
+                        content: `You are the editor of Daily Hit Metrics, a real-time global news aggregator. Based on the following trending stories, write a concise editorial briefing in outline form. Group stories by theme or category. For each group, write a short bold heading (3-5 words) followed by 2-3 sentences summarizing the key developments. Use 4-6 groups total. Do not use bullet points or dashes — use a clean outline style with the heading on its own line followed by the summary. No title or preamble — begin directly with the first heading. Do not mention Daily Hit Metrics by name.\n\nTop stories this hour:\n${topStories}`
                     }]
                 })
             });
