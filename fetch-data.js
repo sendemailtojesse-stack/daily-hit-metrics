@@ -1,0 +1,904 @@
+const fs = require('fs');
+
+function decodeEntities(str) {
+    return str
+        .replace(/&amp;/g, '&')
+        .replace(/&quot;/g, '"')
+        .replace(/&apos;/g, "'")
+        .replace(/&#39;/g, "'")
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)));
+}
+
+function extractImage(itemStr) {
+    const patterns = [
+        /<media:thumbnail[^>]+url=["']([^"']+)["']/i,
+        /<media:content[^>]+url=["']([^"']+)["'][^>]+medium=["']image["']/i,
+        /<media:content[^>]+medium=["']image["'][^>]+url=["']([^"']+)["']/i,
+        /<enclosure[^>]+type=["']image[^"']*["'][^>]+url=["']([^"']+)["']/i,
+        /<enclosure[^>]+url=["']([^"']+)["'][^>]+type=["']image[^"']*["']/i,
+        /<image>.*?<url>([^<]+)<\/url>/is,
+        /og:image[^>]+content=["']([^"']+)["']/i,
+    ];
+    for (const pattern of patterns) {
+        const match = itemStr.match(pattern);
+        if (match && match[1] && match[1].startsWith('http')) return match[1].trim();
+    }
+    return null;
+}
+
+
+function parseAtomEntries(xmlText, limit, fallbackUrl, fallbackLogo) {
+    const items = xmlText.split('<entry>');
+    items.shift();
+    return items.slice(0, limit).map(itemStr => {
+        const titleMatch = itemStr.match(/<title[^>]*>(.*?)<\/title>/s);
+        let title = titleMatch ? decodeEntities(titleMatch[1].replace(/<[^>]*>/g, '').trim()) : "";
+        if (title.length > 120) title = title.substring(0, 117) + "...";
+        const linkMatch = itemStr.match(/<link\s+href=["']([^"']+)["']/);
+        const url = linkMatch ? linkMatch[1].trim() : fallbackUrl;
+        const image = extractImage(itemStr) || fallbackLogo;
+        return { title, url, image };
+    });
+}
+
+function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
+    const items = xmlText.split('<item>');
+    items.shift();
+    return items.slice(0, limit).map(itemStr => {
+        const titleMatch = itemStr.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/s);
+        let title = titleMatch ? decodeEntities(titleMatch[1].replace(/<[^>]*>/g, '').trim()) : "";
+        if (title.length > 120) title = title.substring(0, 117) + "...";
+        const linkMatch = itemStr.match(/<link>([^<]+)<\/link>/) || itemStr.match(/<link\s+href=["']([^"']+)["']/);
+        const url = linkMatch ? linkMatch[1].trim() : fallbackUrl;
+
+        // Try clean description fields first, fall back to stripping HTML from description
+        let desc = "";
+        const mediaDesc = itemStr.match(/<media:description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/media:description>/s);
+        const dcDesc = itemStr.match(/<dc:description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/dc:description>/s);
+        if (mediaDesc) {
+            desc = ensurePeriod(truncateAtWord(decodeEntities(mediaDesc[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim())));
+        } else if (dcDesc) {
+            desc = ensurePeriod(truncateAtWord(decodeEntities(dcDesc[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim())));
+        } else {
+            const descMatch = itemStr.match(/<description>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/description>/s);
+            const descRaw = descMatch ? descMatch[1] : "";
+            const fullDesc = decodeEntities(descRaw);
+            const firstParaMatch = fullDesc.match(/<p[^>]*>(.*?)<\/p>/s);
+            const firstParaText = firstParaMatch
+                ? firstParaMatch[1].replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim()
+                : truncateAtWord(fullDesc.replace(/<[^>]*>/g, '').replace(/<[^>]*$/g, '').replace(/\s+/g, ' ').trim());
+            desc = ensurePeriod(firstParaText);
+        }
+
+        const image = extractImage(itemStr) || fallbackLogo;
+        return { title, url, desc, image };
+    });
+}
+
+
+const WORKER_RSS_PROXY = 'https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/rss-proxy';
+const fetchRSS = async (url, retries = 2) => {
+    const proxyUrl = `${WORKER_RSS_PROXY}?url=${encodeURIComponent(url)}`;
+    for (let i = 0; i <= retries; i++) {
+        try {
+            const res = await fetch(proxyUrl);
+            if (res.ok || res.status === 404) return res;
+            if (i < retries) await new Promise(r => setTimeout(r, 3000));
+        } catch(e) {
+            if (i === retries) throw e;
+            await new Promise(r => setTimeout(r, 3000));
+        }
+    }
+};
+
+const BROWSER_HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+    'Accept': 'application/rss+xml, application/xml, text/xml, */*'
+};
+
+const LOGOS = {
+    reuters:   'https://www.google.com/s2/favicons?domain=reuters.com&sz=128',
+    bbc:       'https://www.google.com/s2/favicons?domain=bbc.com&sz=128',
+    npr:       'https://www.google.com/s2/favicons?domain=npr.org&sz=128',
+    aljazeera: 'https://www.google.com/s2/favicons?domain=aljazeera.com&sz=128',
+    reddit:    'https://www.google.com/s2/favicons?domain=reddit.com&sz=128',
+    hn:        'https://www.google.com/s2/favicons?domain=ycombinator.com&sz=128',
+    ign:       'https://www.google.com/s2/favicons?domain=ign.com&sz=128',
+    google:    'https://www.google.com/s2/favicons?domain=google.com&sz=128',
+};
+
+function truncateAtWord(str, maxLen = 160) {
+    if (!str || str.length <= maxLen) return str;
+    const cut = str.substring(0, maxLen);
+    const lastSpace = cut.lastIndexOf(' ');
+    return lastSpace > 0 ? cut.substring(0, lastSpace) : cut;
+}
+
+function ensurePeriod(str) {
+    if (!str) return str;
+    const trimmed = str.trim();
+    return /[.!?]$/.test(trimmed) ? trimmed : trimmed + '...';
+}
+
+async function fetchHighUtilityMatrix() {
+    let worldNews       = [];
+    let socialPulse     = [];
+    let techNews        = [];
+    let videoGames      = [];
+    let financeTrends   = [];
+    let popularSearches = [];
+
+    console.log("Initializing 24-Slot Data Engine (6x4 Layout)...");
+
+    // ==========================================
+    // TIER 1: WORLD NEWS — Reuters, BBC, NPR, Al Jazeera (1 each)
+    // ==========================================
+    const worldSources = [
+        { url: 'https://www.theguardian.com/world/rss', name: 'The Guardian', logo: 'https://www.google.com/s2/favicons?domain=theguardian.com&sz=128' },
+        { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC News', logo: LOGOS.bbc },
+        { url: 'https://feeds.npr.org/1001/rss.xml', name: 'NPR News', logo: LOGOS.npr },
+        { url: 'https://www.aljazeera.com/xml/rss/all.xml', name: 'Al Jazeera', logo: LOGOS.aljazeera },
+    ];
+
+    for (const source of worldSources) {
+        try {
+            console.log(`Parsing World News from ${source.name}...`);
+            const res = await fetchRSS(source.url);
+            console.log(`${source.name} RSS status: ${res.status}`);
+            if (res.ok) {
+                const items = parseRssItems(await res.text(), 4, source.url, source.logo);
+                items.forEach(item => {
+                    const trend = ensurePeriod(item.desc || `Breaking news from ${source.name}.`);
+                    worldNews.push({
+                        site: item.title || `${source.name} News`,
+                        sourceName: source.name,
+                        category: "World News",
+                        dailyHits: "Global",
+                        growth: "+" + (Math.random() * 5 + 1).toFixed(1) + "%",
+                        trend,
+                        url: item.url,
+                        image: item.image
+                    });
+                });
+            }
+        } catch (e) { console.error(`${source.name} Error:`, e.message); }
+    }
+
+    if (worldNews.length === 0) {
+        worldNews = Array.from({ length: 16 }, (_, i) => ({
+            site: `World News Dispatch #${i + 1}`,
+            category: "World News",
+            dailyHits: "Global",
+            growth: "+" + (Math.random() * 5 + 1).toFixed(1) + "%",
+            trend: "Breaking developments from international news services.",
+            url: "https://reuters.com/",
+            image: LOGOS.reuters
+        }));
+    }
+
+    // ==========================================
+    // TIER 2: SOCIAL PULSE — 4 Reddit r/popular
+    // ==========================================
+    try {
+        console.log("Parsing Social Pulse from r/popular...");
+        const res = await fetchRSS('https://www.reddit.com/r/popular/.rss?limit=15');
+        console.log(`Social Pulse RSS status: ${res.status}`);
+        if (res.ok) {
+            const entries = parseAtomEntries(await res.text(), 8, 'https://www.reddit.com/r/popular/', LOGOS.reddit);
+            const subredditMatch = (url) => { const m = url.match(/\/r\/([^/]+)\//); return m ? `r/${m[1]}` : 'r/popular'; };
+            entries.forEach(entry => socialPulse.push({
+                site: entry.title || "Trending Discussion",
+                sourceName: 'r/popular',
+                category: "Social Pulse",
+                dailyHits: `${Math.floor(Math.random() * 4000 + 1200).toLocaleString()} Coms`,
+                growth: "+" + Math.floor(Math.random() * 40 + 20) + " up/min",
+                trend: `Trending in ${subredditMatch(entry.url)} — viral engagement climbing across the network.`,
+                url: entry.url,
+                image: entry.image
+            }));
+        }
+    } catch (e) { console.error('Social Pulse Error:', e.message); }
+
+    if (socialPulse.length === 0) {
+        socialPulse = Array.from({ length: 8 }, (_, i) => ({
+            site: `Trending Thread #${i + 1}`,
+            category: "Social Pulse",
+            dailyHits: `${Math.floor(Math.random() * 3000 + 1000)} Coms`,
+            growth: `+${Math.floor(Math.random() * 30 + 15)} up/min`,
+            trend: "Viral discussion running hot across aggregated open networks.",
+            url: "https://www.reddit.com/r/popular/",
+            image: LOGOS.reddit
+        }));
+    }
+
+    // ==========================================
+    // TIER 3: TECH — 4 Hacker News + 2 The Verge + 2 Ars Technica
+    // ==========================================
+    try {
+        console.log("Parsing Tech from Hacker News...");
+        const res = await fetchRSS('https://news.ycombinator.com/rss');
+        console.log(`Hacker News RSS status: ${res.status}`);
+        if (res.ok) {
+            const xmlText = await res.text();
+            const hnItems = xmlText.split('<item>');
+            hnItems.shift();
+            const parsed = hnItems.slice(0, 6).map(itemStr => {
+                const titleMatch = itemStr.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/s);
+                let title = titleMatch ? decodeEntities(titleMatch[1].replace(/<[^>]*>/g, '').trim()) : "";
+                if (title.length > 120) title = title.substring(0, 117) + "...";
+                const linkMatch = itemStr.match(/<link>([^<]+)<\/link>/);
+                const url = linkMatch ? linkMatch[1].trim() : 'https://news.ycombinator.com/';
+                const commentsMatch = itemStr.match(/<comments>([^<]+)<\/comments>/);
+                const commentsUrl = commentsMatch ? commentsMatch[1].trim() : '';
+                const idMatch = commentsUrl.match(/id=(\d+)/);
+                const hnId = idMatch ? idMatch[1] : null;
+                const image = extractImage(itemStr) || LOGOS.hn;
+                return { title, url, commentsUrl, hnId, image };
+            });
+
+            await Promise.all(parsed.map(async item => {
+                let commentCount = null;
+                if (item.hnId) {
+                    try {
+                        const apiRes = await fetch(`https://hacker-news.firebaseio.com/v0/item/${item.hnId}.json`);
+                        if (apiRes.ok) {
+                            const data = await apiRes.json();
+                            commentCount = data.descendants;
+                        }
+                    } catch (e) {}
+                }
+                techNews.push({
+                    site: item.title || "Hacker News",
+                    sourceName: 'Hacker News',
+                    category: "Tech",
+                    dailyHits: Math.floor(Math.random() * 800 + 200) + " pts",
+                    growth: "+" + Math.floor(Math.random() * 30 + 5) + " pts/hr",
+                    trend: commentCount !== null ? `${commentCount} comment${commentCount !== 1 ? 's' : ''} on Hacker News` : "Top story on Hacker News",
+                    url: item.url,
+                    image: item.image
+                });
+            }));
+        }
+    } catch (e) { console.error('Hacker News Error:', e.message); }
+
+    try {
+        console.log("Parsing Tech from Ars Technica...");
+        const arsRes = await fetchRSS('https://feeds.arstechnica.com/arstechnica/index');
+        console.log(`Ars Technica RSS status: ${arsRes.status}`);
+        if (arsRes.ok) {
+            const arsText = await arsRes.text();
+            const items = parseRssItems(arsText, 6, 'https://arstechnica.com/', 'https://www.google.com/s2/favicons?domain=arstechnica.com&sz=128');
+            const arsRawItems = arsText.split('<item>');
+            arsRawItems.shift();
+            items.forEach((item, idx) => {
+                const rawItem = arsRawItems[idx] || '';
+                const contentMatch = rawItem.match(/<content:encoded>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/content:encoded>/s);
+                let desc = item.desc;
+                if (!desc && contentMatch) {
+                    desc = ensurePeriod(truncateAtWord(decodeEntities(contentMatch[1].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim())));
+                }
+                techNews.push({
+                    site: item.title || "Ars Technica",
+                    sourceName: 'Ars Technica',
+                    category: "Tech",
+                    dailyHits: Math.floor(Math.random() * 5000 + 500).toLocaleString() + " views",
+                    growth: "+" + (Math.random() * 8 + 1).toFixed(1) + "%",
+                    trend: desc || "In-depth technology and science reporting from Ars Technica.",
+                    url: item.url,
+                    image: item.image
+                });
+            });
+        }
+    } catch (e) { console.error('Ars Technica Error:', e.message); }
+
+    if (techNews.length === 0) {
+        techNews = Array.from({ length: 12 }, (_, i) => ({
+            site: `Tech Story #${i + 1}`,
+            category: "Tech",
+            dailyHits: Math.floor(Math.random() * 800 + 200) + " pts",
+            growth: "+" + Math.floor(Math.random() * 30 + 5) + " pts/hr",
+            trend: "Top discussion from the tech and startup community.",
+            url: "https://news.ycombinator.com/",
+            image: LOGOS.hn
+        }));
+    }
+
+    // ==========================================
+    // TIER 4: VIDEO GAMES — Kotaku + IGN + Reddit
+    // ==========================================
+    try {
+        console.log("Parsing Video Games from Kotaku...");
+        const kotakuRes = await fetchRSS('https://kotaku.com/rss');
+        console.log(`Kotaku RSS status: ${kotakuRes.status}`);
+        if (kotakuRes.ok) {
+            const items = parseRssItems(await kotakuRes.text(), 4, 'https://kotaku.com/', 'https://www.google.com/s2/favicons?domain=kotaku.com&sz=128');
+            items.forEach(item => videoGames.push({
+                site: item.title || "Kotaku",
+                sourceName: 'Kotaku',
+                category: "Video Games",
+                dailyHits: Math.floor(Math.random() * 5000 + 500).toLocaleString() + " views",
+                growth: "+" + (Math.random() * 8 + 1).toFixed(1) + "%",
+                trend: item.desc || "Latest gaming news from Kotaku.",
+                url: item.url,
+                image: item.image
+            }));
+        }
+    } catch (e) { console.error('Kotaku Error:', e.message); }
+
+    try {
+        console.log("Parsing Video Games from IGN...");
+        const res = await fetchRSS('https://feeds.feedburner.com/ign/news');
+        console.log(`IGN RSS status: ${res.status}`);
+        if (res.ok) {
+            const items = parseRssItems(await res.text(), 4, 'https://ign.com/', LOGOS.ign);
+            items.forEach(item => videoGames.push({
+                site: item.title || "IGN News",
+                sourceName: 'IGN',
+                category: "Video Games",
+                dailyHits: Math.floor(Math.random() * 5000 + 500).toLocaleString() + " views",
+                growth: "+" + (Math.random() * 8 + 1).toFixed(1) + "%",
+                trend: item.desc || "Latest gaming news from IGN.",
+                url: item.url,
+                image: item.image
+            }));
+        }
+    } catch (e) { console.error('IGN Error:', e.message); }
+
+    try {
+        console.log("Parsing Video Games from Reddit gaming...");
+        await new Promise(r => setTimeout(r, 4000));
+        const res = await fetchRSS('https://www.reddit.com/r/gaming+pcgaming+patientgamers/.rss?limit=20');
+        console.log(`r/gaming RSS status: ${res.status}`);
+        if (res.ok) {
+            const xmlText = await res.text();
+            const entries = parseAtomEntries(xmlText, 20, 'https://www.reddit.com/r/gaming/', LOGOS.reddit);
+            const subredditName = (url) => { const m = url.match(/\/r\/([^/]+)\//); return m ? `r/${m[1]}` : 'r/gaming'; };
+            entries.forEach(entry => videoGames.push({
+                site: entry.title || "r/gaming",
+                sourceName: subredditName(entry.url),
+                category: "Video Games",
+                dailyHits: `${Math.floor(Math.random() * 3000 + 500).toLocaleString()} Coms`,
+                growth: "+" + Math.floor(Math.random() * 30 + 5) + " up/min",
+                trend: `Trending in ${subredditName(entry.url)} — top gaming discussion.`,
+                url: entry.url,
+                image: entry.image
+            }));
+        }
+    } catch (e) { console.error('r/gaming Error:', e.message); }
+
+    while (videoGames.length < 4) {
+        videoGames.push({
+            site: "Hot discussion in r/gaming",
+            sourceName: 'r/gaming',
+            category: "Video Games",
+            dailyHits: `${Math.floor(Math.random() * 3000 + 500).toLocaleString()} Coms`,
+            growth: "+" + Math.floor(Math.random() * 30 + 5) + " up/min",
+            trend: "Top trending post from the r/gaming community.",
+            url: "https://www.reddit.com/r/gaming/",
+            image: LOGOS.reddit
+        });
+    }
+
+    if (videoGames.length === 0) {
+        videoGames = Array.from({ length: 8 }, (_, i) => ({
+            site: `Gaming Story #${i + 1}`,
+            category: "Video Games",
+            dailyHits: Math.floor(Math.random() * 5000 + 500).toLocaleString() + " views",
+            growth: "+" + (Math.random() * 8 + 1).toFixed(1) + "%",
+            trend: "Top story from the gaming world.",
+            url: "https://ign.com/",
+            image: LOGOS.ign
+        }));
+    }
+
+    // ==========================================
+    // TIER 5: FINANCE TRENDS — 4 Reddit
+    // ==========================================
+    const financeContext = (title, subreddit) => {
+        const t = title.toLowerCase();
+        if (/earnings|revenue|profit|loss|eps|quarterly/.test(t))
+            return `Earnings report analysis in ${subreddit}.`;
+        if (/fed|federal reserve|interest rate|inflation|fomc|rate hike|rate cut/.test(t))
+            return `Federal Reserve and interest rate discussion in ${subreddit}.`;
+        if (/gdp|recession|economy|macro|unemployment|jobs report/.test(t))
+            return `Macroeconomic discussion in ${subreddit}.`;
+        if (/options|calls|puts|volatility|iv|theta|delta|expiry/.test(t))
+            return `Options trading discussion in ${subreddit}.`;
+        if (/crypto|bitcoin|ethereum|btc|eth|defi|blockchain/.test(t))
+            return `Cryptocurrency discussion in ${subreddit}.`;
+        if (/ipo|merger|acquisition|buyout|takeover|spinoff/.test(t))
+            return `Corporate action discussion in ${subreddit}.`;
+        if (/dividend|yield|bond|treasury|fixed income/.test(t))
+            return `Fixed income and dividend discussion in ${subreddit}.`;
+        if (/ai|artificial intelligence|semiconductor|chip|nvidia|tech sector/.test(t))
+            return `Technology sector discussion in ${subreddit}.`;
+        if (/short|squeeze|hedge|puts|bearish/.test(t))
+            return `Short selling and market positioning discussion in ${subreddit}.`;
+        return `Market discussion in ${subreddit}.`;
+    };
+
+    try {
+        console.log("Parsing Finance Trends from Reddit...");
+        await new Promise(r => setTimeout(r, 6000));
+        const res = await fetchRSS('https://www.reddit.com/r/stocks+investing+options/.rss?limit=25');
+        console.log(`Finance Trends RSS status: ${res.status}`);
+        if (res.ok) {
+            const entries = parseAtomEntries(await res.text(), 25, 'https://www.reddit.com/r/stocks/', LOGOS.reddit);
+            const subredditName = (url) => {
+                const m = url.match(/\/r\/([^/+]+)/);
+                if (!m) return 'r/stocks';
+                const sub = m[1].toLowerCase();
+                if (sub.includes('invest')) return 'r/investing';
+                if (sub.includes('option')) return 'r/options';
+                return `r/${m[1]}`;
+            };
+            entries.forEach(entry => financeTrends.push({
+                site: entry.title || "Market Discussion",
+                sourceName: subredditName(entry.url),
+                category: "Finance Trends",
+                dailyHits: `${Math.floor(Math.random() * 800 + 150)} Traders`,
+                growth: `${Math.random() > 0.35 ? "+" : "-"}${Math.floor(Math.random() * 25 + 5)} coms/min`,
+                trend: financeContext(entry.title || '', subredditName(entry.url)),
+                url: entry.url,
+                image: entry.image
+            }));
+        }
+    } catch (e) { console.error('Finance Error:', e.message); }
+
+    if (financeTrends.length === 0) {
+        const mocks = ["Macro Index Data Release Analysis", "Options Chain Implied Volatility Shift", "Tech Sector Earnings Report Breakdown", "Treasury Yield Curve Movement"];
+        const mockSources = ['r/stocks', 'r/options', 'r/stocks', 'r/investing'];
+        financeTrends = mocks.map((topic, i) => ({
+            site: topic,
+            sourceName: mockSources[i],
+            category: "Finance Trends",
+            dailyHits: `${Math.floor(Math.random() * 400 + 100)} Traders`,
+            growth: `${Math.random() > 0.5 ? "+" : "-"}${Math.floor(Math.random() * 20 + 5)} coms/min`,
+            trend: financeContext(topic, 'r/stocks'),
+            url: "https://www.reddit.com/r/stocks/",
+            image: LOGOS.reddit
+        }));
+    }
+
+    // ==========================================
+    // TIER 6: POPULAR SEARCHES — US + 6 Continents
+    // ==========================================
+    const parseTrendsXml = (xmlText, region) => {
+        const items = xmlText.split('<item>');
+        items.shift();
+        return items.slice(0, 20).map(itemStr => {
+            const titleMatch = itemStr.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/);
+            const trendName = titleMatch ? titleMatch[1].trim() : "Trending Search";
+            const trafficMatch = itemStr.match(/<ht:approx_traffic>(.*?)<\/ht:approx_traffic>/);
+            const liveTraffic = trafficMatch ? trafficMatch[1].trim() : "1K+";
+            const newsTitleMatch = itemStr.match(/<ht:news_item_title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/ht:news_item_title>/);
+            let storyContext = newsTitleMatch ? decodeEntities(newsTitleMatch[1].replace(/<[^>]*>/g, '').trim()) : "";
+            if (!storyContext) storyContext = `Trending search across ${region} query volume.`;
+            const urlMatch = itemStr.match(/<ht:news_item_url>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/ht:news_item_url>/);
+            let sourceUrl = urlMatch ? urlMatch[1].trim() : "";
+            if (!sourceUrl || sourceUrl.includes('trends.google.com')) {
+                sourceUrl = `https://news.google.com/search?q=${encodeURIComponent(trendName)}&hl=en-US&gl=US&ceid=US:en`;
+            }
+            const imgMatch = itemStr.match(/<ht:picture>(.*?)<\/ht:picture>/);
+            const image = (imgMatch && imgMatch[1].startsWith('http')) ? imgMatch[1].trim() : LOGOS.google;
+            let trafficNum = 0;
+            if (liveTraffic.includes('M')) trafficNum = parseFloat(liveTraffic) * 1000000;
+            else if (liveTraffic.includes('K')) trafficNum = parseFloat(liveTraffic) * 1000;
+            else trafficNum = parseInt(liveTraffic.replace(/[^0-9]/g, '')) || 0;
+            return { trendName, liveTraffic, trafficNum, storyContext, sourceUrl, image };
+        }).filter(i => i.trafficNum >= 200);
+    };
+
+    const REGION_LABELS = {
+        'us': 'Google Trends US',
+        'north-america': 'Google Trends North America',
+        'south-america': 'Google Trends South America',
+        'europe': 'Google Trends Europe',
+        'africa': 'Google Trends Africa',
+        'asia': 'Google Trends Asia',
+        'oceania': 'Google Trends Oceania'
+    };
+
+    const toSearchEntry = (item, label) => ({
+        site: item.trendName,
+        sourceName: REGION_LABELS[label] || 'Google Trends',
+        category: "Popular Searches",
+        dailyHits: item.liveTraffic,
+        growth: "+" + (Math.random() * 10 + 5).toFixed(1) + "%",
+        trend: ensurePeriod(item.storyContext),
+        url: item.sourceUrl,
+        image: item.image,
+        searchLabel: label
+    });
+
+    const fetchContinentTrends = async (geos, label, regionName) => {
+        const allItems = [];
+        for (const geo of geos) {
+            try {
+                const res = await fetch(`https://trends.google.com/trending/rss?geo=${geo}`, { headers: BROWSER_HEADERS });
+                if (res.ok) {
+                    allItems.push(...parseTrendsXml(await res.text(), regionName));
+                }
+            } catch (e) { console.error(`Trends ${geo} error:`, e.message); }
+        }
+        // Deduplicate by name, take top 4 by traffic
+        const seen = new Set();
+        const unique = allItems.filter(i => {
+            if (seen.has(i.trendName)) return false;
+            seen.add(i.trendName);
+            return true;
+        });
+        const top4 = unique.sort((a, b) => b.trafficNum - a.trafficNum).slice(0, 4);
+        popularSearches.push(...top4.map(i => toSearchEntry(i, label)));
+        console.log(`${regionName} trends compiled: ${top4.length} items`);
+    };
+
+    // US (already separate sub-section)
+    try {
+        console.log("Parsing US Popular Searches...");
+        const usRes = await fetch('https://trends.google.com/trending/rss?geo=US', { headers: BROWSER_HEADERS });
+        console.log(`Google Trends US status: ${usRes.status}`);
+        if (usRes.ok) {
+            const items = parseTrendsXml(await usRes.text(), 'United States');
+            const top4 = items.sort((a, b) => b.trafficNum - a.trafficNum).slice(0, 4);
+            popularSearches.push(...top4.map(i => toSearchEntry(i, 'us')));
+            console.log(`US trends compiled: ${top4.length} items`);
+        }
+    } catch (e) { console.error('Google Trends US Error:', e.message); }
+
+    // North America
+    await fetchContinentTrends(['CA', 'MX'], 'north-america', 'North America');
+
+    // South America
+    await fetchContinentTrends(['BR', 'AR', 'CO', 'CL', 'PE'], 'south-america', 'South America');
+
+    // Europe
+    await fetchContinentTrends(['GB', 'DE', 'FR', 'IT', 'ES', 'PL', 'NL'], 'europe', 'Europe');
+
+    // Africa
+    await fetchContinentTrends(['NG', 'ZA', 'KE', 'EG', 'GH', 'ET'], 'africa', 'Africa');
+
+    // Asia
+    await fetchContinentTrends(['IN', 'JP', 'KR', 'ID', 'PH', 'PK', 'VN', 'TH'], 'asia', 'Asia');
+
+    // Oceania
+    await fetchContinentTrends(['AU', 'NZ'], 'oceania', 'Oceania');
+
+    if (popularSearches.length === 0) {
+        const labels = ['us', 'north-america', 'south-america', 'europe', 'africa', 'asia', 'oceania'];
+        popularSearches = Array.from({ length: 28 }, (_, i) => ({
+            site: `Trending Search #${i + 1}`,
+            sourceName: REGION_LABELS[labels[Math.floor(i / 4)]] || 'Google Trends',
+            category: "Popular Searches",
+            dailyHits: `${Math.floor(Math.random() * 50 + 5)}K+`,
+            growth: "+" + (Math.random() * 8 + 4).toFixed(1) + "%",
+            trend: "Trending search dominating regional query volume.",
+            url: "https://news.google.com/",
+            image: LOGOS.google,
+            searchLabel: labels[Math.floor(i / 4)]
+        }));
+    }
+
+    // ==========================================
+    // ASSEMBLE FINAL 24-SLOT GRID
+    // ==========================================
+    const orderedGrid = [
+        ...worldNews,
+        ...socialPulse,
+        ...techNews,
+        ...videoGames,
+        ...financeTrends,
+        ...popularSearches
+    ].map((item, index) => ({ globalRank: index + 1, ...item }));
+
+    // Assign per-section rank restarting at 1 for each category
+    const sectionCounters = {};
+    orderedGrid.forEach(item => {
+        const key = item.category;
+        if (!sectionCounters[key]) sectionCounters[key] = 0;
+        sectionCounters[key]++;
+        item.rank = sectionCounters[key];
+    });
+
+    const finalDatabaseState = {
+        lastUpdated: new Date().toISOString(),
+        trafficLeaderboard: orderedGrid
+    };
+
+    // ── GROQ EDITORIAL SUMMARY ──
+    try {
+        console.log("Generating editorial summary via Groq...");
+        const GROQ_API_KEY = process.env.GROQ_API_KEY;
+        if (GROQ_API_KEY) {
+            // Build article context from top stories
+            const topStories = orderedGrid
+                .filter(item => ['World News', 'Social Pulse', 'Tech', 'Video Games', 'Finance Trends'].includes(item.category))
+                .slice(0, 15)
+                .map(item => `- [${item.category}] ${item.site}: ${item.trend}`)
+                .join('\n');
+
+            const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${GROQ_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: 'llama-3.3-70b-versatile',
+                    max_tokens: 400,
+                    temperature: 0.7,
+                    messages: [{
+                        role: 'user',
+                        content: `You are the editor of Daily Hit Metrics, a real-time global news and trends aggregator. Based on the following trending stories from this hour, write a concise 250-300 word editorial briefing that synthesizes the key themes and developments. Write in a sharp, authoritative newspaper editorial style. Do not use bullet points — write flowing prose. Do not include any title, heading, or label at the start — begin directly with the editorial text. Do not mention Daily Hit Metrics by name in the body.\n\nTop stories this hour:\n${topStories}`
+                    }]
+                })
+            });
+
+            if (groqRes.ok) {
+                const groqData = await groqRes.json();
+                const summary = groqData.choices?.[0]?.message?.content?.trim();
+                if (summary) {
+                    finalDatabaseState.editorialSummary = summary;
+                    console.log("Groq editorial summary generated successfully.");
+                }
+            } else {
+                console.error("Groq API error:", groqRes.status, await groqRes.text());
+            }
+        } else {
+            console.log("GROQ_API_KEY not set — skipping summary.");
+        }
+    } catch (e) {
+        console.error("Groq summary error:", e.message);
+    }
+
+    // ── PRE-RENDER HTML TABLE ──
+    function generatePrerenderedHTML(data) {
+        const SECTION_LABELS = {
+            'World News':                       'World News — Global Dispatches from The Guardian, BBC, NPR & Al Jazeera',
+            'Social Pulse':                     'Social Pulse — Viral Dispatches from the Public Square',
+            'Tech':                             'Tech — Hacker News · Ars Technica',
+            'Video Games':                      'Video Games — Kotaku · IGN · Reddit Gaming',
+            'Finance Trends':                   'Finance Trends — Market Intelligence & Trading Sentiment',
+            'Popular Searches-us':              'Popular Searches — United States · Top Volume',
+            'Popular Searches-north-america':   'Popular Searches — North America · Top Volume',
+            'Popular Searches-south-america':   'Popular Searches — South America · Top Volume',
+            'Popular Searches-europe':          'Popular Searches — Europe · Top Volume',
+            'Popular Searches-africa':          'Popular Searches — Africa · Top Volume',
+            'Popular Searches-asia':            'Popular Searches — Asia · Top Volume',
+            'Popular Searches-oceania':         'Popular Searches — Oceania · Top Volume'
+        };
+
+        const BANNER_CLASSES = {
+            'World News':                       'section-banner-world',
+            'Social Pulse':                     'section-banner-social',
+            'Tech':                             'section-banner-tech',
+            'Video Games':                      'section-banner-games',
+            'Finance Trends':                   'section-banner-finance',
+            'Popular Searches-us':              'section-banner-searches-us',
+            'Popular Searches-north-america':   'section-banner-searches-namerica',
+            'Popular Searches-south-america':   'section-banner-searches-samerica',
+            'Popular Searches-europe':          'section-banner-searches-europe',
+            'Popular Searches-africa':          'section-banner-searches-africa',
+            'Popular Searches-asia':            'section-banner-searches-asia',
+            'Popular Searches-oceania':         'section-banner-searches-oceania'
+        };
+
+        const GRADIENT_COLORS = {
+            'World News':       '#254d33',
+            'Social Pulse':     '#6b6125',
+            'Tech':             '#4a5c3a',
+            'Video Games':      '#3d5c3a',
+            'Finance Trends':   '#2d4a3e',
+            'Popular Searches': '#556b45'
+        };
+
+        const DEFAULT_COUNTS = {
+            'World News': 4, 'Social Pulse': 4, 'Tech': 8,
+            'Video Games': 4, 'Finance Trends': 4, 'Popular Searches': 28
+        };
+
+        let html = '';
+        let lastCategory = null;
+        let lastSearchLabel = null;
+        const sectionCounts = {};
+
+        for (const item of data.trafficLeaderboard) {
+            const baseCategory = item.category === 'Popular Searches' ? 'Popular Searches' : item.category;
+            const maxCount = DEFAULT_COUNTS[baseCategory] || 4;
+            if (!sectionCounts[baseCategory]) sectionCounts[baseCategory] = 0;
+            if (sectionCounts[baseCategory] >= maxCount) continue;
+            sectionCounts[baseCategory]++;
+
+            if (item.category !== lastCategory || (item.category === 'Popular Searches' && item.searchLabel !== lastSearchLabel)) {
+                lastCategory = item.category;
+                lastSearchLabel = item.searchLabel || null;
+                const labelKey = item.category === 'Popular Searches'
+                    ? `Popular Searches-${item.searchLabel}`
+                    : item.category;
+                const bannerClass = BANNER_CLASSES[labelKey] || 'section-banner-world';
+                const gradientColor = GRADIENT_COLORS[baseCategory] || '#254d33';
+                const bannerStyle = `background:linear-gradient(to right, ${gradientColor}, transparent);`;
+                const label = SECTION_LABELS[labelKey] || item.category;
+                html += `<tr><td colspan="5" class="section-banner ${bannerClass}" style="${bannerStyle}">${label}</td></tr>`;
+            }
+
+            const isNegative = item.growth.startsWith('-');
+            const momentumColor = isNegative ? '#8a2a2a' : '#2a5a2a';
+            const arrow = isNegative ? '▼' : '▲';
+            const targetUrl = item.url || '#';
+            let host = '';
+            try { host = new URL(item.url).hostname.replace('www.', ''); } catch(e) {}
+            const faviconUrl = `https://www.google.com/s2/favicons?domain=${host}&sz=128`;
+            const containsTrump = /trump/i.test(item.site) || /trump/i.test(item.trend);
+            const imageToShow = containsTrump ? faviconUrl : (item.image || faviconUrl);
+            const imgTag = containsTrump
+                ? `<img src="${faviconUrl}" class="article-img-logo" alt="" loading="lazy">`
+                : `<img src="${imageToShow}" class="article-img" onerror="this.className='article-img-logo'; this.src='${faviconUrl}';" alt="" loading="lazy">`;
+
+            html += `<tr>
+                <td class="img-col">${imgTag}</td>
+                <td class="rank-col">${item.rank}</td>
+                <td>
+                    <div class="entity-title"><a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="dispatch-link">${item.site}</a></div>
+                    <div class="entity-summary">${item.trend}</div>
+                    <span class="category-badge">${host}</span>
+                    <span class="mobile-meta">${item.dailyHits} &nbsp;·&nbsp; <span style="color:${momentumColor}">${arrow} ${item.growth.replace(/^[+\-]/, '')}</span></span>
+                </td>
+                <td class="velocity-data">${item.dailyHits}</td>
+                <td class="growth-indicator" style="color:${momentumColor};">${arrow} ${item.growth.replace(/^[+\-]/, '')}</td>
+            </tr>`;
+        }
+        return html;
+    }
+
+    // Generate pre-rendered HTML and add to state
+    finalDatabaseState.prerenderedHTML = generatePrerenderedHTML(finalDatabaseState);
+    if (finalDatabaseState.editorialSummary) {
+        const text = finalDatabaseState.editorialSummary;
+        finalDatabaseState.prerenderedEditorial = `<span style="font-weight:700;color:#2c1810;">${text.charAt(0)}</span>${text.slice(1)}`;
+    }
+
+    const jsonData = JSON.stringify(finalDatabaseState, null, 2);
+
+    // Write to Cloudflare KV
+    const CF_ACCOUNT_ID = process.env.CF_ACCOUNT_ID;
+    const CF_API_TOKEN = process.env.CF_API_TOKEN;
+    const CF_KV_NAMESPACE_ID = process.env.CF_KV_NAMESPACE_ID;
+
+    const kvRes = await fetch(
+        `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/storage/kv/namespaces/${CF_KV_NAMESPACE_ID}/values/data`,
+        {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${CF_API_TOKEN}`,
+                'Content-Type': 'application/json'
+            },
+            body: jsonData
+        }
+    );
+
+    if (kvRes.ok) {
+        console.log("KV write complete: 6x4 24-Slot Matrix successfully deployed to Cloudflare KV.");
+    } else {
+        const err = await kvRes.text();
+        console.error("KV write failed:", err);
+        fs.writeFileSync('data.json', jsonData);
+        console.log("Fallback: wrote data.json locally.");
+    }
+
+    // ── KEYWORD EMAIL ALERTS ──
+    try {
+        const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+        const RESEND_API_KEY = process.env.RESEND_API_KEY;
+        if (!SUPABASE_SERVICE_KEY || !RESEND_API_KEY) {
+            console.log("Keyword alerts skipped — missing SUPABASE_SERVICE_KEY or RESEND_API_KEY.");
+        } else {
+            console.log("Checking keyword alerts...");
+
+            // Fetch all Pro users with keywords set for news site
+            const usersRes = await fetch(
+                `https://dljqwghiyjhombvflgfg.supabase.co/rest/v1/profiles?subscription_tier=eq.pro&preferences->news->keywords=neq.[]&select=id,email,first_name,preferences`,
+                {
+                    headers: {
+                        'apikey': SUPABASE_SERVICE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+
+            if (usersRes.ok) {
+                const users = await usersRes.json();
+                console.log(`Found ${users.length} users with news keyword alerts.`);
+
+                for (const user of users) {
+                    const keywords = user.preferences?.news?.keywords || [];
+                    if (!keywords.length) continue;
+
+                    // Find matching articles using word boundary matching
+                    const matches = [];
+                    for (const item of orderedGrid) {
+                        const text = `${item.site} ${item.trend}`.toLowerCase();
+                        for (const keyword of keywords) {
+                            const regex = new RegExp(`\\b${keyword.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+                            if (regex.test(text)) {
+                                matches.push({ item, keyword });
+                                break;
+                            }
+                        }
+                    }
+
+                    if (matches.length === 0) continue;
+
+                    // Build email body
+                    const matchList = matches.map(({ item, keyword }) =>
+                        `<tr>
+                            <td style="padding:10px 0; border-bottom:1px solid #e8e0d0;">
+                                <div style="font-family:Georgia,serif; font-size:14px; font-weight:700; color:#2c1810;">
+                                    <a href="${item.url}" style="color:#3a6b4a; text-decoration:none;">${item.site}</a>
+                                </div>
+                                <div style="font-family:Georgia,serif; font-size:12px; color:#5a3e2b; margin-top:4px;">${item.trend}</div>
+                                <div style="font-family:Georgia,serif; font-size:11px; color:#8a6a50; margin-top:4px;">
+                                    Matched keyword: <strong>${keyword}</strong> · ${item.category}
+                                </div>
+                            </td>
+                        </tr>`
+                    ).join('');
+
+                    const emailHtml = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="background:#484848; margin:0; padding:20px;">
+<div style="max-width:600px; margin:0 auto; background:#faf8f4; border-left:3px solid #3a6b4a; border-right:3px solid #3a6b4a; padding:32px 36px;">
+    <div style="font-family:'Georgia',serif; font-size:20px; font-weight:700; color:#2f3640; text-align:right; margin-bottom:4px;">Daily Hit Metrics</div>
+    <div style="border-top:3px solid #2c1810; margin:8px 0 24px;"></div>
+    <div style="font-family:Georgia,serif; font-size:13px; color:#5a3e2b; margin-bottom:20px;">
+        Hi ${user.first_name || 'there'},<br><br>
+        The following articles matched your keyword alerts on the <strong>News</strong> feed this hour:
+    </div>
+    <table style="width:100%; border-collapse:collapse;">
+        ${matchList}
+    </table>
+    <div style="margin-top:24px; font-family:Georgia,serif; font-size:11px; color:#8a6a50; border-top:1px solid #d4c9b0; padding-top:16px;">
+        You're receiving this because you set up keyword alerts on Daily Hit Metrics.<br>
+        Manage your alerts in <a href="https://news.dailyhitmetrics.com/settings.html" style="color:#3a6b4a;">Settings</a>.
+        <br><br>© 2026 MpathTek · All rights reserved
+    </div>
+</div>
+</body>
+</html>`;
+
+                    // Send via Resend
+                    const emailRes = await fetch('https://api.resend.com/emails', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${RESEND_API_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            from: 'Daily Hit Metrics <noreply@dailyhitmetrics.com>',
+                            to: user.email,
+                            subject: `Your keyword alert — ${matches.length} match${matches.length > 1 ? 'es' : ''} on Daily Hit Metrics News`,
+                            html: emailHtml
+                        })
+                    });
+
+                    if (emailRes.ok) {
+                        console.log(`Keyword alert sent to ${user.email} (${matches.length} matches).`);
+                    } else {
+                        console.error(`Failed to send alert to ${user.email}:`, await emailRes.text());
+                    }
+                }
+            } else {
+                console.error("Failed to fetch users for keyword alerts:", await usersRes.text());
+            }
+        }
+    } catch (e) {
+        console.error("Keyword alert error:", e.message);
+    }
+}
+
+fetchHighUtilityMatrix();
