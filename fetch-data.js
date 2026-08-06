@@ -641,7 +641,7 @@ async function fetchHighUtilityMatrix() {
                     temperature: 0.9,
                     messages: [{
                         role: 'user',
-                        content: `You are the sardonic editor of Daily Hit Metrics, a real-time global news aggregator. Based on the following trending stories, write a 250-300 word satirical editorial briefing in the style of The Onion meets The Economist — dry wit throughout, absurdist observations about the human condition, mock-serious tone, occasional rhetorical questions that answer themselves unfavorably. Find the darkly comic thread connecting the stories. End with a single deadpan concluding sentence that sounds like a corporate disclaimer. Write flowing prose, no bullet points, no title or heading — begin directly with the text. Do not mention Daily Hit Metrics by name.\n\nTop stories this hour:\n${topStories}`
+                        content: `You are the uplifting editor of Daily Hit Metrics, a real-time global news aggregator. Based on the following trending stories, write a 250-300 word editorial briefing that finds the hopeful thread — human resilience, cooperation, ingenuity, and progress — woven through even the most challenging headlines. Acknowledge difficulty honestly but pivot toward possibility. Write with warmth and genuine optimism, not saccharine positivity. Flowing prose, no bullet points, no title or heading — begin directly with the text. Do not mention Daily Hit Metrics by name.\n\nTop stories this hour:\n${topStories}`
                     }]
                 })
             });
