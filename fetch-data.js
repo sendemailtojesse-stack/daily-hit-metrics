@@ -615,11 +615,19 @@ async function fetchHighUtilityMatrix() {
         const GROQ_API_KEY = process.env.GROQ_API_KEY;
         if (GROQ_API_KEY) {
             // Build article context from top stories
-            const topStories = orderedGrid
+            const topStoryItems = orderedGrid
                 .filter(item => ['World News', 'Social Pulse', 'Tech', 'Video Games', 'Finance Trends'].includes(item.category))
-                .slice(0, 15)
+                .slice(0, 15);
+
+            const topStories = topStoryItems
                 .map(item => `- [${item.category}] ${item.site}: ${item.trend}`)
                 .join('\n');
+
+            // Save top 3 images for display alongside summary
+            const editorialImages = topStoryItems
+                .filter(item => item.image && !item.image.includes('favicon') && !item.image.includes('google.com/s2'))
+                .slice(0, 3)
+                .map(item => ({ url: item.image, title: item.site, category: item.category }));
 
             const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                 method: 'POST',
@@ -630,10 +638,10 @@ async function fetchHighUtilityMatrix() {
                 body: JSON.stringify({
                     model: 'llama-3.3-70b-versatile',
                     max_tokens: 400,
-                    temperature: 0.7,
+                    temperature: 0.9,
                     messages: [{
                         role: 'user',
-                        content: `You are the editor of Daily Hit Metrics, a real-time global news and trends aggregator. Based on the following trending stories from this hour, write a concise 250-300 word editorial briefing that synthesizes the key themes and developments. Write in a sharp, authoritative newspaper editorial style. Do not use bullet points — write flowing prose. Do not include any title, heading, or label at the start — begin directly with the editorial text. Do not mention Daily Hit Metrics by name in the body.\n\nTop stories this hour:\n${topStories}`
+                        content: `You are the sardonic editor of Daily Hit Metrics, a real-time global news aggregator. Based on the following trending stories, write a 250-300 word satirical editorial briefing in the style of The Onion meets The Economist — dry wit throughout, absurdist observations about the human condition, mock-serious tone, occasional rhetorical questions that answer themselves unfavorably. Find the darkly comic thread connecting the stories. End with a single deadpan concluding sentence that sounds like a corporate disclaimer. Write flowing prose, no bullet points, no title or heading — begin directly with the text. Do not mention Daily Hit Metrics by name.\n\nTop stories this hour:\n${topStories}`
                     }]
                 })
             });
@@ -643,6 +651,7 @@ async function fetchHighUtilityMatrix() {
                 const summary = groqData.choices?.[0]?.message?.content?.trim();
                 if (summary) {
                     finalDatabaseState.editorialSummary = summary;
+                    finalDatabaseState.editorialImages = editorialImages;
                     console.log("Groq editorial summary generated successfully.");
                 }
             } else {

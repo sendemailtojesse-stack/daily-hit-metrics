@@ -1024,8 +1024,23 @@
                 const text = data.editorialSummary;
                 const firstLetter = text.charAt(0);
                 const rest = text.slice(1);
+
+                // Build image strip if available
+                let imgStrip = '';
+                if (data.editorialImages && data.editorialImages.length > 0) {
+                    imgStrip = `<div style="display:flex; gap:8px; margin-bottom:10px;">` +
+                        data.editorialImages.map(img => 
+                            `<div style="flex:1; min-width:0;">
+                                <img src="${img.url}" alt="${img.title}" 
+                                    style="width:100%; height:80px; object-fit:cover; border:1px solid #d4c9b0; display:block;"
+                                    onerror="this.parentElement.style.display='none'">
+                                <div style="font-family:'IM Fell English',serif; font-size:0.5rem; color:#8a6a50; font-style:italic; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${img.category}</div>
+                            </div>`
+                        ).join('') + `</div>`;
+                }
+
                 document.getElementById('editorial-body').innerHTML = 
-                    `<span style="font-weight:700; color:#2c1810;">${firstLetter}</span>${rest}`;
+                    imgStrip + `<span style="font-weight:700; color:#2c1810;">${firstLetter}</span>${rest}`;
                 document.getElementById('editorial-box').style.display = 'block';
             } else {
                 document.getElementById('editorial-box').style.display = 'none';
