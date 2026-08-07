@@ -875,6 +875,19 @@ async function handleLogout() {
 }
 
 // ── INIT ──
+// Handle recovery token in URL hash before anything else
+(async () => {
+    const hash = window.location.hash;
+    if (hash.includes('access_token') && hash.includes('type=recovery')) {
+        const params = new URLSearchParams(hash.substring(1));
+        const accessToken = params.get('access_token');
+        const refreshToken = params.get('refresh_token');
+        if (accessToken && refreshToken) {
+            await supabaseClient.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+        }
+    }
+})();
+
 supabaseClient.auth.onAuthStateChange(async (event, session) => {
     if (event === 'PASSWORD_RECOVERY') {
         // Open the change password modal directly
