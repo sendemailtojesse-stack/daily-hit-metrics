@@ -635,7 +635,17 @@ async function fetchHighUtilityMatrix() {
                     temperature: 0.9,
                     messages: [{
                         role: 'user',
-                        content: `You are the editor of Daily Hit Metrics, a real-time global news aggregator. Based on the following trending stories, write a concise editorial briefing in outline form. Group stories by theme or category. For each group, write a short bold heading (3-5 words) followed by 2-3 sentences summarizing the key developments. Use 4-6 groups total. Do not use bullet points or dashes — use a clean outline style with the heading on its own line followed by the summary. No title or preamble — begin directly with the first heading. Do not mention Daily Hit Metrics by name.\n\nTop stories this hour:\n${topStories}`
+                        content: `You are a professional news editor. Based on the following trending stories, produce a clean hourly news summary in this exact format:
+
+- Group stories into 5-7 thematic sections
+- Each section: a short ALL CAPS heading (3-5 words), followed by 2-4 bullet points
+- Each bullet point: one tight sentence, max 15 words, starting with •
+- No prose paragraphs, no elaboration, no editorializing
+- Just the facts, cleanly formatted
+
+Begin directly with the first section heading. No preamble, no sign-off.
+
+Top stories this hour:\n${topStories}`
                     }]
                 })
             });

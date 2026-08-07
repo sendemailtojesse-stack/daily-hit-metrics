@@ -897,7 +897,7 @@
             <span class="editorial-arrow" id="editorial-arrow">▾</span>
         </div>
         <div class="editorial-content" id="editorial-content">
-            <div class="editorial-text" id="editorial-text"><span style="font-family:'Quantico',sans-serif; font-size:0.75rem; letter-spacing:0.1em; color:#3a6b4a;">Editor's Summary:</span> <span id="editorial-body"></span></div>
+            <div class="editorial-text" id="editorial-text"><span id="editorial-body"></span></div>
         </div>
     </div>
 
@@ -1024,18 +1024,27 @@
 
             // Show editorial summary
             if (data.editorialSummary) {
-                const text = data.editorialSummary;
-                // Format outline — bold any short lines that look like headings
-                const formatted = text.split('\n').map(line => {
-                    const trimmed = line.trim();
-                    if (!trimmed) return '<br>';
-                    // Lines that are short (under 60 chars) and don't end with a period are headings
-                    if (trimmed.length < 60 && !trimmed.endsWith('.') && !trimmed.endsWith(',')) {
-                        return `<div style="font-family:'Quantico',sans-serif; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:#3a6b4a; margin-top:10px; margin-bottom:2px;">${trimmed}</div>`;
+                const lines = data.editorialSummary.split('\n').filter(l => l.trim());
+                let html = '';
+                lines.forEach((line, i) => {
+                    const t = line.trim();
+                    if (!t) return;
+                    // ALL CAPS heading
+                    if (t === t.toUpperCase() && t.replace(/[^a-zA-Z]/g,'').length > 2) {
+                        if (i > 0) html += `<div style="border-top:1px solid #d4c9b0; margin:8px 0 6px;"></div>`;
+                        html += `<div style="font-family:'Quantico',sans-serif; font-size:0.58rem; letter-spacing:0.18em; color:#3a6b4a; margin-bottom:4px;">${t}</div>`;
                     }
-                    return `<div style="margin-bottom:4px;">${trimmed}</div>`;
-                }).join('');
-                document.getElementById('editorial-body').innerHTML = formatted;
+                    // Bullet points
+                    else if (t.startsWith('•') || t.startsWith('-') || t.startsWith('*')) {
+                        const text = t.replace(/^[•\-\*]\s*/, '');
+                        html += `<div style="font-family:'Libre Baskerville',serif; font-size:0.62rem; color:#2a1a0a; margin-bottom:3px; padding-left:12px; text-indent:-12px;">&bull;&nbsp;${text}</div>`;
+                    }
+                    // Any other line
+                    else {
+                        html += `<div style="font-family:'Libre Baskerville',serif; font-size:0.62rem; color:#2a1a0a; margin-bottom:3px;">${t}</div>`;
+                    }
+                });
+                document.getElementById('editorial-body').innerHTML = html;
                 document.getElementById('editorial-box').style.display = 'block';
             } else {
                 document.getElementById('editorial-box').style.display = 'none';
