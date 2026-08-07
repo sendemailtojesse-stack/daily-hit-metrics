@@ -1783,9 +1783,10 @@
                 const kv = await res.json();
                 if (kv?.sections && Object.keys(kv.sections).length > 0) {
                     NEWS_DEFAULTS = kv.sections;
+                    console.log('KV defaults loaded. World News sourceOrder:', NEWS_DEFAULTS['World News']?.sourceOrder);
                 }
             }
-        } catch(e) {}
+        } catch(e) { console.error('loadSiteDefaults error:', e); }
     }
 
     async function loadUserPrefs(userId) {
