@@ -877,7 +877,7 @@
         <a href="#" class="section-nav-link locked" id="nav-entertainment">Entertainment</a>
     </div>
 
-    <div class="masthead">
+    <div class="masthead" id="masthead" style="opacity:0; transition: opacity 0.15s ease;">
 
         <svg class="globe-graphic" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
             <circle cx="100" cy="100" r="90" fill="none" stroke="#2c1810" stroke-width="2"/>
@@ -1724,12 +1724,11 @@
         }
     }
 
-    // Apply saved fonts on load
-    applyFont(getSavedFont(), getSavedFontSize());
-    applyTitleFont(getSavedTitleFont());
-    const { mastheadUl, articleUl, articleUlAlways } = getSavedUnderlines();
-    applyUnderlines(mastheadUl, articleUl, articleUlAlways);
-    loadGlobalTypography();
+    // Load global typography then reveal masthead
+    loadGlobalTypography().finally(() => {
+        const m = document.getElementById('masthead');
+        if (m) m.style.opacity = '1';
+    });
 
     // ── AGE GATE ──
     function confirmAge() {
