@@ -1532,14 +1532,16 @@
         const current = getZoom();
         const idx = ZOOM_LEVELS.findIndex(z => Math.abs(z - current) < 0.01);
         const next = ZOOM_LEVELS[(idx + 1) % ZOOM_LEVELS.length];
-        // Save to KV so all users get the same zoom
-        fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/zoom', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ zoom: next })
-        });
         document.cookie = `dhm-zoom=${next}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
         applyZoom(next);
+        // Admin saves to KV so all users inherit the default
+        if (currentTier === 'admin') {
+            fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/zoom', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ zoom: next })
+            });
+        }
     }
 
     async function loadGlobalZoom() {
@@ -1558,10 +1560,12 @@
     function setZoomVisibility(tier) {
         const btn = document.getElementById('zoom-btn');
         const themeBtn = document.querySelector('.theme-btn');
-        if (tier === 'admin') {
+        if (tier && tier !== null) {
+            // Any logged-in user gets zoom control
             if (btn) { btn.style.display = 'flex'; btn.style.pointerEvents = 'auto'; btn.style.cursor = 'pointer'; btn.style.opacity = ''; }
             if (themeBtn) themeBtn.style.left = '28px';
         } else {
+            // Logged out — hide zoom
             if (btn) btn.style.display = 'none';
             if (themeBtn) themeBtn.style.left = '0';
         }
