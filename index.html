@@ -258,59 +258,29 @@
             text-transform: uppercase;
             color: #3a6b4a;
         }
-        .metrics-arrow {
-            font-size: 0.55rem;
-            color: #3a6b4a;
-            transition: transform 0.2s ease;
-        }
+        .metrics-arrow { font-size: 0.55rem; color: #3a6b4a; transition: transform 0.2s ease; }
         .metrics-arrow.open { transform: rotate(180deg); }
-        .metrics-content {
-            display: none;
-            padding: 14px 0 10px;
-        }
+        .metrics-content { display: none; padding: 14px 0 10px; }
         .metrics-content.open { display: block; }
-        .metrics-section-head {
-            font-family: 'Quantico', sans-serif;
-            font-size: 0.48rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: #8a6a50;
-            border-bottom: 0.5px solid #e8e0d0;
-            padding-bottom: 4px;
-            margin: 12px 0 6px;
-        }
-        .metrics-section-head:first-child { margin-top: 0; }
-        .metrics-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            padding: 4px 0;
-            border-bottom: 0.5px dotted #e8e0d0;
-        }
-        .metrics-source-name {
-            font-family: 'Libre Baskerville', serif;
-            font-size: 0.62rem;
-            color: #2c1810;
-            font-weight: 700;
-        }
-        .metrics-source-count {
-            font-family: 'IM Fell English', serif;
-            font-size: 0.6rem;
-            font-style: italic;
-            color: #5a3e2b;
-        }
-        .metrics-source-headline {
-            font-family: 'IM Fell English', serif;
-            font-size: 0.58rem;
-            font-style: italic;
-            color: #8a6a50;
-            margin-top: 2px;
-            padding-bottom: 6px;
-            border-bottom: 0.5px dotted #e8e0d0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        .src-header { display:flex; align-items:center; gap:12px; margin-bottom:14px; padding-bottom:10px; border-bottom:0.5px solid #d4c9b0; }
+        .src-logo { width:40px; height:40px; border-radius:6px; background:#BB1919; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:#fff; letter-spacing:0.05em; flex-shrink:0; font-family:'Quantico',sans-serif; }
+        .src-title { font-family:'Libre Baskerville',serif; font-size:0.75rem; font-weight:700; color:#2c1810; }
+        .src-sub { font-family:'IM Fell English',serif; font-size:0.58rem; font-style:italic; color:#8a6a50; margin-top:2px; }
+        .src-status { margin-left:auto; text-align:right; }
+        .src-stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:14px; }
+        .src-stat { background:#f6f3ee; border-radius:4px; padding:8px 10px; border-left:3px solid #d4c9b0; }
+        .src-stat-label { font-family:'Quantico',sans-serif; font-size:0.42rem; letter-spacing:0.15em; text-transform:uppercase; color:#8a6a50; margin-bottom:3px; }
+        .src-stat-val { font-family:'Libre Baskerville',serif; font-size:0.85rem; font-weight:700; color:#2c1810; }
+        .src-section-head { font-family:'Quantico',sans-serif; font-size:0.44rem; letter-spacing:0.18em; text-transform:uppercase; color:#3a6b4a; margin:12px 0 6px; border-bottom:0.5px solid #e8e0d0; padding-bottom:3px; }
+        .src-topic-row { display:flex; align-items:center; gap:8px; margin-bottom:5px; }
+        .src-topic-label { font-family:'IM Fell English',serif; font-size:0.6rem; font-style:italic; color:#5a3e2b; min-width:70px; }
+        .src-topic-bg { flex:1; height:7px; background:#e8e0d0; border-radius:3px; overflow:hidden; }
+        .src-topic-fill { height:100%; border-radius:3px; }
+        .src-topic-count { font-family:'Quantico',sans-serif; font-size:0.42rem; color:#8a6a50; min-width:20px; text-align:right; }
+        .src-hl-item { display:flex; gap:8px; align-items:baseline; padding:5px 0; border-bottom:0.5px dotted #e8e0d0; }
+        .src-hl-num { font-family:'Quantico',sans-serif; font-size:0.45rem; color:#8a6a50; min-width:14px; }
+        .src-hl-text { font-family:'IM Fell English',serif; font-size:0.62rem; font-style:italic; color:#2a1a0a; flex:1; line-height:1.4; }
+        .src-hl-tag { font-family:'Quantico',sans-serif; font-size:0.38rem; letter-spacing:0.08em; padding:2px 6px; border-radius:10px; background:#e8f0e8; color:#3a6b4a; white-space:nowrap; flex-shrink:0; }
 
         .masthead-thick-rule {
             border: none;
@@ -985,6 +955,9 @@
         </div>
         <div class="metrics-content" id="metrics-content">
             <div id="metrics-body"></div>
+            <div style="position:relative; height:200px; margin-top:10px; display:none;" id="metrics-chart-wrap">
+                <canvas id="metricsChart" role="img" aria-label="Topic distribution for BBC World News articles this hour"></canvas>
+            </div>
         </div>
     </div>
 
@@ -1108,6 +1081,7 @@
             }
 
             currentlyLoadedTimestamp = data.lastUpdated;
+            window._lastDashboardData = data;
 
             // Render source metrics panel
             if (data.sourceMetrics) renderSourceMetrics(data.sourceMetrics);
@@ -1537,38 +1511,89 @@
         arrow.classList.toggle('open', !isOpen);
     }
 
+    const TOPIC_COLORS_M = { 'Conflict':'#BB1919','Politics':'#2a78d6','Technology':'#1baf7a','Economy':'#eda100','Climate':'#4a3aa7','Health':'#eb6834','Society':'#e87ba4','Other':'#888780' };
+
+    function inferTopicM(title) {
+        const t = (title||'').toLowerCase();
+        if (/war|attack|strike|fighting|conflict|ceasefire|troops|military|missile|bomb|gaza|ukraine|russia/.test(t)) return 'Conflict';
+        if (/election|president|prime minister|parliament|senate|vote|government|minister|policy|party/.test(t)) return 'Politics';
+        if (/ai|tech|digital|cyber|software|data|internet|chip|robot|apple|google|microsoft/.test(t)) return 'Technology';
+        if (/economy|trade|gdp|inflation|market|bank|rate|financial|growth|recession|oil|price/.test(t)) return 'Economy';
+        if (/climate|carbon|emission|weather|flood|drought|temperature|energy|solar/.test(t)) return 'Climate';
+        if (/health|hospital|disease|vaccine|cancer|drug|medical|virus|outbreak/.test(t)) return 'Health';
+        if (/sport|football|soccer|cricket|tennis|olympic/.test(t)) return 'Society';
+        return 'Other';
+    }
+
+    let metricsChartInstance = null;
+
     function renderSourceMetrics(metrics) {
         if (!metrics || !metrics.length) return;
         const box = document.getElementById('metrics-box');
         const body = document.getElementById('metrics-body');
         if (!box || !body) return;
 
-        // Group by category
-        const grouped = {};
-        metrics.forEach(m => {
-            if (!grouped[m.category]) grouped[m.category] = [];
-            grouped[m.category].push(m);
+        // Focus on BBC World News articles from trafficLeaderboard
+        const bbcArticles = (window._lastDashboardData?.trafficLeaderboard || [])
+            .filter(a => a.sourceName === 'BBC News' || a.sourceName === 'BBC World News');
+
+        const bbcMeta = metrics.find(m => m.sourceName === 'BBC News' || m.sourceName === 'BBC World News') || metrics.find(m => m.category === 'World News') || {};
+
+        // Infer topics from headlines
+        const topicCounts = {};
+        bbcArticles.forEach(a => {
+            const topic = inferTopicM(a.site);
+            topicCounts[topic] = (topicCounts[topic]||0) + 1;
         });
 
-        const sectionOrder = ['World News', 'Social Pulse', 'Tech', 'Video Games', 'Finance Trends', 'Popular Searches'];
-        let html = '';
+        const avgLen = bbcArticles.length
+            ? Math.round(bbcArticles.reduce((s,a)=>s+(a.site||'').split(' ').length,0)/bbcArticles.length)
+            : '—';
 
-        sectionOrder.forEach(section => {
-            const sources = grouped[section];
-            if (!sources || !sources.length) return;
-            html += `<div class="metrics-section-head">${section}</div>`;
-            sources.forEach(s => {
-                html += `<div class="metrics-row">
-                    <span class="metrics-source-name">${s.sourceName}</span>
-                    <span class="metrics-source-count">${s.articleCount} article${s.articleCount !== 1 ? 's' : ''} this hour</span>
-                </div>`;
-                if (s.topHeadline) {
-                    html += `<div class="metrics-source-headline">Top: ${s.topHeadline}</div>`;
-                }
-            });
-        });
+        const topicsHtml = Object.entries(topicCounts).sort((a,b)=>b[1]-a[1]).map(([t,c])=>`
+            <div class="src-topic-row">
+                <span class="src-topic-label">${t}</span>
+                <div class="src-topic-bg"><div class="src-topic-fill" style="width:${Math.round(c/bbcArticles.length*100)}%;background:${TOPIC_COLORS_M[t]||'#888'};"></div></div>
+                <span class="src-topic-count">${c}</span>
+            </div>`).join('');
 
-        body.innerHTML = html;
+        const hlHtml = bbcArticles.map((a,i)=>`
+            <div class="src-hl-item">
+                <span class="src-hl-num">${i+1}.</span>
+                <span class="src-hl-text">${a.site}</span>
+                <span class="src-hl-tag">${inferTopicM(a.site)}</span>
+            </div>`).join('');
+
+        body.innerHTML = `
+            <div class="src-header">
+                <div class="src-logo">BBC</div>
+                <div>
+                    <div class="src-title">BBC World News</div>
+                    <div class="src-sub">feeds.bbci.co.uk &nbsp;·&nbsp; Updated hourly</div>
+                </div>
+                <div class="src-status">
+                    <div style="font-family:'Quantico',sans-serif;font-size:0.42rem;letter-spacing:0.1em;text-transform:uppercase;color:#8a6a50;">Feed status</div>
+                    <div style="font-family:'Quantico',sans-serif;font-size:0.6rem;color:#3a6b4a;margin-top:2px;">● Live</div>
+                </div>
+            </div>
+            <div class="src-stat-row">
+                <div class="src-stat">
+                    <div class="src-stat-label">Articles this hour</div>
+                    <div class="src-stat-val">${bbcArticles.length || bbcMeta.articleCount || '—'}</div>
+                </div>
+                <div class="src-stat">
+                    <div class="src-stat-label">Avg headline words</div>
+                    <div class="src-stat-val">${avgLen}</div>
+                </div>
+                <div class="src-stat">
+                    <div class="src-stat-label">Topics detected</div>
+                    <div class="src-stat-val">${Object.keys(topicCounts).length || '—'}</div>
+                </div>
+            </div>
+            ${Object.keys(topicCounts).length ? `<div class="src-section-head">Topic distribution</div>${topicsHtml}` : ''}
+            ${bbcArticles.length ? `<div class="src-section-head">Headlines this hour</div>${hlHtml}` : '<div style="font-family:\'IM Fell English\',serif;font-style:italic;font-size:0.62rem;color:#8a6a50;padding:8px 0;">No BBC articles in current feed.</div>'}
+        `;
+
         box.style.display = 'block';
     }
 
