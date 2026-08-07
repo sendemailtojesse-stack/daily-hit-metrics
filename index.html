@@ -1026,17 +1026,7 @@
 
             currentlyLoadedTimestamp = data.lastUpdated;
 
-            // Show editorial summary
-            if (data.editorialSummary) {
-                const text = data.editorialSummary.trim();
-                const first = text.charAt(0);
-                const rest = text.slice(1);
-                document.getElementById('editorial-body').innerHTML =
-                    `<span style="font-size:1.6em; font-weight:700; font-style:normal; font-family:'Libre Baskerville',serif; color:#2c1810; float:left; line-height:1; margin-right:4px; margin-top:2px;">${first}</span>${rest}`;
-                document.getElementById('editorial-box').style.display = 'block';
-            } else {
-                document.getElementById('editorial-box').style.display = 'none';
-            }
+
 
             const tableBody = document.getElementById('leaderboard-rows');
 
@@ -1453,8 +1443,8 @@
     }
 
     function toggleEditorial() {
-        const content = document.getElementById('editorial-content');
-        const arrow = document.getElementById('editorial-arrow');
+        const content = null;
+        const arrow = null;
         content.classList.toggle('open');
         arrow.classList.toggle('open');
     }
