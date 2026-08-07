@@ -237,6 +237,80 @@
             margin-top: 10px;
             text-align: right;
         }
+        .metrics-box {
+            border-top: 3px double #2c1810;
+            border-bottom: 0.5px solid #d4c9b0;
+            margin-bottom: 18px;
+        }
+        .metrics-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 8px 0 6px;
+            user-select: none;
+            border-bottom: 0.5px solid #d4c9b0;
+        }
+        .metrics-label {
+            font-family: 'Quantico', sans-serif;
+            font-size: 0.52rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #3a6b4a;
+        }
+        .metrics-arrow {
+            font-size: 0.55rem;
+            color: #3a6b4a;
+            transition: transform 0.2s ease;
+        }
+        .metrics-arrow.open { transform: rotate(180deg); }
+        .metrics-content {
+            display: none;
+            padding: 14px 0 10px;
+        }
+        .metrics-content.open { display: block; }
+        .metrics-section-head {
+            font-family: 'Quantico', sans-serif;
+            font-size: 0.48rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #8a6a50;
+            border-bottom: 0.5px solid #e8e0d0;
+            padding-bottom: 4px;
+            margin: 12px 0 6px;
+        }
+        .metrics-section-head:first-child { margin-top: 0; }
+        .metrics-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 4px 0;
+            border-bottom: 0.5px dotted #e8e0d0;
+        }
+        .metrics-source-name {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.62rem;
+            color: #2c1810;
+            font-weight: 700;
+        }
+        .metrics-source-count {
+            font-family: 'IM Fell English', serif;
+            font-size: 0.6rem;
+            font-style: italic;
+            color: #5a3e2b;
+        }
+        .metrics-source-headline {
+            font-family: 'IM Fell English', serif;
+            font-size: 0.58rem;
+            font-style: italic;
+            color: #8a6a50;
+            margin-top: 2px;
+            padding-bottom: 6px;
+            border-bottom: 0.5px dotted #e8e0d0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
         .masthead-thick-rule {
             border: none;
@@ -903,7 +977,16 @@
 
     </div>
 
-
+    <!-- Source Metrics Panel -->
+    <div class="metrics-box" id="metrics-box" style="display:none;">
+        <div class="metrics-toggle" onclick="toggleMetrics()">
+            <span class="metrics-label">Source Metrics — This Hour</span>
+            <span class="metrics-arrow" id="metrics-arrow">▾</span>
+        </div>
+        <div class="metrics-content" id="metrics-content">
+            <div id="metrics-body"></div>
+        </div>
+    </div>
 
     <table class="scoreboard">
         <thead>
@@ -1025,6 +1108,9 @@
             }
 
             currentlyLoadedTimestamp = data.lastUpdated;
+
+            // Render source metrics panel
+            if (data.sourceMetrics) renderSourceMetrics(data.sourceMetrics);
 
 
 
@@ -1442,9 +1528,49 @@
         }
     }
 
-    function toggleEditorial() {
-        const content = null;
-        const arrow = null;
+    function toggleMetrics() {
+        const content = document.getElementById('metrics-content');
+        const arrow = document.getElementById('metrics-arrow');
+        if (!content || !arrow) return;
+        const isOpen = content.classList.contains('open');
+        content.classList.toggle('open', !isOpen);
+        arrow.classList.toggle('open', !isOpen);
+    }
+
+    function renderSourceMetrics(metrics) {
+        if (!metrics || !metrics.length) return;
+        const box = document.getElementById('metrics-box');
+        const body = document.getElementById('metrics-body');
+        if (!box || !body) return;
+
+        // Group by category
+        const grouped = {};
+        metrics.forEach(m => {
+            if (!grouped[m.category]) grouped[m.category] = [];
+            grouped[m.category].push(m);
+        });
+
+        const sectionOrder = ['World News', 'Social Pulse', 'Tech', 'Video Games', 'Finance Trends', 'Popular Searches'];
+        let html = '';
+
+        sectionOrder.forEach(section => {
+            const sources = grouped[section];
+            if (!sources || !sources.length) return;
+            html += `<div class="metrics-section-head">${section}</div>`;
+            sources.forEach(s => {
+                html += `<div class="metrics-row">
+                    <span class="metrics-source-name">${s.sourceName}</span>
+                    <span class="metrics-source-count">${s.articleCount} article${s.articleCount !== 1 ? 's' : ''} this hour</span>
+                </div>`;
+                if (s.topHeadline) {
+                    html += `<div class="metrics-source-headline">Top: ${s.topHeadline}</div>`;
+                }
+            });
+        });
+
+        body.innerHTML = html;
+        box.style.display = 'block';
+    }
         content.classList.toggle('open');
         arrow.classList.toggle('open');
     }

@@ -604,9 +604,30 @@ async function fetchHighUtilityMatrix() {
         item.rank = sectionCounters[key];
     });
 
+    // ── SOURCE METRICS ──
+    const sourceMetrics = {};
+    orderedGrid.forEach(item => {
+        if (!item.sourceName) return;
+        const key = item.sourceName;
+        if (!sourceMetrics[key]) {
+            sourceMetrics[key] = {
+                sourceName: key,
+                category: item.category,
+                articleCount: 0,
+                topHeadline: null,
+                lastUpdated: new Date().toISOString()
+            };
+        }
+        sourceMetrics[key].articleCount++;
+        if (!sourceMetrics[key].topHeadline) {
+            sourceMetrics[key].topHeadline = item.site;
+        }
+    });
+
     const finalDatabaseState = {
         lastUpdated: new Date().toISOString(),
-        trafficLeaderboard: orderedGrid
+        trafficLeaderboard: orderedGrid,
+        sourceMetrics: Object.values(sourceMetrics)
     };
 
     // ── GROQ EDITORIAL SUMMARY ──
@@ -635,17 +656,7 @@ async function fetchHighUtilityMatrix() {
                     temperature: 0.9,
                     messages: [{
                         role: 'user',
-                        content: `You are a professional news editor. Based on the following trending stories, produce a clean hourly news summary in this exact format:
-
-- Group stories into 5-7 thematic sections
-- Each section: a short ALL CAPS heading (3-5 words), followed by 2-4 bullet points
-- Each bullet point: one tight sentence, max 15 words, starting with •
-- No prose paragraphs, no elaboration, no editorializing
-- Just the facts, cleanly formatted
-
-Begin directly with the first section heading. No preamble, no sign-off.
-
-Top stories this hour:\n${topStories}`
+                        content: `You are a senior news editor writing the hourly summary for a global news aggregator. Based on the following trending stories, write a single polished paragraph of 80-120 words that captures the most significant developments of this hour. Write with authority and clarity — newspaper editorial voice, present tense, no fluff. No headings, no bullets, no labels. Begin directly with the first sentence.\n\nTop stories this hour:\n${topStories}`
                     }]
                 })
             });
