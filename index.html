@@ -1317,7 +1317,7 @@
         const password = document.getElementById('login-password').value;
         const msg = document.getElementById('login-msg');
         msg.className = 'modal-msg';
-        msg.textContent = 'Signing in...';
+        msg.textContent = '';
         const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
         if (error) {
             msg.className = 'modal-msg error';
