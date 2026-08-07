@@ -604,30 +604,9 @@ async function fetchHighUtilityMatrix() {
         item.rank = sectionCounters[key];
     });
 
-    // ── SOURCE METRICS ──
-    const sourceMetrics = {};
-    orderedGrid.forEach(item => {
-        if (!item.sourceName) return;
-        const key = item.sourceName;
-        if (!sourceMetrics[key]) {
-            sourceMetrics[key] = {
-                sourceName: key,
-                category: item.category,
-                articleCount: 0,
-                topHeadline: null,
-                lastUpdated: new Date().toISOString()
-            };
-        }
-        sourceMetrics[key].articleCount++;
-        if (!sourceMetrics[key].topHeadline) {
-            sourceMetrics[key].topHeadline = item.site;
-        }
-    });
-
     const finalDatabaseState = {
         lastUpdated: new Date().toISOString(),
-        trafficLeaderboard: orderedGrid,
-        sourceMetrics: Object.values(sourceMetrics)
+        trafficLeaderboard: orderedGrid
     };
 
     // ── GROQ EDITORIAL SUMMARY ──
