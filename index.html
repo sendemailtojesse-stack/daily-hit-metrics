@@ -1033,15 +1033,6 @@
 
 
             const tableBody = document.getElementById('leaderboard-rows');
-
-            // Use pre-rendered HTML only when no user prefs loaded
-            const hasCustomPrefs = userPrefs !== null;
-
-            if (!hasCustomPrefs && data.prerenderedHTML) {
-                tableBody.innerHTML = data.prerenderedHTML;
-                applyNewspaperShade(getNewspaperShade()); // reapply shade after content injection
-                return true;
-            }
             tableBody.innerHTML = '';
 
             let lastCategory = null;
@@ -1783,10 +1774,9 @@
                 const kv = await res.json();
                 if (kv?.sections && Object.keys(kv.sections).length > 0) {
                     NEWS_DEFAULTS = kv.sections;
-                    console.log('KV defaults loaded. World News sourceOrder:', NEWS_DEFAULTS['World News']?.sourceOrder);
                 }
             }
-        } catch(e) { console.error('loadSiteDefaults error:', e); }
+        } catch(e) {}
     }
 
     async function loadUserPrefs(userId) {
