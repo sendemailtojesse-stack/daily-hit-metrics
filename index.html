@@ -1528,7 +1528,6 @@
     }
 
     function cycleZoom() {
-        if (!currentUser) return;
         const current = getZoom();
         const idx = ZOOM_LEVELS.findIndex(z => Math.abs(z - current) < 0.01);
         const next = ZOOM_LEVELS[(idx + 1) % ZOOM_LEVELS.length];
@@ -1560,15 +1559,8 @@
     function setZoomVisibility(tier) {
         const btn = document.getElementById('zoom-btn');
         const themeBtn = document.querySelector('.theme-btn');
-        if (tier && tier !== null) {
-            // Any logged-in user gets zoom control
-            if (btn) { btn.style.display = 'flex'; btn.style.pointerEvents = 'auto'; btn.style.cursor = 'pointer'; btn.style.opacity = ''; }
-            if (themeBtn) themeBtn.style.left = '28px';
-        } else {
-            // Logged out — hide zoom
-            if (btn) btn.style.display = 'none';
-            if (themeBtn) themeBtn.style.left = '0';
-        }
+        if (btn) { btn.style.display = 'flex'; btn.style.pointerEvents = 'auto'; btn.style.cursor = 'pointer'; btn.style.opacity = ''; }
+        if (themeBtn) themeBtn.style.left = '28px';
     }
 
     // Apply zoom on load — zoom button hidden until auth resolves
