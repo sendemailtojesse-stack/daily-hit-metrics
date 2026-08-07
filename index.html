@@ -186,26 +186,26 @@
 
         /* ── EDITORIAL SUMMARY ── */
         .editorial-box {
-            border-top: 0.5px solid #d4c9b0;
-            margin-bottom: 14px;
+            border-top: 3px double #2c1810;
+            border-bottom: 0.5px solid #d4c9b0;
+            margin-bottom: 18px;
             display: none;
         }
         .editorial-toggle {
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            gap: 8px;
+            justify-content: space-between;
             cursor: pointer;
-            padding: 6px 0;
+            padding: 8px 0 6px;
             user-select: none;
+            border-bottom: 0.5px solid #d4c9b0;
         }
         .editorial-label {
-            font-family: 'IM Fell English', serif;
-            font-style: normal;
-            font-size: 0.7rem;
-            color: #1a0f00;
-            text-decoration: underline;
-            text-underline-offset: 3px;
+            font-family: 'Quantico', sans-serif;
+            font-size: 0.52rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #3a6b4a;
         }
         .editorial-arrow {
             font-size: 0.55rem;
@@ -215,15 +215,27 @@
         .editorial-arrow.open { transform: rotate(180deg); }
         .editorial-content {
             display: none;
-            padding: 12px 0 14px;
-            border-top: 0.5px solid #e8e0d0;
+            padding: 14px 0 10px;
         }
         .editorial-content.open { display: block; }
         .editorial-text {
-            font-family: 'Libre Baskerville', serif;
-            font-size: 0.7rem;
-            line-height: 2.3;
+            font-family: 'IM Fell English', serif;
+            font-size: 0.72rem;
+            font-style: italic;
+            line-height: 1.85;
             color: #2a1a0a;
+            border-left: 3px solid #d4c9b0;
+            padding-left: 14px;
+            margin-left: 2px;
+        }
+        .editorial-byline {
+            font-family: 'Quantico', sans-serif;
+            font-size: 0.48rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #8a6a50;
+            margin-top: 10px;
+            text-align: right;
         }
 
         .masthead-thick-rule {
@@ -893,11 +905,12 @@
 
     <div class="editorial-box" id="editorial-box">
         <div class="editorial-toggle" onclick="toggleEditorial()">
-            <span class="editorial-label">Editor's Article Summary - News</span>
+            <span class="editorial-label">Editor's Article Summary — News</span>
             <span class="editorial-arrow" id="editorial-arrow">▾</span>
         </div>
         <div class="editorial-content" id="editorial-content">
             <div class="editorial-text" id="editorial-text"><span id="editorial-body"></span></div>
+            <div class="editorial-byline">Updated hourly &nbsp;·&nbsp; Editorial Intelligence Desk &nbsp;·&nbsp; Daily Hit Metrics</div>
         </div>
     </div>
 
@@ -1024,27 +1037,11 @@
 
             // Show editorial summary
             if (data.editorialSummary) {
-                const lines = data.editorialSummary.split('\n').filter(l => l.trim());
-                let html = '';
-                lines.forEach((line, i) => {
-                    const t = line.trim();
-                    if (!t) return;
-                    // ALL CAPS heading
-                    if (t === t.toUpperCase() && t.replace(/[^a-zA-Z]/g,'').length > 2) {
-                        if (i > 0) html += `<div style="border-top:1px solid #d4c9b0; margin:8px 0 6px;"></div>`;
-                        html += `<div style="font-family:'Quantico',sans-serif; font-size:0.58rem; letter-spacing:0.18em; color:#3a6b4a; margin-bottom:4px;">${t}</div>`;
-                    }
-                    // Bullet points
-                    else if (t.startsWith('•') || t.startsWith('-') || t.startsWith('*')) {
-                        const text = t.replace(/^[•\-\*]\s*/, '');
-                        html += `<div style="font-family:'Libre Baskerville',serif; font-size:0.62rem; color:#2a1a0a; margin-bottom:3px; padding-left:12px; text-indent:-12px;">&bull;&nbsp;${text}</div>`;
-                    }
-                    // Any other line
-                    else {
-                        html += `<div style="font-family:'Libre Baskerville',serif; font-size:0.62rem; color:#2a1a0a; margin-bottom:3px;">${t}</div>`;
-                    }
-                });
-                document.getElementById('editorial-body').innerHTML = html;
+                const text = data.editorialSummary.trim();
+                const first = text.charAt(0);
+                const rest = text.slice(1);
+                document.getElementById('editorial-body').innerHTML =
+                    `<span style="font-size:1.6em; font-weight:700; font-style:normal; font-family:'Libre Baskerville',serif; color:#2c1810; float:left; line-height:1; margin-right:4px; margin-top:2px;">${first}</span>${rest}`;
                 document.getElementById('editorial-box').style.display = 'block';
             } else {
                 document.getElementById('editorial-box').style.display = 'none';
