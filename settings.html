@@ -875,8 +875,26 @@ async function handleLogout() {
 }
 
 // ── INIT ──
+supabaseClient.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'PASSWORD_RECOVERY') {
+        // Open the change password modal directly
+        const modal = document.getElementById('pw-modal');
+        if (modal) modal.style.display = 'flex';
+        // Show a banner message
+        const banner = document.createElement('div');
+        banner.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#2d4a3e;color:#faf8f4;font-family:\'IM Fell English\',serif;font-style:italic;font-size:0.75rem;padding:12px;text-align:center;z-index:9999;';
+        banner.textContent = 'Enter your new password below to complete the reset.';
+        document.body.prepend(banner);
+        setTimeout(() => banner.remove(), 6000);
+    }
+});
+
 supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
-    if (!session) { window.location.href = 'https://news.dailyhitmetrics.com'; return; }
+    // Don't redirect if this is a password recovery flow (token in hash)
+    const hash = window.location.hash;
+    const isRecovery = hash.includes('type=recovery') || (hash.includes('access_token') && hash.includes('refresh_token'));
+    if (!session && !isRecovery) { window.location.href = 'https://news.dailyhitmetrics.com'; return; }
+    if (!session && isRecovery) return; // onAuthStateChange will handle PASSWORD_RECOVERY event
     currentUser = session.user;
 
     const { data: profile } = await supabaseClient
