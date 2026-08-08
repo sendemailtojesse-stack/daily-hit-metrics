@@ -81,9 +81,11 @@ function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
 const WORKER_RSS_PROXY = 'https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/rss-proxy';
 const fetchRSS = async (url, retries = 2) => {
     const proxyUrl = `${WORKER_RSS_PROXY}?url=${encodeURIComponent(url)}`;
+    let lastRes = null;
     for (let i = 0; i <= retries; i++) {
         try {
             const res = await fetch(proxyUrl);
+            lastRes = res;
             if (res.ok || res.status === 404) return res;
             if (i < retries) await new Promise(r => setTimeout(r, 3000));
         } catch(e) {
@@ -91,6 +93,7 @@ const fetchRSS = async (url, retries = 2) => {
             await new Promise(r => setTimeout(r, 3000));
         }
     }
+    return lastRes || { ok: false, status: 0 };
 };
 
 const BROWSER_HEADERS = {
