@@ -212,6 +212,7 @@ async function fetchHighUtilityMatrix() {
                     growth: '+' + (Math.random() * 5 + 1).toFixed(1) + '%',
                     trend: ensurePeriod('Latest world news from Reuters.'),
                     url,
+                    displayDomain: 'reuters.com',
                     image: 'https://www.google.com/s2/favicons?domain=reuters.com&sz=128'
                 });
                 reutersCount++;
