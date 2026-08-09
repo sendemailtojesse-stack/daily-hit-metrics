@@ -189,15 +189,20 @@ async function fetchHighUtilityMatrix() {
                 let title = titleMatch ? decodeEntities(titleMatch[1].replace(/<[^>]*>/g, '').trim()) : '';
                 if (!title) continue;
                 if (title.length > 120) title = title.substring(0, 117) + '...';
-                // Try to get the actual Reuters URL from <source url="..."> or fall back to reuters.com
-                const sourceUrlMatch = itemStr.match(/<source url="([^"]+)"/);
-                const guidMatch = itemStr.match(/<guid[^>]*>([^<]+)<\/guid>/);
+
+                // Extract actual Reuters URL — Google News embeds it in the <link> as a redirect
+                // Format: https://news.google.com/rss/articles/...?oc=5 — we need the source url
+                // Try <source url="https://reuters.com/...">
                 let url = 'https://reuters.com';
-                if (sourceUrlMatch && sourceUrlMatch[1].includes('reuters.com')) {
+                const sourceUrlMatch = itemStr.match(/<source url="([^"]+)"/);
+                if (sourceUrlMatch) {
                     url = sourceUrlMatch[1];
-                } else if (guidMatch && guidMatch[1].startsWith('http')) {
-                    url = guidMatch[1].trim();
+                } else {
+                    // Try to find reuters.com URL in the raw item text
+                    const reutersUrlMatch = itemStr.match(/https?:\/\/[^"'\s<>]*reuters\.com[^"'\s<>]*/);
+                    if (reutersUrlMatch) url = reutersUrlMatch[0];
                 }
+
                 worldNews.push({
                     site: title,
                     sourceName: 'Reuters World',
