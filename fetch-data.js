@@ -190,16 +190,26 @@ async function fetchHighUtilityMatrix() {
                 if (!title) continue;
                 if (title.length > 120) title = title.substring(0, 117) + '...';
 
-                // Get the Google redirect URL from <link>
+                // Decode actual article URL from Google News redirect
+                // Google News URLs contain base64-encoded article URLs
                 const linkMatch = itemStr.match(/<link>([^<]+)<\/link>/);
                 let url = 'https://reuters.com';
                 if (linkMatch) {
                     const googleUrl = linkMatch[1].trim();
                     try {
-                        // Follow the redirect to get the real Reuters URL
-                        const redirectRes = await fetch(googleUrl, { redirect: 'follow', headers: BROWSER_HEADERS });
-                        if (redirectRes.url && redirectRes.url.includes('reuters.com')) {
-                            url = redirectRes.url;
+                        // Google News RSS article URLs contain the real URL encoded in base64
+                        // Format: .../articles/CBMi<base64encodedURL>
+                        const b64Match = googleUrl.match(/articles\/CBMi([A-Za-z0-9_-]+)/);
+                        if (b64Match) {
+                            const decoded = Buffer.from(b64Match[1], 'base64').toString('utf-8');
+                            const urlMatch = decoded.match(/https?:\/\/[^\s"'<>]+reuters\.com[^\s"'<>]*/);
+                            if (urlMatch) {
+                                url = urlMatch[0];
+                            } else {
+                                url = googleUrl; // fall back to Google redirect
+                            }
+                        } else {
+                            url = googleUrl;
                         }
                     } catch(e) { url = googleUrl; }
                 }
