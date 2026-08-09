@@ -378,8 +378,8 @@ const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
 const DEFAULTS = {
     news: {
         sections: {
-            'World News':       { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#254d33',
-                sources: { 'The Guardian': { visible: true, count: 1 }, 'BBC News': { visible: true, count: 1 }, 'NPR News': { visible: true, count: 1 }, 'Al Jazeera': { visible: true, count: 1 } }
+            'World News':       { visible: true, articleCount: 16, color: 'gradient', gradientColor: '#254d33',
+                sources: { 'The Guardian': { visible: true, count: 2 }, 'BBC News': { visible: true, count: 2 }, 'NPR News': { visible: true, count: 2 }, 'Al Jazeera': { visible: true, count: 2 }, 'Reuters World': { visible: true, count: 2 }, 'AP News': { visible: true, count: 2 }, 'France 24': { visible: true, count: 2 }, 'DW News': { visible: true, count: 2 } }
             },
             'Social Pulse':     { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#6b6125',
                 sources: { 'r/popular': { visible: true, count: 4 } }
@@ -707,7 +707,7 @@ function renderPrefsPanel(site) {
                     </label>
                     <span class="source-name">${srcName}</span>
                     <select class="count-select count-select-sm" onchange="updateSourcePref('${site}','${name}','${srcName}','count',parseInt(this.value))">
-                        ${(name === 'Popular Searches' || name === 'Trending Sports Searches' || name === 'Trending Finance Searches' || name === 'Trending Political Searches' || name === 'Trending Entertainment Searches' ? [1,2,4,6,8,10,12,14,16,20,24,28,32,36,40] : [1,2,3,4,5,6,7,8,10,12,14]).map(n => `<option value="${n}" ${srcCfg.count === n ? 'selected' : ''}>${n}</option>`).join('')}
+                        ${(name === 'Popular Searches' || name === 'Trending Sports Searches' || name === 'Trending Finance Searches' || name === 'Trending Political Searches' || name === 'Trending Entertainment Searches' || name === 'World News' ? [1,2,4,6,8,10,12,14,16,20,24,28,32,36,40] : [1,2,3,4,5,6,7,8,10,12,14]).map(n => `<option value="${n}" ${srcCfg.count === n ? 'selected' : ''}>${n}</option>`).join('')}
                     </select>
                     <span class="source-label-sm">articles</span>
                 </div>`).join('')}
@@ -728,7 +728,7 @@ function renderPrefsPanel(site) {
             <div>
                 <span class="section-label">Articles</span>
                 <select class="count-select" onchange="updatePref('${site}','${name}','articleCount',parseInt(this.value))">
-                    ${(name === 'Popular Searches' || name === 'Trending Sports Searches' || name === 'Trending Finance Searches' || name === 'Trending Political Searches' || name === 'Trending Entertainment Searches')
+                    ${(name === 'Popular Searches' || name === 'Trending Sports Searches' || name === 'Trending Finance Searches' || name === 'Trending Political Searches' || name === 'Trending Entertainment Searches' || name === 'World News')
                         ? [2,4,6,8,10,12,14,16,20,24,28,32,36,40].map(n => `<option value="${n}" ${cfg.articleCount === n ? 'selected' : ''}>${n}</option>`).join('')
                         : [2,4,6,8,10,12,14].map(n => `<option value="${n}" ${cfg.articleCount === n ? 'selected' : ''}>${n}</option>`).join('')}
                 </select>
