@@ -143,6 +143,8 @@ async function fetchHighUtilityMatrix() {
         { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC News', logo: LOGOS.bbc },
         { url: 'https://feeds.npr.org/1001/rss.xml', name: 'NPR News', logo: LOGOS.npr },
         { url: 'https://www.aljazeera.com/xml/rss/all.xml', name: 'Al Jazeera', logo: LOGOS.aljazeera },
+        { url: 'https://abcnews.go.com/abcnews/topstories', name: 'ABC News', logo: 'https://www.google.com/s2/favicons?domain=abcnews.go.com&sz=128' },
+        { url: 'https://www.cbsnews.com/latest/rss/main', name: 'CBS News', logo: 'https://www.google.com/s2/favicons?domain=cbsnews.com&sz=128' },
         { url: 'https://www.france24.com/en/rss', name: 'France 24', logo: 'https://www.google.com/s2/favicons?domain=france24.com&sz=128' },
         { url: 'https://rss.dw.com/rdf/rss-en-top', name: 'DW News', logo: 'https://www.google.com/s2/favicons?domain=dw.com&sz=128' },
         { url: 'https://feeds.skynews.com/feeds/rss/world.xml', name: 'Sky News', logo: 'https://www.google.com/s2/favicons?domain=skynews.com&sz=128' },
@@ -172,64 +174,6 @@ async function fetchHighUtilityMatrix() {
             }
         } catch (e) { console.error(`${source.name} Error:`, e.message); }
     }
-
-    // Reuters via Google News (direct fetch — bypasses proxy blocking)
-    try {
-        console.log("Parsing Reuters World via Google News...");
-        const reutersRes = await fetch('https://news.google.com/rss/search?q=site:reuters.com&hl=en-US&gl=US&ceid=US:en', { headers: BROWSER_HEADERS });
-        console.log(`Reuters World (Google News) status: ${reutersRes.status}`);
-        if (reutersRes.ok) {
-            const xmlText = await reutersRes.text();
-            const items = xmlText.split('<item>');
-            items.shift();
-            let reutersCount = 0;
-            for (const itemStr of items) {
-                if (reutersCount >= 8) break;
-                const titleMatch = itemStr.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/s);
-                let title = titleMatch ? decodeEntities(titleMatch[1].replace(/<[^>]*>/g, '').trim()) : '';
-                if (!title) continue;
-                if (title.length > 120) title = title.substring(0, 117) + '...';
-
-                // Decode actual article URL from Google News redirect
-                // Google News URLs contain base64-encoded article URLs
-                const linkMatch = itemStr.match(/<link>([^<]+)<\/link>/);
-                let url = 'https://reuters.com';
-                if (linkMatch) {
-                    const googleUrl = linkMatch[1].trim();
-                    try {
-                        // Google News RSS article URLs contain the real URL encoded in base64
-                        // Format: .../articles/CBMi<base64encodedURL>
-                        const b64Match = googleUrl.match(/articles\/CBMi([A-Za-z0-9_-]+)/);
-                        if (b64Match) {
-                            const decoded = Buffer.from(b64Match[1], 'base64').toString('utf-8');
-                            const urlMatch = decoded.match(/https?:\/\/[^\s"'<>]+reuters\.com[^\s"'<>]*/);
-                            if (urlMatch) {
-                                url = urlMatch[0];
-                            } else {
-                                url = googleUrl; // fall back to Google redirect
-                            }
-                        } else {
-                            url = googleUrl;
-                        }
-                    } catch(e) { url = googleUrl; }
-                }
-
-                worldNews.push({
-                    site: title,
-                    sourceName: 'Reuters World',
-                    category: 'World News',
-                    dailyHits: 'Global',
-                    growth: '+' + (Math.random() * 5 + 1).toFixed(1) + '%',
-                    trend: ensurePeriod('Latest world news from Reuters.'),
-                    url,
-                    displayDomain: 'reuters.com',
-                    image: 'https://www.google.com/s2/favicons?domain=reuters.com&sz=128'
-                });
-                reutersCount++;
-            }
-            console.log(`Reuters World articles compiled: ${reutersCount}`);
-        }
-    } catch(e) { console.error('Reuters World Error:', e.message); }
 
     if (worldNews.length === 0) {
         worldNews = Array.from({ length: 16 }, (_, i) => ({
