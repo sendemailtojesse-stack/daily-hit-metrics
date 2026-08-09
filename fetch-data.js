@@ -190,17 +190,18 @@ async function fetchHighUtilityMatrix() {
                 if (!title) continue;
                 if (title.length > 120) title = title.substring(0, 117) + '...';
 
-                // Extract actual Reuters URL — Google News embeds it in the <link> as a redirect
-                // Format: https://news.google.com/rss/articles/...?oc=5 — we need the source url
-                // Try <source url="https://reuters.com/...">
+                // Get the Google redirect URL from <link>
+                const linkMatch = itemStr.match(/<link>([^<]+)<\/link>/);
                 let url = 'https://reuters.com';
-                const sourceUrlMatch = itemStr.match(/<source url="([^"]+)"/);
-                if (sourceUrlMatch) {
-                    url = sourceUrlMatch[1];
-                } else {
-                    // Try to find reuters.com URL in the raw item text
-                    const reutersUrlMatch = itemStr.match(/https?:\/\/[^"'\s<>]*reuters\.com[^"'\s<>]*/);
-                    if (reutersUrlMatch) url = reutersUrlMatch[0];
+                if (linkMatch) {
+                    const googleUrl = linkMatch[1].trim();
+                    try {
+                        // Follow the redirect to get the real Reuters URL
+                        const redirectRes = await fetch(googleUrl, { redirect: 'follow', headers: BROWSER_HEADERS });
+                        if (redirectRes.url && redirectRes.url.includes('reuters.com')) {
+                            url = redirectRes.url;
+                        }
+                    } catch(e) { url = googleUrl; }
                 }
 
                 worldNews.push({
