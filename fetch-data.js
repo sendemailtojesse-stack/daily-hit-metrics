@@ -189,8 +189,15 @@ async function fetchHighUtilityMatrix() {
                 let title = titleMatch ? decodeEntities(titleMatch[1].replace(/<[^>]*>/g, '').trim()) : '';
                 if (!title) continue;
                 if (title.length > 120) title = title.substring(0, 117) + '...';
-                const linkMatch = itemStr.match(/<link>([^<]+)<\/link>/);
-                const url = linkMatch ? linkMatch[1].trim() : 'https://reuters.com';
+                // Try to get the actual Reuters URL from <source url="..."> or fall back to reuters.com
+                const sourceUrlMatch = itemStr.match(/<source url="([^"]+)"/);
+                const guidMatch = itemStr.match(/<guid[^>]*>([^<]+)<\/guid>/);
+                let url = 'https://reuters.com';
+                if (sourceUrlMatch && sourceUrlMatch[1].includes('reuters.com')) {
+                    url = sourceUrlMatch[1];
+                } else if (guidMatch && guidMatch[1].startsWith('http')) {
+                    url = guidMatch[1].trim();
+                }
                 worldNews.push({
                     site: title,
                     sourceName: 'Reuters World',
