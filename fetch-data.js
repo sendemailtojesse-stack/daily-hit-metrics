@@ -136,13 +136,17 @@ async function fetchHighUtilityMatrix() {
     console.log("Initializing 24-Slot Data Engine (6x4 Layout)...");
 
     // ==========================================
-    // TIER 1: WORLD NEWS — Reuters, BBC, NPR, Al Jazeera (1 each)
+    // TIER 1: WORLD NEWS
     // ==========================================
     const worldSources = [
         { url: 'https://www.theguardian.com/world/rss', name: 'The Guardian', logo: 'https://www.google.com/s2/favicons?domain=theguardian.com&sz=128' },
         { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC News', logo: LOGOS.bbc },
         { url: 'https://feeds.npr.org/1001/rss.xml', name: 'NPR News', logo: LOGOS.npr },
         { url: 'https://www.aljazeera.com/xml/rss/all.xml', name: 'Al Jazeera', logo: LOGOS.aljazeera },
+        { url: 'https://feeds.reuters.com/reuters/worldNews', name: 'Reuters World', logo: 'https://www.google.com/s2/favicons?domain=reuters.com&sz=128' },
+        { url: 'https://feeds.apnews.com/apnews/topnews', name: 'AP News', logo: 'https://www.google.com/s2/favicons?domain=apnews.com&sz=128' },
+        { url: 'https://www.france24.com/en/rss', name: 'France 24', logo: 'https://www.google.com/s2/favicons?domain=france24.com&sz=128' },
+        { url: 'https://rss.dw.com/rss/en-all', name: 'DW News', logo: 'https://www.google.com/s2/favicons?domain=dw.com&sz=128' },
     ];
 
     for (const source of worldSources) {
@@ -151,7 +155,7 @@ async function fetchHighUtilityMatrix() {
             const res = await fetchRSS(source.url);
             console.log(`${source.name} RSS status: ${res.status}`);
             if (res.ok) {
-                const items = parseRssItems(await res.text(), 4, source.url, source.logo);
+                const items = parseRssItems(await res.text(), 8, source.url, source.logo);
                 items.forEach(item => {
                     const trend = ensurePeriod(item.desc || `Breaking news from ${source.name}.`);
                     worldNews.push({
