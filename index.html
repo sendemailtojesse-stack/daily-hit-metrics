@@ -595,10 +595,11 @@
         /* ── SECTION NAV ── */
         .section-nav {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            gap: 0.5rem;
-            padding: 8px 0 10px;
+            gap: 0.3rem;
+            padding: 8px 4px 10px;
             border-bottom: 0.5px solid #d4c9b0;
             margin-bottom: 10px;
         }
@@ -613,6 +614,13 @@
             text-decoration: underline;
             text-underline-offset: 3px;
             transition: color 0.15s ease;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 600px) {
+            .section-nav-link { font-size: 0.6rem; letter-spacing: 0.02em; }
+            .section-nav-sep { font-size: 0.5rem; }
+            .section-nav { gap: 0.2rem; padding: 6px 2px 8px; }
         }
 
         .section-nav-link:hover { color: #254d33; }
