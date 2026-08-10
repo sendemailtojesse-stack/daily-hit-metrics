@@ -119,14 +119,15 @@
         const from = params.get('from');
         const siteUrls = {
             news: 'https://news.dailyhitmetrics.com',
+            international: 'https://international.dailyhitmetrics.com',
             sports: 'https://sports.dailyhitmetrics.com',
             finance: 'https://finance.dailyhitmetrics.com',
             politics: 'https://politics.dailyhitmetrics.com',
             entertainment: 'https://entertainment.dailyhitmetrics.com'
         };
-        const validSites = ['news', 'sports', 'finance', 'politics', 'entertainment'];
+        const validSites = ['news', 'international', 'sports', 'finance', 'politics', 'entertainment'];
         const siteLabels = {
-            news: 'News', sports: 'Sports', finance: 'Finance',
+            news: 'U.S. News', international: 'International', sports: 'Sports', finance: 'Finance',
             politics: 'Politics', entertainment: 'Entertainment'
         };
         const returnLink = document.getElementById('return-link');
@@ -249,6 +250,7 @@
 
     <div class="site-tabs" id="prefs-tabs">
         <div class="site-tab active" onclick="switchTab('prefs', 'news')">News</div>
+        <div class="site-tab" onclick="switchTab('prefs', 'international')">International</div>
         <div class="site-tab" onclick="switchTab('prefs', 'sports')">Sports</div>
         <div class="site-tab" onclick="switchTab('prefs', 'finance')">Finance</div>
         <div class="site-tab" onclick="switchTab('prefs', 'politics')">Politics</div>
@@ -256,6 +258,7 @@
     </div>
 
     <div id="prefs-panel-news" class="site-panel active"></div>
+    <div id="prefs-panel-international" class="site-panel"></div>
     <div id="prefs-panel-sports" class="site-panel"></div>
     <div id="prefs-panel-finance" class="site-panel"></div>
     <div id="prefs-panel-politics" class="site-panel"></div>
@@ -273,6 +276,7 @@
 
     <div class="site-tabs" id="kw-tabs">
         <div class="site-tab active" onclick="switchTab('kw', 'news')">News</div>
+        <div class="site-tab" onclick="switchTab('kw', 'international')">International</div>
         <div class="site-tab" onclick="switchTab('kw', 'sports')">Sports</div>
         <div class="site-tab" onclick="switchTab('kw', 'finance')">Finance</div>
         <div class="site-tab" onclick="switchTab('kw', 'politics')">Politics</div>
@@ -280,6 +284,7 @@
     </div>
 
     <div id="kw-panel-news" class="site-panel active"><div class="keyword-wrap" id="kw-wrap-news"></div></div>
+    <div id="kw-panel-international" class="site-panel"><div class="keyword-wrap" id="kw-wrap-international"></div></div>
     <div id="kw-panel-sports" class="site-panel"><div class="keyword-wrap" id="kw-wrap-sports"></div></div>
     <div id="kw-panel-finance" class="site-panel"><div class="keyword-wrap" id="kw-wrap-finance"></div></div>
     <div id="kw-panel-politics" class="site-panel"><div class="keyword-wrap" id="kw-wrap-politics"></div></div>
@@ -402,6 +407,30 @@ const DEFAULTS = {
                     'Google Trends Africa':        { visible: true, count: 4 },
                     'Google Trends Asia':          { visible: true, count: 4 },
                     'Google Trends Oceania':       { visible: true, count: 4 }
+                }
+            }
+        },
+        keywords: []
+    },
+    international: {
+        sections: {
+            'International News': { visible: true, articleCount: 8, color: 'gradient', gradientColor: '#1a3d4a',
+                sources: { 'Al Jazeera': { visible: true, count: 2 }, 'France 24': { visible: true, count: 2 }, 'DW News': { visible: true, count: 2 }, 'Euronews': { visible: true, count: 2 } } },
+            'Europe':             { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#1a2a5c',
+                sources: { 'r/europe': { visible: true, count: 4 } } },
+            'Asia':               { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#4a1a4a',
+                sources: { 'Japan Times': { visible: true, count: 2 }, 'r/asia': { visible: true, count: 2 } } },
+            'World Community':    { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#3a4a1a',
+                sources: { 'r/worldnews': { visible: true, count: 2 }, 'Global Voices': { visible: true, count: 2 } } },
+            'Trending International Searches': { visible: true, articleCount: 28, color: 'gradient', gradientColor: '#4a3a6b',
+                sources: {
+                    'Google Trends International US':            { visible: true, count: 4 },
+                    'Google Trends International North America': { visible: true, count: 4 },
+                    'Google Trends International South America': { visible: true, count: 4 },
+                    'Google Trends International Europe':        { visible: true, count: 4 },
+                    'Google Trends International Africa':        { visible: true, count: 4 },
+                    'Google Trends International Asia':          { visible: true, count: 4 },
+                    'Google Trends International Oceania':       { visible: true, count: 4 }
                 }
             }
         },
