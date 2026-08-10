@@ -131,7 +131,7 @@ async function fetchInternationalMatrix() {
     const intlSources = [
         { name: 'Al Jazeera', url: 'https://www.aljazeera.com/xml/rss/all.xml', logo: 'https://www.google.com/s2/favicons?domain=aljazeera.com&sz=128' },
         { name: 'France 24', url: 'https://www.france24.com/en/rss', logo: 'https://www.google.com/s2/favicons?domain=france24.com&sz=128' },
-        { name: 'DW News', url: 'https://rss.dw.com/rdf/rss-en-top', logo: 'https://www.google.com/s2/favicons?domain=dw.com&sz=128' },
+        { name: 'DW News', url: 'https://rss.dw.com/rdf/rss-en-all', logo: 'https://www.google.com/s2/favicons?domain=dw.com&sz=128' },
         { name: 'Euronews', url: 'https://www.euronews.com/rss', logo: 'https://www.google.com/s2/favicons?domain=euronews.com&sz=128' },
     ];
 
