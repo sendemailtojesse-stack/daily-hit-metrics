@@ -856,7 +856,7 @@ async function saveSettings() {
     });
 
     const prefsToSave = JSON.parse(JSON.stringify(currentPrefs));
-    console.log('Saving World News sources:', Object.keys(prefsToSave.news.sections['World News'].sources));
+    console.log('Saving preferences for sites:', Object.keys(prefsToSave));
 
     const { error, data: updateResult } = await supabaseClient
         .from('profiles')
