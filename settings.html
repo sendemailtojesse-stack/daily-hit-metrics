@@ -874,15 +874,15 @@ async function saveSettings() {
         if (currentUser && prefsToSave) {
             const profile = await supabaseClient.from('profiles').select('subscription_tier').eq('id', currentUser.id).single();
             if (profile?.data?.subscription_tier === 'admin') {
-                for (const site of Object.keys(prefsToSave)) {
+                await Promise.all(Object.keys(prefsToSave).map(site => {
                     if (prefsToSave[site]?.sections) {
-                        await fetch(`https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/defaults?site=${site}`, {
+                        return fetch(`https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/defaults?site=${site}`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(prefsToSave[site])
                         });
                     }
-                }
+                }).filter(Boolean));
             }
         }
         msg.textContent = 'Saved successfully.';
