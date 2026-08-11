@@ -172,7 +172,7 @@ async function fetchHighUtilityMatrix() {
     // Voice of America via Google News (direct fetch — bypasses proxy blocking)
     try {
         console.log("Parsing U.S. News from Voice of America...");
-        const voaRes = await fetch('https://news.google.com/rss/search?q=site:voanews.com&hl=en-US&gl=US&ceid=US:en', { headers: BROWSER_HEADERS });
+        const voaRes = await fetch('https://news.google.com/rss/search?q=site:voanews.com+news+-"learn+english"+-"learning+english"&hl=en-US&gl=US&ceid=US:en', { headers: BROWSER_HEADERS });
         console.log(`Voice of America (Google News) status: ${voaRes.status}`);
         if (voaRes.ok) {
             const xmlText = await voaRes.text();
