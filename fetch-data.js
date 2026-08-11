@@ -144,9 +144,8 @@ async function fetchHighUtilityMatrix() {
         { url: 'https://feeds.npr.org/1001/rss.xml', name: 'NPR News', logo: LOGOS.npr },
         { url: 'https://www.theguardian.com/world/rss', name: 'The Guardian', logo: 'https://www.google.com/s2/favicons?domain=theguardian.com&sz=128' },
         { url: 'https://feeds.skynews.com/feeds/rss/world.xml', name: 'Sky News', logo: 'https://www.google.com/s2/favicons?domain=skynews.com&sz=128' },
+        { url: 'https://feeds.nbcnews.com/nbcnews/public/news', name: 'NBC News', logo: 'https://www.google.com/s2/favicons?domain=nbcnews.com&sz=128' },
     ];
-
-    for (const source of worldSources) {
         try {
             console.log(`Parsing U.S. News from ${source.name}...`);
             const res = await fetchRSS(source.url);
@@ -168,50 +167,6 @@ async function fetchHighUtilityMatrix() {
             }
         } catch (e) { console.error(`${source.name} Error:`, e.message); }
     }
-
-    // Voice of America via Google News (direct fetch — bypasses proxy blocking)
-    try {
-        console.log("Parsing U.S. News from Voice of America...");
-        const voaRes = await fetch('https://news.google.com/rss/search?q=site:voanews.com+news+-"learn+english"+-"learning+english"&hl=en-US&gl=US&ceid=US:en', { headers: BROWSER_HEADERS });
-        console.log(`Voice of America (Google News) status: ${voaRes.status}`);
-        if (voaRes.ok) {
-            const xmlText = await voaRes.text();
-            const items = xmlText.split(/<item(?:\s[^>]*)?>/).slice(1);
-            let voaCount = 0;
-            for (const itemStr of items) {
-                if (voaCount >= 8) break;
-                const titleMatch = itemStr.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/s);
-                let title = titleMatch ? decodeEntities(titleMatch[1].replace(/<[^>]*>/g, '').trim()) : '';
-                if (!title) continue;
-                if (title.length > 120) title = title.substring(0, 117) + '...';
-                const linkMatch = itemStr.match(/<link>([^<]+)<\/link>/);
-                const googleUrl = linkMatch ? linkMatch[1].trim() : 'https://voanews.com';
-                // Decode actual VOA URL from Google News base64 redirect
-                let url = googleUrl;
-                try {
-                    const b64Match = googleUrl.match(/articles\/CBMi([A-Za-z0-9_-]+)/);
-                    if (b64Match) {
-                        const decoded = Buffer.from(b64Match[1], 'base64').toString('utf-8');
-                        const urlMatch = decoded.match(/https?:\/\/[^\s"'<>]+voanews\.com[^\s"'<>]*/);
-                        if (urlMatch) url = urlMatch[0];
-                    }
-                } catch(e) {}
-                worldNews.push({
-                    site: title,
-                    sourceName: 'Voice of America',
-                    category: 'U.S. News',
-                    dailyHits: 'Global',
-                    growth: '+' + (Math.random() * 5 + 1).toFixed(1) + '%',
-                    trend: ensurePeriod('Latest news from Voice of America.'),
-                    url,
-                    displayDomain: 'voanews.com',
-                    image: 'https://www.google.com/s2/favicons?domain=voanews.com&sz=128'
-                });
-                voaCount++;
-            }
-            console.log(`Voice of America articles compiled: ${voaCount}`);
-        }
-    } catch(e) { console.error('Voice of America Error:', e.message); }
 
     for (const source of worldSources) {
         try {
