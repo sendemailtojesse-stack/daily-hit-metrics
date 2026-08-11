@@ -146,27 +146,6 @@ async function fetchHighUtilityMatrix() {
         { url: 'https://feeds.skynews.com/feeds/rss/world.xml', name: 'Sky News', logo: 'https://www.google.com/s2/favicons?domain=skynews.com&sz=128' },
         { url: 'https://feeds.nbcnews.com/nbcnews/public/news', name: 'NBC News', logo: 'https://www.google.com/s2/favicons?domain=nbcnews.com&sz=128' },
     ];
-        try {
-            console.log(`Parsing U.S. News from ${source.name}...`);
-            const res = await fetchRSS(source.url);
-            console.log(`${source.name} RSS status: ${res.status}`);
-            if (res.ok) {
-                const items = parseRssItems(await res.text(), 8, source.url, source.logo);
-                items.forEach(item => {
-                    worldNews.push({
-                        site: item.title || `${source.name} News`,
-                        sourceName: source.name,
-                        category: "U.S. News",
-                        dailyHits: "Global",
-                        growth: "+" + (Math.random() * 5 + 1).toFixed(1) + "%",
-                        trend: ensurePeriod(item.desc || `Breaking news from ${source.name}.`),
-                        url: item.url,
-                        image: item.image
-                    });
-                });
-            }
-        } catch (e) { console.error(`${source.name} Error:`, e.message); }
-    }
 
     for (const source of worldSources) {
         try {
