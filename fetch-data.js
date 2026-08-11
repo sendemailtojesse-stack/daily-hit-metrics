@@ -153,7 +153,13 @@ async function fetchHighUtilityMatrix() {
             const res = await fetchRSS(source.url);
             console.log(`${source.name} RSS status: ${res.status}`);
             if (res.ok) {
-                const items = parseRssItems(await res.text(), 8, source.url, source.logo);
+                const xmlText = await res.text();
+                if (source.name === 'Voice of America') {
+                    console.log('VOA raw snippet:', xmlText.substring(0, 600));
+                    const testItems = xmlText.split(/<item(?:\s[^>]*)?>/).slice(1);
+                    console.log('VOA item count:', testItems.length);
+                }
+                const items = parseRssItems(xmlText, 8, source.url, source.logo);
                 items.forEach(item => {
                     worldNews.push({
                         site: item.title || `${source.name} News`,
