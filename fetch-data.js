@@ -44,8 +44,8 @@ function parseAtomEntries(xmlText, limit, fallbackUrl, fallbackLogo) {
 }
 
 function parseRssItems(xmlText, limit, fallbackUrl, fallbackLogo) {
-    const items = xmlText.split('<item>');
-    items.shift();
+    // Handle both <item> (RSS 2.0) and <item rdf:about="..."> (RDF/RSS 1.0)
+    const items = xmlText.split(/<item(?:\s[^>]*)?>/).slice(1);
     return items.slice(0, limit).map(itemStr => {
         const titleMatch = itemStr.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/s);
         let title = titleMatch ? decodeEntities(titleMatch[1].replace(/<[^>]*>/g, '').trim()) : "";
