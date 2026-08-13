@@ -886,6 +886,9 @@ async function saveDefaultVertical() {
     const prefs = profile?.preferences || {};
     prefs.defaultVertical = vertical;
     await supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', session.user.id);
+    // Write domain-wide cookie so dailyhitmetrics.com redirect page can read it
+    const maxAge = 365 * 24 * 60 * 60;
+    document.cookie = `dhm-default-vertical=${encodeURIComponent(vertical)}; domain=.dailyhitmetrics.com; path=/; max-age=${maxAge}; SameSite=Lax; Secure`;
     const msg = document.getElementById('default-vertical-msg');
     if (msg) { msg.style.opacity = '1'; setTimeout(() => msg.style.opacity = '0', 2000); }
 }
