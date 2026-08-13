@@ -244,6 +244,23 @@
         </div>
     </div>
 
+    <!-- Default Vertical -->
+    <h2>Default Vertical</h2>
+    <p style="font-size:0.7rem; color:#5a3e2b; margin-bottom:8px;">Choose which vertical loads when you visit <strong>dailyhitmetrics.com</strong> or <strong>www.dailyhitmetrics.com</strong>. Navigating directly to a specific vertical (e.g. sports.dailyhitmetrics.com) will always load that page regardless of this setting.</p>
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
+        <select id="default-vertical-select" style="font-family:'Libre Baskerville',serif; font-size:0.7rem; padding:8px 12px; border:1px solid #c8b89a; background:#faf8f4; color:#1a0f00; cursor:pointer;">
+            <option value="">News (default)</option>
+            <option value="international">International</option>
+            <option value="sports">Sports</option>
+            <option value="finance">Finance</option>
+            <option value="politics">Politics</option>
+            <option value="entertainment">Entertainment</option>
+            <option value="comedy">Comedy</option>
+        </select>
+        <button onclick="saveDefaultVertical()" style="font-family:'Libre Baskerville',serif; font-size:0.7rem; font-weight:700; background:#3a6b4a; color:#faf8f4; border:none; padding:8px 20px; cursor:pointer;">Save Default</button>
+        <span id="default-vertical-msg" style="font-family:'IM Fell English',serif; font-size:0.65rem; color:#3a6b4a; font-style:italic; opacity:0; transition:opacity 0.3s;">Saved.</span>
+    </div>
+
     <!-- Section Preferences -->
     <h2>Section Preferences</h2>
     <p style="font-size:0.7rem; color:#5a3e2b; margin-bottom:16px;">Choose which sections to display and their order, how many articles to show, and whether to use a gradient or solid color banner. Use <em>Reset to Defaults</em> to restore the original layout at any time.</p>
@@ -860,6 +877,19 @@ async function resetCurrentTab() {
 }
 
 // ── SAVE ──
+async function saveDefaultVertical() {
+    const sel = document.getElementById('default-vertical-select');
+    const vertical = sel ? sel.value : '';
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) return;
+    const { data: profile } = await supabaseClient.from('profiles').select('preferences').eq('id', session.user.id).single();
+    const prefs = profile?.preferences || {};
+    prefs.defaultVertical = vertical;
+    await supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', session.user.id);
+    const msg = document.getElementById('default-vertical-msg');
+    if (msg) { msg.style.opacity = '1'; setTimeout(() => msg.style.opacity = '0', 2000); }
+}
+
 async function saveSettings() {
     if (!currentUser) return;
 
@@ -1015,6 +1045,12 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
     if (profile.first_name) document.getElementById('name-first').value = profile.first_name;
     if (profile.middle_name) document.getElementById('name-middle').value = profile.middle_name;
     if (profile.last_name) document.getElementById('name-last').value = profile.last_name;
+
+    // Load default vertical preference
+    if (profile?.preferences?.defaultVertical) {
+        const sel = document.getElementById('default-vertical-select');
+        if (sel) sel.value = profile.preferences.defaultVertical;
+    }
 
     // Load saved prefs — use DEFAULTS section order, preserve saved source order within sections
     if (profile?.preferences && Object.keys(profile.preferences).length > 0) {
