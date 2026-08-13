@@ -903,6 +903,8 @@
         <a href="#" class="section-nav-link locked" id="nav-politics">Politics</a>
         <span class="section-nav-sep">|</span>
         <a href="#" class="section-nav-link locked" id="nav-entertainment">Entertainment</a>
+        <span class="section-nav-sep">|</span>
+        <a href="#" class="section-nav-link locked" id="nav-comedy">Comedy</a>
     </div>
 
     <div class="masthead" id="masthead" style="opacity:0; transition: opacity 0.15s ease;">
@@ -1265,7 +1267,7 @@
         // Update section nav links based on tier
         const sectionNav = document.getElementById('section-nav');
         sectionNav.style.display = 'flex';
-        ['international', 'sports', 'finance', 'politics', 'entertainment'].forEach(section => {
+        ['international', 'sports', 'finance', 'politics', 'entertainment', 'comedy'].forEach(section => {
             const el = document.getElementById(`nav-${section}`);
             if (el) {
                 if (isPro) {
@@ -1775,7 +1777,7 @@
     checkAgeGate();
 
     // Initialize section nav as locked by default
-    ['international', 'sports', 'finance', 'politics', 'entertainment'].forEach(section => {
+    ['international', 'sports', 'finance', 'politics', 'entertainment', 'comedy'].forEach(section => {
         const el = document.getElementById(`nav-${section}`);
         if (el) el.classList.add('locked');
     });
