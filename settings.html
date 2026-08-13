@@ -123,12 +123,13 @@
             sports: 'https://sports.dailyhitmetrics.com',
             finance: 'https://finance.dailyhitmetrics.com',
             politics: 'https://politics.dailyhitmetrics.com',
-            entertainment: 'https://entertainment.dailyhitmetrics.com'
+            entertainment: 'https://entertainment.dailyhitmetrics.com',
+            comedy: 'https://comedy.dailyhitmetrics.com'
         };
-        const validSites = ['news', 'international', 'sports', 'finance', 'politics', 'entertainment'];
+        const validSites = ['news', 'international', 'sports', 'finance', 'politics', 'entertainment', 'comedy'];
         const siteLabels = {
             news: 'U.S. News', international: 'International', sports: 'Sports', finance: 'Finance',
-            politics: 'Politics', entertainment: 'Entertainment'
+            politics: 'Politics', entertainment: 'Entertainment', comedy: 'Comedy'
         };
         const returnLink = document.getElementById('return-link');
         returnLink.href = (from && siteUrls[from]) ? siteUrls[from] : 'https://news.dailyhitmetrics.com';
@@ -255,6 +256,7 @@
         <div class="site-tab" onclick="switchTab('prefs', 'finance')">Finance</div>
         <div class="site-tab" onclick="switchTab('prefs', 'politics')">Politics</div>
         <div class="site-tab" onclick="switchTab('prefs', 'entertainment')">Entertainment</div>
+        <div class="site-tab" onclick="switchTab('prefs', 'comedy')">Comedy</div>
     </div>
 
     <div id="prefs-panel-news" class="site-panel active"></div>
@@ -263,6 +265,7 @@
     <div id="prefs-panel-finance" class="site-panel"></div>
     <div id="prefs-panel-politics" class="site-panel"></div>
     <div id="prefs-panel-entertainment" class="site-panel"></div>
+    <div id="prefs-panel-comedy" class="site-panel"></div>
 
     <div class="btn-row">
         <button class="btn-save" onclick="saveSettings()">Save Preferences</button>
@@ -281,6 +284,7 @@
         <div class="site-tab" onclick="switchTab('kw', 'finance')">Finance</div>
         <div class="site-tab" onclick="switchTab('kw', 'politics')">Politics</div>
         <div class="site-tab" onclick="switchTab('kw', 'entertainment')">Entertainment</div>
+        <div class="site-tab" onclick="switchTab('kw', 'comedy')">Comedy</div>
     </div>
 
     <div id="kw-panel-news" class="site-panel active"><div class="keyword-wrap" id="kw-wrap-news"></div></div>
@@ -289,6 +293,7 @@
     <div id="kw-panel-finance" class="site-panel"><div class="keyword-wrap" id="kw-wrap-finance"></div></div>
     <div id="kw-panel-politics" class="site-panel"><div class="keyword-wrap" id="kw-wrap-politics"></div></div>
     <div id="kw-panel-entertainment" class="site-panel"><div class="keyword-wrap" id="kw-wrap-entertainment"></div></div>
+    <div id="kw-panel-comedy" class="site-panel"><div class="keyword-wrap" id="kw-wrap-comedy"></div></div>
 
     <div class="btn-row" style="margin-top:16px;">
         <button class="btn-save" onclick="saveSettings()">Save Alerts</button>
@@ -525,6 +530,27 @@ const DEFAULTS = {
                 } }
         },
         keywords: []
+    },
+    comedy: {
+        sections: {
+            'Comedy News':   { visible: true, articleCount: 6, color: 'gradient', gradientColor: '#4a3a1a',
+                sources: { 'The Onion': { visible: true, count: 2 }, 'Variety Comedy': { visible: true, count: 2 }, 'Deadline Comedy': { visible: true, count: 2 } } },
+            'Stand-Up & Live': { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#1a3a1a',
+                sources: { 'r/standup': { visible: true, count: 2 }, 'r/comedy': { visible: true, count: 2 } } },
+            'Comics':        { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#1a1a4a',
+                sources: { 'XKCD': { visible: true, count: 2 }, 'GoComics': { visible: true, count: 2 } } },
+            'Trending Comedy Searches': { visible: true, articleCount: 28, color: 'gradient', gradientColor: '#4a3a6b',
+                sources: {
+                    'Google Trends Comedy US':            { visible: true, count: 4 },
+                    'Google Trends Comedy North America': { visible: true, count: 4 },
+                    'Google Trends Comedy South America': { visible: true, count: 4 },
+                    'Google Trends Comedy Europe':        { visible: true, count: 4 },
+                    'Google Trends Comedy Africa':        { visible: true, count: 4 },
+                    'Google Trends Comedy Asia':          { visible: true, count: 4 },
+                    'Google Trends Comedy Oceania':       { visible: true, count: 4 }
+                } }
+        },
+        keywords: []
     }
 };
 
@@ -536,7 +562,7 @@ let activeKwTab = 'news';
 // Set active tabs from URL parameter
 (function() {
     const p = new URLSearchParams(window.location.search).get('from');
-    if (p && ['news','sports','finance','politics','entertainment'].includes(p)) {
+    if (p && ['news','international','sports','finance','politics','entertainment','comedy'].includes(p)) {
         activePrefsTab = p;
         activeKwTab = p;
     }
