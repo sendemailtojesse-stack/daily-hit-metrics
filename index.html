@@ -13,6 +13,20 @@
         (function() {
             const m = document.cookie.match(/dhm-title-font=([^;]+)/);
             if (m) document.documentElement.style.setProperty('--title-font', decodeURIComponent(m[1]) + ', serif');
+            // If visiting root domain, redirect to default vertical
+            if (window.location.hostname === 'dailyhitmetrics.com' || window.location.hostname === 'www.dailyhitmetrics.com') {
+                const VERTICALS = {
+                    international: 'https://international.dailyhitmetrics.com',
+                    sports: 'https://sports.dailyhitmetrics.com',
+                    finance: 'https://finance.dailyhitmetrics.com',
+                    politics: 'https://politics.dailyhitmetrics.com',
+                    entertainment: 'https://entertainment.dailyhitmetrics.com',
+                    comedy: 'https://comedy.dailyhitmetrics.com'
+                };
+                const cm = document.cookie.match(/dhm-default-vertical=([^;]+)/);
+                const v = cm ? decodeURIComponent(cm[1]) : '';
+                if (v && VERTICALS[v]) { window.location.replace(VERTICALS[v]); }
+            }
         })();
     </script>
     <style>
