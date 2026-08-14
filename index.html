@@ -25,6 +25,7 @@
                 };
                 const cm = document.cookie.match(/dhm-default-vertical=([^;]+)/);
                 const v = cm ? decodeURIComponent(cm[1]) : '';
+                alert('hostname=' + window.location.hostname + ' | cookie=' + document.cookie.substring(0,100) + ' | vertical=' + v);
                 if (v && VERTICALS[v]) { window.location.replace(VERTICALS[v]); }
             }
         })();
