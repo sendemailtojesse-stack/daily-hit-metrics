@@ -3,30 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Daily Hit Metrics is a real-time internet pulse tracker aggregating trending news, social discussions, tech stories, finance trends, video game news, and popular searches from around the world — updated every hour.">
-    <title>Daily Hit Metrics - U.S. News Aggregate Feed</title>
+    <meta name="description" content="Daily Hit Metrics Entertainment — real-time entertainment news, movies, TV, music and trending celebrity searches updated every hour.">
+    <title>Daily Hit Metrics - World News Aggregate Feed</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quantico:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,wght@0,400;0,700;1,400&family=Newsreader:ital,wght@0,400;0,700;1,400&family=Bitter:ital,wght@0,400;0,700;1,400&family=Roboto+Slab:wght@400;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Spectral:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Vollkorn:ital,wght@0,400;0,700;1,400&family=Alegreya:ital,wght@0,400;0,700;1,400&family=UnifrakturMaguntia&family=Cinzel+Decorative:wght@400;700&family=IM+Fell+DW+Pica&family=Almendra+Display&family=Caesar+Dressing&family=Uncial+Antiqua&family=Pirata+One&family=Metamorphous&family=Cardo:ital,wght@0,400;0,700;1,400&family=GFS+Didot&family=Cormorant:ital,wght@0,400;0,700;1,400&family=Gentium+Plus:ital,wght@0,400;0,700;1,400&family=Zilla+Slab:wght@400;700&family=Arvo:wght@400;700&family=Crete+Round:ital@0;1&family=Josefin+Serif:ital,wght@0,400;0,700;1,400&family=Tinos:ital,wght@0,400;0,700;1,400&family=Martel:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Gloock:ital@0;1&family=Bodoni+Moda:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,wght@0,400;0,700;1,400&family=Fondamento:ital@0;1&family=Eagle+Lake&family=Fleur+De+Leah&family=Jim+Nightshade&family=Mystery+Quest&family=Elsie+Swash+Caps:wght@400;900&family=Grenze+Gotisch:wght@400;700&family=Luxurious+Script&family=Passions+Conflict&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <script>
-        // Apply saved title font synchronously before first paint to prevent flash
         (function() {
             const m = document.cookie.match(/dhm-title-font=([^;]+)/);
             if (m) document.documentElement.style.setProperty('--title-font', decodeURIComponent(m[1]) + ', serif');
-            // If visiting root domain, redirect to default vertical
-            if (window.location.hostname === 'dailyhitmetrics.com' || window.location.hostname === 'www.dailyhitmetrics.com') {
-                const VERTICALS = {
-                    international: 'https://international.dailyhitmetrics.com',
-                    sports: 'https://sports.dailyhitmetrics.com',
-                    finance: 'https://finance.dailyhitmetrics.com',
-                    politics: 'https://politics.dailyhitmetrics.com',
-                    entertainment: 'https://entertainment.dailyhitmetrics.com',
-                    comedy: 'https://comedy.dailyhitmetrics.com'
-                };
-                const cm = document.cookie.match(/dhm-default-vertical=([^;]+)/);
-                const v = cm ? decodeURIComponent(cm[1]) : '';
-                if (v && VERTICALS[v]) { window.location.replace(VERTICALS[v]); }
-            }
         })();
     </script>
     <style>
@@ -38,25 +23,7 @@
             font-display: block;
         }
         :root { --bg-content: #faf8f4; --article-font: 'Libre Baskerville', Georgia, serif; --article-font-size: 1.05rem; --title-font: 'Cinzel', serif; }
-
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { overflow-x: hidden; }
-        @media (max-width: 1024px) {
-            .container::after { display: none !important; }
-            .section-banner-world             { background: #254d33 !important; }
-            .section-banner-intl              { background: #1a3d4a !important; }
-            .section-banner-social            { background: #6b6125 !important; }
-            .section-banner-tech              { background: #4a5c3a !important; }
-            .section-banner-games             { background: #3d5c3a !important; }
-            .section-banner-finance           { background: #2d4a3e !important; }
-            .section-banner-searches-us       { background: #556b45 !important; }
-            .section-banner-searches-namerica { background: #6b7a30 !important; }
-            .section-banner-searches-samerica { background: #2d4a3e !important; }
-            .section-banner-searches-europe   { background: #5a6b40 !important; }
-            .section-banner-searches-africa   { background: #4a6b55 !important; }
-            .section-banner-searches-asia     { background: #8a4a15 !important; }
-            .section-banner-searches-oceania  { background: #6b7a55 !important; }
-        }
 
         html { font-size: 144%; }
 
@@ -79,22 +46,7 @@
             padding: 36px 40px 40px;
             position: relative;
         }
-
-        .container::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-            background-color: #a8ff3e;
-            opacity: 0.35;
-            right: calc(50% - 640px);
-            pointer-events: none;
-        }
-
-        @media (max-width: 1280px) {
-            .container::after { right: calc(20px + 40px); }
-        }
+        .container::after { content: ''; position: fixed; top: 0; bottom: 0; width: 1px; background-color: #a8ff3e; opacity: 0.35; right: calc(50% - 640px); pointer-events: none; }
 
         /* ── MASTHEAD ── */
         .masthead {
@@ -112,10 +64,6 @@
             height: 260px;
             opacity: 0.13;
             pointer-events: none;
-        }
-
-        @media (max-width: 1024px) {
-            .globe-graphic { display: none; }
         }
 
         .masthead-content {
@@ -217,61 +165,6 @@
             font-variant-numeric: tabular-nums;
         }
 
-        /* ── EDITORIAL SUMMARY ── */
-        .editorial-box {
-            border-top: 3px double #2c1810;
-            border-bottom: 0.5px solid #d4c9b0;
-            margin-bottom: 18px;
-            display: none;
-        }
-        .editorial-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            padding: 8px 0 6px;
-            user-select: none;
-            border-bottom: 0.5px solid #d4c9b0;
-        }
-        .editorial-label {
-            font-family: 'Quantico', sans-serif;
-            font-size: 0.52rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #3a6b4a;
-        }
-        .editorial-arrow {
-            font-size: 0.55rem;
-            color: #3a6b4a;
-            transition: transform 0.2s ease;
-        }
-        .editorial-arrow.open { transform: rotate(180deg); }
-        .editorial-content {
-            display: none;
-            padding: 14px 0 10px;
-        }
-        .editorial-content.open { display: block; }
-        .editorial-text {
-            font-family: 'IM Fell English', serif;
-            font-size: 0.72rem;
-            font-style: italic;
-            line-height: 1.85;
-            color: #2a1a0a;
-            border-left: 3px solid #d4c9b0;
-            padding-left: 14px;
-            margin-left: 2px;
-        }
-        .editorial-byline {
-            font-family: 'Quantico', sans-serif;
-            font-size: 0.48rem;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: #8a6a50;
-            margin-top: 10px;
-            text-align: right;
-        }
-
-
         .masthead-thick-rule {
             border: none;
             border-top: 3px solid #2c1810;
@@ -279,19 +172,10 @@
         }
 
         .section-banner { color: #faf8f4; font-family: 'Libre Baskerville', serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; padding: 6px 0 6px 12px; }
-        .section-banner-world             { background: linear-gradient(to right, #254d33, transparent); }
-        .section-banner-intl              { background: linear-gradient(to right, #1a3d4a, transparent); }
-        .section-banner-social            { background: linear-gradient(to right, #6b6125, transparent); }
-        .section-banner-tech              { background: linear-gradient(to right, #4a5c3a, transparent); }
-        .section-banner-games             { background: linear-gradient(to right, #3d5c3a, transparent); }
-        .section-banner-finance           { background: linear-gradient(to right, #2d4a3e, transparent); }
-        .section-banner-searches-us       { background: linear-gradient(to right, #556b45, transparent); }
-        .section-banner-searches-namerica { background: linear-gradient(to right, #6b7a30, transparent); }
-        .section-banner-searches-samerica { background: linear-gradient(to right, #2d4a3e, transparent); }
-        .section-banner-searches-europe   { background: linear-gradient(to right, #5a6b40, transparent); }
-        .section-banner-searches-africa   { background: linear-gradient(to right, #4a6b55, transparent); }
-        .section-banner-searches-asia     { background: linear-gradient(to right, #8a4a15, transparent); }
-        .section-banner-searches-oceania  { background: linear-gradient(to right, #6b7a55, transparent); }
+        .section-banner-comedy-news   { background: linear-gradient(to right, #4a3a1a, transparent); }
+        .section-banner-standup       { background: linear-gradient(to right, #1a3a1a, transparent); }
+        .section-banner-comics        { background: linear-gradient(to right, #1a1a4a, transparent); }
+        .section-banner-comedy-trends { background: linear-gradient(to right, #4a3a6b, transparent); }
 
         /* ── TABLE ── */
         .scoreboard {
@@ -394,6 +278,7 @@
         .dispatch-link {
             color: #1a0f00;
             text-decoration: none;
+            transition: color 0.15s ease;
         }
 
         .dispatch-link:hover {
@@ -441,18 +326,6 @@
             white-space: nowrap;
         }
 
-        .zoom-btn {
-            background: none;
-            border: none;
-            padding: 2px 4px;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.15s ease;
-            display: flex;
-            align-items: center;
-        }
-        .zoom-btn:hover { opacity: 1; }
-
         .top-nav {
             display: flex;
             justify-content: flex-end;
@@ -463,23 +336,6 @@
             margin-bottom: 10px;
             position: relative;
         }
-        .zoom-btn-left {
-            position: absolute;
-            left: 0;
-        }
-        .theme-btn {
-            position: absolute;
-            left: 28px;
-            background: none;
-            border: none;
-            padding: 2px 4px;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.15s ease;
-            display: flex;
-            align-items: center;
-        }
-        .theme-btn:hover { opacity: 1; }
 
         .nav-link {
             font-family: 'Libre Baskerville', serif;
@@ -531,9 +387,7 @@
             text-align: left;
         }
 
-        .momentum-header:hover .tooltip {
-            display: block;
-        }
+        .momentum-header:hover .tooltip { display: block; }
 
         .mobile-meta { display: none; }
 
@@ -546,12 +400,12 @@
             margin-top: 16px;
             letter-spacing: 0.04em;
         }
-        @media (max-width: 1024px) {
+        @media (max-width: 768px) {
             html { font-size: 100%; }
 
-            body { padding: 10px 8px 40px; overflow-x: hidden; }
+            body { padding: 10px 8px 40px; }
 
-            .container { padding: 12px 12px 20px; max-width: 100%; overflow-x: hidden; }
+            .container { padding: 12px 12px 20px; }
 
             /* Masthead */
             .masthead-bottom {
@@ -611,6 +465,77 @@
             .momentum-header .tooltip { display: none !important; }
         }
         /* ── SECTION NAV ── */
+        /* ── AGE GATE ── */
+        .age-gate-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(30, 20, 10, 0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .age-gate-overlay.active { display: flex; }
+        .age-gate-box {
+            background: #faf8f4;
+            border-left: 3px solid #3a6b4a;
+            border-right: 3px solid #3a6b4a;
+            max-width: 480px;
+            width: 100%;
+            padding: 40px 36px;
+            text-align: center;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+        }
+        .age-gate-title {
+            font-family: Quantico, sans-serif;
+            font-size: 1rem;
+            color: #254d33;
+            margin-bottom: 12px;
+            letter-spacing: 0.05em;
+        }
+        .age-gate-rule { border: none; border-top: 2px solid #2c1810; margin: 0 0 20px; }
+        .age-gate-text {
+            font-family: Libre Baskerville, serif;
+            font-size: 0.7rem;
+            line-height: 1.8;
+            color: #2a1a0a;
+            margin-bottom: 24px;
+        }
+        .age-gate-btn {
+            background: #3a6b4a;
+            color: #faf8f4;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border: none;
+            padding: 12px 32px;
+            cursor: pointer;
+        }
+        .age-gate-btn:hover { background: #254d33; }
+        .age-gate-note {
+            font-size: 0.55rem;
+            font-style: italic;
+            color: #8a6a50;
+            margin-top: 14px;
+        }
+
+        .zoom-btn {
+            background: none;
+            border: none;
+            padding: 2px 4px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.15s ease;
+            display: flex;
+            align-items: center;
+        }
+        .zoom-btn:hover { opacity: 1; }
+        .zoom-btn-left { position: absolute; left: 0; }
+        .theme-btn { position: absolute; left: 28px; background: none; border: none; padding: 2px 4px; cursor: pointer; opacity: 0.6; transition: opacity 0.15s ease; display: flex; align-items: center; }
+        .theme-btn:hover { opacity: 1; }
+
         .section-nav {
             display: flex;
             flex-wrap: wrap;
@@ -636,9 +561,9 @@
         }
 
         @media (max-width: 600px) {
-            .section-nav-link { font-size: 0.7rem; letter-spacing: 0.02em; }
-            .section-nav-sep { font-size: 0.55rem; }
-            .section-nav { gap: 0.25rem; padding: 6px 2px 8px; }
+            .section-nav-link { font-size: 0.6rem; letter-spacing: 0.02em; }
+            .section-nav-sep { font-size: 0.5rem; }
+            .section-nav { gap: 0.2rem; padding: 6px 2px 8px; }
         }
 
         .section-nav-link:hover { color: #254d33; }
@@ -653,65 +578,6 @@
             color: #d4c9b0;
             font-size: 0.6rem;
         }
-        /* ── AGE GATE ── */
-        .age-gate-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(30, 20, 10, 0.85);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .age-gate-overlay.active { display: flex; }
-        .age-gate-box {
-            background: #faf8f4;
-            border-left: 3px solid #3a6b4a;
-            border-right: 3px solid #3a6b4a;
-            max-width: 480px;
-            width: 100%;
-            padding: 40px 36px;
-            text-align: center;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-        }
-        .age-gate-title {
-            font-family: 'Quantico', sans-serif;
-            font-size: 1rem;
-            color: #254d33;
-            margin-bottom: 12px;
-            letter-spacing: 0.05em;
-        }
-        .age-gate-rule { border: none; border-top: 2px solid #2c1810; margin: 0 0 20px; }
-        .age-gate-text {
-            font-family: 'Libre Baskerville', serif;
-            font-size: 0.7rem;
-            line-height: 1.8;
-            color: #2a1a0a;
-            margin-bottom: 24px;
-        }
-        .age-gate-btn {
-            background: #3a6b4a;
-            color: #faf8f4;
-            font-family: 'Libre Baskerville', serif;
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            border: none;
-            padding: 12px 32px;
-            cursor: pointer;
-            transition: background 0.15s ease;
-        }
-        .age-gate-btn:hover { background: #254d33; }
-        .age-gate-note {
-            font-family: 'IM Fell English', serif;
-            font-size: 0.55rem;
-            font-style: italic;
-            color: #8a6a50;
-            margin-top: 14px;
-        }
-
         .modal-overlay {
             display: none;
             position: fixed;
@@ -734,13 +600,7 @@
             font-family: 'Quantico', sans-serif;
             font-size: 1.1rem;
             color: #2c1810;
-            margin-bottom: 16px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid #d4c9b0;
-            margin-left: -28px;
-            margin-right: -28px;
-            padding-left: 28px;
-            padding-right: 28px;
+            margin-bottom: 20px;
         }
         .modal input {
             width: 100%;
@@ -777,20 +637,14 @@
             color: #8a6a50;
             cursor: pointer;
             margin-top: 6px;
-            text-decoration: underline;
         }
         .modal-close:hover { color: #2c1810; }
         .modal-msg {
             font-family: 'IM Fell English', serif;
             font-size: 0.65rem;
             font-style: italic;
-            margin-top: 8px;
-            margin-bottom: 4px;
+            margin-bottom: 10px;
             min-height: 18px;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            white-space: normal;
-            text-align: right;
         }
         .modal-msg.error { color: #8a1a1a; }
         .modal-msg.success { color: #2a5a2a; }
@@ -824,6 +678,16 @@
             padding: 0;
         }
         .nav-link-logout:hover { color: #2c1810; }
+        /* ── EDITORIAL SUMMARY ── */
+        .editorial-box { border-bottom: 0.5px solid #d4c9b0; margin-bottom: 14px; display: none; }
+        .editorial-toggle { display: flex; align-items: center; justify-content: flex-end; gap: 8px; cursor: pointer; padding: 6px 0; user-select: none; }
+        .editorial-label { font-family: 'IM Fell English', serif; font-style: normal; font-size: 0.7rem; color: #1a0f00; text-decoration: underline; text-underline-offset: 3px; }
+        .editorial-arrow { font-size: 0.55rem; color: #3a6b4a; transition: transform 0.2s ease; }
+        .editorial-arrow.open { transform: rotate(180deg); }
+        .editorial-content { display: none; padding: 12px 0 14px; border-top: 0.5px solid #e8e0d0; }
+        .editorial-content.open { display: block; }
+        .editorial-text { font-family: 'Libre Baskerville', serif; font-size: 0.7rem; line-height: 2.3; color: #2a1a0a; }
+
     </style>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/favicon.svg">
@@ -835,24 +699,12 @@
 <body>
 
     <!-- Auth Modals -->
-    <!-- Age Gate -->
-    <div class="age-gate-overlay" id="age-gate">
-        <div class="age-gate-box">
-            <div class="age-gate-title">Daily Hit Metrics</div>
-            <hr class="age-gate-rule">
-            <p class="age-gate-text">This site aggregates content from public sources including Reddit and other open networks, which may contain unmoderated community discussions. By continuing, you confirm that you are <strong>13 years of age or older</strong> and agree to our <a href="/terms.html" style="color:#3a6b4a;">Terms of Service</a>.</p>
-            <button class="age-gate-btn" onclick="confirmAge()">I Confirm — Continue</button>
-            <p class="age-gate-note">This confirmation is stored in your browser and will not be shown again.</p>
-        </div>
-    </div>
-
     <div class="modal-overlay" id="login-modal">
         <div class="modal">
             <h2>Login</h2>
-            <p style="font-family:'Libre Baskerville',serif; font-size:0.6rem; color:#5a3e2b; margin-bottom:0;">Please enter your Email address and Password.</p>
             <div class="modal-msg" id="login-msg"></div>
-            <input type="email" id="login-email" placeholder="Email address" autocomplete="email" onkeydown="if(event.key==='Enter') handleLogin()" style="margin-top:-6px;">
-            <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter') handleLogin()">
+            <input type="email" id="login-email" placeholder="Email address" autocomplete="email">
+            <input type="password" id="login-password" placeholder="Password" autocomplete="current-password">
             <button class="modal-btn" onclick="handleLogin()">Login</button>
             <div class="modal-switch">Don't have an account? <a onclick="switchModal('login','signup')">Create one</a></div>
             <div class="modal-switch"><a onclick="handleForgotPassword()">Forgot password?</a></div>
@@ -863,62 +715,53 @@
     <div class="modal-overlay" id="signup-modal">
         <div class="modal">
             <h2>Create Account</h2>
-            <p style="font-family:'Libre Baskerville',serif; font-size:0.6rem; color:#5a3e2b; margin-bottom:0;">Please enter your First name, Last name, and Email address.</p>
             <div class="modal-msg" id="signup-msg"></div>
-            <select id="signup-salutation" style="width:100%; font-family:'Libre Baskerville',serif; font-size:0.6rem; padding:8px 10px; border:1px solid #c8b89a; background:#faf8f4; color:#1a0f00; margin-bottom:12px;">
-                <option value="">Salutation (optional)</option>
-                <option value="Mr.">Mr.</option>
-                <option value="Mrs.">Mrs.</option>
-                <option value="Ms.">Ms.</option>
-                <option value="Dr.">Dr.</option>
-                <option value="Prof.">Prof.</option>
-            </select>
-            <input type="text" id="signup-firstname" placeholder="First name" autocomplete="given-name" style="margin-top:-6px;">
-            <input type="text" id="signup-middlename" placeholder="Middle Name (or initial) — optional" autocomplete="additional-name">
+            <input type="text" id="signup-firstname" placeholder="First name" autocomplete="given-name">
             <input type="text" id="signup-lastname" placeholder="Last name" autocomplete="family-name">
             <input type="email" id="signup-email" placeholder="Email address" autocomplete="email">
-            <div style="font-family:'Libre Baskerville',serif; font-size:0.55rem; color:#5a3e2b; margin-bottom:0; margin-top:14px;">Password must be at least eight characters and include both letters and numbers. Or allow browser to specify password.</div>
-            <div style="position:relative; margin-top:26px; margin-bottom:12px;">
-                <input type="password" id="signup-password" placeholder="Password" autocomplete="new-password" onkeydown="if(event.key==='Enter') handleSignup()" style="width:100%; padding-right:36px; margin-bottom:0;">
-                <span onclick="togglePasswordVisibility()" style="position:absolute; right:10px; top:0; bottom:0; display:flex; align-items:center; cursor:pointer; color:#8a6a50; font-size:0.75rem; user-select:none;" id="pw-toggle">👁</span>
-            </div>
+            <input type="password" id="signup-password" placeholder="Password (min 6 characters)" autocomplete="new-password">
             <button class="modal-btn" onclick="handleSignup()">Create Account</button>
             <div class="modal-switch">Already have an account? <a onclick="switchModal('signup','login')">Login</a></div>
             <span class="modal-close" onclick="closeModal('signup-modal')">Cancel</span>
         </div>
     </div>
 
-<div class="container">
-    <div style="position:absolute; top:0; left:0; right:0; pointer-events:none; z-index:2; overflow:hidden;">
-        <img src="https://news.dailyhitmetrics.com/greenleaves.webp" alt="" style="width:25%; display:block;" aria-hidden="true">
+    <!-- Age Gate -->
+    <div class="age-gate-overlay" id="age-gate">
+        <div class="age-gate-box">
+            <div class="age-gate-title">Daily Hit Metrics</div>
+            <hr class="age-gate-rule">
+            <p class="age-gate-text">This site aggregates content from public sources including Reddit and other open networks, which may contain unmoderated community discussions. By continuing, you confirm that you are <strong>13 years of age or older</strong> and agree to our <a href="https://news.dailyhitmetrics.com/terms.html" style="color:#3a6b4a;">Terms of Service</a>.</p>
+            <button class="age-gate-btn" onclick="confirmAge()">I Confirm — Continue</button>
+            <p class="age-gate-note">This confirmation is stored in your browser and will not be shown again.</p>
+        </div>
     </div>
 
-    <div id="signup-success-banner" style="display:none; font-family:'Libre Baskerville',serif; font-size:0.7rem; color:#254d33; background:#edf4ef; border:1px solid #3a6b4a; padding:10px 16px; margin-bottom:12px;">
-        ✓ Account created! Please check your email to confirm your account.
-    </div>
+<div id="main-content" style="display:none;">
+<div class="container">
 
     <div class="top-nav" id="top-nav">
         <button class="zoom-btn zoom-btn-left" id="zoom-btn" onclick="cycleZoom()" title="Text size: 100%"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="4.5" stroke="#8a6a50" stroke-width="1.3"/><line x1="9" y1="9" x2="13" y2="13" stroke="#8a6a50" stroke-width="1.3" stroke-linecap="round"/></svg></button>
-        <button class="theme-btn" id="theme-btn" onclick="cycleTheme()" title="Toggle background color"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#8a6a50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8.25V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M3 8.25v9.75A2.25 2.25 0 0 0 5.25 20.25h13.5A2.25 2.25 0 0 0 21 18V8.25"/></svg></button>
+        <button class="theme-btn" onclick="cycleTheme()" title="Color: Newspaper &amp; Parchment"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#8a6a50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8.25V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M3 8.25v9.75A2.25 2.25 0 0 0 5.25 20.25h13.5A2.25 2.25 0 0 0 21 18V8.25"/></svg></button>
         <a href="#" class="nav-link" onclick="openModal('login-modal'); return false;">Login</a>
         <span style="color:#d4c9b0; font-size:0.6rem;">|</span>
         <a href="#" class="nav-link nav-link-signup" onclick="openModal('signup-modal'); return false;">Create Account</a>
     </div>
 
     <div class="section-nav" id="section-nav">
-        <a href="https://news.dailyhitmetrics.com" class="section-nav-link" style="font-weight:700;">U.S. News</a>
+        <a href="https://news.dailyhitmetrics.com" class="section-nav-link">U.S. News</a>
         <span class="section-nav-sep">|</span>
         <a href="https://international.dailyhitmetrics.com" class="section-nav-link" id="nav-international">International</a>
         <span class="section-nav-sep">|</span>
-        <a href="#" class="section-nav-link locked" id="nav-sports">Sports</a>
+        <a href="https://sports.dailyhitmetrics.com" class="section-nav-link" id="nav-sports">Sports</a>
         <span class="section-nav-sep">|</span>
-        <a href="#" class="section-nav-link locked" id="nav-finance">Finance</a>
+        <a href="https://finance.dailyhitmetrics.com" class="section-nav-link" id="nav-finance">Finance</a>
         <span class="section-nav-sep">|</span>
-        <a href="#" class="section-nav-link locked" id="nav-politics">Politics</a>
+        <a href="https://politics.dailyhitmetrics.com" class="section-nav-link" id="nav-politics">Politics</a>
         <span class="section-nav-sep">|</span>
-        <a href="#" class="section-nav-link locked" id="nav-entertainment">Entertainment</a>
+        <a href="https://entertainment.dailyhitmetrics.com" class="section-nav-link" id="nav-entertainment">Entertainment</a>
         <span class="section-nav-sep">|</span>
-        <a href="#" class="section-nav-link locked" id="nav-comedy">Comedy</a>
+        <a href="https://comedy.dailyhitmetrics.com" class="section-nav-link" style="font-weight:700;">Comedy</a>
     </div>
 
     <div class="masthead" id="masthead" style="opacity:0; transition: opacity 0.15s ease;">
@@ -938,7 +781,7 @@
 
         <div class="masthead-content">
             <div class="masthead-top-rule"></div>
-            <div class="masthead-eyebrow">Est. 2026 &nbsp;✦&nbsp; Global Index of What Matters Now</div>
+            <div class="masthead-eyebrow">Est 2026 &nbsp;✦&nbsp; Global Index of What Matters Now</div>
             <div class="masthead-title">Daily Hit Metrics</div>
             <div class="masthead-subtitle" style="text-transform: none; font-variant: normal;"></div>
             <hr class="masthead-rule">
@@ -951,8 +794,6 @@
         </div>
 
     </div>
-
-
 
     <table class="scoreboard">
         <thead>
@@ -978,6 +819,7 @@
     <div class="footer-note" style="margin-top: 6px;">&copy; 2026 <a href="https://mpathtek.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">MpathTek</a> &nbsp;·&nbsp; All rights reserved</div>
 
 </div>
+</div> <!-- end main-content -->
 
 <script>
     let isPipelineRefreshing = false;
@@ -987,27 +829,17 @@
     const MAX_POLL_ATTEMPTS = 10;
 
     const MOMENTUM_TOOLTIPS = {
-        'U.S. News':        'Estimated share velocity — percentage growth in search and social coverage over the past hour.',
-        'Social Pulse':     'Upvotes per minute — rate of community engagement climbing on Reddit.',
-        'Finance Trends':   'Comments per minute — speed of retail trader discussion in market subreddits.',
-        'Tech':             'Points per hour — rate at which the Hacker News community is upvoting this story.',
-        'Video Games':      'Engagement velocity — views and comments accelerating across gaming platforms.',
-        'Popular Searches': 'Search growth rate — percentage increase in query volume over the past hour.'
+        'Comedy News':               'Estimated share velocity — percentage growth in comedy coverage over the past hour.',
+        'Stand-Up & Live':           'Upvotes per minute — rate of film and TV community engagement on Reddit.',
+        'Music':                           'Upvotes per minute — rate of music community engagement on Reddit.',
+        'Trending Entertainment Searches': 'Activity rate - varies by section. Upvotes, views, or search volume growth over the past hour.'
     };
 
     const SECTION_LABELS = {
-        'U.S. News':                        'U.S. News — Sky News · NPR · ABC · CBS · NBC · The Guardian',
-        'Social Pulse':                     'Social Pulse — Viral Dispatches from the Public Square',
-        'Tech':                             'Tech — Ars Technica · Hacker News',
-        'Video Games':                      'Video Games — Kotaku · IGN · r/gaming',
-        'Finance Trends':                   'Finance Trends — r/stocks · r/investing · r/options',
-        'Popular Searches-us':              'Popular Searches — United States · Top Volume',
-        'Popular Searches-north-america':   'Popular Searches — North America · Top Volume',
-        'Popular Searches-south-america':   'Popular Searches — South America · Top Volume',
-        'Popular Searches-europe':          'Popular Searches — Europe · Top Volume',
-        'Popular Searches-africa':          'Popular Searches — Africa · Top Volume',
-        'Popular Searches-asia':            'Popular Searches — Asia · Top Volume',
-        'Popular Searches-oceania':         'Popular Searches — Oceania · Top Volume'
+        'Comedy News':               'Comedy News — The Onion · ClickHole · Reductress · The Hard Times',
+        'Stand-Up & Live':           'Stand-Up & Live — r/standup · r/comedy',
+        'Comics':                    'Comics — XKCD · The Oatmeal',
+        'Trending Comedy Searches':  'Trending Comedy Searches — Google Trends'
     };
 
     function initCountdownClock() {
@@ -1064,9 +896,19 @@
         }, 30000);
     }
 
+    function toRoman(num) {
+        const vals = [1000,900,500,400,100,90,50,40,10,9,5,4,1];
+        const syms = ['M','CM','D','CD','C','XC','L','XL','X','IX','V','IV','I'];
+        let result = '';
+        for (let i = 0; i < vals.length; i++) {
+            while (num >= vals[i]) { result += syms[i]; num -= vals[i]; }
+        }
+        return result;
+    }
+
     async function loadDashboard(isPollingCheck = false) {
         try {
-            const response = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/data?t=' + Date.now());
+            const response = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/comedy?t=' + Date.now());
             const data = await response.json();
 
             if (isPollingCheck && data.lastUpdated === currentlyLoadedTimestamp) {
@@ -1074,27 +916,20 @@
             }
 
             currentlyLoadedTimestamp = data.lastUpdated;
-            window._lastDashboardData = data;
-
-            // Render source metrics panel
-
 
 
             const tableBody = document.getElementById('leaderboard-rows');
             tableBody.innerHTML = '';
 
             let lastCategory = null;
-            let lastSearchLabel = null;
-            const sectionCounts = {};
+            let lastComedySource = null;
+            const sectionCounts_comedy = {};
 
-            // Sort articles by saved source order within each section
-            const sortedLeaderboard = [...data.trafficLeaderboard].sort((a, b) => {
-                const aCategory = a.category;
-                const bCategory = b.category;
-                if (aCategory !== bCategory) return 0;
-                const pref = getSectionPref(aCategory);
+            // Sort by source order
+            const sortedLeaderboard_e = [...data.trafficLeaderboard].sort((a, b) => {
+                if (a.category !== b.category) return 0;
+                const pref = getSectionPref_comedy(a.category);
                 if (!pref.sources) return 0;
-                // Use explicit sourceOrder array if present, otherwise fall back to object keys
                 const sourceKeys = pref.sourceOrder || Object.keys(pref.sources);
                 const aIdx = sourceKeys.indexOf(a.sourceName);
                 const bIdx = sourceKeys.indexOf(b.sourceName);
@@ -1104,62 +939,50 @@
                 return aIdx - bIdx;
             });
 
-            sortedLeaderboard.forEach(item => {
-                const baseCategory = item.category === 'Popular Searches' ? 'Popular Searches' : item.category;
-                const pref = getSectionPref(baseCategory);
-
-                // Skip hidden sections
+            sortedLeaderboard_e.forEach(item => {
+                const pref = getSectionPref_comedy(item.category);
                 if (!pref.visible) return;
 
-                // Skip hidden sources
-                if (!isSourceVisible(pref, item.sourceName)) return;
-
-                // Track article count per section
-                if (!sectionCounts[baseCategory]) sectionCounts[baseCategory] = 0;
-                if (sectionCounts[baseCategory] >= pref.articleCount) return;
-
-                // Track per-source count
-                if (item.sourceName) {
-                    const srcKey = `${baseCategory}::${item.sourceName}`;
-                    if (!sectionCounts[srcKey]) sectionCounts[srcKey] = 0;
-                    const srcMax = getSourceCount(pref, item.sourceName);
-                    if (sectionCounts[srcKey] >= srcMax) return;
-                    sectionCounts[srcKey]++;
+                if (item.sourceName && pref.sources) {
+                    const srcPref = pref.sources[item.sourceName];
+                    if (srcPref && srcPref.visible === false) return;
                 }
 
-                sectionCounts[baseCategory]++;
-                const rankKey = `rank::${baseCategory}::${item.sourceName || ''}`;
-                if (!sectionCounts[rankKey]) sectionCounts[rankKey] = 0;
-                sectionCounts[rankKey]++;
-                const displayRank = sectionCounts[rankKey];
+                if (!sectionCounts_comedy[item.category]) sectionCounts_comedy[item.category] = 0;
+                if (sectionCounts_comedy[item.category] >= pref.articleCount) return;
 
-                if (item.category !== lastCategory || (item.category === 'Popular Searches' && item.searchLabel !== lastSearchLabel)) {
+                if (item.sourceName && pref.sources) {
+                    const srcKey = `src::${item.category}::${item.sourceName}`;
+                    if (!sectionCounts_comedy[srcKey]) sectionCounts_comedy[srcKey] = 0;
+                    const srcMax = pref.sources[item.sourceName]?.count ?? 99;
+                    if (sectionCounts_comedy[srcKey] >= srcMax) return;
+                    sectionCounts_comedy[srcKey]++;
+                }
+
+                sectionCounts_comedy[item.category]++;
+                const rankKey_e = `rank::${item.category}::${item.sourceName || ''}`;
+                if (!sectionCounts_comedy[rankKey_e]) sectionCounts_comedy[rankKey_e] = 0;
+                sectionCounts_comedy[rankKey_e]++;
+                const displayRank = sectionCounts_comedy[rankKey_e];
+
+                if (item.category !== lastCategory || (item.category === 'Trending Comedy Searches' && item.sourceName !== lastComedySource)) {
                     lastCategory = item.category;
-                    lastSearchLabel = item.searchLabel || null;
-                    const labelKey = item.category === 'Popular Searches'
-                        ? `Popular Searches-${item.searchLabel}`
-                        : item.category;
+                    lastComedySource = item.sourceName || null;
+                    const isComedyRegion = item.category === 'Trending Comedy Searches' && item.sourceName;
+                    const labelKey = item.category;
                     const bannerClass = {
-                        'U.S. News':                        'section-banner-world',
-                        'Social Pulse':                     'section-banner-social',
-                        'Tech':                             'section-banner-tech',
-                        'Video Games':                      'section-banner-games',
-                        'Finance Trends':                   'section-banner-finance',
-                        'Popular Searches-us':              'section-banner-searches-us',
-                        'Popular Searches-north-america':   'section-banner-searches-namerica',
-                        'Popular Searches-south-america':   'section-banner-searches-samerica',
-                        'Popular Searches-europe':          'section-banner-searches-europe',
-                        'Popular Searches-africa':          'section-banner-searches-africa',
-                        'Popular Searches-asia':            'section-banner-searches-asia',
-                        'Popular Searches-oceania':         'section-banner-searches-oceania'
-                    }[labelKey] || 'section-banner-world';
+                        'Comedy News':              'section-banner-comedy-news',
+                        'Stand-Up & Live':          'section-banner-standup',
+                        'Comics':                   'section-banner-comics',
+                        'Trending Comedy Searches': 'section-banner-comedy-trends'
+                    }[labelKey] || 'section-banner-comedy-news';
                     const bannerRow = document.createElement('tr');
                     const isMobile = window.innerWidth <= 768;
-                    // Apply custom color if set
-                    const bannerStyle = pref.color === 'solid'
+                    const bannerStyle_comedy = pref.color === 'solid'
                         ? `style="background:${pref.gradientColor};"`
                         : `style="background:linear-gradient(to right, ${pref.gradientColor}, transparent);"`;
-                    bannerRow.innerHTML = `<td colspan="${isMobile ? 3 : 5}" class="section-banner ${bannerClass}" ${bannerStyle}>${SECTION_LABELS[labelKey] || item.category}</td>`;
+                    const bannerLabel_e = isComedyRegion ? item.sourceName : (SECTION_LABELS[labelKey] || item.category);
+                    bannerRow.innerHTML = `<td colspan="${isMobile ? 3 : 5}" class="section-banner ${bannerClass}" ${bannerStyle_comedy}>${bannerLabel_e}</td>`;
                     tableBody.appendChild(bannerRow);
                 }
 
@@ -1170,7 +993,7 @@
                 const targetUrl = item.url || '#';
 
                 const containsTrump = /trump/i.test(item.site) || /trump/i.test(item.trend);
-                const host = item.displayDomain || (() => { try { return new URL(item.url).hostname.replace('www.',''); } catch(e) { return ''; } })();
+                const host = (() => { try { return new URL(item.url).hostname.replace('www.',''); } catch(e) { return ''; } })();
                 const faviconUrl = `https://www.google.com/s2/favicons?domain=${host}&sz=128`;
                 const imageToShow = containsTrump ? null : (item.image || faviconUrl);
 
@@ -1208,7 +1031,7 @@
                             </a>
                         </div>
                         <div class="entity-summary">${item.trend}</div>
-                        <span class="category-badge">${item.displayDomain || new URL(item.url).hostname.replace('www.','')}</span>
+                        <span class="category-badge">${new URL(item.url).hostname.replace('www.','')}</span>
                         <span class="mobile-meta">${item.dailyHits} &nbsp;·&nbsp; <span style="color:${momentumColor}">${arrow} ${item.growth.replace(/^[+\-]/, '')}</span></span>
                     </td>
                     <td class="velocity-data">${item.dailyHits}</td>
@@ -1225,13 +1048,16 @@
         }
     }
 
-    // Dashboard will load after prefs are fetched (see second script block)
-    initCountdownClock();
+    // ── PRO GATE runs after Supabase loads (see second script block) ──
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
     // ── MODAL FUNCTIONS (global scope) ──
+    function openModal(id) {
+        document.getElementById(id).classList.add('active');
+    }
+
     function closeModal(id) {
         document.getElementById(id).classList.remove('active');
         const msgId = id === 'login-modal' ? 'login-msg' : 'signup-msg';
@@ -1278,22 +1104,18 @@
         const isAdmin = tier === 'admin';
         const isProPlus = tier === 'pro_plus';
 
-        // Update section nav links based on tier
         const sectionNav = document.getElementById('section-nav');
-        sectionNav.style.display = 'flex';
-        ['international', 'sports', 'finance', 'politics', 'entertainment', 'comedy'].forEach(section => {
+        if (sectionNav) sectionNav.style.display = 'flex';
+        ['international', 'sports', 'finance', 'politics', 'entertainment'].forEach(section => {
             const el = document.getElementById(`nav-${section}`);
             if (el) {
-                if (isPro) {
-                    el.classList.remove('locked');
-                    el.href = `https://${section}.dailyhitmetrics.com`;
-                    el.onclick = null;
-                } else {
-                    el.classList.add('locked');
-                    el.href = '#';
-                }
+                if (isPro) { el.classList.remove('locked'); el.href = `https://${section}.dailyhitmetrics.com`; }
+                else { el.classList.add('locked'); el.href = '#'; }
             }
         });
+
+        const ZOOM_BTN = `<button class="zoom-btn zoom-btn-left" id="zoom-btn" onclick="cycleZoom()" title="Text size: 100%"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="4.5" stroke="#8a6a50" stroke-width="1.3"/><line x1="9" y1="9" x2="13" y2="13" stroke="#8a6a50" stroke-width="1.3" stroke-linecap="round"/></svg></button>`;
+        const THEME_BTN = `<button class="theme-btn" onclick="cycleTheme()" title="Color: Newspaper &amp; Parchment"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#8a6a50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8.25V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M3 8.25v9.75A2.25 2.25 0 0 0 5.25 20.25h13.5A2.25 2.25 0 0 0 21 18V8.25"/></svg></button>`;
 
         if (user) {
             const displayName = firstName || user.email.split('@')[0];
@@ -1304,15 +1126,15 @@
                 : isPro
                 ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro</span>`
                 : `<a href="#" class="nav-link" style="text-transform:none; background:rgba(58,107,74,0.08); border:0.5px solid #3a6b4a; padding:4px 10px;" onclick="handleUpgrade(); return false;">Upgrade to Pro</a>`;
-            const settingsLink = isPro ? `<span style="color:#d4c9b0; font-size:0.6rem;">|</span><a href="/settings.html?from=news" class="nav-link">Settings</a>` : '';
+            const settingsLink = isPro ? `<span style="color:#d4c9b0; font-size:0.6rem;">|</span><a href="https://news.dailyhitmetrics.com/settings.html?from=comedy" class="nav-link">Settings</a>` : '';
             const adminLinks = isAdmin ? `
                 <span style="color:#d4c9b0; font-size:0.6rem;">|</span>
-                <a href="/rss-status.html" class="nav-link">RSS Status</a>
+                <a href="https://news.dailyhitmetrics.com/rss-status.html" class="nav-link">RSS Status</a>
                 <span style="color:#d4c9b0; font-size:0.6rem;">|</span>
-                <a href="/rss-tester.html" class="nav-link">RSS Tester</a>` : '';
+                <a href="https://news.dailyhitmetrics.com/rss-tester.html" class="nav-link">RSS Tester</a>` : '';
             nav.innerHTML = `
-                <button class="zoom-btn zoom-btn-left" id="zoom-btn" onclick="cycleZoom()" title="Text size: 100%"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="4.5" stroke="#8a6a50" stroke-width="1.3"/><line x1="9" y1="9" x2="13" y2="13" stroke="#8a6a50" stroke-width="1.3" stroke-linecap="round"/></svg></button>
-                <button class="theme-btn" id="theme-btn" onclick="cycleTheme()" title="Toggle background color"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#8a6a50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8.25V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M3 8.25v9.75A2.25 2.25 0 0 0 5.25 20.25h13.5A2.25 2.25 0 0 0 21 18V8.25"/></svg></button>
+                ${ZOOM_BTN}
+                ${THEME_BTN}
                 <span class="nav-user">Hi, ${displayName}</span>
                 <span style="color:#d4c9b0; font-size:0.6rem;">|</span>
                 ${tierBtn}
@@ -1323,39 +1145,26 @@
             `;
         } else {
             nav.innerHTML = `
-                <button class="zoom-btn zoom-btn-left" id="zoom-btn" onclick="cycleZoom()" title="Text size: 100%"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="4.5" stroke="#8a6a50" stroke-width="1.3"/><line x1="9" y1="9" x2="13" y2="13" stroke="#8a6a50" stroke-width="1.3" stroke-linecap="round"/></svg></button>
-                <button class="theme-btn" id="theme-btn" onclick="cycleTheme()" title="Toggle background color"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#8a6a50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8.25V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M3 8.25v9.75A2.25 2.25 0 0 0 5.25 20.25h13.5A2.25 2.25 0 0 0 21 18V8.25"/></svg></button>
+                ${ZOOM_BTN}
+                ${THEME_BTN}
                 <a href="#" class="nav-link" onclick="openModal('login-modal'); return false;">Login</a>
                 <span style="color:#d4c9b0; font-size:0.6rem;">|</span>
                 <a href="#" class="nav-link nav-link-signup" onclick="openModal('signup-modal'); return false;">Create Account</a>
             `;
         }
-        // Re-apply zoom and theme since nav buttons were rebuilt
         applyZoom(getZoom());
         applyNewspaperShade(getNewspaperShade());
-        setZoomVisibility(tier);
+        currentTier = tier;
     }
 
     async function handleForgotPassword() {
         const email = document.getElementById('login-email').value.trim();
         const msg = document.getElementById('login-msg');
-        if (!email) {
-            msg.className = 'modal-msg error';
-            msg.textContent = 'Please enter your email address first.';
-            return;
-        }
-        msg.className = 'modal-msg';
-        msg.textContent = 'Sending reset link...';
-        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-            redirectTo: 'https://news.dailyhitmetrics.com/settings.html'
-        });
-        if (!error) {
-            msg.className = 'modal-msg';
-            msg.textContent = 'Password reset email sent. Check your inbox.';
-        } else {
-            msg.className = 'modal-msg error';
-            msg.textContent = error.message;
-        }
+        if (!email) { msg.className = 'modal-msg error'; msg.textContent = 'Please enter your email address first.'; return; }
+        msg.className = 'modal-msg'; msg.textContent = 'Sending reset link...';
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: 'https://news.dailyhitmetrics.com/settings.html' });
+        if (!error) { msg.className = 'modal-msg'; msg.textContent = 'Password reset email sent. Check your inbox.'; }
+        else { msg.className = 'modal-msg error'; msg.textContent = error.message; }
     }
 
     async function handleLogin() {
@@ -1363,7 +1172,7 @@
         const password = document.getElementById('login-password').value;
         const msg = document.getElementById('login-msg');
         msg.className = 'modal-msg';
-        msg.textContent = '';
+        msg.textContent = 'Signing in...';
         const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
         if (error) {
             msg.className = 'modal-msg error';
@@ -1380,14 +1189,27 @@
     }
 
     async function handleUpgrade() {
-        window.location.href = 'https://news.dailyhitmetrics.com/upgrade.html';
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (!session) { openModal('login-modal'); return; }
+        try {
+            const res = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/create-checkout-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: session.user.id, email: session.user.email })
+            });
+            const json = await res.json();
+            console.log('Checkout response:', json);
+            if (json.url) window.location.href = json.url;
+            else alert('Checkout error: ' + (json.error || 'Unknown error'));
+        } catch (err) {
+            console.error('Upgrade error:', err);
+            alert('Could not connect to checkout. Please try again.');
+        }
     }
 
     async function handleSignup() {
         const firstName = document.getElementById('signup-firstname').value.trim();
         const lastName = document.getElementById('signup-lastname').value.trim();
-        const middleName = document.getElementById('signup-middlename').value.trim();
-        const salutation = document.getElementById('signup-salutation').value;
         const email = document.getElementById('signup-email').value.trim();
         const password = document.getElementById('signup-password').value;
         const msg = document.getElementById('signup-msg');
@@ -1397,15 +1219,7 @@
         const { data, error } = await supabaseClient.auth.signUp({
             email,
             password,
-            options: {
-                emailRedirectTo: 'https://news.dailyhitmetrics.com/welcome.html',
-                data: {
-                    first_name: firstName,
-                    last_name: lastName,
-                    middle_name: middleName || null,
-                    salutation: salutation || null
-                }
-            }
+            options: { emailRedirectTo: 'https://dailyhitmetrics.com/welcome.html' }
         });
         if (error) {
             msg.className = 'modal-msg error';
@@ -1417,19 +1231,11 @@
                     id: data.user.id,
                     email: email,
                     first_name: firstName,
-                    last_name: lastName,
-                    middle_name: middleName || null,
-                    salutation: salutation || null
+                    last_name: lastName
                 });
             }
             msg.className = 'modal-msg success';
             msg.textContent = 'Account created! Please check your email to confirm.';
-            // Close modal and show page-level banner
-            setTimeout(() => {
-                closeModal('signup-modal');
-                const banner = document.getElementById('signup-success-banner');
-                if (banner) banner.style.display = 'block';
-            }, 1000);
         }
     }
 
@@ -1438,479 +1244,224 @@
         updateNav(null);
     }
 
-    // Check for upgrade redirect from Pro sites
-    const urlParams = new URLSearchParams(window.location.search);
-    const upgradeFrom = urlParams.get('upgrade');
-    if (upgradeFrom) {
-        const siteUrls = { international: 'https://international.dailyhitmetrics.com', sports: 'https://sports.dailyhitmetrics.com', finance: 'https://finance.dailyhitmetrics.com', politics: 'https://politics.dailyhitmetrics.com', entertainment: 'https://entertainment.dailyhitmetrics.com' };
-        const siteNames = { international: 'International', sports: 'Sports', finance: 'Finance', politics: 'Politics', entertainment: 'Entertainment' };
-        const siteName = siteNames[upgradeFrom] || 'this section';
-        const siteUrl = siteUrls[upgradeFrom];
-
-        // Check if already Pro and redirect
-        supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
-            if (session) {
-                const { data: profile } = await supabaseClient
-                    .from('profiles')
-                    .select('subscription_tier')
-                    .eq('id', session.user.id)
-                    .single();
-                if ((profile?.subscription_tier === 'pro' || profile?.subscription_tier === 'pro_plus' || profile?.subscription_tier === 'admin') && siteUrl) {
-                    window.location.href = siteUrl;
-                    return;
-                }
-            }
-            // Not Pro — show banner
-            const banner = document.createElement('div');
-            banner.id = 'upgrade-banner';
-            banner.style.cssText = 'background:#edf4ef; border:1px solid #3a6b4a; color:#254d33; font-family:Libre Baskerville,serif; font-size:0.8rem; padding:12px 20px; text-align:center; margin-bottom:12px;';
-            banner.innerHTML = `Daily Hit Metrics <strong>${siteName}</strong> is a Pro feature. <a href="javascript:void(0)" onclick="openModal('signup-modal')" style="color:#3a6b4a; font-weight:700;">Create a free account</a> or <a href="javascript:void(0)" onclick="handleUpgrade()" style="color:#3a6b4a; font-weight:700;">Upgrade to Pro</a> to access it.`;
-            document.querySelector('.container').insertBefore(banner, document.querySelector('.container').firstChild);
-        });
-    }
-
-    let pwVisible = false;
-    function togglePasswordVisibility() {
-        const pw = document.getElementById('signup-password');
-        pwVisible = !pwVisible;
-        pw.type = pwVisible ? 'text' : 'password';
-    }
-
-    function openModal(id) {
-        document.getElementById(id).classList.add('active');
-        if (id === 'signup-modal') {
-            pwVisible = false;
-            const pw = document.getElementById('signup-password');
-            if (pw) pw.type = 'password';
-        }
-    }
-
-
-
-
-
-
-    function renderSourceMetrics(metrics) {
-        if (!metrics || !metrics.length) return;
-        const box = document.getElementById('metrics-box');
-        const body = document.getElementById('metrics-body');
-        if (!box || !body) return;
-
-        // Focus on BBC World News articles from trafficLeaderboard
-        const bbcArticles = (window._lastDashboardData?.trafficLeaderboard || [])
-            .filter(a => a.sourceName === 'BBC News' || a.sourceName === 'BBC World News');
-
-        const bbcMeta = metrics.find(m => m.sourceName === 'BBC News' || m.sourceName === 'BBC World News') || metrics.find(m => m.category === 'World News') || {};
-
-        // Infer topics from headlines
-        const topicCounts = {};
-        bbcArticles.forEach(a => {
-            const topic = inferTopicM(a.site);
-            topicCounts[topic] = (topicCounts[topic]||0) + 1;
-        });
-
-        const avgLen = bbcArticles.length
-            ? Math.round(bbcArticles.reduce((s,a)=>s+(a.site||'').split(' ').length,0)/bbcArticles.length)
-            : '—';
-
-        const topicsHtml = Object.entries(topicCounts).sort((a,b)=>b[1]-a[1]).map(([t,c])=>`
-            <div class="src-topic-row">
-                <span class="src-topic-label">${t}</span>
-                <div class="src-topic-bg"><div class="src-topic-fill" style="width:${Math.round(c/bbcArticles.length*100)}%;background:${TOPIC_COLORS_M[t]||'#888'};"></div></div>
-                <span class="src-topic-count">${c}</span>
-            </div>`).join('');
-
-        const hlHtml = bbcArticles.map((a,i)=>`
-            <div class="src-hl-item">
-                <span class="src-hl-num">${i+1}.</span>
-                <span class="src-hl-text">${a.site}</span>
-                <span class="src-hl-tag">${inferTopicM(a.site)}</span>
-            </div>`).join('');
-
-        body.innerHTML = `
-            <div class="src-header">
-                <div class="src-logo">BBC</div>
-                <div>
-                    <div class="src-title">BBC World News</div>
-                    <div class="src-sub">feeds.bbci.co.uk &nbsp;·&nbsp; Updated hourly</div>
-                </div>
-                <div class="src-status">
-                    <div style="font-family:'Quantico',sans-serif;font-size:0.42rem;letter-spacing:0.1em;text-transform:uppercase;color:#8a6a50;">Feed status</div>
-                    <div style="font-family:'Quantico',sans-serif;font-size:0.6rem;color:#3a6b4a;margin-top:2px;">● Live</div>
-                </div>
-            </div>
-            <div class="src-stat-row">
-                <div class="src-stat">
-                    <div class="src-stat-label">Articles this hour</div>
-                    <div class="src-stat-val">${bbcArticles.length || bbcMeta.articleCount || '—'}</div>
-                </div>
-                <div class="src-stat">
-                    <div class="src-stat-label">Avg headline words</div>
-                    <div class="src-stat-val">${avgLen}</div>
-                </div>
-                <div class="src-stat">
-                    <div class="src-stat-label">Topics detected</div>
-                    <div class="src-stat-val">${Object.keys(topicCounts).length || '—'}</div>
-                </div>
-            </div>
-            ${Object.keys(topicCounts).length ? `<div class="src-section-head">Topic distribution</div>${topicsHtml}` : ''}
-            ${bbcArticles.length ? `<div class="src-section-head">Headlines this hour</div>${hlHtml}` : '<div style="font-family:\'IM Fell English\',serif;font-style:italic;font-size:0.62rem;color:#8a6a50;padding:8px 0;">No BBC articles in current feed.</div>'}
-        `;
-
-        box.style.display = 'block';
-    }
-
-    // ── ZOOM CONTROL ──
-    const ZOOM_LEVELS = [1.16, 1.18, 1.20, 1.22, 1.24, 1.26, 1.28, 1.30];
-    const DEFAULT_ZOOM = 1.22;
-
-    function getZoom() {
-        const saved = document.cookie.match(/dhm-zoom=([\d.]+)/);
-        return saved ? parseFloat(saved[1]) : DEFAULT_ZOOM;
-    }
-
-    function applyZoom(level) {
-        document.body.style.zoom = window.innerWidth > 1024 ? level : 1;
-        const btn = document.getElementById('zoom-btn');
-        if (btn) btn.title = `Text size: ${Math.round(level * 100)}%`;
-    }
-
-    function cycleZoom() {
-        const current = getZoom();
-        const idx = ZOOM_LEVELS.findIndex(z => Math.abs(z - current) < 0.01);
-        const next = ZOOM_LEVELS[(idx + 1) % ZOOM_LEVELS.length];
-        document.cookie = `dhm-zoom=${next}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
-        applyZoom(next);
-        // Admin saves to KV so all users inherit the default
-        if (currentTier === 'admin') {
-            fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/zoom', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ zoom: next })
-            });
-        }
-    }
-
-    async function loadGlobalZoom() {
-        try {
-            const res = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/zoom');
-            if (res.ok) {
-                const data = await res.json();
-                if (data.zoom) {
-                    applyZoom(data.zoom);
-                    document.cookie = `dhm-zoom=${data.zoom}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
-                }
-            }
-        } catch(e) {}
-    }
-
-    function setZoomVisibility(tier) {
-        const btn = document.getElementById('zoom-btn');
-        const themeBtn = document.querySelector('.theme-btn');
-        if (btn) { btn.style.display = 'flex'; btn.style.pointerEvents = 'auto'; btn.style.cursor = 'pointer'; btn.style.opacity = ''; }
-        if (themeBtn) themeBtn.style.left = '28px';
-    }
-
-    // Apply zoom on load — zoom button hidden until auth resolves
-    applyZoom(getZoom());
-    loadGlobalZoom();
-    setZoomVisibility(null);
-    // Theme button starts at far left until we know if admin
-    const _themeBtn = document.querySelector('.theme-btn');
-    if (_themeBtn) _themeBtn.style.left = '0';
-
-    // ── NEWSPAPER COLOR CYCLE ──
-    const NEWSPAPER_SHADES = ['#f0f0f0', '#f2f2f2', '#f4f4f4', '#f5f7f9', '#f7f8f9', '#f8f9fa', '#ffffff'];
-
-    function getNewspaperShade() {
-        const saved = document.cookie.match(/dhm-newspaper=([^;]+)/);
-        return saved ? decodeURIComponent(saved[1]) : '#f8f9fa';
-    }
-
-    function applyNewspaperShade(shade) {
-        const container = document.querySelector('.container');
-        if (container) container.style.backgroundColor = shade;
-        document.cookie = `dhm-newspaper=${encodeURIComponent(shade)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
-        const btn = document.querySelector('.theme-btn');
-        if (btn) {
-            const idx = NEWSPAPER_SHADES.indexOf(shade);
-            btn.title = `Newspaper shade: ${idx + 1} of ${NEWSPAPER_SHADES.length}`;
-        }
-    }
-
-    function cycleTheme() {
-        const current = getNewspaperShade();
-        const idx = NEWSPAPER_SHADES.indexOf(current);
-        const next = NEWSPAPER_SHADES[(idx + 1) % NEWSPAPER_SHADES.length];
-        applyNewspaperShade(next);
-        // Save to Supabase preferences
-        if (currentUser) {
-            supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single().then(({ data }) => {
-                const prefs = data?.preferences || {};
-                prefs.newspaperShade = next;
-                supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
-            });
-        }
-    }
-
-    // Load user's saved newspaper shade from Supabase prefs (called from loadUserPrefs)
-    function applyUserNewspaperShade(prefs) {
-        if (prefs?.newspaperShade) {
-            applyNewspaperShade(prefs.newspaperShade);
-        } else {
-            applyNewspaperShade(getNewspaperShade());
-        }
-    }
-
-    // Apply on initial load from cookie
-    applyNewspaperShade(getNewspaperShade());
-
-    // ── FONT PREFERENCE ──
-    const FONTS = [
-        { name: 'Libre Baskerville', label: 'Libre Baskerville' },
-        { name: 'Playfair Display', label: 'Playfair Display' },
-        { name: 'Merriweather', label: 'Merriweather' },
-        { name: 'Lora', label: 'Lora' },
-        { name: 'EB Garamond', label: 'EB Garamond' },
-        { name: 'Crimson Text', label: 'Crimson Text' },
-        { name: 'Source Serif 4', label: 'Source Serif 4' },
-        { name: 'Newsreader', label: 'Newsreader' },
-        { name: 'Bitter', label: 'Bitter' },
-        { name: 'Roboto Slab', label: 'Roboto Slab' },
-        { name: 'PT Serif', label: 'PT Serif' },
-        { name: 'Spectral', label: 'Spectral' },
-        { name: 'Cormorant Garamond', label: 'Cormorant Garamond' },
-        { name: 'Vollkorn', label: 'Vollkorn' },
-        { name: 'Alegreya', label: 'Alegreya' }
-    ];
-
-    function toRoman(num) {
-        const vals = [1000,900,500,400,100,90,50,40,10,9,5,4,1];
-        const syms = ['M','CM','D','CD','C','XC','L','XL','X','IX','V','IV','I'];
-        let result = '';
-        for (let i = 0; i < vals.length; i++) {
-            while (num >= vals[i]) { result += syms[i]; num -= vals[i]; }
-        }
-        return result;
-    }
-
-    function getSavedFont() {
-        const saved = document.cookie.match(/dhm-font=([^;]+)/);
-        return saved ? decodeURIComponent(saved[1]) : 'Libre Baskerville';
-    }
-
-    function getSavedFontSize() {
-        const saved = document.cookie.match(/dhm-font-size=([\d.]+)/);
-        return saved ? parseFloat(saved[1]) : 1.05;
-    }
-
-    function applyFont(fontName, fontSize) {
-        document.documentElement.style.setProperty('--article-font', `'${fontName}', Georgia, serif`);
-        if (fontSize) document.documentElement.style.setProperty('--article-font-size', `${fontSize}rem`);
-    }
-
-    function getSavedTitleFont() {
-        const saved = document.cookie.match(/dhm-title-font=([^;]+)/);
-        return saved ? decodeURIComponent(saved[1]) : 'Quantico';
-    }
-
-    function applyTitleFont(fontName) {
-        document.documentElement.style.setProperty('--title-font', `'${fontName}', serif`);
-        document.cookie = `dhm-title-font=${encodeURIComponent(fontName)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
-    }
-
-    function applyUnderlines(mastheadUl, articleUl, articleUlAlways, mpathTekUl) {
-        const mastheadTitle = document.querySelector('.masthead-title');
-        if (mastheadTitle) {
-            mastheadTitle.style.textDecoration = mastheadUl ? 'underline' : 'none';
-        }
-        const mpathTekLink = document.querySelector('.masthead-subtitle a');
-        if (mpathTekLink) mpathTekLink.style.textDecoration = (mpathTekUl !== false) ? 'underline' : 'none';
-        const styleId = 'dhm-ul-style';
-        let el = document.getElementById(styleId);
-        if (!el) { el = document.createElement('style'); el.id = styleId; document.head.appendChild(el); }
-        let css = '';
-        if (!articleUl) css += '.dispatch-link:hover { text-decoration: none !important; }';
-        if (articleUlAlways) css += '.dispatch-link { text-decoration: underline !important; text-underline-offset: 3px; }';
-        el.textContent = css;
-    }
-
-    function getSavedUnderlines() {
-        const mu = document.cookie.match(/dhm-masthead-ul=([01])/);
-        const au = document.cookie.match(/dhm-article-ul=([01])/);
-        const aua = document.cookie.match(/dhm-article-ul-always=([01])/);
-        return {
-            mastheadUl: mu ? mu[1] === '1' : true,
-            articleUl: au ? au[1] === '1' : true,
-            articleUlAlways: aua ? aua[1] === '1' : false
-        };
-    }
-
-    // ── FONT PREFERENCE — load global typography from Worker ──
-    async function loadGlobalTypography() {
-        try {
-            const res = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/typography');
-            if (res.ok) {
-                const t = await res.json();
-                if (t.font) applyFont(t.font, t.fontSize || 1.05);
-                if (t.titleFont) applyTitleFont(t.titleFont);
-                applyUnderlines(
-                    t.mastheadUnderline !== undefined ? t.mastheadUnderline : true,
-                    t.articleUnderline !== undefined ? t.articleUnderline : true,
-                    t.articleUnderlineAlways !== undefined ? t.articleUnderlineAlways : false,
-                    t.mpathTekUnderline !== undefined ? t.mpathTekUnderline : true
-                );
-            }
-        } catch(e) {
-            applyFont(getSavedFont(), getSavedFontSize());
-            applyTitleFont(getSavedTitleFont());
-            const { mastheadUl, articleUl, articleUlAlways } = getSavedUnderlines();
-            applyUnderlines(mastheadUl, articleUl, articleUlAlways, true);
-        }
-    }
-
-    // Load global typography then reveal masthead
-    loadGlobalTypography().finally(() => {
-        const m = document.getElementById('masthead');
-        if (m) m.style.opacity = '1';
-    });
-
-    // ── AGE GATE ──
-    function confirmAge() {
-        document.cookie = 'dhm-age-confirmed=1; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure';
-        document.getElementById('age-gate').classList.remove('active');
-    }
-
-    function checkAgeGate() {
-        const confirmed = document.cookie.split(';').some(c => c.trim().startsWith('dhm-age-confirmed='));
-        if (!confirmed) {
-            document.getElementById('age-gate').classList.add('active');
-        }
-    }
-
-    checkAgeGate();
-
     // Initialize section nav as locked by default
-    ['international', 'sports', 'finance', 'politics', 'entertainment', 'comedy'].forEach(section => {
+    ['international', 'sports', 'finance', 'politics', 'entertainment'].forEach(section => {
         const el = document.getElementById(`nav-${section}`);
         if (el) el.classList.add('locked');
     });
 
-    // ── USER PREFERENCES ──
-    let userPrefs = null;
-
-    const HARDCODED_DEFAULTS = {
-        'U.S. News':        { visible: true, articleCount: 12, color: 'gradient', gradientColor: '#254d33',
-            sources: { 'ABC News': { visible: true, count: 2 }, 'CBS News': { visible: true, count: 2 }, 'NPR News': { visible: true, count: 2 }, 'The Guardian': { visible: true, count: 2 }, 'Sky News': { visible: true, count: 2 }, 'NBC News': { visible: true, count: 2 } }
-        },
-        'Social Pulse':     { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#6b6125' },
-        'Tech':             { visible: true, articleCount: 8, color: 'gradient', gradientColor: '#4a5c3a' },
-        'Video Games':      { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#3d5c3a' },
-        'Finance Trends':   { visible: true, articleCount: 4, color: 'gradient', gradientColor: '#2d4a3e' },
-        'Popular Searches': { visible: true, articleCount: 28, color: 'gradient', gradientColor: '#556b45' }
-    };
-
-    let NEWS_DEFAULTS = HARDCODED_DEFAULTS;
-
-    // Load admin-set site defaults from KV
-    async function loadSiteDefaults() {
-        try {
-            const res = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/defaults?site=news');
-            if (res.ok) {
-                const kv = await res.json();
-                if (kv?.sections && Object.keys(kv.sections).length > 0) {
-                    NEWS_DEFAULTS = kv.sections;
-                }
-            }
-        } catch(e) {}
-    }
-
-    async function loadUserPrefs(userId) {
-        const { data: profile } = await supabaseClient
-            .from('profiles')
-            .select('preferences')
-            .eq('id', userId)
-            .single();
-        if (profile?.preferences?.news?.sections) {
-            const saved = profile.preferences.news.sections;
-            userPrefs = {};
-            Object.keys(NEWS_DEFAULTS).forEach(section => {
-                const savedSrc = saved[section]?.sources || {};
-                const savedOrder = saved[section]?.sourceOrder || Object.keys(savedSrc);
-                const mergedSources = {};
-                savedOrder.forEach(k => {
-                    if (savedSrc[k]) mergedSources[k] = { ...(NEWS_DEFAULTS[section]?.sources?.[k] || {}), ...savedSrc[k] };
-                    else if (NEWS_DEFAULTS[section]?.sources?.[k]) mergedSources[k] = NEWS_DEFAULTS[section].sources[k];
-                });
-                Object.keys(NEWS_DEFAULTS[section]?.sources || {}).forEach(k => {
-                    if (!mergedSources[k]) mergedSources[k] = NEWS_DEFAULTS[section].sources[k];
-                });
-                userPrefs[section] = {
-                    ...NEWS_DEFAULTS[section],
-                    ...saved[section],
-                    sources: mergedSources,
-                    sourceOrder: savedOrder
-                };
-            });
-        }
-        // Apply saved newspaper shade
-        if (profile?.preferences?.newspaperShade) {
-            applyNewspaperShade(profile.preferences.newspaperShade);
-        }
-        // Font/typography is now global — loaded from Worker KV, not per-user prefs
-    }
-
-    function getSectionPref(category) {
-        if (!userPrefs) return NEWS_DEFAULTS[category] || { visible: true, articleCount: 99, color: 'gradient', gradientColor: '#254d33', sources: {} };
-        return userPrefs[category] || { visible: true, articleCount: 99, color: 'gradient', gradientColor: '#254d33', sources: {} };
-    }
-
-    function isSourceVisible(pref, sourceName) {
-        if (!sourceName || !pref.sources || !pref.sources[sourceName]) return true;
-        const src = pref.sources[sourceName];
-        return src.visible !== false && src.count !== 0;
-    }
-
-    function getSourceCount(pref, sourceName) {
-        if (!sourceName || !pref.sources || !pref.sources[sourceName]) return 99;
-        return pref.sources[sourceName].count || 99;
-    }
-
-    // Check session on load — fetch prefs first, then render dashboard
-    let currentUser = null;
-    let currentTier = null;
+    // Check session on load
     supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
-        // Load admin-set site defaults first
-        await loadSiteDefaults();
         if (session) {
-            currentUser = session.user;
             const { data: profile } = await supabaseClient
                 .from('profiles')
                 .select('first_name, subscription_tier')
                 .eq('id', session.user.id)
                 .single();
-            currentTier = profile?.subscription_tier;
             updateNav(session.user, profile?.first_name, profile?.subscription_tier);
-            await loadUserPrefs(session.user.id);
+            currentTier = profile?.subscription_tier;
         }
-        loadDashboard(); // render dashboard after prefs are loaded (or as default if not logged in)
     });
 
     // Listen for auth changes
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
         if (session) {
-            currentUser = session.user;
             const { data: profile } = await supabaseClient
                 .from('profiles')
                 .select('first_name, subscription_tier')
                 .eq('id', session.user.id)
                 .single();
-            currentTier = profile?.subscription_tier;
             updateNav(session.user, profile?.first_name, profile?.subscription_tier);
+            currentTier = profile?.subscription_tier;
         } else {
-            currentUser = null;
-            currentTier = null;
             updateNav(null);
+            currentTier = null;
+        }
+    });
+
+    // ── AGE GATE ──
+    function confirmAge() {
+        document.cookie = "dhm-age-confirmed=1; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure";
+        document.getElementById("age-gate").classList.remove("active");
+    }
+    function checkAgeGate() {
+        const confirmed = document.cookie.split(";").some(c => c.trim().startsWith("dhm-age-confirmed="));
+        if (!confirmed) document.getElementById("age-gate").classList.add("active");
+    }
+    checkAgeGate();
+
+
+    // ── USER PREFERENCES ──
+    let userPrefs_comedy = null;
+
+    async function loadSiteDefaults_comedy() {
+        try {
+            const res = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/defaults?site=comedy');
+            if (res.ok) {
+                const kv = await res.json();
+                if (kv?.sections && Object.keys(kv.sections).length > 0) {
+                    COMEDY_DEFAULTS = kv.sections;
+                }
+            }
+        } catch(e) {}
+    }
+
+    let COMEDY_DEFAULTS = {
+        "Comedy News": {
+                "visible": true, "articleCount": 6, "color": "gradient", "gradientColor": "#4a3a1a",
+                "sources": {
+                    "The Onion":      { "visible": true, "count": 2 },
+                    "ClickHole": { "visible": true, "count": 2 },
+                    "Deadline Comedy":{ "visible": true, "count": 2 }
+                }
+        },
+        "Stand-Up & Live": {
+                "visible": true, "articleCount": 4, "color": "gradient", "gradientColor": "#1a3a1a",
+                "sources": {
+                    "r/standup": { "visible": true, "count": 2 },
+                    "r/comedy":  { "visible": true, "count": 2 }
+                }
+        },
+        "Comics": {
+                "visible": true, "articleCount": 4, "color": "gradient", "gradientColor": "#1a1a4a",
+                "sources": {
+                    "XKCD":     { "visible": true, "count": 2 },
+                    "The Oatmeal": { "visible": true, "count": 2 }
+                }
+        },
+        "Trending Comedy Searches": {
+                "visible": true, "articleCount": 28, "color": "gradient", "gradientColor": "#4a3a6b",
+                "sources": {
+                    "Google Trends Comedy US":            { "visible": true, "count": 4 },
+                    "Google Trends Comedy North America": { "visible": true, "count": 4 },
+                    "Google Trends Comedy South America": { "visible": true, "count": 4 },
+                    "Google Trends Comedy Europe":        { "visible": true, "count": 4 },
+                    "Google Trends Comedy Africa":        { "visible": true, "count": 4 },
+                    "Google Trends Comedy Asia":          { "visible": true, "count": 4 },
+                    "Google Trends Comedy Oceania":       { "visible": true, "count": 4 }
+                }
+        }
+};
+
+    async function loadUserPrefs_comedy(userId) {
+        const { data: profile } = await supabaseClient
+            .from('profiles')
+            .select('preferences')
+            .eq('id', userId)
+            .single();
+        if (profile?.preferences?.comedy?.sections) {
+            userPrefs_comedy = { ...COMEDY_DEFAULTS, ...profile.preferences.comedy.sections };
+        }
+        if (profile?.preferences?.newspaperShade) {
+            applyNewspaperShade(profile.preferences.newspaperShade);
+        }
+    }
+
+    function getSectionPref_comedy(category) {
+        if (!userPrefs_comedy) return COMEDY_DEFAULTS[category] || { visible: true, articleCount: 99, color: 'gradient', gradientColor: '#254d33' };
+        return userPrefs_comedy[category] || { visible: true, articleCount: 99, color: 'gradient', gradientColor: '#254d33' };
+    }
+
+    let currentTier = null;
+
+    // ── ZOOM CONTROL ──
+    const ZOOM_LEVELS = [1.16, 1.18, 1.20, 1.22, 1.24, 1.26, 1.28, 1.30];
+    const DEFAULT_ZOOM = 1.22;
+    function getZoom() { const s = document.cookie.match(/dhm-zoom=([\d.]+)/); return s ? parseFloat(s[1]) : DEFAULT_ZOOM; }
+    function applyZoom(level) { document.body.style.zoom = window.innerWidth > 1024 ? level : 1; const btn = document.getElementById('zoom-btn'); if (btn) btn.title = `Text size: ${Math.round(level*100)}%`; }
+    function cycleZoom() { const c = getZoom(); const i = ZOOM_LEVELS.findIndex(z => Math.abs(z-c)<0.01); const n = ZOOM_LEVELS[(i+1)%ZOOM_LEVELS.length]; document.cookie = `dhm-zoom=${n}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`; applyZoom(n); if (currentTier === 'admin') { fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/zoom', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({zoom:n}) }); } }
+    async function loadGlobalZoom() {
+        try {
+            const res = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/zoom');
+            if (res.ok) { const data = await res.json(); if (data.zoom) { applyZoom(data.zoom); document.cookie = `dhm-zoom=${data.zoom}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`; } }
+        } catch(e) {}
+    }
+    applyZoom(getZoom());
+    loadGlobalZoom();
+
+    // ── NEWSPAPER SHADE CYCLE ──
+    const NEWSPAPER_SHADES = ['#f0f0f0', '#f2f2f2', '#f4f4f4', '#f5f7f9', '#f7f8f9', '#f8f9fa', '#ffffff'];
+    function getNewspaperShade() { const s = document.cookie.match(/dhm-newspaper=([^;]+)/); return s ? decodeURIComponent(s[1]) : '#f7f8f9'; }
+    function applyNewspaperShade(shade) {
+        const container = document.querySelector('.container');
+        if (container) container.style.backgroundColor = shade;
+        document.cookie = `dhm-newspaper=${encodeURIComponent(shade)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+        const btn = document.querySelector('.theme-btn');
+        if (btn) { const idx = NEWSPAPER_SHADES.indexOf(shade); btn.title = `Newspaper shade: ${idx + 1} of ${NEWSPAPER_SHADES.length}`; }
+    }
+    function cycleTheme() {
+        const current = getNewspaperShade();
+        const idx = NEWSPAPER_SHADES.indexOf(current);
+        const next = NEWSPAPER_SHADES[(idx + 1) % NEWSPAPER_SHADES.length];
+        applyNewspaperShade(next);
+        supabaseClient.auth.getSession().then(({ data: { session } }) => {
+            if (!session) return;
+            supabaseClient.from('profiles').select('preferences').eq('id', session.user.id).single().then(({ data }) => {
+                const prefs = data?.preferences || {};
+                prefs.newspaperShade = next;
+                supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', session.user.id);
+            });
+        });
+    }
+    applyNewspaperShade(getNewspaperShade());
+
+    async function loadGlobalTypography() {
+        try {
+            const res = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/typography');
+            if (res.ok) {
+                const t = await res.json();
+                if (t.font) document.documentElement.style.setProperty('--article-font', `'${t.font}', Georgia, serif`);
+                if (t.fontSize) document.documentElement.style.setProperty('--article-font-size', `${t.fontSize}rem`);
+                if (t.titleFont) {
+                    document.documentElement.style.setProperty('--title-font', `'${t.titleFont}', serif`);
+                    document.cookie = `dhm-title-font=${encodeURIComponent(t.titleFont)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+                }
+                const m = document.querySelector('.masthead-title');
+                if (m) m.style.textDecoration = (t.mastheadUnderline !== false) ? 'underline' : 'none';
+                const mpLink = document.querySelector('.mpathtek-link');
+                if (mpLink) { mpLink.style.textDecoration = (t.mpathTekUnderline !== false) ? 'underline' : 'none'; mpLink.style.textUnderlineOffset = '3px'; }
+                const styleId = 'dhm-ul-style';
+                let el = document.getElementById(styleId);
+                if (!el) { el = document.createElement('style'); el.id = styleId; document.head.appendChild(el); }
+                let css = '';
+                if (t.articleUnderline === false) css += '.dispatch-link:hover { text-decoration: none !important; }';
+                if (t.articleUnderlineAlways) css += '.dispatch-link { text-decoration: underline !important; text-underline-offset: 3px; }';
+                el.textContent = css;
+            }
+        } catch(e) {}
+    }
+    loadGlobalTypography().finally(() => {
+        const m = document.getElementById('masthead');
+        if (m) m.style.opacity = '1';
+    });
+
+    // ── PRO GATE ──
+    async function checkProAccess() {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (!session) {
+            window.location.href = 'https://news.dailyhitmetrics.com/?upgrade=comedy';
+            return false;
+        }
+        const { data: profile } = await supabaseClient
+            .from('profiles')
+            .select('subscription_tier')
+            .eq('id', session.user.id)
+            .single();
+        if (!profile || profile.subscription_tier !== 'pro' && profile.subscription_tier !== 'pro_plus' && profile.subscription_tier !== 'admin') {
+            window.location.href = 'https://news.dailyhitmetrics.com/?upgrade=comedy';
+            return false;
+        }
+        return true;
+    }
+
+    checkProAccess().then(async result => {
+        if (result) {
+            await loadSiteDefaults_comedy();
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) await loadUserPrefs_comedy(session.user.id);
+            document.getElementById('main-content').style.display = 'block';
+            loadDashboard();
+            initCountdownClock();
         }
     });
 </script>
