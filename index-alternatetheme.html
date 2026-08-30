@@ -37,18 +37,18 @@
             font-style: normal;
             font-display: block;
         }
-        :root { --bg-content: #251c14; --article-font: 'Libre Baskerville', Georgia, serif; --article-font-size: 1.05rem; --title-font: 'Cinzel', serif; }
+        :root { --bg-content: #1a1a1a; --article-font: 'Libre Baskerville', Georgia, serif; --article-font-size: 1.05rem; --title-font: 'Cinzel', serif; }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html, body { overflow-x: hidden; }
         @media (max-width: 1024px) {
             .container::after { display: none !important; }
-            .section-banner-world             { background: #2a4030 !important; }
+            .section-banner-world             { background: #009624 !important; }
             .section-banner-intl              { background: #1a3d4a !important; }
-            .section-banner-social            { background: #3d3810 !important; }
-            .section-banner-tech              { background: #2a3518 !important; }
-            .section-banner-games             { background: #1f3318 !important; }
-            .section-banner-finance           { background: #152a22 !important; }
+            .section-banner-social            { background: #2a2800 !important; }
+            .section-banner-tech              { background: #1a2810 !important; }
+            .section-banner-games             { background: #102010 !important; }
+            .section-banner-finance           { background: #001a10 !important; }
             .section-banner-searches-us       { background: #556b45 !important; }
             .section-banner-searches-namerica { background: #6b7a30 !important; }
             .section-banner-searches-samerica { background: #2d4a3e !important; }
@@ -61,8 +61,8 @@
         html { font-size: 144%; }
 
         body {
-            background-color: #1c1510;
-            color: #e8d9c0;
+            background-color: #000000;
+            color: #ffffff;
             font-family: 'Libre Baskerville', Georgia, serif;
             padding: 45px 20px 75px;
             display: flex;
@@ -73,8 +73,8 @@
             width: 100%;
             max-width: 1200px;
             background-color: var(--bg-content);
-            border-left: 5px solid #5a3a20;
-            border-right: 1px solid #3d2f20;
+            border-left: 5px solid #333333;
+            border-right: 1px solid #222222;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
             padding: 36px 40px 40px;
             position: relative;
@@ -86,7 +86,7 @@
             top: 0;
             bottom: 0;
             width: 1px;
-            background-color: #c8832a;
+            background-color: #00c853;
             opacity: 0.35;
             right: calc(50% - 640px);
             pointer-events: none;
@@ -125,7 +125,7 @@
 
         .masthead-top-rule {
             border: none;
-            border-top: 2px solid #5a3a20;
+            border-top: 1px solid #333333;
             margin-bottom: 10px;
         }
 
@@ -133,7 +133,7 @@
             font-size: 0.65rem;
             letter-spacing: 0.22em;
             text-transform: uppercase;
-            color: #e8d9c0;
+            color: #ffffff;
             font-family: 'Libre Baskerville', serif;
             margin-bottom: 6px;
             text-align: right;
@@ -143,7 +143,7 @@
             font-family: var(--title-font);
             font-size: 2.5rem;
             font-weight: 700;
-            color: #e8d9c0;
+            color: #ffffff;
             letter-spacing: 0;
             line-height: 1;
             margin: 2px 0 8px;
@@ -156,7 +156,7 @@
             font-family: 'Libre Baskerville', serif;
             font-size: 0.55rem;
             font-weight: 400;
-            color: #8a7055;
+            color: #707070;
             letter-spacing: 0.2em;
             text-align: right;
             margin: 2px 0 6px;
@@ -181,7 +181,7 @@
         .masthead-dateline {
             font-family: 'IM Fell English', serif;
             font-size: 0.7rem;
-            color: #b89a78;
+            color: #b0b0b0;
             font-style: italic;
             font-variant-numeric: tabular-nums;
         }
@@ -196,7 +196,7 @@
             font-size: 0.65rem;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: #b89a78;
+            color: #b0b0b0;
             padding: 0 1rem;
             overflow: hidden;
             white-space: nowrap;
@@ -210,7 +210,7 @@
         .sync-countdown {
             font-family: 'Libre Baskerville', serif;
             font-size: 0.7rem;
-            color: #d4c0a0;
+            color: #e0e0e0;
             font-weight: 700;
             transition: color 0.2s ease;
             text-align: right;
@@ -220,7 +220,7 @@
         /* ── EDITORIAL SUMMARY ── */
         .editorial-box {
             border-top: 3px double #2c1810;
-            border-bottom: 0.5px solid #3d2f20;
+            border-bottom: 0.5px solid #2a2a2a;
             margin-bottom: 18px;
             display: none;
         }
@@ -231,18 +231,18 @@
             cursor: pointer;
             padding: 8px 0 6px;
             user-select: none;
-            border-bottom: 0.5px solid #3d2f20;
+            border-bottom: 0.5px solid #2a2a2a;
         }
         .editorial-label {
             font-family: 'Quantico', sans-serif;
             font-size: 0.52rem;
             letter-spacing: 0.18em;
             text-transform: uppercase;
-            color: #5a8c6a;
+            color: #00c853;
         }
         .editorial-arrow {
             font-size: 0.55rem;
-            color: #5a8c6a;
+            color: #00c853;
             transition: transform 0.2s ease;
         }
         .editorial-arrow.open { transform: rotate(180deg); }
@@ -256,7 +256,7 @@
             font-size: 0.72rem;
             font-style: italic;
             line-height: 1.85;
-            color: #c8b48a;
+            color: #d0d0d0;
             border-left: 3px solid #d4c9b0;
             padding-left: 14px;
             margin-left: 2px;
@@ -266,7 +266,7 @@
             font-size: 0.48rem;
             letter-spacing: 0.14em;
             text-transform: uppercase;
-            color: #8a7055;
+            color: #707070;
             margin-top: 10px;
             text-align: right;
         }
@@ -274,20 +274,20 @@
 
         .masthead-thick-rule {
             border: none;
-            border-top: 2px solid #5a3a20;
+            border-top: 1px solid #333333;
             margin: 8px 0 0;
         }
 
         .section-banner { color: #faf8f4; font-family: 'Libre Baskerville', serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; padding: 6px 0 6px 12px; }
-        .section-banner-world             { background: linear-gradient(to right, #1a3320, transparent); }
+        .section-banner-world             { background: linear-gradient(to right, #003820, transparent); }
         .section-banner-intl              { background: linear-gradient(to right, #1a3d4a, transparent); }
-        .section-banner-social            { background: linear-gradient(to right, #3d3810, transparent); }
-        .section-banner-tech              { background: linear-gradient(to right, #2a3518, transparent); }
-        .section-banner-games             { background: linear-gradient(to right, #1f3318, transparent); }
-        .section-banner-finance           { background: linear-gradient(to right, #152a22, transparent); }
-        .section-banner-searches-us       { background: linear-gradient(to right, #2d3a20, transparent); }
+        .section-banner-social            { background: linear-gradient(to right, #2a2800, transparent); }
+        .section-banner-tech              { background: linear-gradient(to right, #1a2810, transparent); }
+        .section-banner-games             { background: linear-gradient(to right, #102010, transparent); }
+        .section-banner-finance           { background: linear-gradient(to right, #001a10, transparent); }
+        .section-banner-searches-us       { background: linear-gradient(to right, #1a2a00, transparent); }
         .section-banner-searches-namerica { background: linear-gradient(to right, #6b7a30, transparent); }
-        .section-banner-searches-samerica { background: linear-gradient(to right, #152a22, transparent); }
+        .section-banner-searches-samerica { background: linear-gradient(to right, #001a10, transparent); }
         .section-banner-searches-europe   { background: linear-gradient(to right, #5a6b40, transparent); }
         .section-banner-searches-africa   { background: linear-gradient(to right, #4a6b55, transparent); }
         .section-banner-searches-asia     { background: linear-gradient(to right, #8a4a15, transparent); }
@@ -309,7 +309,7 @@
             font-weight: 700;
             letter-spacing: 0.18em;
             text-transform: uppercase;
-            color: #b89a78;
+            color: #b0b0b0;
             padding: 13px 20px;
             text-align: left;
             background: #edf4ef;
@@ -319,7 +319,7 @@
 
         .scoreboard td {
             padding: 16px 20px;
-            border-bottom: 1px solid #3d2f20;
+            border-bottom: 1px solid #2a2a2a;
             vertical-align: middle;
         }
 
@@ -360,7 +360,7 @@
         .article-img-placeholder {
             width: 56px;
             height: 40px;
-            background: #3a5c44;
+            background: #00c853;
             border: 0.5px solid #c8b89a;
             display: flex;
             align-items: center;
@@ -386,18 +386,18 @@
             font-family: var(--article-font);
             font-size: var(--article-font-size);
             font-weight: 700;
-            color: #e8d9c0;
+            color: #ffffff;
             line-height: 1.3;
             margin-bottom: 5px;
         }
 
         .dispatch-link {
-            color: #e8d9c0;
+            color: #ffffff;
             text-decoration: none;
         }
 
         .dispatch-link:hover {
-            color: #e8d9c0;
+            color: #ffffff;
             text-decoration: underline;
             text-underline-offset: 3px;
         }
@@ -405,7 +405,7 @@
         .entity-summary {
             font-family: var(--article-font);
             font-size: 0.78rem;
-            color: #b89a78;
+            color: #b0b0b0;
             font-style: italic;
             line-height: 1.4;
             margin-bottom: 8px;
@@ -418,17 +418,17 @@
             font-weight: 700;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: #5a8c6a;
+            color: #00c853;
             margin-top: 10px;
             padding-top: 7px;
-            border-top: 1px solid #3d2f20;
+            border-top: 1px solid #2a2a2a;
         }
 
         .velocity-data {
             font-family: 'Libre Baskerville', serif;
             font-size: 0.88rem;
             font-weight: 700;
-            color: #d4c0a0;
+            color: #e0e0e0;
             text-align: right;
             white-space: nowrap;
         }
@@ -459,7 +459,7 @@
             align-items: center;
             gap: 0.6rem;
             padding: 0 0 10px;
-            border-bottom: 0.5px solid #3d2f20;
+            border-bottom: 0.5px solid #2a2a2a;
             margin-bottom: 10px;
             position: relative;
         }
@@ -487,22 +487,22 @@
             font-weight: 700;
             letter-spacing: 0.08em;
             text-transform: none;
-            color: #b89a78;
+            color: #b0b0b0;
             text-decoration: none;
             transition: color 0.15s ease;
         }
 
-        .nav-link:hover { color: #d4c0a0; }
+        .nav-link:hover { color: #e0e0e0; }
 
         .nav-link-signup {
-            color: #b89a78;
+            color: #b0b0b0;
             background: rgba(58, 107, 74, 0.08);
             border: 0.5px solid #3a6b4a;
             padding: 4px 10px;
             transition: background 0.15s ease;
         }
 
-        .nav-link-signup:hover { background: rgba(58, 107, 74, 0.18); color: #d4c0a0; }
+        .nav-link-signup:hover { background: rgba(58, 107, 74, 0.18); color: #e0e0e0; }
 
         .momentum-header {
             position: relative;
@@ -516,7 +516,7 @@
             right: 0;
             top: 120%;
             width: 200px;
-            background: #1a1008;
+            background: #0d0d0d;
             color: #faf8f4;
             font-family: 'Libre Baskerville', serif;
             font-size: 0.65rem;
@@ -542,7 +542,7 @@
             font-family: 'IM Fell English', serif;
             font-size: 0.7rem;
             font-style: italic;
-            color: #8a7055;
+            color: #707070;
             margin-top: 16px;
             letter-spacing: 0.04em;
         }
@@ -588,7 +588,7 @@
             .scoreboard td:nth-child(3) { width: 100%; }
 
             /* Show inline metrics on mobile */
-            .mobile-meta { display: block; font-family: 'Libre Baskerville', serif; font-size: 0.62rem; color: #b89a78; margin-top: 5px; }
+            .mobile-meta { display: block; font-family: 'Libre Baskerville', serif; font-size: 0.62rem; color: #b0b0b0; margin-top: 5px; }
 
             /* Hide unused headers */
             .scoreboard thead { display: none; }
@@ -618,7 +618,7 @@
             align-items: center;
             gap: 0.3rem;
             padding: 8px 4px 10px;
-            border-bottom: 0.5px solid #3d2f20;
+            border-bottom: 0.5px solid #2a2a2a;
             margin-bottom: 10px;
         }
 
@@ -628,7 +628,7 @@
             font-weight: 400;
             font-style: italic;
             letter-spacing: 0.05em;
-            color: #5a8c6a;
+            color: #00c853;
             text-decoration: underline;
             text-underline-offset: 3px;
             transition: color 0.15s ease;
@@ -641,10 +641,10 @@
             .section-nav { gap: 0.25rem; padding: 6px 2px 8px; }
         }
 
-        .section-nav-link:hover { color: #5a8c6a; }
+        .section-nav-link:hover { color: #00c853; }
 
         .section-nav-link.locked {
-            color: #5a8c6a;
+            color: #00c853;
             cursor: default;
             pointer-events: none;
         }
@@ -666,7 +666,7 @@
         }
         .age-gate-overlay.active { display: flex; }
         .age-gate-box {
-            background: #251c14;
+            background: #1a1a1a;
             border-left: 3px solid #3a6b4a;
             border-right: 3px solid #3a6b4a;
             max-width: 480px;
@@ -678,7 +678,7 @@
         .age-gate-title {
             font-family: 'Quantico', sans-serif;
             font-size: 1rem;
-            color: #5a8c6a;
+            color: #00c853;
             margin-bottom: 12px;
             letter-spacing: 0.05em;
         }
@@ -687,11 +687,11 @@
             font-family: 'Libre Baskerville', serif;
             font-size: 0.7rem;
             line-height: 1.8;
-            color: #c8b48a;
+            color: #d0d0d0;
             margin-bottom: 24px;
         }
         .age-gate-btn {
-            background: #3a5c44;
+            background: #00c853;
             color: #faf8f4;
             font-family: 'Libre Baskerville', serif;
             font-size: 0.65rem;
@@ -703,12 +703,12 @@
             cursor: pointer;
             transition: background 0.15s ease;
         }
-        .age-gate-btn:hover { background: #2a4030; }
+        .age-gate-btn:hover { background: #009624; }
         .age-gate-note {
             font-family: 'IM Fell English', serif;
             font-size: 0.55rem;
             font-style: italic;
-            color: #8a7055;
+            color: #707070;
             margin-top: 14px;
         }
 
@@ -723,7 +723,7 @@
         }
         .modal-overlay.active { display: flex; }
         .modal {
-            background: #251c14;
+            background: #1a1a1a;
             border: 1px solid #3a6b4a;
             padding: 32px 36px;
             width: 100%;
@@ -733,7 +733,7 @@
         .modal h2 {
             font-family: 'Quantico', sans-serif;
             font-size: 1.1rem;
-            color: #d4c0a0;
+            color: #e0e0e0;
             margin-bottom: 16px;
             padding-bottom: 14px;
             border-bottom: 1px solid #d4c9b0;
@@ -746,17 +746,17 @@
             width: 100%;
             padding: 10px 12px;
             margin-bottom: 12px;
-            border: 1px solid #3d2f20;
+            border: 1px solid #2a2a2a;
             background: #fff;
             font-family: 'Libre Baskerville', serif;
             font-size: 0.7rem;
-            color: #e8d9c0;
+            color: #ffffff;
         }
-        .modal input:focus { outline: none; border-color: #5a8c6a; }
+        .modal input:focus { outline: none; border-color: #00c853; }
         .modal-btn {
             width: 100%;
             padding: 10px;
-            background: #3a5c44;
+            background: #00c853;
             color: #faf8f4;
             border: none;
             font-family: 'Libre Baskerville', serif;
@@ -768,18 +768,18 @@
             margin-bottom: 10px;
             transition: background 0.15s ease;
         }
-        .modal-btn:hover { background: #2a4030; }
+        .modal-btn:hover { background: #009624; }
         .modal-close {
             display: block;
             text-align: center;
             font-family: 'Libre Baskerville', serif;
             font-size: 0.6rem;
-            color: #8a7055;
+            color: #707070;
             cursor: pointer;
             margin-top: 6px;
             text-decoration: underline;
         }
-        .modal-close:hover { color: #d4c0a0; }
+        .modal-close:hover { color: #e0e0e0; }
         .modal-msg {
             font-family: 'IM Fell English', serif;
             font-size: 0.65rem;
@@ -798,16 +798,16 @@
             text-align: center;
             font-family: 'Libre Baskerville', serif;
             font-size: 0.58rem;
-            color: #8a7055;
+            color: #707070;
             margin-top: 12px;
         }
-        .modal-switch a { color: #5a8c6a; cursor: pointer; text-decoration: underline; }
+        .modal-switch a { color: #00c853; cursor: pointer; text-decoration: underline; }
 
         /* Auth nav state */
         .nav-user {
             font-family: 'Libre Baskerville', serif;
             font-size: 0.65rem;
-            color: #b89a78;
+            color: #b0b0b0;
             letter-spacing: 0.08em;
         }
         .nav-link-logout {
@@ -823,7 +823,7 @@
             border: none;
             padding: 0;
         }
-        .nav-link-logout:hover { color: #d4c0a0; }
+        .nav-link-logout:hover { color: #e0e0e0; }
     </style>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/favicon.svg">
@@ -840,7 +840,7 @@
         <div class="age-gate-box">
             <div class="age-gate-title">Daily Hit Metrics</div>
             <hr class="age-gate-rule">
-            <p class="age-gate-text">This site aggregates content from public sources including Reddit and other open networks, which may contain unmoderated community discussions. By continuing, you confirm that you are <strong>13 years of age or older</strong> and agree to our <a href="/terms.html" style="color:#5a8c6a;">Terms of Service</a>.</p>
+            <p class="age-gate-text">This site aggregates content from public sources including Reddit and other open networks, which may contain unmoderated community discussions. By continuing, you confirm that you are <strong>13 years of age or older</strong> and agree to our <a href="/terms.html" style="color:#00c853;">Terms of Service</a>.</p>
             <button class="age-gate-btn" onclick="confirmAge()">I Confirm — Continue</button>
             <p class="age-gate-note">This confirmation is stored in your browser and will not be shown again.</p>
         </div>
@@ -849,7 +849,7 @@
     <div class="modal-overlay" id="login-modal">
         <div class="modal">
             <h2>Login</h2>
-            <p style="font-family:'Libre Baskerville',serif; font-size:0.6rem; color:#b89a78; margin-bottom:0;">Please enter your Email address and Password.</p>
+            <p style="font-family:'Libre Baskerville',serif; font-size:0.6rem; color:#b0b0b0; margin-bottom:0;">Please enter your Email address and Password.</p>
             <div class="modal-msg" id="login-msg"></div>
             <input type="email" id="login-email" placeholder="Email address" autocomplete="email" onkeydown="if(event.key==='Enter') handleLogin()" style="margin-top:-6px;">
             <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter') handleLogin()">
@@ -863,9 +863,9 @@
     <div class="modal-overlay" id="signup-modal">
         <div class="modal">
             <h2>Create Account</h2>
-            <p style="font-family:'Libre Baskerville',serif; font-size:0.6rem; color:#b89a78; margin-bottom:0;">Please enter your First name, Last name, and Email address.</p>
+            <p style="font-family:'Libre Baskerville',serif; font-size:0.6rem; color:#b0b0b0; margin-bottom:0;">Please enter your First name, Last name, and Email address.</p>
             <div class="modal-msg" id="signup-msg"></div>
-            <select id="signup-salutation" style="width:100%; font-family:'Libre Baskerville',serif; font-size:0.6rem; padding:8px 10px; border:1px solid #3d2f20; background:#251c14; color:#e8d9c0; margin-bottom:12px;">
+            <select id="signup-salutation" style="width:100%; font-family:'Libre Baskerville',serif; font-size:0.6rem; padding:8px 10px; border:1px solid #2a2a2a; background:#1a1a1a; color:#ffffff; margin-bottom:12px;">
                 <option value="">Salutation (optional)</option>
                 <option value="Mr.">Mr.</option>
                 <option value="Mrs.">Mrs.</option>
@@ -877,10 +877,10 @@
             <input type="text" id="signup-middlename" placeholder="Middle Name (or initial) — optional" autocomplete="additional-name">
             <input type="text" id="signup-lastname" placeholder="Last name" autocomplete="family-name">
             <input type="email" id="signup-email" placeholder="Email address" autocomplete="email">
-            <div style="font-family:'Libre Baskerville',serif; font-size:0.55rem; color:#b89a78; margin-bottom:0; margin-top:14px;">Password must be at least eight characters and include both letters and numbers. Or allow browser to specify password.</div>
+            <div style="font-family:'Libre Baskerville',serif; font-size:0.55rem; color:#b0b0b0; margin-bottom:0; margin-top:14px;">Password must be at least eight characters and include both letters and numbers. Or allow browser to specify password.</div>
             <div style="position:relative; margin-top:26px; margin-bottom:12px;">
                 <input type="password" id="signup-password" placeholder="Password" autocomplete="new-password" onkeydown="if(event.key==='Enter') handleSignup()" style="width:100%; padding-right:36px; margin-bottom:0;">
-                <span onclick="togglePasswordVisibility()" style="position:absolute; right:10px; top:0; bottom:0; display:flex; align-items:center; cursor:pointer; color:#8a7055; font-size:0.75rem; user-select:none;" id="pw-toggle">👁</span>
+                <span onclick="togglePasswordVisibility()" style="position:absolute; right:10px; top:0; bottom:0; display:flex; align-items:center; cursor:pointer; color:#707070; font-size:0.75rem; user-select:none;" id="pw-toggle">👁</span>
             </div>
             <button class="modal-btn" onclick="handleSignup()">Create Account</button>
             <div class="modal-switch">Already have an account? <a onclick="switchModal('signup','login')">Login</a></div>
@@ -893,7 +893,7 @@
         <img src="https://news.dailyhitmetrics.com/greenleaves.webp" alt="" style="width:25%; display:block;" aria-hidden="true">
     </div>
 
-    <div id="signup-success-banner" style="display:none; font-family:'Libre Baskerville',serif; font-size:0.7rem; color:#5a8c6a; background:#edf4ef; border:1px solid #3a6b4a; padding:10px 16px; margin-bottom:12px;">
+    <div id="signup-success-banner" style="display:none; font-family:'Libre Baskerville',serif; font-size:0.7rem; color:#00c853; background:#edf4ef; border:1px solid #3a6b4a; padding:10px 16px; margin-bottom:12px;">
         ✓ Account created! Please check your email to confirm your account.
     </div>
 
@@ -970,10 +970,10 @@
 
     <div class="footer-note">All dispatches sourced from open networks &amp; public indices &nbsp;·&nbsp; Updated hourly on the hour &nbsp;·&nbsp; dailyhitmetrics.com</div>
     <div class="footer-note" style="margin-top: 8px;">
-        <a href="/about.html" style="color: #5a8c6a; text-decoration: none;">About</a> &nbsp;·&nbsp;
-        <a href="/privacy.html" style="color: #5a8c6a; text-decoration: none;">Privacy Policy</a> &nbsp;·&nbsp;
-        <a href="/terms.html" style="color: #5a8c6a; text-decoration: none;">Terms of Service</a> &nbsp;·&nbsp;
-        <a href="/contact.html" style="color: #5a8c6a; text-decoration: none;">Contact</a>
+        <a href="/about.html" style="color: #00c853; text-decoration: none;">About</a> &nbsp;·&nbsp;
+        <a href="/privacy.html" style="color: #00c853; text-decoration: none;">Privacy Policy</a> &nbsp;·&nbsp;
+        <a href="/terms.html" style="color: #00c853; text-decoration: none;">Terms of Service</a> &nbsp;·&nbsp;
+        <a href="/contact.html" style="color: #00c853; text-decoration: none;">Contact</a>
     </div>
     <div class="footer-note" style="margin-top: 6px;">&copy; 2026 <a href="https://mpathtek.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">MpathTek</a> &nbsp;·&nbsp; All rights reserved</div>
 
@@ -1300,9 +1300,9 @@
             const tierBtn = isAdmin
                 ? `<span class="nav-user" style="color:#8a1a1a;">✦ Admin</span>`
                 : isProPlus
-                ? `<span class="nav-user" style="color:#5a8c6a;">✦ Pro+</span>`
+                ? `<span class="nav-user" style="color:#00c853;">✦ Pro+</span>`
                 : isPro
-                ? `<span class="nav-user" style="color:#5a8c6a;">✦ Pro</span>`
+                ? `<span class="nav-user" style="color:#00c853;">✦ Pro</span>`
                 : `<a href="#" class="nav-link" style="text-transform:none; background:rgba(58,107,74,0.08); border:0.5px solid #3a6b4a; padding:4px 10px;" onclick="handleUpgrade(); return false;">Upgrade to Pro</a>`;
             const settingsLink = isPro ? `<span style="color:#d4c9b0; font-size:0.6rem;">|</span><a href="/settings.html?from=news" class="nav-link">Settings</a>` : '';
             const adminLinks = isAdmin ? `
@@ -1463,8 +1463,8 @@
             // Not Pro — show banner
             const banner = document.createElement('div');
             banner.id = 'upgrade-banner';
-            banner.style.cssText = 'background:#edf4ef; border:1px solid #3a6b4a; color:#5a8c6a; font-family:Libre Baskerville,serif; font-size:0.8rem; padding:12px 20px; text-align:center; margin-bottom:12px;';
-            banner.innerHTML = `Daily Hit Metrics <strong>${siteName}</strong> is a Pro feature. <a href="javascript:void(0)" onclick="openModal('signup-modal')" style="color:#5a8c6a; font-weight:700;">Create a free account</a> or <a href="javascript:void(0)" onclick="handleUpgrade()" style="color:#5a8c6a; font-weight:700;">Upgrade to Pro</a> to access it.`;
+            banner.style.cssText = 'background:#edf4ef; border:1px solid #3a6b4a; color:#00c853; font-family:Libre Baskerville,serif; font-size:0.8rem; padding:12px 20px; text-align:center; margin-bottom:12px;';
+            banner.innerHTML = `Daily Hit Metrics <strong>${siteName}</strong> is a Pro feature. <a href="javascript:void(0)" onclick="openModal('signup-modal')" style="color:#00c853; font-weight:700;">Create a free account</a> or <a href="javascript:void(0)" onclick="handleUpgrade()" style="color:#00c853; font-weight:700;">Upgrade to Pro</a> to access it.`;
             document.querySelector('.container').insertBefore(banner, document.querySelector('.container').firstChild);
         });
     }
@@ -1535,8 +1535,8 @@
                     <div class="src-sub">feeds.bbci.co.uk &nbsp;·&nbsp; Updated hourly</div>
                 </div>
                 <div class="src-status">
-                    <div style="font-family:'Quantico',sans-serif;font-size:0.42rem;letter-spacing:0.1em;text-transform:uppercase;color:#8a7055;">Feed status</div>
-                    <div style="font-family:'Quantico',sans-serif;font-size:0.6rem;color:#5a8c6a;margin-top:2px;">● Live</div>
+                    <div style="font-family:'Quantico',sans-serif;font-size:0.42rem;letter-spacing:0.1em;text-transform:uppercase;color:#707070;">Feed status</div>
+                    <div style="font-family:'Quantico',sans-serif;font-size:0.6rem;color:#00c853;margin-top:2px;">● Live</div>
                 </div>
             </div>
             <div class="src-stat-row">
@@ -1554,7 +1554,7 @@
                 </div>
             </div>
             ${Object.keys(topicCounts).length ? `<div class="src-section-head">Topic distribution</div>${topicsHtml}` : ''}
-            ${bbcArticles.length ? `<div class="src-section-head">Headlines this hour</div>${hlHtml}` : '<div style="font-family:\'IM Fell English\',serif;font-style:italic;font-size:0.62rem;color:#8a7055;padding:8px 0;">No BBC articles in current feed.</div>'}
+            ${bbcArticles.length ? `<div class="src-section-head">Headlines this hour</div>${hlHtml}` : '<div style="font-family:\'IM Fell English\',serif;font-style:italic;font-size:0.62rem;color:#707070;padding:8px 0;">No BBC articles in current feed.</div>'}
         `;
 
         box.style.display = 'block';
