@@ -72,7 +72,7 @@
         .container {
             width: 100%;
             max-width: 1200px;
-            background-color: var(--bg-content);
+            background-color: #2a2a2a;
             border-left: 5px solid #333333;
             border-right: 1px solid #222222;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
@@ -328,7 +328,7 @@
         }
 
         .scoreboard tbody tr:hover td {
-            background-color: #f0ebe0;
+            background-color: #2a2a2a;
         }
 
         /* ── IMAGE ── */
@@ -1620,7 +1620,7 @@
     if (_themeBtn) _themeBtn.style.left = '0';
 
     // ── NEWSPAPER COLOR CYCLE ──
-    const NEWSPAPER_SHADES = ['#111111', '#141414', '#161616', '#181818', '#1a1a1a', '#1c1c1c', '#1e1e1e'];
+    const NEWSPAPER_SHADES = ['#1a1a1a', '#1c1c1c', '#1e1e1e', '#202020', '#222222', '#242424', '#262626'];
 
     function getNewspaperShade() {
         const saved = document.cookie.match(/dhm-newspaper=([^;]+)/);
