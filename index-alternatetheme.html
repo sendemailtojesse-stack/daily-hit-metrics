@@ -1630,8 +1630,9 @@
     }
 
     function applyNewspaperShade(shade) {
-        const container = document.querySelector('.container');
-        if (container) container.style.backgroundColor = shade;
+        // True dark theme — apply shade to article rows only, not outer container
+        const rows = document.querySelectorAll('.scoreboard tbody tr td');
+        rows.forEach(td => td.style.backgroundColor = shade);
         document.cookie = `dhm-newspaper=${encodeURIComponent(shade)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
         const btn = document.querySelector('.theme-btn');
         if (btn) {
