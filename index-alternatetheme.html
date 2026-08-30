@@ -502,7 +502,7 @@
             transition: background 0.15s ease;
         }
 
-        .nav-link-signup:hover { background: rgba(58, 107, 74, 0.18); color: #e0e0e0; }
+        .nav-link-signup:hover { background: rgba(0, 200, 83, 0.18); color: #ffffff; }
 
         .momentum-header {
             position: relative;
@@ -1620,11 +1620,13 @@
     if (_themeBtn) _themeBtn.style.left = '0';
 
     // ── NEWSPAPER COLOR CYCLE ──
-    const NEWSPAPER_SHADES = ['#f0f0f0', '#f2f2f2', '#f4f4f4', '#f5f7f9', '#f7f8f9', '#f8f9fa', '#ffffff'];
+    const NEWSPAPER_SHADES = ['#111111', '#141414', '#161616', '#181818', '#1a1a1a', '#1c1c1c', '#1e1e1e'];
 
     function getNewspaperShade() {
         const saved = document.cookie.match(/dhm-newspaper=([^;]+)/);
-        return saved ? decodeURIComponent(saved[1]) : '#f8f9fa';
+        const shade = saved ? decodeURIComponent(saved[1]) : '#1a1a1a';
+        // True dark theme — ignore any light/parchment shades from cookie
+        return NEWSPAPER_SHADES.includes(shade) ? shade : '#1a1a1a';
     }
 
     function applyNewspaperShade(shade) {
