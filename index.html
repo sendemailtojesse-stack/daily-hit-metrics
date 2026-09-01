@@ -1746,7 +1746,7 @@
             const container = document.querySelector('.container');
             if (container) container.style.backgroundColor = '';
         }
-        document.cookie = `dhm-theme=${encodeURIComponent(theme || 'parchment')}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+        // Note: cookie is NOT written here — only written when user explicitly saves theme
     }
 
     function getNewspaperShade() {
@@ -1996,10 +1996,13 @@
             const savedTheme = profile.preferences.theme;
             const cookieTheme = getDHMTheme();
             if (savedTheme !== cookieTheme) {
-                // Set cookie then reload so body script applies theme instantly
+                // Write cookie and reload — on reload body script applies theme before render
                 document.cookie = `dhm-theme=${encodeURIComponent(savedTheme)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+                console.log('Theme cookie set:', savedTheme, '| Reading back:', document.cookie.match(/dhm-theme=([^;]+)/)?.[1]);
                 window.location.reload();
                 return;
+            } else {
+                applyDHMTheme(savedTheme);
             }
         }
         // Font/typography is now global — loaded from Worker KV, not per-user prefs
