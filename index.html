@@ -1868,6 +1868,9 @@
         };
     }
 
+    // Apply saved theme immediately from cookie (before auth resolves)
+    applyDHMTheme(getDHMTheme());
+
     // ── FONT PREFERENCE — load global typography from Worker ──
     async function loadGlobalTypography() {
         try {
@@ -1950,7 +1953,7 @@
     async function loadUserPrefs(userId) {
         const { data: profile } = await supabaseClient
             .from('profiles')
-            .select('preferences')
+            .select('preferences, subscription_tier')
             .eq('id', userId)
             .single();
         if (profile?.preferences?.news?.sections) {
@@ -1980,7 +1983,8 @@
             applyNewspaperShade(profile.preferences.newspaperShade);
         }
         // Apply saved theme (dark/parchment) for Pro users
-        if (isPro && profile?.preferences?.theme) {
+        const isProUser = ['pro', 'pro_plus', 'admin'].includes(profile?.subscription_tier);
+        if (isProUser && profile?.preferences?.theme) {
             applyDHMTheme(profile.preferences.theme);
         }
         // Font/typography is now global — loaded from Worker KV, not per-user prefs
