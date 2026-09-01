@@ -13,9 +13,6 @@
         (function() {
             const m = document.cookie.match(/dhm-title-font=([^;]+)/);
             if (m) document.documentElement.style.setProperty('--title-font', decodeURIComponent(m[1]) + ', serif');
-            // Apply dark theme immediately from cookie before page renders
-            const t = document.cookie.match(/dhm-theme=([^;]+)/);
-            if (t && decodeURIComponent(t[1]) === 'dark') document.body.classList.add('dark-theme');
             // If visiting root domain, redirect to default vertical
             if (window.location.hostname === 'dailyhitmetrics.com' || window.location.hostname === 'www.dailyhitmetrics.com') {
                 const VERTICALS = {
@@ -940,7 +937,7 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2354946193859243"
      crossorigin="anonymous"></script>
 </head>
-<body>
+<body><script>(function(){var t=document.cookie.match(/dhm-theme=([^;]+)/);if(t&&decodeURIComponent(t[1])==='dark')document.body.classList.add('dark-theme');})();</script>
 
     <!-- Auth Modals -->
     <!-- Age Gate -->
