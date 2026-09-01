@@ -2055,6 +2055,7 @@
                 .single();
             currentTier = profile?.subscription_tier;
             updateNav(session.user, profile?.first_name, profile?.subscription_tier);
+            await loadUserPrefs(session.user.id);
         } else {
             currentUser = null;
             currentTier = null;
