@@ -1994,7 +1994,14 @@
         // Apply saved theme (dark/parchment) for Pro users
         const isProUser = ['pro', 'pro_plus', 'admin'].includes(profile?.subscription_tier);
         if (isProUser && profile?.preferences?.theme) {
-            applyDHMTheme(profile.preferences.theme);
+            const savedTheme = profile.preferences.theme;
+            const cookieTheme = getDHMTheme();
+            // Set cookie so next load applies instantly
+            document.cookie = `dhm-theme=${encodeURIComponent(savedTheme)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+            if (savedTheme !== cookieTheme) {
+                // Theme mismatch — reload so body script applies correct theme from cookie
+                window.location.reload();
+            }
         }
         // Font/typography is now global — loaded from Worker KV, not per-user prefs
     }
