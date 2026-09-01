@@ -1383,17 +1383,6 @@
         const isAdmin = tier === 'admin';
         const isProPlus = tier === 'pro_plus';
 
-        // Show/hide theme toggle button based on tier
-        const themeToggleBtn = document.querySelector('.theme-btn');
-        if (themeToggleBtn) {
-            themeToggleBtn.style.visibility = isPro ? 'visible' : 'hidden';
-            themeToggleBtn.style.pointerEvents = isPro ? 'auto' : 'none';
-            if (isPro) {
-                const currentTheme = getDHMTheme();
-                themeToggleBtn.title = currentTheme === 'dark' ? 'Switch to Parchment theme' : 'Switch to Dark theme';
-            }
-        }
-
         // Update section nav links based on tier
         const sectionNav = document.getElementById('section-nav');
         sectionNav.style.display = 'flex';
@@ -1773,19 +1762,15 @@
     }
 
     function cycleTheme() {
-        // For Pro/Pro+/Admin: toggle between dark and parchment
-        if (!isPro) return;
-        const current = getDHMTheme();
-        const next = current === 'dark' ? 'parchment' : 'dark';
-        applyDHMTheme(next);
-        // Update button tooltip
-        const btn = document.querySelector('.theme-btn');
-        if (btn) btn.title = next === 'dark' ? 'Switch to Parchment theme' : 'Switch to Dark theme';
+        const current = getNewspaperShade();
+        const idx = NEWSPAPER_SHADES.indexOf(current);
+        const next = NEWSPAPER_SHADES[(idx + 1) % NEWSPAPER_SHADES.length];
+        applyNewspaperShade(next);
         // Save to Supabase preferences
         if (currentUser) {
             supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single().then(({ data }) => {
                 const prefs = data?.preferences || {};
-                prefs.theme = next;
+                prefs.newspaperShade = next;
                 supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
             });
         }
@@ -1997,8 +1982,6 @@
         // Apply saved theme (dark/parchment) for Pro users
         if (isPro && profile?.preferences?.theme) {
             applyDHMTheme(profile.preferences.theme);
-            const btn = document.querySelector('.theme-btn');
-            if (btn) btn.title = profile.preferences.theme === 'dark' ? 'Switch to Parchment theme' : 'Switch to Dark theme';
         }
         // Font/typography is now global — loaded from Worker KV, not per-user prefs
     }
