@@ -37,18 +37,122 @@
             font-style: normal;
             font-display: block;
         }
-        :root { --bg-content: #faf8f4; --article-font: 'Libre Baskerville', Georgia, serif; --article-font-size: 1.05rem; --title-font: 'Cinzel', serif; }
+        :root {
+            --bg-content: #faf8f4;
+            --article-font: 'Libre Baskerville', Georgia, serif;
+            --article-font-size: 1.05rem;
+            --title-font: 'Cinzel', serif;
+            /* Theme variables - parchment defaults */
+            --body-bg: #484848;
+            --body-color: #1a0f00;
+            --container-bg: var(--bg-content);
+            --container-border-left: 5px solid #2c1810;
+            --container-border-right: 1px solid #3a6b4a;
+            --masthead-gradient: linear-gradient(135deg, #2c1810 0%, #3a2a1a 40%, #1a0f00 100%);
+            --masthead-title-color: #2f3640;
+            --masthead-date-color: #2f3640;
+            --masthead-rule-border: 3px solid #2c1810;
+            --nav-bg: rgba(250,248,244,0.97);
+            --section-nav-link-color: #3a6b4a;
+            --section-nav-link-hover: #254d33;
+            --section-banner-border: 3px solid #2c1810;
+            --scoreboard-td-bg: transparent;
+            --scoreboard-td-border: 1px solid #c8b89a;
+            --scoreboard-hover-bg: #f0ebe0;
+            --entity-title-color: #1a0f00;
+            --dispatch-link-color: #1a0f00;
+            --entity-summary-color: #5a3e2b;
+            --source-name-color: #5a3e2b;
+            --source-muted-color: #8a6a50;
+            --rank-color: #5a3e2b;
+            --border-subtle: #d4c9b0;
+            --border-medium: #c8b89a;
+            --top-nav-border: #d4c9b0;
+            --accel-color: #3a6b4a;
+            --editorial-color: #3a6b4a;
+            --mobile-accent: #a8ff3e;
+            --section-banner-world-mobile: #254d33;
+            --section-banner-social-mobile: #6b6125;
+            --section-banner-tech-mobile: #4a5c3a;
+            --section-banner-games-mobile: #3d5c3a;
+            --section-banner-finance-mobile: #2d4a3e;
+            --section-banner-world-grad: #254d33;
+            --section-banner-social-grad: #6b6125;
+            --section-banner-tech-grad: #4a5c3a;
+            --section-banner-games-grad: #3d5c3a;
+            --section-banner-finance-grad: #2d4a3e;
+            --section-banner-searches-grad: #556b45;
+            --section-banner-samerica-grad: #2d4a3e;
+            --globe-stroke: #2c1810;
+            --globe-accent: #3a6b4a;
+            --login-bg: #faf8f4;
+            --login-border: #c8b89a;
+            --login-color: #1a0f00;
+            --countdown-color: #8a6a50;
+            --spine-line-color: #3a6b4a;
+        }
+
+        body.dark-theme {
+            --bg-content: #1a1a1a;
+            --body-bg: #000000;
+            --body-color: #ffffff;
+            --container-bg: #2a2a26;
+            --container-border-left: 5px solid #28201a;
+            --container-border-right: 1px solid #222222;
+            --masthead-gradient: linear-gradient(135deg, #000000 0%, #0d0d0d 40%, #000000 100%);
+            --masthead-title-color: #ffffff;
+            --masthead-date-color: #ffffff;
+            --masthead-rule-border: 1px solid #333333;
+            --nav-bg: rgba(0,0,0,0.97);
+            --section-nav-link-color: #eaf5ec;
+            --section-nav-link-hover: #ffffff;
+            --section-banner-border: 1px solid #333333;
+            --scoreboard-td-bg: #36342c;
+            --scoreboard-td-border: 1px solid #2a2a2a;
+            --scoreboard-hover-bg: #443f35;
+            --entity-title-color: #ffffff;
+            --dispatch-link-color: #ffffff;
+            --entity-summary-color: #b0b0b0;
+            --source-name-color: #b0b0b0;
+            --source-muted-color: #707070;
+            --rank-color: #b0b0b0;
+            --border-subtle: #2a2a2a;
+            --border-medium: #2a2a2a;
+            --top-nav-border: #2a2a2a;
+            --accel-color: #00c853;
+            --editorial-color: #00c853;
+            --mobile-accent: #00c853;
+            --section-banner-world-mobile: #009624;
+            --section-banner-social-mobile: #2a2800;
+            --section-banner-tech-mobile: #1a2810;
+            --section-banner-games-mobile: #102010;
+            --section-banner-finance-mobile: #001a10;
+            --section-banner-world-grad: #003820;
+            --section-banner-social-grad: #2a2800;
+            --section-banner-tech-grad: #1a2810;
+            --section-banner-games-grad: #102010;
+            --section-banner-finance-grad: #001a10;
+            --section-banner-searches-grad: #1a2a00;
+            --section-banner-samerica-grad: #001a10;
+            --globe-stroke: #e8d9c0;
+            --globe-accent: #f0e8d0;
+            --login-bg: #1a1a1a;
+            --login-border: #2a2a2a;
+            --login-color: #ffffff;
+            --countdown-color: #707070;
+            --spine-line-color: #00c853;
+        }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html, body { overflow-x: hidden; }
         @media (max-width: 1024px) {
             .container::after { display: none !important; }
-            .section-banner-world             { background: #254d33 !important; }
+            .section-banner-world             { background: var(--section-banner-world-mobile) !important; }
             .section-banner-intl              { background: #1a3d4a !important; }
-            .section-banner-social            { background: #6b6125 !important; }
-            .section-banner-tech              { background: #4a5c3a !important; }
-            .section-banner-games             { background: #3d5c3a !important; }
-            .section-banner-finance           { background: #2d4a3e !important; }
+            .section-banner-social            { background: var(--section-banner-social-mobile) !important; }
+            .section-banner-tech              { background: var(--section-banner-tech-mobile) !important; }
+            .section-banner-games             { background: var(--section-banner-games-mobile) !important; }
+            .section-banner-finance           { background: var(--section-banner-finance-mobile) !important; }
             .section-banner-searches-us       { background: #556b45 !important; }
             .section-banner-searches-namerica { background: #6b7a30 !important; }
             .section-banner-searches-samerica { background: #2d4a3e !important; }
@@ -61,8 +165,8 @@
         html { font-size: 144%; }
 
         body {
-            background-color: #484848;
-            color: #1a0f00;
+            background-color: var(--body-bg);
+            color: var(--body-color);
             font-family: 'Libre Baskerville', Georgia, serif;
             padding: 45px 20px 75px;
             display: flex;
@@ -72,9 +176,9 @@
         .container {
             width: 100%;
             max-width: 1200px;
-            background-color: var(--bg-content);
-            border-left: 5px solid #2c1810;
-            border-right: 1px solid #3a6b4a;
+            background-color: var(--container-bg);
+            border-left: var(--container-border-left);
+            border-right: var(--container-border-right);
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
             padding: 36px 40px 40px;
             position: relative;
@@ -86,7 +190,7 @@
             top: 0;
             bottom: 0;
             width: 1px;
-            background-color: #a8ff3e;
+            background-color: var(--mobile-accent);
             opacity: 0.35;
             right: calc(50% - 640px);
             pointer-events: none;
@@ -125,7 +229,7 @@
 
         .masthead-top-rule {
             border: none;
-            border-top: 3px solid #2c1810;
+            border-top: var(--masthead-rule-border);
             margin-bottom: 10px;
         }
 
@@ -279,15 +383,15 @@
         }
 
         .section-banner { color: #faf8f4; font-family: 'Libre Baskerville', serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; padding: 6px 0 6px 12px; }
-        .section-banner-world             { background: linear-gradient(to right, #254d33, transparent); }
+        .section-banner-world             { background: linear-gradient(to right, var(--section-banner-world-grad), transparent); }
         .section-banner-intl              { background: linear-gradient(to right, #1a3d4a, transparent); }
-        .section-banner-social            { background: linear-gradient(to right, #6b6125, transparent); }
-        .section-banner-tech              { background: linear-gradient(to right, #4a5c3a, transparent); }
-        .section-banner-games             { background: linear-gradient(to right, #3d5c3a, transparent); }
-        .section-banner-finance           { background: linear-gradient(to right, #2d4a3e, transparent); }
-        .section-banner-searches-us       { background: linear-gradient(to right, #556b45, transparent); }
+        .section-banner-social            { background: linear-gradient(to right, var(--section-banner-social-grad), transparent); }
+        .section-banner-tech              { background: linear-gradient(to right, var(--section-banner-tech-grad), transparent); }
+        .section-banner-games             { background: linear-gradient(to right, var(--section-banner-games-grad), transparent); }
+        .section-banner-finance           { background: linear-gradient(to right, var(--section-banner-finance-grad), transparent); }
+        .section-banner-searches-us       { background: linear-gradient(to right, var(--section-banner-searches-grad), transparent); }
         .section-banner-searches-namerica { background: linear-gradient(to right, #6b7a30, transparent); }
-        .section-banner-searches-samerica { background: linear-gradient(to right, #2d4a3e, transparent); }
+        .section-banner-searches-samerica { background: linear-gradient(to right, var(--section-banner-finance-grad), transparent); }
         .section-banner-searches-europe   { background: linear-gradient(to right, #5a6b40, transparent); }
         .section-banner-searches-africa   { background: linear-gradient(to right, #4a6b55, transparent); }
         .section-banner-searches-asia     { background: linear-gradient(to right, #8a4a15, transparent); }
@@ -319,8 +423,9 @@
 
         .scoreboard td {
             padding: 16px 20px;
-            border-bottom: 1px solid #c8b89a;
+            border-bottom: var(--scoreboard-td-border);
             vertical-align: middle;
+            background-color: var(--scoreboard-td-bg);
         }
 
         .scoreboard tbody tr:last-child td {
@@ -328,7 +433,7 @@
         }
 
         .scoreboard tbody tr:hover td {
-            background-color: #f0ebe0;
+            background-color: var(--scoreboard-hover-bg);
         }
 
         /* ── IMAGE ── */
@@ -386,18 +491,18 @@
             font-family: var(--article-font);
             font-size: var(--article-font-size);
             font-weight: 700;
-            color: #1a0f00;
+            color: var(--entity-title-color);
             line-height: 1.3;
             margin-bottom: 5px;
         }
 
         .dispatch-link {
-            color: #1a0f00;
+            color: var(--dispatch-link-color);
             text-decoration: none;
         }
 
         .dispatch-link:hover {
-            color: #1a0f00;
+            color: var(--dispatch-link-color);
             text-decoration: underline;
             text-underline-offset: 3px;
         }
@@ -405,7 +510,7 @@
         .entity-summary {
             font-family: var(--article-font);
             font-size: 0.78rem;
-            color: #5a3e2b;
+            color: var(--entity-summary-color);
             font-style: italic;
             line-height: 1.4;
             margin-bottom: 8px;
@@ -459,7 +564,7 @@
             align-items: center;
             gap: 0.6rem;
             padding: 0 0 10px;
-            border-bottom: 0.5px solid #d4c9b0;
+            border-bottom: 0.5px solid var(--top-nav-border);
             margin-bottom: 10px;
             position: relative;
         }
@@ -516,8 +621,8 @@
             right: 0;
             top: 120%;
             width: 200px;
-            background: #2c1810;
-            color: #faf8f4;
+            background: var(--body-bg);
+            color: var(--entity-title-color);
             font-family: 'Libre Baskerville', serif;
             font-size: 0.65rem;
             font-style: normal;
@@ -618,7 +723,7 @@
             align-items: center;
             gap: 0.3rem;
             padding: 8px 4px 10px;
-            border-bottom: 0.5px solid #d4c9b0;
+            border-bottom: 0.5px solid var(--top-nav-border);
             margin-bottom: 10px;
         }
 
@@ -628,7 +733,7 @@
             font-weight: 400;
             font-style: italic;
             letter-spacing: 0.05em;
-            color: #3a6b4a;
+            color: var(--section-nav-link-color);
             text-decoration: underline;
             text-underline-offset: 3px;
             transition: color 0.15s ease;
@@ -641,7 +746,7 @@
             .section-nav { gap: 0.25rem; padding: 6px 2px 8px; }
         }
 
-        .section-nav-link:hover { color: #254d33; }
+        .section-nav-link:hover { color: var(--section-nav-link-hover); }
 
         .section-nav-link.locked {
             color: #3a6b4a;
@@ -1278,6 +1383,16 @@
         const isAdmin = tier === 'admin';
         const isProPlus = tier === 'pro_plus';
 
+        // Show/hide theme toggle button based on tier
+        const themeToggleBtn = document.querySelector('.theme-btn');
+        if (themeToggleBtn) {
+            themeToggleBtn.style.display = isPro ? 'flex' : 'none';
+            if (isPro) {
+                const currentTheme = getDHMTheme();
+                themeToggleBtn.title = currentTheme === 'dark' ? 'Switch to Parchment theme' : 'Switch to Dark theme';
+            }
+        }
+
         // Update section nav links based on tier
         const sectionNav = document.getElementById('section-nav');
         sectionNav.style.display = 'flex';
@@ -1639,15 +1754,19 @@
     }
 
     function cycleTheme() {
-        const current = getNewspaperShade();
-        const idx = NEWSPAPER_SHADES.indexOf(current);
-        const next = NEWSPAPER_SHADES[(idx + 1) % NEWSPAPER_SHADES.length];
-        applyNewspaperShade(next);
+        // For Pro/Pro+/Admin: toggle between dark and parchment
+        if (!isPro) return;
+        const current = getDHMTheme();
+        const next = current === 'dark' ? 'parchment' : 'dark';
+        applyDHMTheme(next);
+        // Update button tooltip
+        const btn = document.querySelector('.theme-btn');
+        if (btn) btn.title = next === 'dark' ? 'Switch to Parchment theme' : 'Switch to Dark theme';
         // Save to Supabase preferences
         if (currentUser) {
             supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single().then(({ data }) => {
                 const prefs = data?.preferences || {};
-                prefs.newspaperShade = next;
+                prefs.theme = next;
                 supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
             });
         }
@@ -1665,7 +1784,26 @@
     // Apply on initial load from cookie
     applyNewspaperShade(getNewspaperShade());
 
-    // ── FONT PREFERENCE ──
+    // ── THEME TOGGLE (Dark / Parchment) ──
+    function getDHMTheme() {
+        const m = document.cookie.match(/dhm-theme=([^;]+)/);
+        return m ? decodeURIComponent(m[1]) : 'parchment';
+    }
+
+    function applyDHMTheme(theme) {
+        if (theme === 'dark') {
+            document.body.classList.add('dark-theme');
+            NEWSPAPER_SHADES = ['#1a1a1a', '#1c1c1c', '#1e1e1e', '#202020', '#222222', '#242424', '#262626'];
+        } else {
+            document.body.classList.remove('dark-theme');
+            NEWSPAPER_SHADES = ['#f0f0f0', '#f2f2f2', '#f4f4f4', '#f5f7f9', '#f7f8f9', '#f8f9fa', '#ffffff'];
+        }
+        document.cookie = `dhm-theme=${encodeURIComponent(theme)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+        applyNewspaperShade(getNewspaperShade());
+    }
+
+    // Apply saved theme on load
+    applyDHMTheme(getDHMTheme());
     const FONTS = [
         { name: 'Libre Baskerville', label: 'Libre Baskerville' },
         { name: 'Playfair Display', label: 'Playfair Display' },
@@ -1856,6 +1994,12 @@
         // Apply saved newspaper shade
         if (profile?.preferences?.newspaperShade) {
             applyNewspaperShade(profile.preferences.newspaperShade);
+        }
+        // Apply saved theme (dark/parchment) for Pro users
+        if (isPro && profile?.preferences?.theme) {
+            applyDHMTheme(profile.preferences.theme);
+            const btn = document.querySelector('.theme-btn');
+            if (btn) btn.title = profile.preferences.theme === 'dark' ? 'Switch to Parchment theme' : 'Switch to Dark theme';
         }
         // Font/typography is now global — loaded from Worker KV, not per-user prefs
     }
