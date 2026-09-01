@@ -1730,25 +1730,23 @@
     // ── THEME TOGGLE (Dark / Parchment) ──
     function getDHMTheme() {
         const m = document.cookie.match(/dhm-theme=([^;]+)/);
-        return m ? decodeURIComponent(m[1]) : 'parchment';
+        return m ? decodeURIComponent(m[1]) : null;
     }
 
     function applyDHMTheme(theme) {
-        if (theme === 'dark') {
-            document.body.classList.add('dark-theme');
-            NEWSPAPER_SHADES = ['#1a1a1a', '#1c1c1c', '#1e1e1e', '#202020', '#222222', '#242424', '#262626'];
-            // Clear any inline style so CSS variable takes over
-            const container = document.querySelector('.container');
-            if (container) container.style.backgroundColor = '';
-        } else {
+        if (!theme || theme === 'parchment') {
             document.body.classList.remove('dark-theme');
             NEWSPAPER_SHADES = ['#f0f0f0', '#f2f2f2', '#f4f4f4', '#f5f7f9', '#f7f8f9', '#f8f9fa', '#ffffff'];
-            // Restore parchment shade
             const container = document.querySelector('.container');
             const shade = getNewspaperShade();
             if (container && NEWSPAPER_SHADES.includes(shade)) container.style.backgroundColor = shade;
+        } else {
+            document.body.classList.add('dark-theme');
+            NEWSPAPER_SHADES = ['#1a1a1a', '#1c1c1c', '#1e1e1e', '#202020', '#222222', '#242424', '#262626'];
+            const container = document.querySelector('.container');
+            if (container) container.style.backgroundColor = '';
         }
-        document.cookie = `dhm-theme=${encodeURIComponent(theme)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+        document.cookie = `dhm-theme=${encodeURIComponent(theme || 'parchment')}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
     }
 
     function getNewspaperShade() {
@@ -1878,7 +1876,8 @@
     }
 
     // Apply saved theme immediately from cookie (before auth resolves)
-    applyDHMTheme(getDHMTheme());
+    const _initialTheme = getDHMTheme();
+    if (_initialTheme) applyDHMTheme(_initialTheme);
 
     // ── FONT PREFERENCE — load global typography from Worker ──
     async function loadGlobalTypography() {
@@ -1996,11 +1995,11 @@
         if (isProUser && profile?.preferences?.theme) {
             const savedTheme = profile.preferences.theme;
             const cookieTheme = getDHMTheme();
-            // Set cookie so next load applies instantly
-            document.cookie = `dhm-theme=${encodeURIComponent(savedTheme)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
             if (savedTheme !== cookieTheme) {
-                // Theme mismatch — reload so body script applies correct theme from cookie
+                // Set cookie then reload so body script applies theme instantly
+                document.cookie = `dhm-theme=${encodeURIComponent(savedTheme)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
                 window.location.reload();
+                return;
             }
         }
         // Font/typography is now global — loaded from Worker KV, not per-user prefs
