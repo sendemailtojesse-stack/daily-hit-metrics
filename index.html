@@ -194,6 +194,7 @@
         body.dark-theme .modal-msg.success { color: #7ab08a; }
         body.dark-theme .modal-switch { color: #707070; }
         body.dark-theme .modal-switch a { color: #c0ccc4; }
+        body.dark-theme .modal-desc { color: #d0d0d0 !important; }
         body.dark-theme .source-name { color: #b0b0b0; }
         body.dark-theme .entity-meta { color: #707070; }
         body.dark-theme .growth-indicator { color: inherit; }
@@ -1025,7 +1026,7 @@
     <div class="modal-overlay" id="login-modal">
         <div class="modal">
             <h2>Login</h2>
-            <p style="font-family:'Libre Baskerville',serif; font-size:0.6rem; color:#5a3e2b; margin-bottom:0;">Please enter your Email address and Password.</p>
+            <p class="modal-desc" style="font-family:'Libre Baskerville',serif; font-size:0.6rem; color:#5a3e2b; margin-bottom:0;">Please enter your Email address and Password.</p>
             <div class="modal-msg" id="login-msg"></div>
             <input type="email" id="login-email" placeholder="Email address" autocomplete="email" onkeydown="if(event.key==='Enter') handleLogin()" style="margin-top:-6px;">
             <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" onkeydown="if(event.key==='Enter') handleLogin()">
@@ -1039,7 +1040,7 @@
     <div class="modal-overlay" id="signup-modal">
         <div class="modal">
             <h2>Create Account</h2>
-            <p style="font-family:'Libre Baskerville',serif; font-size:0.6rem; color:#5a3e2b; margin-bottom:0;">Please enter your First name, Last name, and Email address.</p>
+            <p class="modal-desc" style="font-family:'Libre Baskerville',serif; font-size:0.6rem; color:#5a3e2b; margin-bottom:0;">Please enter your First name, Last name, and Email address.</p>
             <div class="modal-msg" id="signup-msg"></div>
             <select id="signup-salutation" style="width:100%; font-family:'Libre Baskerville',serif; font-size:0.6rem; padding:8px 10px; border:1px solid #c8b89a; background:#faf8f4; color:#1a0f00; margin-bottom:12px;">
                 <option value="">Salutation (optional)</option>
@@ -1053,7 +1054,7 @@
             <input type="text" id="signup-middlename" placeholder="Middle Name (or initial) — optional" autocomplete="additional-name">
             <input type="text" id="signup-lastname" placeholder="Last name" autocomplete="family-name">
             <input type="email" id="signup-email" placeholder="Email address" autocomplete="email">
-            <div style="font-family:'Libre Baskerville',serif; font-size:0.55rem; color:#5a3e2b; margin-bottom:0; margin-top:14px;">Password must be at least eight characters and include both letters and numbers. Or allow browser to specify password.</div>
+            <div class="modal-desc" style="font-family:'Libre Baskerville',serif; font-size:0.55rem; color:#5a3e2b; margin-bottom:0; margin-top:14px;">Password must be at least eight characters and include both letters and numbers. Or allow browser to specify password.</div>
             <div style="position:relative; margin-top:26px; margin-bottom:12px;">
                 <input type="password" id="signup-password" placeholder="Password" autocomplete="new-password" onkeydown="if(event.key==='Enter') handleSignup()" style="width:100%; padding-right:36px; margin-bottom:0;">
                 <span onclick="togglePasswordVisibility()" style="position:absolute; right:10px; top:0; bottom:0; display:flex; align-items:center; cursor:pointer; color:#8a6a50; font-size:0.75rem; user-select:none;" id="pw-toggle">👁</span>
