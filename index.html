@@ -1837,11 +1837,6 @@
             container.style.backgroundColor = shade;
         }
         document.cookie = `dhm-newspaper=${encodeURIComponent(shade)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
-        const btn = document.querySelector('.theme-btn');
-        if (btn) {
-            const idx = NEWSPAPER_SHADES.indexOf(shade);
-            btn.title = `Newspaper shade: ${idx + 1} of ${NEWSPAPER_SHADES.length}`;
-        }
     }
 
     function cycleTheme() {
