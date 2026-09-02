@@ -167,8 +167,9 @@
         body.dark-theme .nav-link:hover { color: #e0e0e0; }
         body.dark-theme .nav-link-signup { color: #b0b0b0; background: rgba(0,200,83,0.08); border-color: #00c853; }
         body.dark-theme .nav-link-signup:hover { background: rgba(0,200,83,0.18); color: #ffffff; }
-        body.dark-theme .nav-link-logout { color: #8a1a1a; }
+        body.dark-theme .nav-link-logout { color: #a08060; }
         body.dark-theme .nav-link-logout:hover { color: #e0e0e0; }
+        body.dark-theme .nav-user-admin { color: #a08060; }
         body.dark-theme .nav-user { color: #b0b0b0; }
         body.dark-theme .top-nav { border-bottom-color: #2a2a2a; }
         body.dark-theme .footer-note { color: #707070; }
@@ -1475,7 +1476,7 @@
         if (user) {
             const displayName = firstName || user.email.split('@')[0];
             const tierBtn = isAdmin
-                ? `<span class="nav-user" style="color:#8a1a1a;">✦ Admin</span>`
+                ? `<span class="nav-user" style="color:${document.body.classList.contains('dark-theme') ? '#a08060' : '#8a1a1a'};">✦ Admin</span>`
                 : isProPlus
                 ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro+</span>`
                 : isPro
