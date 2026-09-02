@@ -11,38 +11,87 @@
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { font-size: 132%; }
-        body { background-color: #484848; color: #1a0f00; font-family: 'Libre Baskerville', Georgia, serif; padding: 45px 20px 75px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 1200px; background-color: #faf8f4; border-left: 5px solid #2c1810; border-right: 1px solid #3a6b4a; padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); position: relative; transition: background-color 0.2s; }
-        .container::after { content: ''; position: fixed; top: 0; bottom: 0; width: 1px; background-color: #a8ff3e; opacity: 0.35; right: calc(50% - 640px); pointer-events: none; }
+
+        :root {
+            --body-bg: #484848;
+            --body-color: #1a0f00;
+            --container-bg: #faf8f4;
+            --container-border-left: 5px solid #2c1810;
+            --container-border-right: 1px solid #3a6b4a;
+            --spine-accent: #a8ff3e;
+            --title-color: #2f3640;
+            --top-rule-color: #2c1810;
+            --h1-color: #2c1810;
+            --h2-color: #3a6b4a;
+            --h2-border: #d4c9b0;
+            --p-color: #2a1a0a;
+            --strong-color: #2c1810;
+            --a-color: #3a6b4a;
+            --sub-color: #5a3e2b;
+            --return-color: #3a6b4a;
+            --last-updated-color: #8a6a50;
+            --footer-color: #8a6a50;
+            --footer-rule: #d4c9b0;
+            --icon-stroke: #8a6a50;
+        }
+
+        body.dark-theme {
+            --body-bg: #000000;
+            --body-color: #ffffff;
+            --container-bg: #2a2a26;
+            --container-border-left: 5px solid #28201a;
+            --container-border-right: 1px solid #222222;
+            --spine-accent: #00c853;
+            --title-color: #e8e8e8;
+            --top-rule-color: #333333;
+            --h1-color: #e0e0e0;
+            --h2-color: #eaf5ec;
+            --h2-border: #333333;
+            --p-color: #d0d0d0;
+            --strong-color: #e8e8e8;
+            --a-color: #eaf5ec;
+            --sub-color: #b0b0b0;
+            --return-color: #eaf5ec;
+            --last-updated-color: #707070;
+            --footer-color: #707070;
+            --footer-rule: #333333;
+            --icon-stroke: #707070;
+        }
+
+        body { background-color: var(--body-bg); color: var(--body-color); font-family: 'Libre Baskerville', Georgia, serif; padding: 45px 20px 75px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1200px; background-color: var(--container-bg); border-left: var(--container-border-left); border-right: var(--container-border-right); padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); position: relative; transition: background-color 0.2s; }
+        .container::after { content: ''; position: fixed; top: 0; bottom: 0; width: 1px; background-color: var(--spine-accent); opacity: 0.35; right: calc(50% - 640px); pointer-events: none; }
         .zoom-btn { background: none; border: none; padding: 2px 4px; cursor: pointer; opacity: 0.6; transition: opacity 0.15s; display: flex; align-items: center; }
         .zoom-btn:hover { opacity: 1; }
         .zoom-btn-left { position: absolute; left: 48px; top: 36px; }
         .theme-btn { position: absolute; left: 76px; top: 36px; background: none; border: none; padding: 2px 4px; cursor: pointer; opacity: 0.6; transition: opacity 0.15s ease; display: flex; align-items: center; }
         .theme-btn:hover { opacity: 1; }
-        .site-title { font-family: 'Quantico', sans-serif; font-size: 1.4rem; font-weight: 700; color: #2f3640; text-align: right; margin-bottom: 4px; }
+        .site-title { font-family: var(--title-font, 'Cinzel', serif); font-size: 1.4rem; font-weight: 700; color: var(--title-color); text-align: right; margin-bottom: 4px; }
         .site-title a { color: inherit; text-decoration: none; }
-        .top-rule { border: none; border-top: 3px solid #2c1810; margin: 8px 0 0; }
+        .top-rule { border: none; border-top: 3px solid var(--top-rule-color); margin: 8px 0 0; }
         .page-nav-row { display: flex; justify-content: space-between; align-items: flex-start; padding-top: 16px; }
-        h1 { font-family: 'Quantico', sans-serif; font-size: 1.6rem; color: #2c1810; margin-bottom: 2px; }
-        .page-sub { font-family: 'IM Fell English', serif; font-style: normal; font-size: 0.9rem; color: #5a3e2b; }
-        .return-link { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.75rem; color: #3a6b4a; text-decoration: none; white-space: nowrap; padding-top: 8px; }
+        h1 { font-family: 'Quantico', sans-serif; font-size: 1.6rem; color: var(--h1-color); margin-bottom: 2px; }
+        .page-sub { font-family: 'IM Fell English', serif; font-style: normal; font-size: 0.9rem; color: var(--sub-color); }
+        .return-link { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.75rem; color: var(--return-color); text-decoration: none; white-space: nowrap; padding-top: 8px; }
         .return-link span { text-decoration: underline; text-underline-offset: 3px; }
         .divider { height: 20px; }
-        h2 { font-family: 'Quantico', sans-serif; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: #3a6b4a; border-bottom: 1px solid #d4c9b0; padding-bottom: 6px; margin: 28px 0 12px; }
-        p { font-size: 0.8rem; line-height: 1.8; color: #2a1a0a; margin-bottom: 12px; }
+        h2 { font-family: 'Quantico', sans-serif; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--h2-color); border-bottom: 1px solid var(--h2-border); padding-bottom: 6px; margin: 28px 0 12px; }
+        p { font-size: 0.8rem; line-height: 1.8; color: var(--p-color); margin-bottom: 12px; }
         ul { margin: 8px 0 12px 20px; }
-        ul li { font-size: 0.8rem; line-height: 1.8; color: #2a1a0a; margin-bottom: 4px; }
-        strong { color: #2c1810; }
-        a { color: #3a6b4a; }
-        .last-updated { font-family: 'IM Fell English', serif; font-size: 0.75rem; color: #8a6a50; font-style: italic; margin-bottom: 20px; }
-        .footer-note { text-align: center; font-family: 'IM Fell English', serif; font-size: 0.8rem; font-style: italic; color: #8a6a50; margin-top: 16px; letter-spacing: 0.04em; }
-        hr.footer-rule { border: none; border-top: 1px solid #d4c9b0; margin: 28px 0 16px; }
+        ul li { font-size: 0.8rem; line-height: 1.8; color: var(--p-color); margin-bottom: 4px; }
+        strong { color: var(--strong-color); }
+        a { color: var(--a-color); }
+        .last-updated { font-family: 'IM Fell English', serif; font-size: 0.75rem; color: var(--last-updated-color); font-style: italic; margin-bottom: 20px; }
+        .footer-note { text-align: center; font-family: 'IM Fell English', serif; font-size: 0.8rem; font-style: italic; color: var(--footer-color); margin-top: 16px; letter-spacing: 0.04em; }
+        hr.footer-rule { border: none; border-top: 1px solid var(--footer-rule); margin: 28px 0 16px; }
+        .icon-stroke { stroke: var(--icon-stroke); }
+        .footer-link { color: var(--a-color); }
     </style>
 </head>
-<body>
+<body><script>(function(){var t=document.cookie.match(/dhm-theme=([^;]+)/);var theme=t?decodeURIComponent(t[1]):'dark';if(theme==='dark')document.body.classList.add('dark-theme');})();</script>
 <div class="container">
-    <button class="zoom-btn zoom-btn-left" id="zoom-btn" onclick="cycleZoom()" title="Text size: 100%"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="4.5" stroke="#8a6a50" stroke-width="1.3"/><line x1="9" y1="9" x2="13" y2="13" stroke="#8a6a50" stroke-width="1.3" stroke-linecap="round"/></svg></button>
-    <button class="theme-btn" onclick="cycleTheme()" title="Color: Newspaper &amp; Parchment"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#8a6a50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8.25V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M3 8.25v9.75A2.25 2.25 0 0 0 5.25 20.25h13.5A2.25 2.25 0 0 0 21 18V8.25"/></svg></button>
+    <button class="zoom-btn zoom-btn-left" id="zoom-btn" onclick="cycleZoom()" title="Text size: 100%"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="4.5" stroke="var(--icon-stroke)" stroke-width="1.3"/><line x1="9" y1="9" x2="13" y2="13" stroke="var(--icon-stroke)" stroke-width="1.3" stroke-linecap="round"/></svg></button>
+    <button class="theme-btn" onclick="cycleTheme()" title="Toggle theme"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="var(--icon-stroke)" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8.25V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M3 8.25v9.75A2.25 2.25 0 0 0 5.25 20.25h13.5A2.25 2.25 0 0 0 21 18V8.25"/></svg></button>
     <div class="site-title"><a href="https://news.dailyhitmetrics.com">Daily Hit Metrics</a></div>
     <div class="top-rule"></div>
 
@@ -115,32 +164,30 @@
     <hr class="footer-rule">
     <div class="footer-note">All dispatches sourced from open networks &amp; public indices &nbsp;·&nbsp; Updated hourly on the hour &nbsp;·&nbsp; dailyhitmetrics.com</div>
     <div class="footer-note" style="margin-top: 8px;">
-        <a href="/about.html" style="color:#3a6b4a; text-decoration:none;">About</a> &nbsp;·&nbsp;
-        <a href="/privacy.html" style="color:#3a6b4a; text-decoration:none;">Privacy Policy</a> &nbsp;·&nbsp;
-        <a href="/terms.html" style="color:#3a6b4a; text-decoration:none;">Terms of Service</a> &nbsp;·&nbsp;
-        <a href="/contact.html" style="color:#3a6b4a; text-decoration:none;">Contact</a>
+        <a href="/about.html" class="footer-link" style="text-decoration:none;">About</a> &nbsp;·&nbsp;
+        <a href="/privacy.html" class="footer-link" style="text-decoration:none;">Privacy Policy</a> &nbsp;·&nbsp;
+        <a href="/terms.html" class="footer-link" style="text-decoration:none;">Terms of Service</a> &nbsp;·&nbsp;
+        <a href="/contact.html" class="footer-link" style="text-decoration:none;">Contact</a>
     </div>
     <div class="footer-note" style="margin-top:6px;">&copy; 2026 <a href="https://mpathtek.com" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:none;">MpathTek</a> &nbsp;·&nbsp; All rights reserved</div>
 </div>
 <script>
+    // Zoom
     const ZOOM_LEVELS = [1, 1.02, 1.04, 1.06, 1.08, 1.10, 1.12];
     function getZoom() { const s = document.cookie.match(/dhm-zoom=([\d.]+)/); return s ? parseFloat(s[1]) : 1.12; }
-    function applyZoom(level) { document.body.style.zoom = level; const btn = document.getElementById('zoom-btn'); if (btn) btn.title = `Text size: ${Math.round(level*100)}%`; }
+    function applyZoom(z) { document.body.style.zoom = z; const btn = document.getElementById('zoom-btn'); if (btn) btn.title = `Text size: ${Math.round(z*100)}%`; }
     function cycleZoom() { const c = getZoom(); const i = ZOOM_LEVELS.findIndex(z => Math.abs(z-c)<0.01); const n = ZOOM_LEVELS[(i+1)%ZOOM_LEVELS.length]; document.cookie = `dhm-zoom=${n}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`; applyZoom(n); }
     applyZoom(getZoom());
 
-    const THEMES = ['twotone', 'parchment', 'white'];
-    const THEME_LABELS = { twotone: 'Color: Newspaper & Parchment', parchment: 'Color: Parchment', white: 'Color: Newspaper' };
-    function getTheme() { const s = document.cookie.match(/dhm-theme=([a-z]+)/); return s ? s[1] : 'twotone'; }
-    function applyTheme(theme) {
-        const container = document.querySelector('.container');
-        if (theme === 'parchment') { container.style.backgroundColor = '#faf8f4'; }
-        else { container.style.backgroundColor = '#f0f4f8'; }
-        const btn = document.querySelector('.theme-btn');
-        if (btn) btn.title = THEME_LABELS[theme] || 'Toggle color scheme';
+    // Dark/Parchment theme
+    function getDHMTheme() { const m = document.cookie.match(/dhm-theme=([^;]+)/); return m ? decodeURIComponent(m[1]) : 'dark'; }
+    function applyDHMTheme(theme) {
+        if (theme === 'dark') { document.body.classList.add('dark-theme'); }
+        else { document.body.classList.remove('dark-theme'); }
+        document.cookie = `dhm-theme=${encodeURIComponent(theme)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
     }
-    function cycleTheme() { const c = getTheme(); const i = THEMES.indexOf(c); const n = THEMES[(i+1)%THEMES.length]; document.cookie = `dhm-theme=${n}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`; applyTheme(n); }
-    applyTheme(getTheme());
+    function cycleTheme() { applyDHMTheme(getDHMTheme() === 'dark' ? 'parchment' : 'dark'); }
+    applyDHMTheme(getDHMTheme());
 </script>
 </body>
 </html>
