@@ -167,6 +167,7 @@
         body.dark-theme .modal-box { background: #1a1a1a; border-color: #2a2a2a; color: #ffffff; }
         body.dark-theme .nav-user { color: #b0b0b0; }
         body.dark-theme .velocity-data { color: #b0b0b0; }
+        body.dark-theme .growth-indicator { color: inherit; }
         body.dark-theme .globe-graphic circle,
         body.dark-theme .globe-graphic ellipse,
         body.dark-theme .globe-graphic line { stroke: #e8d9c0; }
@@ -1299,7 +1300,10 @@
 
                 const row = document.createElement('tr');
                 const isNegative = item.growth.startsWith('-');
-                const momentumColor = isNegative ? '#8a2a2a' : '#2a5a2a';
+                const isDark = document.body.classList.contains('dark-theme');
+                const momentumColor = isNegative
+                    ? (isDark ? '#9a3a3a' : '#8a2a2a')
+                    : (isDark ? '#3a7a3a' : '#2a5a2a');
                 const arrow = isNegative ? '▼' : '▲';
                 const targetUrl = item.url || '#';
 
