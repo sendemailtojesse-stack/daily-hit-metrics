@@ -1588,6 +1588,9 @@
         if (error) {
             msg.className = 'modal-msg error';
             msg.textContent = error.message;
+        } else if (data.user && data.user.identities && data.user.identities.length === 0) {
+            msg.className = 'modal-msg error';
+            msg.textContent = 'An account with this email already exists. Please sign in instead.';
         } else {
             // Save name to profile
             if (data.user) {
