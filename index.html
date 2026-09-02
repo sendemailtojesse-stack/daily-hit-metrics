@@ -864,7 +864,7 @@
         .age-gate-btn:hover { background: #254d33; }
         .age-gate-note {
             font-family: 'IM Fell English', serif;
-            font-size: 0.55rem;
+            font-size: 0.7rem;
             font-style: italic;
             color: #8a6a50;
             margin-top: 14px;
@@ -1798,7 +1798,7 @@
     // ── THEME TOGGLE (Dark / Parchment) ──
     function getDHMTheme() {
         const m = document.cookie.match(/dhm-theme=([^;]+)/);
-        return m ? decodeURIComponent(m[1]) : null;
+        return m ? decodeURIComponent(m[1]) : 'dark';
     }
 
     function applyDHMTheme(theme) {
@@ -1943,9 +1943,8 @@
         };
     }
 
-    // Apply saved theme immediately from cookie (before auth resolves)
-    const _initialTheme = getDHMTheme();
-    if (_initialTheme) applyDHMTheme(_initialTheme);
+    // Apply saved theme immediately (defaults to dark if no cookie)
+    applyDHMTheme(getDHMTheme());
 
     // ── FONT PREFERENCE — load global typography from Worker ──
     async function loadGlobalTypography() {
