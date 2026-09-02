@@ -179,6 +179,7 @@
         body.dark-theme .age-gate-text { color: #d0d0d0; }
         body.dark-theme .age-gate-note { color: #707070; }
         body.dark-theme .age-gate-box { background: #1a1a1a; }
+        body.dark-theme .age-gate-rule { border-top-color: #333333; }
         body.dark-theme .modal h2 { color: #e0e0e0; }
         body.dark-theme .modal input { color: #ffffff; background: #2a2a2a; border-color: #333333; }
         body.dark-theme .modal-btn { color: #ffffff; }
@@ -989,7 +990,7 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2354946193859243"
      crossorigin="anonymous"></script>
 </head>
-<body><script>(function(){var t=document.cookie.match(/dhm-theme=([^;]+)/);if(t&&decodeURIComponent(t[1])==='dark')document.body.classList.add('dark-theme');})();</script>
+<body><script>(function(){var t=document.cookie.match(/dhm-theme=([^;]+)/);var theme=t?decodeURIComponent(t[1]):'dark';if(theme==='dark')document.body.classList.add('dark-theme');})();</script>
 
     <!-- Auth Modals -->
     <!-- Age Gate -->
@@ -998,8 +999,20 @@
             <div class="age-gate-title">Daily Hit Metrics</div>
             <hr class="age-gate-rule">
             <p class="age-gate-text">This site aggregates content from public sources including Reddit and other open networks, which may contain unmoderated community discussions. By continuing, you confirm that you are <strong>13 years of age or older</strong> and agree to our <a href="/terms.html" style="color:#3a6b4a;">Terms of Service</a>.</p>
+            <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin: 16px 0 8px;">
+                <span style="font-size:1.1rem;" title="Theme">☯</span>
+                <label style="font-family:'Libre Baskerville',serif; font-size:0.65rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
+                    <input type="radio" name="age-gate-theme" value="dark" checked onchange="previewAgeGateTheme(this.value)" style="accent-color:#00c853;">
+                    <span class="age-gate-note" style="margin:0;">True Dark</span>
+                </label>
+                <label style="font-family:'Libre Baskerville',serif; font-size:0.65rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
+                    <input type="radio" name="age-gate-theme" value="parchment" onchange="previewAgeGateTheme(this.value)" style="accent-color:#3a6b4a;">
+                    <span class="age-gate-note" style="margin:0;">Parchment</span>
+                </label>
+            </div>
             <button class="age-gate-btn" onclick="confirmAge()">I Confirm — Continue</button>
-            <p class="age-gate-note">This confirmation is stored in your browser and will not be shown again.</p>
+            <p class="age-gate-note" style="margin-top:10px;">This confirmation is stored in your browser and will not be shown again.</p>
+            <p class="age-gate-note" style="margin-top:6px;">After selecting a color theme, if you would like to change it or access additional site settings, please create an account.</p>
         </div>
     </div>
 
@@ -1964,8 +1977,18 @@
     });
 
     // ── AGE GATE ──
+    function previewAgeGateTheme(theme) {
+        applyDHMTheme(theme);
+    }
+
     function confirmAge() {
+        // Save age confirmation
         document.cookie = 'dhm-age-confirmed=1; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure';
+        // Save selected theme
+        const selected = document.querySelector('input[name="age-gate-theme"]:checked');
+        const theme = selected ? selected.value : 'dark';
+        document.cookie = `dhm-theme=${encodeURIComponent(theme)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+        applyDHMTheme(theme);
         document.getElementById('age-gate').classList.remove('active');
     }
 
