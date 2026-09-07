@@ -283,6 +283,20 @@
             .globe-graphic { display: none; }
         }
 
+        .koala-mascot {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: calc(2.5rem * 1.22);
+            width: auto;
+            pointer-events: none;
+            opacity: 0.92;
+        }
+
+        @media (max-width: 1024px) { .koala-mascot { height: calc(1.2rem * 1.22); } }
+        @media (max-width: 768px) { .koala-mascot { height: calc(1.3rem * 1.22); } }
+        @media (max-width: 480px) { .koala-mascot { height: calc(1.0rem * 1.22); } }
+
         .masthead-content {
             position: relative;
             z-index: 1;
@@ -1121,6 +1135,8 @@
             <path d="M25 80 Q45 72 65 82 Q80 90 100 80 Q125 68 150 78 Q165 84 175 80" fill="none" stroke="#3a6b4a" stroke-width="1.5"/>
             <path d="M20 120 Q50 112 80 118 Q100 122 120 115 Q145 108 175 118" fill="none" stroke="#3a6b4a" stroke-width="1.5"/>
         </svg>
+
+        <img src="https://news.dailyhitmetrics.com/koala.webp" alt="Koala" class="koala-mascot">
 
         <div class="masthead-content">
             <div class="masthead-top-rule"></div>
