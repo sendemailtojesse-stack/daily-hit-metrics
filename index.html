@@ -264,7 +264,7 @@
         /* ── MASTHEAD ── */
         .masthead {
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             padding-bottom: 10px;
             margin-bottom: 0;
         }
@@ -284,13 +284,19 @@
         }
 
         .koala-mascot {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
             height: calc(2.5rem * 1.22);
             width: auto;
-            pointer-events: none;
+            display: inline-block;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+
+        .masthead-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            margin: 2px 0 8px;
         }
 
         @media (max-width: 1024px) { .koala-mascot { height: calc(1.2rem * 1.22); } }
@@ -325,7 +331,7 @@
             color: #2f3640;
             letter-spacing: 0;
             line-height: 1;
-            margin: 2px 0 8px;
+            margin: 0;
             text-align: right;
             text-decoration: underline;
             text-underline-offset: 6px;
@@ -1136,12 +1142,13 @@
             <path d="M20 120 Q50 112 80 118 Q100 122 120 115 Q145 108 175 118" fill="none" stroke="#3a6b4a" stroke-width="1.5"/>
         </svg>
 
-        <img src="https://news.dailyhitmetrics.com/koala.avif" alt="Koala" class="koala-mascot">
-
         <div class="masthead-content">
             <div class="masthead-top-rule"></div>
             <div class="masthead-eyebrow">Est. 2026 &nbsp;✦&nbsp; Global Index of What Matters Now</div>
-            <div class="masthead-title">Daily Hit Metrics</div>
+            <div class="masthead-title-row">
+                <img src="https://news.dailyhitmetrics.com/koala.png" alt="" class="koala-mascot" aria-hidden="true">
+                <div class="masthead-title">Daily Hit Metrics</div>
+            </div>
             <div class="masthead-subtitle" style="text-transform: none; font-variant: normal;"></div>
             <hr class="masthead-rule">
             <div class="masthead-bottom">
