@@ -1198,9 +1198,11 @@
                     }[labelKey] || 'section-banner-intl-news';
                     const bannerRow = document.createElement('tr');
                     const isMobile = window.innerWidth <= 768;
+                    const isDarkTheme = document.body.classList.contains('dark-theme');
+                    const gradientEnd = isDarkTheme ? '#2a2a26' : 'transparent';
                     const bannerStyle_sports = pref.color === 'solid'
                         ? `style="background:${pref.gradientColor};"`
-                        : `style="background:linear-gradient(to right, ${pref.gradientColor}, transparent);"`;
+                        : `style="background:linear-gradient(to right, ${pref.gradientColor}, ${gradientEnd});"`;
                     const bannerLabel = isTrendingRegion ? item.sourceName : (SECTION_LABELS[labelKey] || item.category);
                     bannerRow.innerHTML = `<td colspan="${isMobile ? 3 : 5}" class="section-banner ${bannerClass}" ${bannerStyle_sports}>${bannerLabel}</td>`;
                     tableBody.appendChild(bannerRow);
