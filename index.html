@@ -1517,9 +1517,9 @@
             const tierBtn = isAdmin
                 ? `<span class="nav-user" style="color:${document.body.classList.contains('dark-theme') ? '#d0b898' : '#8a1a1a'};">✦ Admin</span>`
                 : isProPlus
-                ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro+</span>`
+                ? `<span class="nav-user" style="color:${document.body.classList.contains('dark-theme') ? '#5a8a6a' : '#3a6b4a'};">✦ Pro+</span>`
                 : isPro
-                ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro</span>`
+                ? `<span class="nav-user" style="color:${document.body.classList.contains('dark-theme') ? '#5a8a6a' : '#3a6b4a'};">✦ Pro</span>`
                 : `<a href="#" class="nav-link" style="text-transform:none; background:rgba(58,107,74,0.08); border:0.5px solid #3a6b4a; padding:4px 10px;" onclick="handleUpgrade(); return false;">Upgrade to Pro</a>`;
             const settingsLink = isPro ? `<span style="color:#d4c9b0; font-size:0.6rem;">|</span><a href="/settings.html?from=news" class="nav-link">Settings</a>` : '';
             const adminLinks = isAdmin ? `
