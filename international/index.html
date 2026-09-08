@@ -34,27 +34,27 @@
             --container-border-left: 5px solid #2c1810;
             --container-border-right: 1px solid #3a6b4a;
             --masthead-gradient: linear-gradient(135deg, #2c1810 0%, #3a2a1a 40%, #1a0f00 100%);
-            --masthead-title-color: #2f3640;
-            --masthead-date-color: #2f3640;
+            --masthead-title-color: var(--masthead-title-color);
+            --masthead-date-color: var(--masthead-title-color);
             --masthead-rule-border: 3px solid #2c1810;
             --nav-bg: rgba(250,248,244,0.97);
-            --section-nav-link-color: #3a6b4a;
+            --section-nav-link-color: var(--accel-color);
             --section-nav-link-hover: #254d33;
             --section-banner-border: 3px solid #2c1810;
             --scoreboard-td-bg: transparent;
-            --scoreboard-td-border: 1px solid #c8b89a;
+            --scoreboard-td-border: 1px solid var(--login-border);
             --scoreboard-hover-bg: #f0ebe0;
             --entity-title-color: #1a0f00;
             --dispatch-link-color: #1a0f00;
-            --entity-summary-color: #5a3e2b;
-            --source-name-color: #5a3e2b;
-            --source-muted-color: #8a6a50;
-            --rank-color: #5a3e2b;
+            --entity-summary-color: var(--source-name-color);
+            --source-name-color: var(--source-name-color);
+            --source-muted-color: var(--countdown-color);
+            --rank-color: var(--source-name-color);
             --border-subtle: #d4c9b0;
             --border-medium: #c8b89a;
             --top-nav-border: #d4c9b0;
-            --accel-color: #3a6b4a;
-            --editorial-color: #3a6b4a;
+            --accel-color: var(--accel-color);
+            --editorial-color: var(--accel-color);
             --mobile-accent: #a8ff3e;
             --section-banner-world-mobile: #254d33;
             --section-banner-social-mobile: #6b6125;
@@ -73,8 +73,8 @@
             --login-bg: #faf8f4;
             --login-border: #c8b89a;
             --login-color: #1a0f00;
-            --countdown-color: #8a6a50;
-            --spine-line-color: #3a6b4a;
+            --countdown-color: var(--countdown-color);
+            --spine-line-color: var(--accel-color);
         }
 
         body.dark-theme {
@@ -128,7 +128,7 @@
             --spine-line-color: #00c853;
         }
 
-        .footer-link { color: #3a6b4a; }
+        .footer-link { color: var(--accel-color); }
 
         /* Dark theme element overrides */
         body.dark-theme .masthead-eyebrow { color: #ffffff; }
@@ -173,7 +173,7 @@
         body.dark-theme .modal input:focus { border-color: #eaf5ec; }
         body.dark-theme .modal input::placeholder { color: #707070; }
         body.dark-theme .modal-btn { background: #2a4a3a; color: #eaf5ec; }
-        body.dark-theme .modal-btn:hover { background: #3a6b4a; }
+        body.dark-theme .modal-btn:hover { background: var(--section-banner-finance-grad); }
         body.dark-theme .modal-close { color: #707070; }
         body.dark-theme .modal-close:hover { color: #e0e0e0; }
         body.dark-theme .modal-msg.error { color: #c87a7a; }
@@ -194,8 +194,8 @@
         html { font-size: 144%; }
 
         body {
-            background-color: #484848;
-            color: #1a0f00;
+            background-color: var(--body-bg);
+            color: var(--body-color);
             font-family: 'Libre Baskerville', Georgia, serif;
             padding: 45px 20px 75px;
             display: flex;
@@ -205,14 +205,14 @@
         .container {
             width: 100%;
             max-width: 1200px;
-            background-color: #faf8f4;
-            border-left: 5px solid #2c1810;
-            border-right: 1px solid #3a6b4a;
+            background-color: var(--container-bg);
+            border-left: var(--container-border-left);
+            border-right: var(--container-border-right);
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
             padding: 36px 40px 40px;
             position: relative;
         }
-        .container::after { content: ''; position: fixed; top: 0; bottom: 0; width: 1px; background-color: #a8ff3e; opacity: 0.35; right: calc(50% - 640px); pointer-events: none; }
+        .container::after { content: ''; position: fixed; top: 0; bottom: 0; width: 1px; background-color: var(--mobile-accent); opacity: 0.35; right: calc(50% - 640px); pointer-events: none; }
 
         /* ── MASTHEAD ── */
         .masthead {
@@ -239,7 +239,7 @@
 
         .masthead-top-rule {
             border: none;
-            border-top: 3px solid #2c1810;
+            border-top: var(--masthead-rule-border);
             margin-bottom: 10px;
         }
 
@@ -247,7 +247,7 @@
             font-size: 0.65rem;
             letter-spacing: 0.22em;
             text-transform: uppercase;
-            color: #2f3640;
+            color: var(--masthead-title-color);
             font-family: 'Libre Baskerville', serif;
             margin-bottom: 6px;
             text-align: right;
@@ -257,7 +257,7 @@
             font-family: var(--title-font);
             font-size: 2.5rem;
             font-weight: 700;
-            color: #2f3640;
+            color: var(--masthead-title-color);
             letter-spacing: 0;
             line-height: 1;
             margin: 2px 0 8px;
@@ -270,7 +270,7 @@
             font-family: 'Libre Baskerville', serif;
             font-size: 0.55rem;
             font-weight: 400;
-            color: #8a6a50;
+            color: var(--countdown-color);
             letter-spacing: 0.2em;
             text-align: right;
             margin: 2px 0 6px;
@@ -295,7 +295,7 @@
         .masthead-dateline {
             font-family: 'IM Fell English', serif;
             font-size: 0.7rem;
-            color: #5a3e2b;
+            color: var(--source-name-color);
             font-style: italic;
             font-variant-numeric: tabular-nums;
         }
@@ -310,7 +310,7 @@
             font-size: 0.65rem;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: #5a3e2b;
+            color: var(--source-name-color);
             padding: 0 1rem;
             overflow: hidden;
             white-space: nowrap;
@@ -324,7 +324,7 @@
         .sync-countdown {
             font-family: 'Libre Baskerville', serif;
             font-size: 0.7rem;
-            color: #2c1810;
+            color: var(--h1-color, #2c1810);
             font-weight: 700;
             transition: color 0.2s ease;
             text-align: right;
@@ -333,11 +333,11 @@
 
         .masthead-thick-rule {
             border: none;
-            border-top: 3px solid #2c1810;
+            border-top: var(--masthead-rule-border);
             margin: 8px 0 0;
         }
 
-        .section-banner { color: #faf8f4; font-family: 'Libre Baskerville', serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; padding: 6px 0 6px 12px; }
+        .section-banner { color: var(--save-btn-color, #faf8f4); font-family: 'Libre Baskerville', serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; padding: 6px 0 6px 12px; }
         .section-banner-intl-news    { background: linear-gradient(to right, #1a4a6b, transparent); }
         .section-banner-europe      { background: linear-gradient(to right, #4b3a1e, transparent); }
         .section-banner-asia    { background: linear-gradient(to right, #6b3a1a, transparent); }
@@ -349,10 +349,10 @@
         .scoreboard {
             width: 100%;
             border-collapse: collapse;
-            background-color: #faf8f4;
-            border-left: 1px solid #2c1810;
-            border-right: 1px solid #2c1810;
-            border-bottom: 3px double #2c1810;
+            background-color: var(--container-bg);
+            border-left: 1px solid var(--border-subtle);
+            border-right: 1px solid var(--border-subtle);
+            border-bottom: 3px double var(--top-rule-color, #2c1810);
         }
 
         .scoreboard th {
@@ -361,18 +361,19 @@
             font-weight: 700;
             letter-spacing: 0.18em;
             text-transform: uppercase;
-            color: #5a3e2b;
+            color: var(--source-name-color);
             padding: 13px 20px;
             text-align: left;
             background: #edf4ef;
-            border-top: 2px solid #3a6b4a;
-            border-bottom: 2px solid #3a6b4a;
+            border-top: 2px solid var(--accel-color);
+            border-bottom: 2px solid var(--accel-color);
         }
 
         .scoreboard td {
             padding: 16px 20px;
-            border-bottom: 1px solid #c8b89a;
+            border-bottom: var(--scoreboard-td-border);
             vertical-align: middle;
+            background-color: var(--scoreboard-td-bg);
         }
 
         .scoreboard tbody tr:last-child td {
@@ -395,7 +396,7 @@
             width: 56px;
             height: 40px;
             object-fit: cover;
-            border: 0.5px solid #c8b89a;
+            border: 0.5px solid var(--login-border);
             display: block;
         }
 
@@ -404,23 +405,23 @@
             height: 40px;
             object-fit: contain;
             padding: 8px;
-            background: #f0ebe0;
-            border: 0.5px solid #c8b89a;
+            background: var(--scoreboard-hover-bg);
+            border: 0.5px solid var(--login-border);
             display: block;
         }
 
         .article-img-placeholder {
             width: 56px;
             height: 40px;
-            background: #3a6b4a;
-            border: 0.5px solid #c8b89a;
+            background: var(--section-banner-finance-grad);
+            border: 0.5px solid var(--login-border);
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Quantico', sans-serif;
             font-size: 1.1rem;
             font-weight: 700;
-            color: #faf8f4;
+            color: var(--save-btn-color, #faf8f4);
         }
 
         /* ── ROW ELEMENTS ── */
@@ -428,7 +429,7 @@
             font-family: 'IM Fell English', serif;
             font-size: 0.85rem;
             font-style: italic;
-            color: #c8b89a;
+            color: var(--drag-handle, #c8b89a);
             width: 50px;
             text-align: center;
             letter-spacing: 0.05em;
@@ -438,18 +439,18 @@
             font-family: var(--article-font);
             font-size: var(--article-font-size);
             font-weight: 700;
-            color: #1a0f00;
+            color: var(--entity-title-color);
             line-height: 1.3;
             margin-bottom: 5px;
         }
 
         .dispatch-link {
-            color: #1a0f00;
+            color: var(--dispatch-link-color);
             text-decoration: none;
         }
 
         .dispatch-link:hover {
-            color: #1a0f00;
+            color: var(--dispatch-link-color);
             text-decoration: underline;
             text-underline-offset: 3px;
         }
@@ -457,7 +458,7 @@
         .entity-summary {
             font-family: var(--article-font);
             font-size: 0.78rem;
-            color: #5a3e2b;
+            color: var(--entity-summary-color);
             font-style: italic;
             line-height: 1.4;
             margin-bottom: 8px;
@@ -470,17 +471,17 @@
             font-weight: 700;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: #3a6b4a;
+            color: var(--accel-color);
             margin-top: 10px;
             padding-top: 7px;
-            border-top: 1px solid #d4c9b0;
+            border-top: 1px solid var(--border-subtle);
         }
 
         .velocity-data {
             font-family: 'Libre Baskerville', serif;
             font-size: 0.88rem;
             font-weight: 700;
-            color: #2c1810;
+            color: var(--h1-color, #2c1810);
             text-align: right;
             white-space: nowrap;
         }
@@ -499,7 +500,7 @@
             align-items: center;
             gap: 0.6rem;
             padding: 0 0 10px;
-            border-bottom: 0.5px solid #d4c9b0;
+            border-bottom: 0.5px solid var(--top-nav-border);
             margin-bottom: 10px;
             position: relative;
         }
@@ -510,22 +511,22 @@
             font-weight: 700;
             letter-spacing: 0.08em;
             text-transform: none;
-            color: #5a3e2b;
+            color: var(--source-name-color);
             text-decoration: none;
             transition: color 0.15s ease;
         }
 
-        .nav-link:hover { color: #2c1810; }
+        .nav-link:hover { color: var(--h1-color, #2c1810); }
 
         .nav-link-signup {
-            color: #5a3e2b;
+            color: var(--source-name-color);
             background: rgba(58, 107, 74, 0.08);
             border: 0.5px solid #3a6b4a;
             padding: 4px 10px;
             transition: background 0.15s ease;
         }
 
-        .nav-link-signup:hover { background: rgba(58, 107, 74, 0.18); color: #2c1810; }
+        .nav-link-signup:hover { background: rgba(58, 107, 74, 0.18); color: var(--h1-color, #2c1810); }
 
         .momentum-header {
             position: relative;
@@ -540,7 +541,7 @@
             top: 120%;
             width: 200px;
             background: #2c1810;
-            color: #faf8f4;
+            color: var(--save-btn-color, #faf8f4);
             font-family: 'Libre Baskerville', serif;
             font-size: 0.65rem;
             font-style: normal;
@@ -565,7 +566,7 @@
             font-family: 'IM Fell English', serif;
             font-size: 0.7rem;
             font-style: italic;
-            color: #8a6a50;
+            color: var(--source-muted-color);
             margin-top: 16px;
             letter-spacing: 0.04em;
         }
@@ -611,7 +612,7 @@
             .scoreboard td:nth-child(3) { width: 100%; }
 
             /* Show inline metrics on mobile */
-            .mobile-meta { display: block; font-family: 'Libre Baskerville', serif; font-size: 0.62rem; color: #5a3e2b; margin-top: 5px; }
+            .mobile-meta { display: block; font-family: 'Libre Baskerville', serif; font-size: 0.62rem; color: var(--source-name-color); margin-top: 5px; }
 
             /* Hide unused headers */
             .scoreboard thead { display: none; }
@@ -647,7 +648,7 @@
         }
         .age-gate-overlay.active { display: flex; }
         .age-gate-box {
-            background: #faf8f4;
+            background: var(--login-bg);
             border-left: 3px solid #3a6b4a;
             border-right: 3px solid #3a6b4a;
             max-width: 480px;
@@ -659,7 +660,7 @@
         .age-gate-title {
             font-family: Quantico, sans-serif;
             font-size: 1rem;
-            color: #254d33;
+            color: var(--accel-color);
             margin-bottom: 12px;
             letter-spacing: 0.05em;
         }
@@ -672,8 +673,8 @@
             margin-bottom: 24px;
         }
         .age-gate-btn {
-            background: #3a6b4a;
-            color: #faf8f4;
+            background: var(--section-banner-finance-grad);
+            color: var(--save-btn-color, #faf8f4);
             font-size: 0.65rem;
             font-weight: 700;
             letter-spacing: 0.12em;
@@ -686,7 +687,7 @@
         .age-gate-note {
             font-size: 0.55rem;
             font-style: italic;
-            color: #8a6a50;
+            color: var(--countdown-color);
             margin-top: 14px;
         }
 
@@ -712,7 +713,7 @@
             align-items: center;
             gap: 0.3rem;
             padding: 8px 4px 10px;
-            border-bottom: 0.5px solid #d4c9b0;
+            border-bottom: 0.5px solid var(--top-nav-border);
             margin-bottom: 10px;
         }
 
@@ -722,7 +723,7 @@
             font-weight: 400;
             font-style: italic;
             letter-spacing: 0.05em;
-            color: #3a6b4a;
+            color: var(--section-nav-link-color);
             text-decoration: underline;
             text-underline-offset: 3px;
             transition: color 0.15s ease;
@@ -735,10 +736,10 @@
             .section-nav { gap: 0.2rem; padding: 6px 2px 8px; }
         }
 
-        .section-nav-link:hover { color: #254d33; }
+        .section-nav-link:hover { color: var(--accel-color); }
 
         .section-nav-link.locked {
-            color: #3a6b4a;
+            color: var(--accel-color);
             cursor: default;
             pointer-events: none;
         }
@@ -758,7 +759,7 @@
         }
         .modal-overlay.active { display: flex; }
         .modal {
-            background: #faf8f4;
+            background: var(--login-bg);
             border: 1px solid #3a6b4a;
             padding: 32px 36px;
             width: 100%;
@@ -768,25 +769,25 @@
         .modal h2 {
             font-family: 'Quantico', sans-serif;
             font-size: 1.1rem;
-            color: #2c1810;
+            color: var(--h1-color, #2c1810);
             margin-bottom: 20px;
         }
         .modal input {
             width: 100%;
             padding: 10px 12px;
             margin-bottom: 12px;
-            border: 1px solid #c8b89a;
+            border: 1px solid var(--login-border);
             background: #fff;
             font-family: 'Libre Baskerville', serif;
             font-size: 0.7rem;
             color: #1a0f00;
         }
-        .modal input:focus { outline: none; border-color: #3a6b4a; }
+        .modal input:focus { outline: none; border-color: var(--accel-color); }
         .modal-btn {
             width: 100%;
             padding: 10px;
-            background: #3a6b4a;
-            color: #faf8f4;
+            background: var(--section-banner-finance-grad);
+            color: var(--save-btn-color, #faf8f4);
             border: none;
             font-family: 'Libre Baskerville', serif;
             font-size: 0.7rem;
@@ -803,11 +804,11 @@
             text-align: center;
             font-family: 'Libre Baskerville', serif;
             font-size: 0.6rem;
-            color: #8a6a50;
+            color: var(--countdown-color);
             cursor: pointer;
             margin-top: 6px;
         }
-        .modal-close:hover { color: #2c1810; }
+        .modal-close:hover { color: var(--h1-color, #2c1810); }
         .modal-msg {
             font-family: 'IM Fell English', serif;
             font-size: 0.65rem;
@@ -821,16 +822,16 @@
             text-align: center;
             font-family: 'Libre Baskerville', serif;
             font-size: 0.58rem;
-            color: #8a6a50;
+            color: var(--countdown-color);
             margin-top: 12px;
         }
-        .modal-switch a { color: #3a6b4a; cursor: pointer; text-decoration: underline; }
+        .modal-switch a { color: var(--accel-color); cursor: pointer; text-decoration: underline; }
 
         /* Auth nav state */
         .nav-user {
             font-family: 'Libre Baskerville', serif;
             font-size: 0.65rem;
-            color: #5a3e2b;
+            color: var(--source-name-color);
             letter-spacing: 0.08em;
         }
         .nav-link-logout {
@@ -846,7 +847,7 @@
             border: none;
             padding: 0;
         }
-        .nav-link-logout:hover { color: #2c1810; }
+        .nav-link-logout:hover { color: var(--h1-color, #2c1810); }
         /* ── EDITORIAL SUMMARY ── */
 
     </style>
@@ -892,7 +893,7 @@
         <div class="age-gate-box">
             <div class="age-gate-title">Daily Hit Metrics</div>
             <hr class="age-gate-rule">
-            <p class="age-gate-text">This site aggregates content from public sources including Reddit and other open networks, which may contain unmoderated community discussions. By continuing, you confirm that you are <strong>13 years of age or older</strong> and agree to our <a href="https://news.dailyhitmetrics.com/terms.html" style="color:#3a6b4a;">Terms of Service</a>.</p>
+            <p class="age-gate-text">This site aggregates content from public sources including Reddit and other open networks, which may contain unmoderated community discussions. By continuing, you confirm that you are <strong>13 years of age or older</strong> and agree to our <a href="https://news.dailyhitmetrics.com/terms.html" style="color: var(--accel-color);">Terms of Service</a>.</p>
             <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin: 16px 0 8px;">
                 <span style="font-size:1.1rem;" title="Theme">☯</span>
                 <label style="font-family:'Libre Baskerville',serif; font-size:0.65rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
@@ -900,7 +901,7 @@
                     <span class="age-gate-note" style="margin:0;">True Dark</span>
                 </label>
                 <label style="font-family:'Libre Baskerville',serif; font-size:0.65rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
-                    <input type="radio" name="age-gate-theme" value="parchment" onchange="previewAgeGateTheme(this.value)" style="accent-color:#3a6b4a;">
+                    <input type="radio" name="age-gate-theme" value="parchment" onchange="previewAgeGateTheme(this.value)" style="accent-color: var(--accel-color);">
                     <span class="age-gate-note" style="margin:0;">Parchment</span>
                 </label>
             </div>
@@ -988,10 +989,10 @@
 
     <div class="footer-note">All dispatches sourced from open networks &amp; public indices &nbsp;·&nbsp; Updated hourly on the hour &nbsp;·&nbsp; dailyhitmetrics.com</div>
     <div class="footer-note" style="margin-top: 8px;">
-        <a href="/about.html" style="color: #3a6b4a; text-decoration: none;">About</a> &nbsp;·&nbsp;
-        <a href="/privacy.html" style="color: #3a6b4a; text-decoration: none;">Privacy Policy</a> &nbsp;·&nbsp;
-        <a href="/terms.html" style="color: #3a6b4a; text-decoration: none;">Terms of Service</a> &nbsp;·&nbsp;
-        <a href="/contact.html" style="color: #3a6b4a; text-decoration: none;">Contact</a>
+        <a href="/about.html" style="color: var(--accel-color); text-decoration: none;">About</a> &nbsp;·&nbsp;
+        <a href="/privacy.html" style="color: var(--accel-color); text-decoration: none;">Privacy Policy</a> &nbsp;·&nbsp;
+        <a href="/terms.html" style="color: var(--accel-color); text-decoration: none;">Terms of Service</a> &nbsp;·&nbsp;
+        <a href="/contact.html" style="color: var(--accel-color); text-decoration: none;">Contact</a>
     </div>
     <div class="footer-note" style="margin-top: 6px;">&copy; 2026 <a href="https://mpathtek.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">MpathTek</a> &nbsp;·&nbsp; All rights reserved</div>
 
@@ -1314,9 +1315,9 @@
             const tierBtn = isAdmin
                 ? `<span class="nav-user" style="color:#8a1a1a;">✦ Admin</span>`
                 : isProPlus
-                ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro+</span>`
+                ? `<span class="nav-user" style="color: var(--accel-color);">✦ Pro+</span>`
                 : isPro
-                ? `<span class="nav-user" style="color:#3a6b4a;">✦ Pro</span>`
+                ? `<span class="nav-user" style="color: var(--accel-color);">✦ Pro</span>`
                 : `<a href="#" class="nav-link" style="text-transform:none; background:rgba(58,107,74,0.08); border:0.5px solid #3a6b4a; padding:4px 10px;" onclick="handleUpgrade(); return false;">Upgrade to Pro</a>`;
             const settingsLink = isPro ? `<span style="color:#d4c9b0; font-size:0.6rem;">|</span><a href="https://news.dailyhitmetrics.com/settings.html?from=international" class="nav-link">Settings</a>` : '';
             const adminLinks = isAdmin ? `
