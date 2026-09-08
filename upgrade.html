@@ -10,89 +10,197 @@
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { font-size: 144%; }
-        body { background-color: #484848; color: #1a0f00; font-family: 'Libre Baskerville', Georgia, serif; padding: 36px 20px 60px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 1080px; background-color: #faf8f4; border-left: 1px solid #3a6b4a; border-right: 1px solid #3a6b4a; padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); }
-        .site-title { font-family: 'Quantico', sans-serif; font-size: 1.4rem; font-weight: 700; color: #2f3640; text-align: right; margin-bottom: 4px; }
-        .top-rule { border: none; border-top: 3px solid #2c1810; margin: 8px 0 28px; }
-        .eyebrow { font-family: 'Quantico', sans-serif; font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase; color: #3a6b4a; margin-bottom: 10px; }
-        .headline { font-family: 'Quantico', sans-serif; font-size: 2rem; color: #2c1810; margin-bottom: 6px; line-height: 1.2; }
-        .subhead { font-family: 'IM Fell English', serif; font-style: normal; font-size: 0.95rem; color: #5a3e2b; margin-bottom: 28px; line-height: 1.6; }
-        .price-rule { border: none; border-top: 1px solid #d4c9b0; margin: 0 0 28px; }
-        .price-block { display: flex; align-items: baseline; gap: 10px; margin-bottom: 28px; }
-        .price-amount { font-family: 'Quantico', sans-serif; font-size: 2.5rem; color: #2c1810; }
-        .price-period { font-family: 'Libre Baskerville', serif; font-size: 0.8rem; color: #8a6a50; }
-        .section-label { font-family: 'Quantico', sans-serif; font-size: 0.45rem; letter-spacing: 0.2em; text-transform: uppercase; color: #3a6b4a; border-bottom: 1px solid #d4c9b0; padding-bottom: 6px; margin-bottom: 16px; }
+
+        :root {
+            --body-bg: #484848;
+            --container-bg: #faf8f4;
+            --container-border: 1px solid #3a6b4a;
+            --title-color: #2f3640;
+            --top-rule: #2c1810;
+            --eyebrow-color: #3a6b4a;
+            --headline-color: #2c1810;
+            --subhead-color: #5a3e2b;
+            --price-rule: #d4c9b0;
+            --price-color: #2c1810;
+            --price-period: #8a6a50;
+            --section-label-color: #3a6b4a;
+            --section-label-border: #d4c9b0;
+            --card-bg: #f0ebe0;
+            --card-border: #3a6b4a;
+            --card-title: #2c1810;
+            --card-p: #5a3e2b;
+            --feed-tag-bg: #3a6b4a;
+            --feed-tag-color: #faf8f4;
+            --cta-bg: #edf4ef;
+            --cta-border: #3a6b4a;
+            --cta-color: #254d33;
+            --btn-bg: #2c1810;
+            --btn-color: #faf8f4;
+            --btn-hover: #3a6b4a;
+            --divider-line: #d4c9b0;
+            --divider-text: #8a6a50;
+            --maybe-later: #8a6a50;
+            --footer-color: #8a6a50;
+            --footer-border: #d4c9b0;
+            --link-color: #3a6b4a;
+            --error-color: #8a1a1a;
+        }
+
+        body.dark-theme {
+            --body-bg: #000000;
+            --container-bg: #2a2a26;
+            --container-border: 1px solid #333333;
+            --title-color: #e8e8e8;
+            --top-rule: #333333;
+            --eyebrow-color: #c0ccc4;
+            --headline-color: #e0e0e0;
+            --subhead-color: #b0b0b0;
+            --price-rule: #333333;
+            --price-color: #e0e0e0;
+            --price-period: #707070;
+            --section-label-color: #c0ccc4;
+            --section-label-border: #333333;
+            --card-bg: #36342c;
+            --card-border: #5a8c6a;
+            --card-title: #e0e0e0;
+            --card-p: #b0b0b0;
+            --feed-tag-bg: #2a4a3a;
+            --feed-tag-color: #eaf5ec;
+            --cta-bg: #1e2a20;
+            --cta-border: #3a6b4a;
+            --cta-color: #c0ccc4;
+            --btn-bg: #28201a;
+            --btn-color: #eaf5ec;
+            --btn-hover: #3a6b4a;
+            --divider-line: #333333;
+            --divider-text: #707070;
+            --maybe-later: #c0ccc4;
+            --footer-color: #707070;
+            --footer-border: #333333;
+            --link-color: #c0ccc4;
+            --error-color: #c87a7a;
+        }
+
+        body { background-color: var(--body-bg); font-family: 'Libre Baskerville', Georgia, serif; padding: 36px 20px 60px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1080px; background-color: var(--container-bg); border-left: var(--container-border); border-right: var(--container-border); padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); }
+        .site-title { font-family: 'Quantico', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--title-color); text-align: right; margin-bottom: 4px; }
+        .top-rule { border: none; border-top: 3px solid var(--top-rule); margin: 8px 0 28px; }
+        .eyebrow { font-family: 'Quantico', sans-serif; font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--eyebrow-color); margin-bottom: 10px; }
+        .headline { font-family: 'Quantico', sans-serif; font-size: 2rem; color: var(--headline-color); margin-bottom: 6px; line-height: 1.2; }
+        .subhead { font-family: 'IM Fell English', serif; font-style: normal; font-size: 0.95rem; color: var(--subhead-color); margin-bottom: 28px; line-height: 1.6; }
+        .price-rule { border: none; border-top: 1px solid var(--price-rule); margin: 0 0 28px; }
+        .price-block { display: flex; align-items: baseline; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+        .price-option { display: flex; align-items: baseline; gap: 8px; }
+        .price-amount { font-family: 'Quantico', sans-serif; font-size: 2rem; color: var(--price-color); }
+        .price-period { font-family: 'Libre Baskerville', serif; font-size: 0.75rem; color: var(--price-period); }
+        .price-divider { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.75rem; color: var(--divider-text); align-self: center; }
+        .price-savings { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.65rem; color: var(--eyebrow-color); margin-bottom: 28px; }
+        .section-label { font-family: 'Quantico', sans-serif; font-size: 0.45rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--section-label-color); border-bottom: 1px solid var(--section-label-border); padding-bottom: 6px; margin-bottom: 16px; margin-top: 24px; }
         .features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
-        .feature-card { background: #f0ebe0; border-left: 3px solid #3a6b4a; padding: 14px 16px; }
-        .feature-card h3 { font-family: 'Quantico', sans-serif; font-size: 0.6rem; color: #2c1810; margin-bottom: 6px; letter-spacing: 0.05em; }
-        .feature-card p { font-size: 0.65rem; color: #5a3e2b; line-height: 1.6; margin: 0; }
+        .feature-card { background: var(--card-bg); border-left: 3px solid var(--card-border); padding: 14px 16px; }
+        .feature-card h3 { font-family: 'Quantico', sans-serif; font-size: 0.6rem; color: var(--card-title); margin-bottom: 6px; letter-spacing: 0.05em; }
+        .feature-card p { font-size: 0.65rem; color: var(--card-p); line-height: 1.6; margin: 0; }
         .feeds-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
-        .feed-tag { font-family: 'Quantico', sans-serif; font-size: 0.45rem; letter-spacing: 0.1em; text-transform: uppercase; color: #faf8f4; background: #3a6b4a; padding: 5px 12px; }
-        .cta-block { background: #edf4ef; border: 1px solid #3a6b4a; padding: 24px 28px; margin-bottom: 20px; }
-        .cta-block p { font-size: 0.7rem; color: #254d33; margin-bottom: 16px; line-height: 1.7; text-align: left; }
+        .feed-tag { font-family: 'Quantico', sans-serif; font-size: 0.45rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--feed-tag-color); background: var(--feed-tag-bg); padding: 5px 12px; }
+        .cta-block { background: var(--cta-bg); border: 1px solid var(--cta-border); padding: 24px 28px; margin-bottom: 20px; }
+        .cta-block p { font-size: 0.7rem; color: var(--cta-color); margin-bottom: 16px; line-height: 1.7; }
         .cta-buttons { text-align: center; }
-        .cta-block p { font-size: 0.7rem; color: #254d33; margin-bottom: 16px; line-height: 1.7; }
-        .btn-subscribe { display: inline-block; background: #2c1810; color: #faf8f4; font-family: 'Quantico', sans-serif; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 14px 36px; cursor: pointer; border: none; transition: background 0.15s ease; }
-        .btn-subscribe:hover { background: #3a6b4a; }
-        .btn-subscribe:disabled { background: #8a6a50; cursor: not-allowed; }
-        .maybe-later { display: block; font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.7rem; color: #8a6a50; text-decoration: none; margin-top: 14px; }
-        .maybe-later:hover { color: #3a6b4a; }
+        .btn-subscribe { display: inline-block; background: var(--btn-bg); color: var(--btn-color); font-family: 'Quantico', sans-serif; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 14px 36px; cursor: pointer; border: none; transition: background 0.15s ease; margin: 4px; }
+        .btn-subscribe:hover { background: var(--btn-hover); }
+        .btn-subscribe:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-subscribe.annual { background: var(--cta-border); }
+        .btn-subscribe.annual:hover { background: var(--btn-hover); }
+        .maybe-later { display: block; font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.7rem; color: var(--maybe-later); text-decoration: none; margin-top: 14px; }
+        .maybe-later:hover { color: var(--link-color); }
         .divider { display: flex; align-items: center; gap: 12px; margin: 16px 0; }
-        .divider-line { flex: 1; border: none; border-top: 1px solid #d4c9b0; }
-        .divider-text { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.65rem; color: #8a6a50; }
+        .divider-line { flex: 1; border: none; border-top: 1px solid var(--divider-line); }
+        .divider-text { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.65rem; color: var(--divider-text); }
+        .error-msg { display: none; font-family: 'IM Fell English', serif; font-size: 0.65rem; color: var(--error-color); font-style: italic; margin-top: 8px; }
         #paypal-button-container-P-8YD19866MC332911GNJUATVY { margin-top: 8px; max-width: 300px; margin-left: auto; margin-right: auto; }
-        .footer-note { margin-top: 28px; padding-top: 16px; border-top: 1px solid #d4c9b0; font-family: 'IM Fell English', serif; font-size: 0.65rem; color: #8a6a50; font-style: italic; text-align: center; }
-        @media (max-width: 600px) { .features-grid { grid-template-columns: 1fr; } .container { padding: 24px 20px 32px; } .headline { font-size: 1.4rem; } }
+        .footer-note { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--footer-border); font-family: 'IM Fell English', serif; font-size: 0.65rem; color: var(--footer-color); font-style: italic; text-align: center; }
+        .footer-note a { color: var(--link-color); }
+        @media (max-width: 600px) { .features-grid { grid-template-columns: 1fr; } .container { padding: 24px 20px 32px; } .headline { font-size: 1.4rem; } .price-block { flex-direction: column; gap: 8px; } }
     </style>
 </head>
-<body>
+<body><script>(function(){var t=document.cookie.match(/dhm-theme=([^;]+)/);var theme=t?decodeURIComponent(t[1]):'dark';if(theme==='dark')document.body.classList.add('dark-theme');})();</script>
 <div class="container">
     <div class="site-title">Daily Hit Metrics</div>
     <div class="top-rule"></div>
 
     <div class="eyebrow">Pro Membership</div>
     <div class="headline">Upgrade to Pro</div>
-    <div class="subhead">Unlock five real-time feeds covering sports, finance, politics, and entertainment — each with hourly editorial briefings and keyword alerts delivered to your inbox.</div>
+    <div class="subhead">Unlock all seven real-time feeds — U.S. News, International, Sports, Finance, Politics, Entertainment, and Comedy — each updated every hour from curated sources worldwide.</div>
 
     <div class="price-rule"></div>
     <div class="price-block">
-        <div class="price-amount">$4.99</div>
-        <div class="price-period">per month · cancel anytime</div>
+        <div class="price-option">
+            <div class="price-amount">$2.99</div>
+            <div class="price-period">per month</div>
+        </div>
+        <div class="price-divider">or</div>
+        <div class="price-option">
+            <div class="price-amount">$20</div>
+            <div class="price-period">per year</div>
+        </div>
     </div>
+    <div class="price-savings">✦ Annual plan saves you over 40% — that's $15.88 back in your pocket.</div>
 
-    <div class="section-label">What's included</div>
+    <div class="section-label">All Seven Verticals Included</div>
 
     <div class="feeds-row">
-        <span class="feed-tag">📰 News</span>
+        <span class="feed-tag">🗞️ U.S. News</span>
+        <span class="feed-tag">🌍 International</span>
         <span class="feed-tag">🏆 Sports</span>
         <span class="feed-tag">📈 Finance</span>
         <span class="feed-tag">🏛 Politics</span>
         <span class="feed-tag">🎬 Entertainment</span>
+        <span class="feed-tag">😄 Comedy</span>
     </div>
 
     <div class="features-grid">
         <div class="feature-card">
-            <h3>5 Real-Time Feeds</h3>
-            <p>Access all five content verticals — sports, finance, politics, entertainment, and news — updated every hour from curated sources worldwide.</p>
+            <h3>U.S. News &amp; International</h3>
+            <p>ABC, CBS, NBC, NPR, Sky News, The Guardian, Al Jazeera, France 24, DW News, Euronews — and more. Already included on the free tier, with enhanced customization on Pro.</p>
         </div>
         <div class="feature-card">
-            <h3>Editor's Article Summary</h3>
-            <p>Each feed generates a fresh 250-word editorial briefing every hour, synthesizing the top stories into a single readable dispatch.</p>
+            <h3>Sports</h3>
+            <p>ESPN, Bleacher Report, r/sports, r/nba, r/soccer, r/nfl — live coverage, scores, and community reactions updated every hour.</p>
         </div>
+        <div class="feature-card">
+            <h3>Finance</h3>
+            <p>Reuters Finance, Bloomberg, WSJ Markets, r/investing, r/stocks — market news, analysis, and retail investor discussions.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Politics</h3>
+            <p>Politico, The Hill, r/politics, r/neutralpolitics — policy coverage, legislative updates, and balanced community discussion.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Entertainment</h3>
+            <p>Variety, Deadline, Rolling Stone, r/movies, r/television — film, TV, music, and pop culture updated hourly.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Comedy</h3>
+            <p>The Onion, ClickHole, Reductress, The Hard Times, XKCD, The Oatmeal, r/standup, r/comedy — satire, comics, and stand-up.</p>
+        </div>
+    </div>
+
+    <div class="section-label">Pro Features</div>
+    <div class="features-grid">
         <div class="feature-card">
             <h3>Keyword Alerts</h3>
             <p>Set keywords for any feed. When a matching story surfaces, you receive a digest email listing every matched article that hour.</p>
         </div>
         <div class="feature-card">
             <h3>Section Preferences</h3>
-            <p>Show or hide sections, set article counts per category, and customize banner colors to tailor each feed to your reading habits.</p>
+            <p>Show or hide sections, set article counts per category, and customize source selection to tailor each feed to your reading habits.</p>
         </div>
     </div>
 
     <div class="cta-block">
-        <p>Your subscription begins immediately. Cancel anytime from your Stripe billing portal — no contracts, no commitments.</p>
+        <p>Your subscription begins immediately. Cancel anytime — no contracts, no commitments.</p>
         <div class="cta-buttons">
-            <button class="btn-subscribe" id="subscribe-btn" onclick="handleUpgrade()">Subscribe for $4.99 / month</button>
+            <button class="btn-subscribe" id="subscribe-btn-monthly" onclick="handleUpgrade('monthly')">Subscribe for $2.99 / Month</button>
+            <button class="btn-subscribe annual" id="subscribe-btn-annual" onclick="handleUpgrade('annual')">Subscribe for $20 / Year</button>
             <div class="error-msg" id="upgrade-error"></div>
 
             <div class="divider">
@@ -110,7 +218,7 @@
 
     <div class="footer-note">
         Payments are processed securely by Stripe. Daily Hit Metrics does not store your payment information.
-        Questions? <a href="https://news.dailyhitmetrics.com/contact.html" style="color:#3a6b4a;">Contact us</a>.
+        Questions? <a href="https://news.dailyhitmetrics.com/contact.html">Contact us</a>.
     </div>
 </div>
 
@@ -130,9 +238,16 @@
         auth: { storage: cookieStorage, storageKey: 'dhm-auth', autoRefreshToken: true, persistSession: true }
     });
 
-    async function handleUpgrade() {
-        const btn = document.getElementById('subscribe-btn');
+    // Dark/Parchment theme
+    function getDHMTheme() { const m = document.cookie.match(/dhm-theme=([^;]+)/); return m ? decodeURIComponent(m[1]) : 'dark'; }
+    function applyDHMTheme(theme) { if (theme === 'dark') document.body.classList.add('dark-theme'); else document.body.classList.remove('dark-theme'); }
+    applyDHMTheme(getDHMTheme());
+
+    async function handleUpgrade(plan) {
+        const btnMonthly = document.getElementById('subscribe-btn-monthly');
+        const btnAnnual = document.getElementById('subscribe-btn-annual');
         const errMsg = document.getElementById('upgrade-error');
+        const btn = plan === 'annual' ? btnAnnual : btnMonthly;
         btn.disabled = true;
         btn.textContent = 'Redirecting to checkout...';
         errMsg.style.display = 'none';
@@ -147,7 +262,7 @@
             const res = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/create-checkout-session', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: session.user.id, email: session.user.email })
+                body: JSON.stringify({ userId: session.user.id, email: session.user.email, plan: plan })
             });
 
             const data = await res.json();
@@ -158,7 +273,7 @@
             }
         } catch (e) {
             btn.disabled = false;
-            btn.textContent = 'Subscribe for $4.99 / month';
+            btn.textContent = plan === 'annual' ? 'Subscribe for $20 / Year' : 'Subscribe for $2.99 / Month';
             errMsg.style.display = 'block';
             errMsg.textContent = 'Something went wrong. Please try again or contact support.';
         }
