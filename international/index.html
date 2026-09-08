@@ -38,8 +38,9 @@
             --masthead-date-color: var(--masthead-title-color);
             --masthead-rule-border: 3px solid #2c1810;
             --nav-bg: rgba(250,248,244,0.97);
-            --section-nav-link-color: var(--accel-color);
+            --section-nav-link-color: #3a6b4a;
             --section-nav-link-hover: #254d33;
+            --return-color: #3a6b4a;
             --section-banner-border: 3px solid #2c1810;
             --scoreboard-td-bg: transparent;
             --scoreboard-td-border: 1px solid var(--login-border);
@@ -91,6 +92,7 @@
             --nav-bg: rgba(0,0,0,0.97);
             --section-nav-link-color: #c0ccc4;
             --section-nav-link-hover: #ffffff;
+            --return-color: #eaf5ec;
             --section-banner-border: 1px solid #333333;
             --scoreboard-td-bg: #36342c;
             --scoreboard-td-border: 1px solid #2a2a2a;
@@ -144,7 +146,7 @@
         body.dark-theme .editorial-arrow { color: #00c853; }
         body.dark-theme .editorial-text { color: #d0d0d0; }
         body.dark-theme .editorial-byline { color: #707070; }
-        body.dark-theme .scoreboard th { color: #b0b0b0; background: #1e2a20; border-top-color: #333333; border-bottom-color: #333333; }
+        body.dark-theme .scoreboard th { color: #b0b0b0; background: var(--scoreboard-td-bg); border-top-color: var(--border-subtle); border-bottom-color: var(--border-subtle); }
         body.dark-theme .rank-col { color: #b0b0b0; }
         body.dark-theme .category-badge { color: #00c853; }
         body.dark-theme .velocity-data { color: #b0b0b0; }
@@ -225,7 +227,7 @@
         .globe-graphic {
             position: absolute;
             top: -30px;
-            left: 0;
+            left: -20px;
             width: 240px;
             height: 240px;
             opacity: 0.13;
@@ -385,9 +387,9 @@
             color: var(--source-name-color);
             padding: 13px 20px;
             text-align: left;
-            background: #edf4ef;
-            border-top: 2px solid #3a6b4a;
-            border-bottom: 2px solid #3a6b4a;
+            background: var(--scoreboard-th-bg, #edf4ef);
+            border-top: 2px solid var(--accel-color);
+            border-bottom: 2px solid var(--accel-color);
         }
 
         .scoreboard td {
@@ -1013,10 +1015,10 @@
 
     <div class="footer-note">All dispatches sourced from open networks &amp; public indices &nbsp;·&nbsp; Updated hourly on the hour &nbsp;·&nbsp; dailyhitmetrics.com</div>
     <div class="footer-note" style="margin-top: 8px;">
-        <a href="/about.html" style="color: var(--accel-color); text-decoration: none;">About</a> &nbsp;·&nbsp;
-        <a href="/privacy.html" style="color: var(--accel-color); text-decoration: none;">Privacy Policy</a> &nbsp;·&nbsp;
-        <a href="/terms.html" style="color: var(--accel-color); text-decoration: none;">Terms of Service</a> &nbsp;·&nbsp;
-        <a href="/contact.html" style="color: var(--accel-color); text-decoration: none;">Contact</a>
+        <a href="/about.html" class="footer-link" style="text-decoration: none;">About</a> &nbsp;·&nbsp;
+        <a href="/privacy.html" class="footer-link" style="text-decoration: none;">Privacy Policy</a> &nbsp;·&nbsp;
+        <a href="/terms.html" class="footer-link" style="text-decoration: none;">Terms of Service</a> &nbsp;·&nbsp;
+        <a href="/contact.html" class="footer-link" style="text-decoration: none;">Contact</a>
     </div>
     <div class="footer-note" style="margin-top: 6px;">&copy; 2026 <a href="https://mpathtek.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">MpathTek</a> &nbsp;·&nbsp; All rights reserved</div>
 
