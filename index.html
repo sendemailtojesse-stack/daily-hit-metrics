@@ -1122,9 +1122,9 @@
         <a href="#" class="section-nav-link locked" id="nav-finance">Finance</a>
         <span class="section-nav-sep">|</span>
         <a href="#" class="section-nav-link locked" id="nav-politics">Politics</a>
-        <span class="section-nav-sep">|</span>
+        <span class="section-nav-sep arts-sep">|</span>
         <a href="#" class="section-nav-link locked" id="nav-arts">Arts</a>
-        <span class="section-nav-sep">|</span>
+        <span class="section-nav-sep science-sep">|</span>
         <a href="#" class="section-nav-link locked" id="nav-science">Science</a>
         <span class="section-nav-sep">|</span>
         <a href="#" class="section-nav-link locked" id="nav-entertainment">Entertainment</a>
@@ -1993,6 +1993,25 @@
         };
     }
 
+    // ── ARTS & SCIENCE NAV VISIBILITY ──
+    function getArtsScienceNav() {
+        const m = document.cookie.match(/dhm-arts-science=([^;]+)/);
+        return m ? m[1] === '1' : false;
+    }
+
+    function applyArtsScienceNav(show) {
+        const arts = document.getElementById('nav-arts');
+        const science = document.getElementById('nav-science');
+        if (arts) arts.style.display = show ? '' : 'none';
+        if (science) science.style.display = show ? '' : 'none';
+        document.querySelectorAll('.arts-sep, .science-sep').forEach(s => s.style.display = show ? '' : 'none');
+        // Alignment — center when hidden, right when shown
+        const nav = document.getElementById('section-nav');
+        if (nav) nav.style.justifyContent = show ? 'flex-end' : 'center';
+    }
+
+    applyArtsScienceNav(getArtsScienceNav());
+
     // Apply saved theme immediately (defaults to dark if no cookie)
     applyDHMTheme(getDHMTheme());
     updateThemeTooltip();
@@ -2114,6 +2133,11 @@
                 };
             });
         }
+        // Apply arts & science nav visibility
+        const showArtsScience = profile?.preferences?.showArtsScienceNav === true;
+        document.cookie = `dhm-arts-science=${showArtsScience ? '1' : '0'}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+        applyArtsScienceNav(showArtsScience);
+
         // Apply saved newspaper shade
         if (profile?.preferences?.newspaperShade) {
             applyNewspaperShade(profile.preferences.newspaperShade);

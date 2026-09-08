@@ -274,6 +274,18 @@
     </div>
 
     <!-- Section Preferences -->
+    <!-- Arts & Science Nav Verticals -->
+    <h2>Navigation Verticals</h2>
+    <p style="font-size:0.7rem; color:#5a3e2b; margin-bottom:12px;">Show or hide the Arts and Science verticals in the site navigation. Off by default — enable when these verticals launch.</p>
+    <div style="display:flex; align-items:center; gap:16px; margin-bottom:8px;">
+        <label style="font-family:'Libre Baskerville',serif; font-size:0.7rem; display:flex; align-items:center; gap:8px; cursor:pointer;">
+            <input type="checkbox" id="show-arts-science" onchange="saveArtsScienceNav()" style="accent-color:#3a6b4a; width:14px; height:14px;">
+            Show Arts &amp; Science in navigation
+        </label>
+        <span id="arts-science-msg" style="font-family:'IM Fell English',serif; font-size:0.65rem; color:#3a6b4a; font-style:italic; opacity:0; transition:opacity 0.3s;">Saved.</span>
+    </div>
+    <p style="font-size:0.65rem; color:#8a6a50; font-style:italic; margin-bottom:24px;">When enabled, Arts and Science links will appear in the vertical navigation bar on all pages.</p>
+
     <h2>Section Preferences</h2>
     <p style="font-size:0.7rem; color:#5a3e2b; margin-bottom:16px;">Choose which sections to display and their order, how many articles to show, and whether to use a gradient or solid color banner. Use <em>Reset to Defaults</em> to restore the original layout at any time.</p>
     <p style="font-size:0.65rem; color:#8a6a50; font-style:italic; margin-bottom:16px; border-left:2px solid #d4c9b0; padding-left:10px;">Note: The section article count is a ceiling — no more than that many articles will show regardless of source counts. Source counts limit how many articles each individual source contributes. For example, if the section total is 4 and Kotaku is set to 4, you will see up to 4 Kotaku articles. If source counts add up to less than the section total, fewer articles will appear.</p>
@@ -889,6 +901,20 @@ async function resetCurrentTab() {
 }
 
 // ── SAVE ──
+async function saveArtsScienceNav() {
+    const checked = document.getElementById('show-arts-science').checked;
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) return;
+    const { data: profile } = await supabaseClient.from('profiles').select('preferences').eq('id', session.user.id).single();
+    const prefs = profile?.preferences || {};
+    prefs.showArtsScienceNav = checked;
+    await supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', session.user.id);
+    // Also set cookie for immediate effect across all pages
+    document.cookie = `dhm-arts-science=${checked ? '1' : '0'}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+    const msg = document.getElementById('arts-science-msg');
+    if (msg) { msg.style.opacity = '1'; setTimeout(() => msg.style.opacity = '0', 2000); }
+}
+
 async function saveTheme() {
     const sel = document.getElementById('theme-select');
     const theme = sel ? sel.value : 'parchment';
@@ -1086,6 +1112,12 @@ supabaseClient.auth.getSession().then(async ({ data: { session } }) => {
     if (profile?.preferences?.theme) {
         const sel = document.getElementById('theme-select');
         if (sel) sel.value = profile.preferences.theme;
+    }
+
+    // Load arts & science nav preference (default off)
+    const artsScienceCheck = document.getElementById('show-arts-science');
+    if (artsScienceCheck) {
+        artsScienceCheck.checked = profile?.preferences?.showArtsScienceNav === true;
     }
 
     // Load saved prefs — use DEFAULTS section order, preserve saved source order within sections
