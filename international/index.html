@@ -128,7 +128,7 @@
             --spine-line-color: #00c853;
         }
 
-        .footer-link { color: var(--accel-color); }
+        .footer-link { color: var(--return-color); }
 
         /* Dark theme element overrides */
         body.dark-theme .masthead-eyebrow { color: #ffffff; }
@@ -144,7 +144,7 @@
         body.dark-theme .editorial-arrow { color: #00c853; }
         body.dark-theme .editorial-text { color: #d0d0d0; }
         body.dark-theme .editorial-byline { color: #707070; }
-        body.dark-theme .scoreboard th { color: #b0b0b0; }
+        body.dark-theme .scoreboard th { color: #b0b0b0; background: #1e2a20; border-top-color: #333333; border-bottom-color: #333333; }
         body.dark-theme .rank-col { color: #b0b0b0; }
         body.dark-theme .category-badge { color: #00c853; }
         body.dark-theme .velocity-data { color: #b0b0b0; }
@@ -225,12 +225,33 @@
         .globe-graphic {
             position: absolute;
             top: -30px;
-            left: -20px;
-            width: 260px;
-            height: 260px;
+            left: 0;
+            width: 240px;
+            height: 240px;
             opacity: 0.13;
             pointer-events: none;
         }
+
+        .koala-mascot {
+            height: calc(1.8rem * 1.22);
+            width: auto;
+            display: inline-block;
+            vertical-align: middle;
+            flex-shrink: 0;
+            opacity: 0.86;
+        }
+
+        .masthead-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 4px;
+            margin: 2px 0 8px;
+        }
+
+        @media (max-width: 1024px) { .koala-mascot { height: calc(0.9rem * 1.22); } }
+        @media (max-width: 768px) { .koala-mascot { height: calc(1.0rem * 1.22); } }
+        @media (max-width: 480px) { .koala-mascot { height: calc(0.8rem * 1.22); } }
 
         .masthead-content {
             position: relative;
@@ -260,7 +281,7 @@
             color: var(--masthead-title-color);
             letter-spacing: 0;
             line-height: 1;
-            margin: 2px 0 8px;
+            margin: 0;
             text-align: right;
             text-decoration: underline;
             text-underline-offset: 6px;
@@ -364,9 +385,9 @@
             color: var(--source-name-color);
             padding: 13px 20px;
             text-align: left;
-            background: var(--scoreboard-td-bg);
-            border-top: 1px solid var(--border-subtle);
-            border-bottom: 1px solid var(--border-subtle);
+            background: #edf4ef;
+            border-top: 2px solid #3a6b4a;
+            border-bottom: 2px solid #3a6b4a;
         }
 
         .scoreboard td {
@@ -945,22 +966,25 @@
     <div class="masthead" id="masthead" style="opacity:0; transition: opacity 0.15s ease;">
 
         <svg class="globe-graphic" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="100" cy="100" r="90" fill="none" stroke="#2c1810" stroke-width="2"/>
-            <ellipse cx="100" cy="100" rx="40" ry="90" fill="none" stroke="#2c1810" stroke-width="1.5"/>
-            <ellipse cx="100" cy="100" rx="70" ry="90" fill="none" stroke="#2c1810" stroke-width="1.5"/>
-            <line x1="10" y1="100" x2="190" y2="100" stroke="#2c1810" stroke-width="1.5"/>
-            <ellipse cx="100" cy="100" rx="90" ry="30" fill="none" stroke="#2c1810" stroke-width="1.2"/>
-            <ellipse cx="100" cy="100" rx="90" ry="60" fill="none" stroke="#2c1810" stroke-width="1"/>
-            <line x1="100" y1="10" x2="100" y2="190" stroke="#2c1810" stroke-width="1.2"/>
-            <path d="M30 60 Q50 50 70 65 Q85 75 100 60 Q115 45 130 58 Q150 70 170 60" fill="none" stroke="#3a6b4a" stroke-width="2"/>
-            <path d="M25 80 Q45 72 65 82 Q80 90 100 80 Q125 68 150 78 Q165 84 175 80" fill="none" stroke="#3a6b4a" stroke-width="1.5"/>
-            <path d="M20 120 Q50 112 80 118 Q100 122 120 115 Q145 108 175 118" fill="none" stroke="#3a6b4a" stroke-width="1.5"/>
+            <circle cx="100" cy="100" r="90" fill="none" stroke="#e8d9c0" stroke-width="2"/>
+            <ellipse cx="100" cy="100" rx="40" ry="90" fill="none" stroke="#e8d9c0" stroke-width="1.5"/>
+            <ellipse cx="100" cy="100" rx="70" ry="90" fill="none" stroke="#e8d9c0" stroke-width="1.5"/>
+            <line x1="10" y1="100" x2="190" y2="100" stroke="#e8d9c0" stroke-width="1.5"/>
+            <ellipse cx="100" cy="100" rx="90" ry="30" fill="none" stroke="#e8d9c0" stroke-width="1.2"/>
+            <ellipse cx="100" cy="100" rx="90" ry="60" fill="none" stroke="#e8d9c0" stroke-width="1"/>
+            <line x1="100" y1="10" x2="100" y2="190" stroke="#e8d9c0" stroke-width="1.2"/>
+            <path d="M30 60 Q50 50 70 65 Q85 75 100 60 Q115 45 130 58 Q150 70 170 60" fill="none" stroke="#e8d9c0" stroke-width="2"/>
+            <path d="M25 80 Q45 72 65 82 Q80 90 100 80 Q125 68 150 78 Q165 84 175 80" fill="none" stroke="#e8d9c0" stroke-width="1.5"/>
+            <path d="M20 120 Q50 112 80 118 Q100 122 120 115 Q145 108 175 118" fill="none" stroke="#e8d9c0" stroke-width="1.5"/>
         </svg>
 
         <div class="masthead-content">
             <div class="masthead-top-rule"></div>
             <div class="masthead-eyebrow">Est 2026 &nbsp;✦&nbsp; Global Index of What Matters Now</div>
-            <div class="masthead-title">Daily Hit Metrics</div>
+            <div class="masthead-title-row">
+                <img src="https://news.dailyhitmetrics.com/koala.png" alt="" class="koala-mascot" aria-hidden="true">
+                <div class="masthead-title">Daily Hit Metrics</div>
+            </div>
             <div class="masthead-subtitle" style="text-transform: none; font-variant: normal;"></div>
             <hr class="masthead-rule">
             <div class="masthead-bottom">
