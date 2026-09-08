@@ -1201,15 +1201,15 @@
                     const isDarkTheme = document.body.classList.contains('dark-theme');
                     const gradientEnd = isDarkTheme ? '#2a2a26' : 'transparent';
                     const darkGradientColors = {
-                        'International News': '#0a1e26',
-                        'Europe': '#0a1230',
-                        'Asia': '#280a28',
-                        'World Community': '#1a2a0a',
-                        'Trending International Searches': '#1e1230'
+                        'International News': '#061418',
+                        'Europe': '#06090e',
+                        'Asia': '#140614',
+                        'World Community': '#0a140a',
+                        'Trending International Searches': '#0e0618'
                     };
                     const startColor = isDarkTheme ? (darkGradientColors[labelKey] || pref.gradientColor) : pref.gradientColor;
                     const bannerStyle_sports = isDarkTheme
-                        ? `style="background:linear-gradient(to right, ${startColor}, ${gradientEnd});"`
+                        ? `style="background:linear-gradient(to right, ${startColor}, transparent);"`
                         : pref.color === 'solid'
                             ? `style="background:${pref.gradientColor};"`
                             : `style="background:linear-gradient(to right, ${pref.gradientColor}, transparent);"`;
