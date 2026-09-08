@@ -22,7 +22,173 @@
             font-style: normal;
             font-display: block;
         }
-        :root { --bg-content: #faf8f4; --article-font: 'Libre Baskerville', Georgia, serif; --article-font-size: 1.05rem; --title-font: 'Cinzel', serif; }
+        :root {
+            --bg-content: #faf8f4;
+            --article-font: 'Libre Baskerville', Georgia, serif;
+            --article-font-size: 1.05rem;
+            --title-font: 'Cinzel', serif;
+            /* Theme variables - parchment defaults */
+            --body-bg: #484848;
+            --body-color: #1a0f00;
+            --container-bg: var(--bg-content);
+            --container-border-left: 5px solid #2c1810;
+            --container-border-right: 1px solid #3a6b4a;
+            --masthead-gradient: linear-gradient(135deg, #2c1810 0%, #3a2a1a 40%, #1a0f00 100%);
+            --masthead-title-color: #2f3640;
+            --masthead-date-color: #2f3640;
+            --masthead-rule-border: 3px solid #2c1810;
+            --nav-bg: rgba(250,248,244,0.97);
+            --section-nav-link-color: #3a6b4a;
+            --section-nav-link-hover: #254d33;
+            --section-banner-border: 3px solid #2c1810;
+            --scoreboard-td-bg: transparent;
+            --scoreboard-td-border: 1px solid #c8b89a;
+            --scoreboard-hover-bg: #f0ebe0;
+            --entity-title-color: #1a0f00;
+            --dispatch-link-color: #1a0f00;
+            --entity-summary-color: #5a3e2b;
+            --source-name-color: #5a3e2b;
+            --source-muted-color: #8a6a50;
+            --rank-color: #5a3e2b;
+            --border-subtle: #d4c9b0;
+            --border-medium: #c8b89a;
+            --top-nav-border: #d4c9b0;
+            --accel-color: #3a6b4a;
+            --editorial-color: #3a6b4a;
+            --mobile-accent: #a8ff3e;
+            --section-banner-world-mobile: #254d33;
+            --section-banner-social-mobile: #6b6125;
+            --section-banner-tech-mobile: #4a5c3a;
+            --section-banner-games-mobile: #3d5c3a;
+            --section-banner-finance-mobile: #2d4a3e;
+            --section-banner-world-grad: #254d33;
+            --section-banner-social-grad: #6b6125;
+            --section-banner-tech-grad: #4a5c3a;
+            --section-banner-games-grad: #3d5c3a;
+            --section-banner-finance-grad: #2d4a3e;
+            --section-banner-searches-grad: #556b45;
+            --section-banner-samerica-grad: #2d4a3e;
+            --globe-stroke: #2c1810;
+            --globe-accent: #3a6b4a;
+            --login-bg: #faf8f4;
+            --login-border: #c8b89a;
+            --login-color: #1a0f00;
+            --countdown-color: #8a6a50;
+            --spine-line-color: #3a6b4a;
+        }
+
+        body.dark-theme {
+            --bg-content: #1a1a1a;
+            --body-bg: #000000;
+            --body-color: #ffffff;
+            --container-bg: #2a2a26;
+            --container-border-left: 5px solid #484848;
+            --container-border-right: 1px solid #222222;
+            --masthead-gradient: linear-gradient(135deg, #000000 0%, #0d0d0d 40%, #000000 100%);
+            --masthead-title-color: #ffffff;
+            --masthead-date-color: #ffffff;
+            --masthead-rule-border: 1px solid #333333;
+            --nav-bg: rgba(0,0,0,0.97);
+            --section-nav-link-color: #c0ccc4;
+            --section-nav-link-hover: #ffffff;
+            --section-banner-border: 1px solid #333333;
+            --scoreboard-td-bg: #36342c;
+            --scoreboard-td-border: 1px solid #2a2a2a;
+            --scoreboard-hover-bg: #3f3d34;
+            --entity-title-color: #ffffff;
+            --dispatch-link-color: #ffffff;
+            --entity-summary-color: #b0b0b0;
+            --source-name-color: #b0b0b0;
+            --source-muted-color: #707070;
+            --rank-color: #b0b0b0;
+            --border-subtle: #2a2a2a;
+            --border-medium: #2a2a2a;
+            --top-nav-border: #2a2a2a;
+            --accel-color: #00c853;
+            --editorial-color: #00c853;
+            --mobile-accent: #00c853;
+            --section-banner-world-mobile: #009624;
+            --section-banner-social-mobile: #2a2800;
+            --section-banner-tech-mobile: #1a2810;
+            --section-banner-games-mobile: #102010;
+            --section-banner-finance-mobile: #001a10;
+            --section-banner-world-grad: #003820;
+            --section-banner-social-grad: #2a2800;
+            --section-banner-tech-grad: #1a2810;
+            --section-banner-games-grad: #102010;
+            --section-banner-finance-grad: #001a10;
+            --section-banner-searches-grad: #1a2a00;
+            --section-banner-samerica-grad: #001a10;
+            --globe-stroke: #e8d9c0;
+            --globe-accent: #f0e8d0;
+            --login-bg: #1a1a1a;
+            --login-border: #2a2a2a;
+            --login-color: #ffffff;
+            --countdown-color: #e0e0e0;
+            --spine-line-color: #00c853;
+        }
+
+        .footer-link { color: #3a6b4a; }
+
+        /* Dark theme element overrides */
+        body.dark-theme .masthead-eyebrow { color: #ffffff; }
+        body.dark-theme .masthead-title { color: #ffffff; }
+        body.dark-theme .masthead-subtitle { color: #707070; }
+        body.dark-theme .masthead-dateline { color: #b0b0b0; }
+        body.dark-theme .masthead-tagline { color: #b0b0b0; }
+        body.dark-theme .masthead-top-rule { border-top: 1px solid #333333; }
+        body.dark-theme .masthead-rule { border-color: #333333; }
+        body.dark-theme .masthead-thick-rule { border-color: #333333; }
+        body.dark-theme .sync-countdown { color: #e0e0e0; }
+        body.dark-theme .editorial-label { color: #00c853; }
+        body.dark-theme .editorial-arrow { color: #00c853; }
+        body.dark-theme .editorial-text { color: #d0d0d0; }
+        body.dark-theme .editorial-byline { color: #707070; }
+        body.dark-theme .scoreboard th { color: #b0b0b0; }
+        body.dark-theme .rank-col { color: #b0b0b0; }
+        body.dark-theme .category-badge { color: #00c853; }
+        body.dark-theme .velocity-data { color: #b0b0b0; }
+        body.dark-theme .nav-link { color: #b0b0b0; }
+        body.dark-theme .nav-link:hover { color: #e0e0e0; }
+        body.dark-theme .nav-link-signup { color: #b0b0b0; background: rgba(0,200,83,0.08); border-color: #00c853; }
+        body.dark-theme .nav-link-signup:hover { background: rgba(0,200,83,0.18); color: #ffffff; }
+        body.dark-theme .nav-link-logout { color: #d0b898; }
+        body.dark-theme .nav-link-logout:hover { color: #e0e0e0; }
+        body.dark-theme .nav-user-admin { color: #d0b898; }
+        body.dark-theme .nav-user { color: #b0b0b0; }
+        body.dark-theme .top-nav { border-bottom-color: #2a2a2a; }
+        body.dark-theme .footer-note { color: #707070; }
+        body.dark-theme .footer-link { color: #eaf5ec; }
+        body.dark-theme .mobile-meta { color: #b0b0b0; }
+        body.dark-theme .section-nav-link.locked { color: #c0ccc4; }
+        body.dark-theme .section-nav-sep { color: #444444; }
+        body.dark-theme .age-gate-title { color: #e8e8e8; }
+        body.dark-theme .age-gate-text { color: #d0d0d0; }
+        body.dark-theme .age-gate-note { color: #707070; }
+        body.dark-theme .age-gate-box { background: #1a1a1a; }
+        body.dark-theme .age-gate-rule { border-top-color: #333333; }
+        body.dark-theme .modal { background: #1e1e1e; border-color: #333333; }
+        body.dark-theme .modal h2 { color: #e8e8e8; border-bottom-color: #333333; }
+        body.dark-theme .modal input { background: #2a2a2a; border-color: #444444; color: #e0e0e0; }
+        body.dark-theme .modal input:focus { border-color: #eaf5ec; }
+        body.dark-theme .modal input::placeholder { color: #707070; }
+        body.dark-theme .modal-btn { background: #2a4a3a; color: #eaf5ec; }
+        body.dark-theme .modal-btn:hover { background: #3a6b4a; }
+        body.dark-theme .modal-close { color: #707070; }
+        body.dark-theme .modal-close:hover { color: #e0e0e0; }
+        body.dark-theme .modal-msg.error { color: #c87a7a; }
+        body.dark-theme .modal-msg.success { color: #7ab08a; }
+        body.dark-theme .modal-switch { color: #707070; }
+        body.dark-theme .modal-switch a { color: #c0ccc4; }
+        body.dark-theme .modal-desc { color: #d0d0d0 !important; }
+        body.dark-theme .source-name { color: #b0b0b0; }
+        body.dark-theme .entity-meta { color: #707070; }
+        body.dark-theme .growth-indicator { color: inherit; }
+        body.dark-theme .globe-graphic circle,
+        body.dark-theme .globe-graphic ellipse,
+        body.dark-theme .globe-graphic line { stroke: #e8d9c0; }
+        body.dark-theme .globe-graphic path { stroke: #f0e8d0; }
+
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         html { font-size: 144%; }
@@ -214,7 +380,7 @@
         }
 
         .scoreboard tbody tr:hover td {
-            background-color: #f0ebe0;
+            background-color: var(--scoreboard-hover-bg);
         }
 
         /* ── IMAGE ── */
@@ -691,7 +857,7 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2354946193859243"
      crossorigin="anonymous"></script>
 </head>
-<body>
+<body><script>(function(){var t=document.cookie.match(/dhm-theme=([^;]+)/);var theme=t?decodeURIComponent(t[1]):'dark';if(theme==='dark')document.body.classList.add('dark-theme');})();</script>
 
     <!-- Auth Modals -->
     <div class="modal-overlay" id="login-modal">
@@ -727,8 +893,20 @@
             <div class="age-gate-title">Daily Hit Metrics</div>
             <hr class="age-gate-rule">
             <p class="age-gate-text">This site aggregates content from public sources including Reddit and other open networks, which may contain unmoderated community discussions. By continuing, you confirm that you are <strong>13 years of age or older</strong> and agree to our <a href="https://news.dailyhitmetrics.com/terms.html" style="color:#3a6b4a;">Terms of Service</a>.</p>
+            <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin: 16px 0 8px;">
+                <span style="font-size:1.1rem;" title="Theme">☯</span>
+                <label style="font-family:'Libre Baskerville',serif; font-size:0.65rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
+                    <input type="radio" name="age-gate-theme" value="dark" checked onchange="previewAgeGateTheme(this.value)" style="accent-color:#00c853;">
+                    <span class="age-gate-note" style="margin:0;">True Dark</span>
+                </label>
+                <label style="font-family:'Libre Baskerville',serif; font-size:0.65rem; cursor:pointer; display:flex; align-items:center; gap:6px;">
+                    <input type="radio" name="age-gate-theme" value="parchment" onchange="previewAgeGateTheme(this.value)" style="accent-color:#3a6b4a;">
+                    <span class="age-gate-note" style="margin:0;">Parchment</span>
+                </label>
+            </div>
             <button class="age-gate-btn" onclick="confirmAge()">I Confirm — Continue</button>
-            <p class="age-gate-note">This confirmation is stored in your browser and will not be shown again.</p>
+            <p class="age-gate-note" style="margin-top:10px;">This confirmation is stored in your browser and will not be shown again.</p>
+            <p class="age-gate-note" style="margin-top:6px;">After selecting a color theme, if you would like to change it or access additional site settings, please create an account.</p>
         </div>
     </div>
 
@@ -753,6 +931,10 @@
         <a href="#" class="section-nav-link locked" id="nav-finance">Finance</a>
         <span class="section-nav-sep">|</span>
         <a href="#" class="section-nav-link locked" id="nav-politics">Politics</a>
+        <span class="section-nav-sep arts-sep">|</span>
+        <a href="#" class="section-nav-link locked" id="nav-arts">Arts</a>
+        <span class="section-nav-sep science-sep">|</span>
+        <a href="#" class="section-nav-link locked" id="nav-science">Science</a>
         <span class="section-nav-sep">|</span>
         <a href="#" class="section-nav-link locked" id="nav-entertainment">Entertainment</a>
         <span class="section-nav-sep">|</span>
@@ -1111,7 +1293,7 @@
         // Update section nav links based on tier
         const sectionNav = document.getElementById('section-nav');
         sectionNav.style.display = 'flex';
-        ['international', 'sports', 'finance', 'politics', 'entertainment', 'comedy'].forEach(section => {
+        ['sports', 'finance', 'politics', 'arts', 'science', 'entertainment', 'comedy'].forEach(section => {
             const el = document.getElementById(`nav-${section}`);
             if (el) {
                 if (isPro) {
@@ -1255,7 +1437,7 @@
     }
 
     // Initialize section nav as locked by default
-    ['international', 'sports', 'finance', 'politics', 'entertainment', 'comedy'].forEach(section => {
+    ['sports', 'finance', 'politics', 'arts', 'science', 'entertainment', 'comedy'].forEach(section => {
         const el = document.getElementById(`nav-${section}`);
         if (el) el.classList.add('locked');
     });
@@ -1295,15 +1477,21 @@
                 .eq('id', session.user.id)
                 .single();
             updateNav(session.user, profile?.first_name, profile?.subscription_tier);
+            await loadUserPrefs_intl(session.user.id);
         } else {
             updateNav(null);
         }
     });
 
     // ── AGE GATE ──
+    function previewAgeGateTheme(theme) { applyDHMTheme(theme); }
     function confirmAge() {
-        document.cookie = "dhm-age-confirmed=1; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure";
-        document.getElementById("age-gate").classList.remove("active");
+        document.cookie = 'dhm-age-confirmed=1; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure';
+        const selected = document.querySelector('input[name="age-gate-theme"]:checked');
+        const theme = selected ? selected.value : 'dark';
+        document.cookie = `dhm-theme=${encodeURIComponent(theme)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+        applyDHMTheme(theme);
+        document.getElementById('age-gate').classList.remove('active');
     }
     function checkAgeGate() {
         const confirmed = document.cookie.split(";").some(c => c.trim().startsWith("dhm-age-confirmed="));
@@ -1391,6 +1579,19 @@
         if (profile?.preferences?.newspaperShade) {
             applyNewspaperShade(profile.preferences.newspaperShade);
         }
+        // Apply saved theme (dark/parchment) for Pro users
+        const isProUser = ['pro', 'pro_plus', 'admin'].includes(profile?.subscription_tier);
+        if (isProUser && profile?.preferences?.theme) {
+            const savedTheme = profile.preferences.theme;
+            const cookieTheme = getDHMTheme();
+            if (savedTheme !== cookieTheme) {
+                document.cookie = `dhm-theme=${encodeURIComponent(savedTheme)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+                window.location.reload();
+                return;
+            } else {
+                applyDHMTheme(savedTheme);
+            }
+        }
     }
 
     function getSectionPref_intl(category) {
@@ -1454,7 +1655,37 @@
 
     // ── THEME TOGGLE ──
     // ── NEWSPAPER SHADE CYCLE ──
-    const NEWSPAPER_SHADES = ['#f0f0f0', '#f2f2f2', '#f4f4f4', '#f5f7f9', '#f7f8f9', '#f8f9fa', '#ffffff'];
+    let NEWSPAPER_SHADES = ['#f0f0f0', '#f2f2f2', '#f4f4f4', '#f5f7f9', '#f7f8f9', '#f8f9fa', '#ffffff'];
+
+    // ── THEME TOGGLE (Dark / Parchment) ──
+    function getDHMTheme() {
+        const m = document.cookie.match(/dhm-theme=([^;]+)/);
+        return m ? decodeURIComponent(m[1]) : 'dark';
+    }
+
+    function updateThemeTooltip() {
+        const btn = document.getElementById('theme-btn');
+        if (btn) btn.title = getDHMTheme() === 'dark' ? 'Theme: True Dark' : 'Theme: Parchment';
+    }
+
+    function applyDHMTheme(theme) {
+        if (!theme || theme === 'parchment') {
+            document.body.classList.remove('dark-theme');
+            NEWSPAPER_SHADES = ['#f0f0f0', '#f2f2f2', '#f4f4f4', '#f5f7f9', '#f7f8f9', '#f8f9fa', '#ffffff'];
+            const container = document.querySelector('.container');
+            const shade = getNewspaperShade();
+            // Default parchment shade 2/7 if no shade cookie set
+            const defaultShade = '#f2f2f2';
+            if (container) container.style.backgroundColor = NEWSPAPER_SHADES.includes(shade) ? shade : defaultShade;
+        } else {
+            document.body.classList.add('dark-theme');
+            NEWSPAPER_SHADES = ['#1a1a1a', '#1c1c1c', '#1e1e1e', '#202020', '#222222', '#242424', '#262626'];
+            const container = document.querySelector('.container');
+            if (container) container.style.backgroundColor = '';
+        }
+        // Note: cookie is NOT written here — only written when user explicitly saves theme
+        updateThemeTooltip();
+    }
 
     function getNewspaperShade() {
         const saved = document.cookie.match(/dhm-newspaper=([^;]+)/);
@@ -1463,13 +1694,11 @@
 
     function applyNewspaperShade(shade) {
         const container = document.querySelector('.container');
-        if (container) container.style.backgroundColor = shade;
-        document.cookie = `dhm-newspaper=${encodeURIComponent(shade)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
-        const btn = document.querySelector('.theme-btn');
-        if (btn) {
-            const idx = NEWSPAPER_SHADES.indexOf(shade);
-            btn.title = `Newspaper shade: ${idx + 1} of ${NEWSPAPER_SHADES.length}`;
+        // Only apply shade to container in parchment mode
+        if (container && getDHMTheme() !== 'dark') {
+            if (getDHMTheme() !== 'dark') container.style.backgroundColor = shade;
         }
+        document.cookie = `dhm-newspaper=${encodeURIComponent(shade)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
     }
 
     function cycleTheme() {
@@ -1477,15 +1706,169 @@
         const idx = NEWSPAPER_SHADES.indexOf(current);
         const next = NEWSPAPER_SHADES[(idx + 1) % NEWSPAPER_SHADES.length];
         applyNewspaperShade(next);
-        supabaseClient.auth.getSession().then(({ data: { session } }) => {
-            if (!session) return;
-            supabaseClient.from('profiles').select('preferences').eq('id', session.user.id).single().then(({ data }) => {
+        // Save to Supabase preferences
+        if (currentUser) {
+            supabaseClient.from('profiles').select('preferences').eq('id', currentUser.id).single().then(({ data }) => {
                 const prefs = data?.preferences || {};
                 prefs.newspaperShade = next;
-                supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', session.user.id);
+                supabaseClient.from('profiles').update({ preferences: prefs }).eq('id', currentUser.id);
             });
-        });
+        }
     }
+
+    // Load user's saved newspaper shade from Supabase prefs (called from loadUserPrefs)
+    function applyUserNewspaperShade(prefs) {
+        if (prefs?.newspaperShade) {
+            applyNewspaperShade(prefs.newspaperShade);
+        } else {
+            applyNewspaperShade(getNewspaperShade());
+        }
+    }
+
+    // Apply saved theme after auth resolves (see loadUserPrefs)
+    // Apply newspaper shade from cookie immediately
+    applyNewspaperShade(getNewspaperShade());
+    const FONTS = [
+        { name: 'Libre Baskerville', label: 'Libre Baskerville' },
+        { name: 'Playfair Display', label: 'Playfair Display' },
+        { name: 'Merriweather', label: 'Merriweather' },
+        { name: 'Lora', label: 'Lora' },
+        { name: 'EB Garamond', label: 'EB Garamond' },
+        { name: 'Crimson Text', label: 'Crimson Text' },
+        { name: 'Source Serif 4', label: 'Source Serif 4' },
+        { name: 'Newsreader', label: 'Newsreader' },
+        { name: 'Bitter', label: 'Bitter' },
+        { name: 'Roboto Slab', label: 'Roboto Slab' },
+        { name: 'PT Serif', label: 'PT Serif' },
+        { name: 'Spectral', label: 'Spectral' },
+        { name: 'Cormorant Garamond', label: 'Cormorant Garamond' },
+        { name: 'Vollkorn', label: 'Vollkorn' },
+        { name: 'Alegreya', label: 'Alegreya' }
+    ];
+
+    function toRoman(num) {
+        const vals = [1000,900,500,400,100,90,50,40,10,9,5,4,1];
+        const syms = ['M','CM','D','CD','C','XC','L','XL','X','IX','V','IV','I'];
+        let result = '';
+        for (let i = 0; i < vals.length; i++) {
+            while (num >= vals[i]) { result += syms[i]; num -= vals[i]; }
+        }
+        return result;
+    }
+
+    function getSavedFont() {
+        const saved = document.cookie.match(/dhm-font=([^;]+)/);
+        return saved ? decodeURIComponent(saved[1]) : 'Libre Baskerville';
+    }
+
+    function getSavedFontSize() {
+        const saved = document.cookie.match(/dhm-font-size=([\d.]+)/);
+        return saved ? parseFloat(saved[1]) : 1.05;
+    }
+
+    function applyFont(fontName, fontSize) {
+        document.documentElement.style.setProperty('--article-font', `'${fontName}', Georgia, serif`);
+        if (fontSize) document.documentElement.style.setProperty('--article-font-size', `${fontSize}rem`);
+    }
+
+    function getSavedTitleFont() {
+        const saved = document.cookie.match(/dhm-title-font=([^;]+)/);
+        return saved ? decodeURIComponent(saved[1]) : 'Quantico';
+    }
+
+    function applyTitleFont(fontName) {
+        document.documentElement.style.setProperty('--title-font', `'${fontName}', serif`);
+        document.cookie = `dhm-title-font=${encodeURIComponent(fontName)}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`;
+    }
+
+    function applyUnderlines(mastheadUl, articleUl, articleUlAlways, mpathTekUl) {
+        const mastheadTitle = document.querySelector('.masthead-title');
+        if (mastheadTitle) {
+            mastheadTitle.style.textDecoration = mastheadUl ? 'underline' : 'none';
+        }
+        const mpathTekLink = document.querySelector('.masthead-subtitle a');
+        if (mpathTekLink) mpathTekLink.style.textDecoration = (mpathTekUl !== false) ? 'underline' : 'none';
+        const styleId = 'dhm-ul-style';
+        let el = document.getElementById(styleId);
+        if (!el) { el = document.createElement('style'); el.id = styleId; document.head.appendChild(el); }
+        let css = '';
+        if (!articleUl) css += '.dispatch-link:hover { text-decoration: none !important; }';
+        if (articleUlAlways) css += '.dispatch-link { text-decoration: underline !important; text-underline-offset: 3px; }';
+        el.textContent = css;
+    }
+
+    function getSavedUnderlines() {
+        const mu = document.cookie.match(/dhm-masthead-ul=([01])/);
+        const au = document.cookie.match(/dhm-article-ul=([01])/);
+        const aua = document.cookie.match(/dhm-article-ul-always=([01])/);
+        return {
+            mastheadUl: mu ? mu[1] === '1' : true,
+            articleUl: au ? au[1] === '1' : true,
+            articleUlAlways: aua ? aua[1] === '1' : false
+        };
+    }
+
+    // ── ARTS & SCIENCE NAV VISIBILITY ──
+    function getArtsScienceNav() {
+        const m = document.cookie.match(/dhm-arts-science=([^;]+)/);
+        return m ? m[1] === '1' : false;
+    }
+
+    function applyArtsScienceNav(show) {
+        const arts = document.getElementById('nav-arts');
+        const science = document.getElementById('nav-science');
+        if (arts) arts.style.display = show ? '' : 'none';
+        if (science) science.style.display = show ? '' : 'none';
+        document.querySelectorAll('.arts-sep, .science-sep').forEach(s => s.style.display = show ? '' : 'none');
+        // Alignment — center when hidden, right when shown
+        const nav = document.getElementById('section-nav');
+        if (nav) nav.style.justifyContent = show ? 'flex-end' : 'center';
+    }
+
+    applyArtsScienceNav(getArtsScienceNav());
+
+
+    // ── ARTS & SCIENCE NAV VISIBILITY ──
+    function getArtsScienceNav() {
+        const m = document.cookie.match(/dhm-arts-science=([^;]+)/);
+        return m ? m[1] === '1' : false;
+    }
+
+    function applyArtsScienceNav(show) {
+        const arts = document.getElementById('nav-arts');
+        const science = document.getElementById('nav-science');
+        if (arts) arts.style.display = show ? '' : 'none';
+        if (science) science.style.display = show ? '' : 'none';
+        document.querySelectorAll('.arts-sep, .science-sep').forEach(s => s.style.display = show ? '' : 'none');
+        const nav = document.getElementById('section-nav');
+        if (nav) nav.style.justifyContent = show ? 'flex-end' : 'center';
+    }
+
+    applyArtsScienceNav(getArtsScienceNav());
+
+    // Apply saved theme immediately (defaults to dark if no cookie)
+    applyDHMTheme(getDHMTheme());
+    updateThemeTooltip();
+    // ── ARTS & SCIENCE NAV VISIBILITY ──
+    function getArtsScienceNav() {
+        const m = document.cookie.match(/dhm-arts-science=([^;]+)/);
+        return m ? m[1] === '1' : false;
+    }
+
+    function applyArtsScienceNav(show) {
+        const arts = document.getElementById('nav-arts');
+        const science = document.getElementById('nav-science');
+        if (arts) arts.style.display = show ? '' : 'none';
+        if (science) science.style.display = show ? '' : 'none';
+        document.querySelectorAll('.arts-sep, .science-sep').forEach(s => s.style.display = show ? '' : 'none');
+        // Alignment — center when hidden, right when shown
+        const nav = document.getElementById('section-nav');
+        if (nav) nav.style.justifyContent = show ? 'flex-end' : 'center';
+    }
+
+    applyArtsScienceNav(getArtsScienceNav());
+
+    // Apply saved theme immediately (defaults to dark if no cookie)
 
     applyNewspaperShade(getNewspaperShade());
 
