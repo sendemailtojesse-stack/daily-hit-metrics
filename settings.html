@@ -11,9 +11,110 @@
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { font-size: 132%; }
-        body { background-color: #484848; color: #1a0f00; font-family: 'Libre Baskerville', Georgia, serif; padding: 45px 20px 75px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 1200px; background-color: #faf8f4; border-left: 5px solid #2c1810; border-right: 1px solid #3a6b4a; padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); transition: background-color 0.2s; position: relative; }
-        .container::after { content: ''; position: fixed; top: 0; bottom: 0; width: 1px; background-color: #a8ff3e; opacity: 0.35; right: calc(50% - 640px); pointer-events: none; }
+
+        :root {
+            --body-bg: #484848;
+            --body-color: #1a0f00;
+            --container-bg: #faf8f4;
+            --container-border-left: 5px solid #2c1810;
+            --container-border-right: 1px solid #3a6b4a;
+            --spine-accent: #a8ff3e;
+            --title-color: #2f3640;
+            --top-rule: #2c1810;
+            --h1-color: #2c1810;
+            --h2-color: #2c1810;
+            --h2-border: #d4c9b0;
+            --sub-color: #5a3e2b;
+            --p-color: #2a1a0a;
+            --label-color: #8a6a50;
+            --input-bg: #faf8f4;
+            --input-color: #1a0f00;
+            --input-border: #d4c9b0;
+            --input-focus: #3a6b4a;
+            --section-row-border: #e8e0d0;
+            --section-name-color: #2a1a0a;
+            --source-list-bg: #f5f2ec;
+            --source-list-border: #d4c9b0;
+            --source-name-color: #2c1810;
+            --count-select-bg: #faf8f4;
+            --count-select-color: #1a0f00;
+            --count-select-border: #c8b89a;
+            --tab-color: #5a3e2b;
+            --tab-active-color: #254d33;
+            --tab-border: #3a6b4a;
+            --tab-active-bg: #faf8f4;
+            --toggle-off: #c8b89a;
+            --toggle-on: #3a6b4a;
+            --keyword-tag-bg: #edf4ef;
+            --keyword-tag-border: #3a6b4a;
+            --keyword-tag-color: #254d33;
+            --keyword-remove: #8a1a1a;
+            --color-btn-bg: #faf8f4;
+            --color-btn-color: #5a3e2b;
+            --color-btn-border: #d4c9b0;
+            --color-btn-active-bg: #3a6b4a;
+            --drag-handle: #c8b89a;
+            --icon-stroke: #8a6a50;
+            --return-color: #3a6b4a;
+            --footer-color: #8a6a50;
+            --footer-border: #d4c9b0;
+            --save-btn-bg: #3a6b4a;
+            --save-btn-color: #faf8f4;
+        }
+
+        body.dark-theme {
+            --body-bg: #000000;
+            --body-color: #ffffff;
+            --container-bg: #2a2a26;
+            --container-border-left: 5px solid #484848;
+            --container-border-right: 1px solid #333333;
+            --spine-accent: #00c853;
+            --title-color: #e8e8e8;
+            --top-rule: #333333;
+            --h1-color: #e0e0e0;
+            --h2-color: #c0ccc4;
+            --h2-border: #333333;
+            --sub-color: #b0b0b0;
+            --p-color: #d0d0d0;
+            --label-color: #707070;
+            --input-bg: #1e1e1e;
+            --input-color: #e0e0e0;
+            --input-border: #444444;
+            --input-focus: #eaf5ec;
+            --section-row-border: #333333;
+            --section-name-color: #e0e0e0;
+            --source-list-bg: #1e1e1a;
+            --source-list-border: #333333;
+            --source-name-color: #d0d0d0;
+            --count-select-bg: #1e1e1e;
+            --count-select-color: #e0e0e0;
+            --count-select-border: #444444;
+            --tab-color: #b0b0b0;
+            --tab-active-color: #eaf5ec;
+            --tab-border: #3a6b4a;
+            --tab-active-bg: #2a2a26;
+            --toggle-off: #444444;
+            --toggle-on: #3a7a4a;
+            --keyword-tag-bg: #1e2a20;
+            --keyword-tag-border: #3a6b4a;
+            --keyword-tag-color: #c0ccc4;
+            --keyword-remove: #c87a7a;
+            --color-btn-bg: #1e1e1e;
+            --color-btn-color: #b0b0b0;
+            --color-btn-border: #444444;
+            --color-btn-active-bg: #3a6b4a;
+            --drag-handle: #555555;
+            --icon-stroke: #707070;
+            --return-color: #c0ccc4;
+            --footer-color: #707070;
+            --footer-border: #333333;
+            --save-btn-bg: #2a4a3a;
+            --save-btn-color: #eaf5ec;
+        }
+
+        body { background-color: var(--body-bg); color: var(--body-color); font-family: 'Libre Baskerville', Georgia, serif; padding: 45px 20px 75px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 1200px; background-color: var(--container-bg); border-left: var(--container-border-left); border-right: var(--container-border-right); padding: 36px 48px 48px; box-shadow: 0 2px 12px rgba(0,0,0,0.25); transition: background-color 0.2s; position: relative; }
+        .container::after { content: ''; position: fixed; top: 0; bottom: 0; width: 1px; background-color: var(--spine-accent); opacity: 0.35; right: calc(50% - 640px); pointer-events: none; }
         .zoom-btn { background:none; border:none; padding:2px 4px; cursor:pointer; opacity:0.6; transition:opacity 0.15s; display:flex; align-items:center; }
         .zoom-btn:hover { opacity:1; }
         .zoom-btn-left { position:absolute; left:48px; top:36px; }
@@ -21,61 +122,61 @@
         .theme-btn:hover { opacity:1; }
         .settings-nav-row { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0; min-height:24px; }
 
-        .site-title { font-family: 'Quantico', sans-serif; font-size: 1.4rem; font-weight: 700; color: #2f3640; text-align: right; margin-bottom: 4px; }
+        .site-title { font-family: 'Quantico', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--title-color); text-align: right; margin-bottom: 4px; }
         .site-title a { color: inherit; text-decoration: none; }
-        .top-rule { border: none; border-top: 3px solid #2c1810; margin: 8px 0 28px; }
-        h1 { font-family: 'Quantico', sans-serif; font-size: 1.6rem; color: #2c1810; margin-bottom: 6px; }
-        .page-sub { font-family: 'IM Fell English', serif; font-style: normal; font-size: 0.9rem; color: #5a3e2b; margin-bottom: 24px; }
-        h2 { font-family: 'Libre Baskerville', serif; font-size: 0.85rem; font-weight: 700; color: #2c1810; margin: 28px 0 14px; border-bottom: 1px solid #d4c9b0; padding-bottom: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+        .top-rule { border: none; border-top: 3px solid var(--top-rule); margin: 8px 0 28px; }
+        h1 { font-family: 'Quantico', sans-serif; font-size: 1.6rem; color: var(--h1-color); margin-bottom: 6px; }
+        .page-sub { font-family: 'IM Fell English', serif; font-style: normal; font-size: 0.9rem; color: var(--sub-color); margin-bottom: 24px; }
+        h2 { font-family: 'Libre Baskerville', serif; font-size: 0.85rem; font-weight: 700; color: var(--h2-color); margin: 28px 0 14px; border-bottom: 1px solid var(--h2-border); padding-bottom: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
 
         /* ── SITE TABS ── */
-        .site-tabs { display: flex; gap: 0; margin-bottom: 20px; border-bottom: 2px solid #3a6b4a; }
-        .site-tab { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.85rem; color: #5a3e2b; padding: 8px 18px; cursor: pointer; border: 1px solid transparent; border-bottom: none; transition: all 0.15s; }
-        .site-tab:hover { color: #254d33; }
-        .site-tab.active { color: #254d33; font-weight: 700; background: #faf8f4; border-color: #3a6b4a; border-bottom-color: #faf8f4; margin-bottom: -2px; }
+        .site-tabs { display: flex; gap: 0; margin-bottom: 20px; border-bottom: 2px solid var(--tab-border); }
+        .site-tab { font-family: 'IM Fell English', serif; font-style: italic; font-size: 0.85rem; color: var(--tab-color); padding: 8px 18px; cursor: pointer; border: 1px solid transparent; border-bottom: none; transition: all 0.15s; }
+        .site-tab:hover { color: var(--tab-active-color); }
+        .site-tab.active { color: var(--tab-active-color); font-weight: 700; background: var(--tab-active-bg); border-color: var(--tab-border); border-bottom-color: var(--tab-active-bg); margin-bottom: -2px; }
         .site-panel { display: none; }
         .site-panel.active { display: block; }
 
         /* ── SECTION ROWS ── */
-        .source-list { background: #f5f2ec; border-left: 2px solid #d4c9b0; border-top: 1px solid #d4c9b0; padding: 8px 12px 8px 16px; margin-top: -8px; margin-bottom: 8px; }
+        .source-list { background: var(--source-list-bg); border-left: 2px solid var(--source-list-border); border-top: 1px solid var(--source-list-border); padding: 8px 12px 8px 16px; margin-top: -8px; margin-bottom: 8px; }
         .source-list-label { font-family: 'Quantico', sans-serif; font-size: 0.4rem; letter-spacing: 0.15em; text-transform: uppercase; color: #8a6a50; margin-bottom: 6px; }
         .source-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; cursor: default; }
-        .drag-handle { cursor: grab; color: #c8b89a; font-size: 0.7rem; padding: 0 2px; user-select: none; }
+        .drag-handle { cursor: grab; color: var(--drag-handle); font-size: 0.7rem; padding: 0 2px; user-select: none; }
         .drag-handle:active { cursor: grabbing; }
         .source-row.dragging { opacity: 0.4; }
         .source-row.drag-over { border-top: 2px solid #3a6b4a; }
-        .source-name { font-family: 'Libre Baskerville', serif; font-size: 0.55rem; color: #2c1810; flex: 1; }
-        .count-select-sm { font-size: 0.5rem; padding: 2px 4px; border: 1px solid #c8b89a; background: #faf8f4; color: #1a0f00; width: 48px; }
-        .source-label-sm { font-family: 'Libre Baskerville', serif; font-size: 0.48rem; color: #8a6a50; }
+        .source-name { font-family: 'Libre Baskerville', serif; font-size: 0.55rem; color: var(--source-name-color); flex: 1; }
+        .count-select-sm { font-size: 0.5rem; padding: 2px 4px; border: 1px solid var(--count-select-border); background: var(--count-select-bg); color: var(--count-select-color); width: 48px; }
+        .source-label-sm { font-family: 'Libre Baskerville', serif; font-size: 0.48rem; color: var(--label-color); }
 
-        .section-row { display: grid; grid-template-columns: 1fr auto auto auto; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid #e8e0d0; }
+        .section-row { display: grid; grid-template-columns: 1fr auto auto auto; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid var(--section-row-border); }
         .section-row:last-child { border-bottom: none; }
-        .section-name { font-size: 0.75rem; color: #2a1a0a; }
-        .section-label { font-size: 0.6rem; color: #8a6a50; font-style: italic; }
+        .section-name { font-size: 0.75rem; color: var(--section-name-color); }
+        .section-label { font-size: 0.6rem; color: var(--label-color); font-style: italic; }
         .toggle-wrap { display: flex; align-items: center; gap: 6px; }
         .toggle { position: relative; width: 36px; height: 20px; }
         .toggle input { opacity: 0; width: 0; height: 0; }
-        .toggle-slider { position: absolute; inset: 0; background: #c8b89a; border-radius: 20px; cursor: pointer; transition: 0.2s; }
+        .toggle-slider { position: absolute; inset: 0; background: var(--toggle-off); border-radius: 20px; cursor: pointer; transition: 0.2s; }
         .toggle-slider:before { content: ''; position: absolute; width: 14px; height: 14px; left: 3px; top: 3px; background: white; border-radius: 50%; transition: 0.2s; }
-        input:checked + .toggle-slider { background: #3a6b4a; }
+        input:checked + .toggle-slider { background: var(--toggle-on); }
         input:checked + .toggle-slider:before { transform: translateX(16px); }
-        .count-select { font-family: 'Libre Baskerville', serif; font-size: 0.65rem; color: #2a1a0a; border: 1px solid #d4c9b0; background: #faf8f4; padding: 4px 6px; cursor: pointer; }
+        .count-select { font-family: 'Libre Baskerville', serif; font-size: 0.65rem; color: var(--input-color); border: 1px solid var(--input-border); background: var(--input-bg); padding: 4px 6px; cursor: pointer; }
         .color-wrap { display: flex; align-items: center; gap: 6px; }
-        .color-btn { font-family: 'Libre Baskerville', serif; font-size: 0.6rem; padding: 3px 8px; border: 1px solid #d4c9b0; cursor: pointer; background: #faf8f4; color: #5a3e2b; }
-        .color-btn.active { background: #3a6b4a; color: #faf8f4; border-color: #3a6b4a; }
-        .color-swatch { width: 20px; height: 20px; border: 1px solid #d4c9b0; cursor: pointer; border-radius: 2px; }
+        .color-btn { font-family: 'Libre Baskerville', serif; font-size: 0.6rem; padding: 3px 8px; border: 1px solid var(--color-btn-border); cursor: pointer; background: var(--color-btn-bg); color: var(--color-btn-color); }
+        .color-btn.active { background: var(--color-btn-active-bg); color: var(--save-btn-color); border-color: var(--color-btn-active-bg); }
+        .color-swatch { width: 20px; height: 20px; border: 1px solid var(--input-border); cursor: pointer; border-radius: 2px; }
 
         /* ── KEYWORD ALERTS ── */
         .keyword-wrap { margin-top: 8px; }
         .keyword-input-row { display: flex; gap: 8px; margin-bottom: 12px; }
-        .keyword-input { font-family: 'Libre Baskerville', serif; font-size: 0.7rem; border: 1px solid #d4c9b0; padding: 8px 12px; flex: 1; background: #faf8f4; color: #2a1a0a; }
-        .keyword-input:focus { outline: none; border-color: #3a6b4a; }
-        .keyword-add-btn { font-family: 'Libre Baskerville', serif; font-size: 0.65rem; font-weight: 700; background: #3a6b4a; color: #faf8f4; border: none; padding: 8px 16px; cursor: pointer; }
-        .keyword-add-btn:hover { background: #254d33; }
+        .keyword-input { font-family: 'Libre Baskerville', serif; font-size: 0.7rem; border: 1px solid var(--input-border); padding: 8px 12px; flex: 1; background: var(--input-bg); color: var(--input-color); }
+        .keyword-input:focus { outline: none; border-color: var(--input-focus); }
+        .keyword-add-btn { font-family: 'Libre Baskerville', serif; font-size: 0.65rem; font-weight: 700; background: var(--save-btn-bg); color: var(--save-btn-color); border: none; padding: 8px 16px; cursor: pointer; }
+        .keyword-add-btn:hover { background: var(--tab-active-color); }
         .keyword-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-        .keyword-tag { display: flex; align-items: center; gap: 6px; background: #edf4ef; border: 1px solid #3a6b4a; font-size: 0.65rem; color: #254d33; padding: 4px 10px; }
-        .keyword-remove { cursor: pointer; color: #8a1a1a; font-weight: 700; font-size: 0.7rem; }
-        .keyword-note { font-size: 0.6rem; color: #8a6a50; font-style: italic; margin-top: 10px; }
+        .keyword-tag { display: flex; align-items: center; gap: 6px; background: var(--keyword-tag-bg); border: 1px solid var(--keyword-tag-border); font-size: 0.65rem; color: var(--keyword-tag-color); padding: 4px 10px; }
+        .keyword-remove { cursor: pointer; color: var(--keyword-remove); font-weight: 700; font-size: 0.7rem; }
+        .keyword-note { font-size: 0.6rem; color: var(--label-color); font-style: italic; margin-top: 10px; }
 
         /* ── BUTTONS ── */
         .btn-row { display: flex; gap: 12px; margin-top: 28px; align-items: center; }
@@ -99,10 +200,10 @@
         .btn-logout:hover { background: #8a1a1a; color: #faf8f4; }
     </style>
 </head>
-<body>
+<body><script>(function(){var t=document.cookie.match(/dhm-theme=([^;]+)/);var theme=t?decodeURIComponent(t[1]):'dark';if(theme==='dark')document.body.classList.add('dark-theme');})();</script>
 <div class="container">
-    <button class="zoom-btn zoom-btn-left" id="zoom-btn" onclick="cycleZoom()" title="Adjust text size"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="4.5" stroke="#8a6a50" stroke-width="1.3"/><line x1="9" y1="9" x2="13" y2="13" stroke="#8a6a50" stroke-width="1.3" stroke-linecap="round"/></svg></button>
-    <button class="theme-btn" id="theme-btn" onclick="cycleTheme()" title="Toggle background color"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="#8a6a50" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8.25V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M3 8.25v9.75A2.25 2.25 0 0 0 5.25 20.25h13.5A2.25 2.25 0 0 0 21 18V8.25"/></svg></button>
+    <button class="zoom-btn zoom-btn-left" id="zoom-btn" onclick="cycleZoom()" title="Adjust text size"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="5.5" cy="5.5" r="4.5" stroke="var(--icon-stroke)" stroke-width="1.3"/><line x1="9" y1="9" x2="13" y2="13" stroke="var(--icon-stroke)" stroke-width="1.3" stroke-linecap="round"/></svg></button>
+    <button class="theme-btn" id="theme-btn" onclick="cycleTheme()" title="Toggle background color"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path stroke="var(--icon-stroke)" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8.25V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M3 8.25v9.75A2.25 2.25 0 0 0 5.25 20.25h13.5A2.25 2.25 0 0 0 21 18V8.25"/></svg></button>
     <div class="site-title"><a href="https://news.dailyhitmetrics.com">Daily Hit Metrics</a></div>
     <div class="top-rule"></div>
     <div class="settings-nav-row">
@@ -248,11 +349,11 @@
     <h2>Theme</h2>
     <p style="font-size:0.7rem; color:#5a3e2b; margin-bottom:8px;">Choose between the classic Parchment theme or the True Dark theme optimized for mobile and low-light environments.</p>
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
-        <select id="theme-select" style="font-family:'Libre Baskerville',serif; font-size:0.7rem; padding:8px 12px; border:1px solid #c8b89a; background:#faf8f4; color:#1a0f00; cursor:pointer;">
+        <select id="theme-select" style="font-family:'Libre Baskerville',serif; font-size:0.7rem; padding:8px 12px; border:1px solid var(--input-border); background:var(--input-bg); color:var(--input-color); cursor:pointer;">
             <option value="parchment">Parchment (Classic)</option>
             <option value="dark">True Dark</option>
         </select>
-        <button onclick="saveTheme()" style="font-family:'Libre Baskerville',serif; font-size:0.7rem; font-weight:700; background:#3a6b4a; color:#faf8f4; border:none; padding:8px 20px; cursor:pointer;">Save Theme</button>
+        <button onclick="saveTheme()" style="font-family:'Libre Baskerville',serif; font-size:0.7rem; font-weight:700; background:var(--save-btn-bg); color:var(--save-btn-color); border:none; padding:8px 20px; cursor:pointer;">Save Theme</button>
         <span id="theme-msg" style="font-family:'IM Fell English',serif; font-size:0.65rem; color:#3a6b4a; font-style:italic; opacity:0; transition:opacity 0.3s;">Saved.</span>
     </div>
 
@@ -260,7 +361,7 @@
     <h2>Default Vertical</h2>
     <p style="font-size:0.7rem; color:#5a3e2b; margin-bottom:8px;">Choose which vertical loads when you visit <strong>dailyhitmetrics.com</strong> or <strong>www.dailyhitmetrics.com</strong>. Navigating directly to a specific vertical (e.g. sports.dailyhitmetrics.com) will always load that page regardless of this setting.</p>
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
-        <select id="default-vertical-select" style="font-family:'Libre Baskerville',serif; font-size:0.7rem; padding:8px 12px; border:1px solid #c8b89a; background:#faf8f4; color:#1a0f00; cursor:pointer;">
+        <select id="default-vertical-select" style="font-family:'Libre Baskerville',serif; font-size:0.7rem; padding:8px 12px; border:1px solid var(--input-border); background:var(--input-bg); color:var(--input-color); cursor:pointer;">
             <option value="">News (default)</option>
             <option value="international">International</option>
             <option value="sports">Sports</option>
@@ -269,7 +370,7 @@
             <option value="entertainment">Entertainment</option>
             <option value="comedy">Comedy</option>
         </select>
-        <button onclick="saveDefaultVertical()" style="font-family:'Libre Baskerville',serif; font-size:0.7rem; font-weight:700; background:#3a6b4a; color:#faf8f4; border:none; padding:8px 20px; cursor:pointer;">Save Default</button>
+        <button onclick="saveDefaultVertical()" style="font-family:'Libre Baskerville',serif; font-size:0.7rem; font-weight:700; background:var(--save-btn-bg); color:var(--save-btn-color); border:none; padding:8px 20px; cursor:pointer;">Save Default</button>
         <span id="default-vertical-msg" style="font-family:'IM Fell English',serif; font-size:0.65rem; color:#3a6b4a; font-style:italic; opacity:0; transition:opacity 0.3s;">Saved.</span>
     </div>
 
@@ -1405,6 +1506,16 @@ function showTypographyIfProPlus(tier) {
 
     // ── ZOOM CONTROL ──
     const ZOOM_LEVELS = [1, 1.02, 1.04, 1.06, 1.08, 1.10, 1.12];
+    // Dark/Parchment theme
+    function getDHMTheme() { const m = document.cookie.match(/dhm-theme=([^;]+)/); return m ? decodeURIComponent(m[1]) : 'dark'; }
+    function applyDHMTheme(theme) {
+        if (theme === 'dark') document.body.classList.add('dark-theme');
+        else document.body.classList.remove('dark-theme');
+        const btn = document.querySelector('.theme-btn');
+        if (btn) btn.title = theme === 'dark' ? 'Theme: True Dark' : 'Theme: Parchment';
+    }
+    applyDHMTheme(getDHMTheme());
+
     function getZoom() { const s = document.cookie.match(/dhm-zoom=([\d.]+)/); return s ? parseFloat(s[1]) : 1.12; }
     function applyZoom(level) { if (window.innerWidth > 900) { document.body.style.zoom = level; } else { document.body.style.zoom = 1; } const btn = document.getElementById('zoom-btn'); if (btn) btn.title = `Text size: ${Math.round(level * 100)}%`; }
     function cycleZoom() { const c = getZoom(); const i = ZOOM_LEVELS.findIndex(z => Math.abs(z-c)<0.01); const n = ZOOM_LEVELS[(i+1)%ZOOM_LEVELS.length]; document.cookie = `dhm-zoom=${n}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`; applyZoom(n); }
