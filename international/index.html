@@ -43,6 +43,7 @@
             --return-color: #3a6b4a;
             --section-banner-border: 3px solid #2c1810;
             --scoreboard-td-bg: transparent;
+            --scoreboard-th-bg: #edf4ef;
             --scoreboard-td-border: 1px solid var(--login-border);
             --scoreboard-hover-bg: #f0ebe0;
             --entity-title-color: #1a0f00;
@@ -146,7 +147,7 @@
         body.dark-theme .editorial-arrow { color: #00c853; }
         body.dark-theme .editorial-text { color: #d0d0d0; }
         body.dark-theme .editorial-byline { color: #707070; }
-        body.dark-theme .scoreboard th { color: #b0b0b0; background: var(--scoreboard-td-bg); border-top-color: var(--border-subtle); border-bottom-color: var(--border-subtle); }
+        body.dark-theme .scoreboard th { color: #b0b0b0; }
         body.dark-theme .rank-col { color: #b0b0b0; }
         body.dark-theme .category-badge { color: #00c853; }
         body.dark-theme .velocity-data { color: #b0b0b0; }
@@ -219,7 +220,7 @@
         /* ── MASTHEAD ── */
         .masthead {
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             padding-bottom: 10px;
             margin-bottom: 0;
         }
@@ -387,9 +388,9 @@
             color: var(--source-name-color);
             padding: 13px 20px;
             text-align: left;
-            background: var(--scoreboard-th-bg, #edf4ef);
-            border-top: 2px solid var(--accel-color);
-            border-bottom: 2px solid var(--accel-color);
+            background: #edf4ef;
+            border-top: 2px solid #3a6b4a;
+            border-bottom: 2px solid #3a6b4a;
         }
 
         .scoreboard td {
