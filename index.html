@@ -812,7 +812,7 @@
         .section-nav {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
+            justify-content: flex-end;
             align-items: center;
             gap: 0.3rem;
             padding: 8px 4px 10px;
@@ -1122,6 +1122,10 @@
         <a href="#" class="section-nav-link locked" id="nav-finance">Finance</a>
         <span class="section-nav-sep">|</span>
         <a href="#" class="section-nav-link locked" id="nav-politics">Politics</a>
+        <span class="section-nav-sep">|</span>
+        <a href="#" class="section-nav-link locked" id="nav-arts">Arts</a>
+        <span class="section-nav-sep">|</span>
+        <a href="#" class="section-nav-link locked" id="nav-science">Science</a>
         <span class="section-nav-sep">|</span>
         <a href="#" class="section-nav-link locked" id="nav-entertainment">Entertainment</a>
         <span class="section-nav-sep">|</span>
@@ -1494,7 +1498,7 @@
         // Update section nav links based on tier
         const sectionNav = document.getElementById('section-nav');
         sectionNav.style.display = 'flex';
-        ['international', 'sports', 'finance', 'politics', 'entertainment', 'comedy'].forEach(section => {
+        ['international', 'sports', 'finance', 'politics', 'arts', 'science', 'entertainment', 'comedy'].forEach(section => {
             const el = document.getElementById(`nav-${section}`);
             if (el) {
                 if (isPro) {
@@ -2048,7 +2052,7 @@
     checkAgeGate();
 
     // Initialize section nav as locked by default
-    ['international', 'sports', 'finance', 'politics', 'entertainment', 'comedy'].forEach(section => {
+    ['international', 'sports', 'finance', 'politics', 'arts', 'science', 'entertainment', 'comedy'].forEach(section => {
         const el = document.getElementById(`nav-${section}`);
         if (el) el.classList.add('locked');
     });
