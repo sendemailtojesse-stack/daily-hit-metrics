@@ -1200,9 +1200,19 @@
                     const isMobile = window.innerWidth <= 768;
                     const isDarkTheme = document.body.classList.contains('dark-theme');
                     const gradientEnd = isDarkTheme ? '#2a2a26' : 'transparent';
-                    const bannerStyle_sports = pref.color === 'solid'
-                        ? `style="background:${pref.gradientColor};"`
-                        : `style="background:linear-gradient(to right, ${pref.gradientColor}, ${gradientEnd});"`;
+                    const darkGradientColors = {
+                        'International News': '#0a1e26',
+                        'Europe': '#0a1230',
+                        'Asia': '#280a28',
+                        'World Community': '#1a2a0a',
+                        'Trending International Searches': '#1e1230'
+                    };
+                    const startColor = isDarkTheme ? (darkGradientColors[labelKey] || pref.gradientColor) : pref.gradientColor;
+                    const bannerStyle_sports = isDarkTheme
+                        ? `style="background:linear-gradient(to right, ${startColor}, ${gradientEnd});"`
+                        : pref.color === 'solid'
+                            ? `style="background:${pref.gradientColor};"`
+                            : `style="background:linear-gradient(to right, ${pref.gradientColor}, transparent);"`;
                     const bannerLabel = isTrendingRegion ? item.sourceName : (SECTION_LABELS[labelKey] || item.category);
                     bannerRow.innerHTML = `<td colspan="${isMobile ? 3 : 5}" class="section-banner ${bannerClass}" ${bannerStyle_sports}>${bannerLabel}</td>`;
                     tableBody.appendChild(bannerRow);
