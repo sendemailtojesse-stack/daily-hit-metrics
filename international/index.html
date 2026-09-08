@@ -349,10 +349,10 @@
         .scoreboard {
             width: 100%;
             border-collapse: collapse;
-            background-color: var(--container-bg);
-            border-left: 1px solid var(--border-subtle);
-            border-right: 1px solid var(--border-subtle);
-            border-bottom: 3px double var(--top-rule-color, #2c1810);
+            background-color: transparent;
+            border-left: none;
+            border-right: none;
+            border-bottom: none;
         }
 
         .scoreboard th {
@@ -364,9 +364,9 @@
             color: var(--source-name-color);
             padding: 13px 20px;
             text-align: left;
-            background: #edf4ef;
-            border-top: 2px solid var(--accel-color);
-            border-bottom: 2px solid var(--accel-color);
+            background: var(--scoreboard-td-bg);
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
         }
 
         .scoreboard td {
@@ -481,7 +481,7 @@
             font-family: 'Libre Baskerville', serif;
             font-size: 0.88rem;
             font-weight: 700;
-            color: var(--h1-color, #2c1810);
+            color: var(--source-name-color);
             text-align: right;
             white-space: nowrap;
         }
@@ -736,10 +736,10 @@
             .section-nav { gap: 0.2rem; padding: 6px 2px 8px; }
         }
 
-        .section-nav-link:hover { color: var(--accel-color); }
+        .section-nav-link:hover { color: var(--section-nav-link-hover); }
 
         .section-nav-link.locked {
-            color: var(--accel-color);
+            color: var(--section-nav-link-color);
             cursor: default;
             pointer-events: none;
         }
@@ -1175,7 +1175,8 @@
 
                 const row = document.createElement('tr');
                 const isNegative = item.growth.startsWith('-');
-                const momentumColor = isNegative ? '#8a2a2a' : '#2a5a2a';
+                const isDark = document.body.classList.contains('dark-theme');
+                const momentumColor = isNegative ? (isDark ? '#9a3a3a' : '#8a2a2a') : (isDark ? '#3a7a3a' : '#2a5a2a');
                 const arrow = isNegative ? '▼' : '▲';
                 const targetUrl = item.url || '#';
 
@@ -1313,11 +1314,11 @@
         if (user) {
             const displayName = firstName || user.email.split('@')[0];
             const tierBtn = isAdmin
-                ? `<span class="nav-user" style="color:#8a1a1a;">✦ Admin</span>`
+                ? `<span class="nav-user" style="color:${document.body.classList.contains('dark-theme') ? '#d0b898' : '#8a1a1a'};">✦ Admin</span>`
                 : isProPlus
-                ? `<span class="nav-user" style="color: var(--accel-color);">✦ Pro+</span>`
+                ? `<span class="nav-user" style="color:${document.body.classList.contains('dark-theme') ? '#5a8a6a' : '#3a6b4a'};">✦ Pro+</span>`
                 : isPro
-                ? `<span class="nav-user" style="color: var(--accel-color);">✦ Pro</span>`
+                ? `<span class="nav-user" style="color:${document.body.classList.contains('dark-theme') ? '#5a8a6a' : '#3a6b4a'};">✦ Pro</span>`
                 : `<a href="#" class="nav-link" style="text-transform:none; background:rgba(58,107,74,0.08); border:0.5px solid #3a6b4a; padding:4px 10px;" onclick="handleUpgrade(); return false;">Upgrade to Pro</a>`;
             const settingsLink = isPro ? `<span style="color:#d4c9b0; font-size:0.6rem;">|</span><a href="https://news.dailyhitmetrics.com/settings.html?from=international" class="nav-link">Settings</a>` : '';
             const adminLinks = isAdmin ? `
