@@ -1522,16 +1522,9 @@ function showTypographyIfProPlus(tier) {
     applyZoom(getZoom());
 
     // ── THEME TOGGLE ──
-    const THEMES = ['twotone', 'parchment', 'white'];
-    // Theme handled by dark/parchment CSS variables
-    function getTheme() { const s = document.cookie.match(/dhm-theme=([a-z]+)/); return s ? s[1] : 'twotone'; }
-    function applyThemeSettings(theme) {
-        const container = document.querySelector('.container');
-        if (theme === 'parchment') { container.style.backgroundColor = '#faf8f4'; }
-        else { container.style.backgroundColor = '#f0f4f8'; }
-    }
-    function cycleTheme() { const c = getTheme(); const i = THEMES.indexOf(c); const n = THEMES[(i+1)%THEMES.length]; document.cookie = `dhm-theme=${n}; domain=.dailyhitmetrics.com; path=/; max-age=31536000; SameSite=Lax; Secure`; applyThemeSettings(n); }
-    applyThemeSettings(getTheme());
+    // Clear any inline background that may override CSS variables
+    const container = document.querySelector('.container');
+    if (container) container.style.backgroundColor = '';
 </script>
 </body>
 </html>
