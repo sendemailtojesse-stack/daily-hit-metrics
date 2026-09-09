@@ -38,7 +38,7 @@
             font-display: block;
         }
         :root {
-            --bg-content: #e0d8c4;
+            --bg-content: #faf8f4;
             --article-font: 'Libre Baskerville', Georgia, serif;
             --article-font-size: 1.05rem;
             --title-font: 'Cinzel', serif;
@@ -58,7 +58,7 @@
             --section-banner-border: 3px solid #2c1810;
             --scoreboard-td-bg: transparent;
             --scoreboard-td-border: 1px solid #c8b89a;
-            --scoreboard-hover-bg: #dad0b8;
+            --scoreboard-hover-bg: #f0ebe0;
             --entity-title-color: #1a0f00;
             --dispatch-link-color: #1a0f00;
             --entity-summary-color: #5a3e2b;
@@ -275,7 +275,7 @@
             left: -20px;
             width: 240px;
             height: 240px;
-            opacity: 0.18;
+            opacity: 0.13;
             pointer-events: none;
         }
 
@@ -1874,7 +1874,7 @@
 
     function getNewspaperShade() {
         const saved = document.cookie.match(/dhm-newspaper=([^;]+)/);
-        return saved ? decodeURIComponent(saved[1]) : '#e0d8c4';
+        return saved ? decodeURIComponent(saved[1]) : '#f8f9fa';
     }
 
     function applyNewspaperShade(shade) {
@@ -2191,10 +2191,8 @@
             currentTier = profile?.subscription_tier;
             updateNav(session.user, profile?.first_name, profile?.subscription_tier);
             await loadUserPrefs(session.user.id);
-            loadDashboard(); // render after prefs loaded
-        } else {
-            loadDashboard(); // render with defaults for unauthenticated users
         }
+        loadDashboard(); // render dashboard after prefs are loaded (or as default if not logged in)
     });
 
     // Listen for auth changes
