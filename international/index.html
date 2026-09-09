@@ -2115,8 +2115,8 @@
             .select('preferences, subscription_tier')
             .eq('id', userId)
             .single();
-        if (profile?.preferences?.news?.sections) {
-            const saved = profile.preferences.news.sections;
+        if (profile?.preferences?.international?.sections) {
+            const saved = profile.preferences.international.sections;
             userPrefs = {};
             Object.keys(NEWS_DEFAULTS).forEach(section => {
                 const savedSrc = saved[section]?.sources || {};
