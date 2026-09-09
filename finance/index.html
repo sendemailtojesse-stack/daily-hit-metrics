@@ -1279,7 +1279,7 @@
 
     async function loadDashboard(isPollingCheck = false) {
         try {
-            const response = await fetch('https://daily-hit-metrics-worker.sendemailtojesse.workers.dev/api/finance?t=' + Date.now());
+            const response = await fetch('https://daily-hit-metrics-finance.sendemailtojesse.workers.dev/api/finance?t=' + Date.now());
             const data = await response.json();
 
             if (isPollingCheck && data.lastUpdated === currentlyLoadedTimestamp) {
