@@ -2191,8 +2191,10 @@
             currentTier = profile?.subscription_tier;
             updateNav(session.user, profile?.first_name, profile?.subscription_tier);
             await loadUserPrefs(session.user.id);
+            loadDashboard(); // render after prefs loaded
+        } else {
+            loadDashboard(); // render with defaults for unauthenticated users
         }
-        loadDashboard(); // render dashboard after prefs are loaded (or as default if not logged in)
     });
 
     // Listen for auth changes
