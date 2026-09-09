@@ -72,45 +72,6 @@ export default {
             });
         }
 
-        if (url.pathname === '/api/finance') {
-            const data = await env.FINANCE_KV.get('data');
-            if (!data) {
-                return new Response(JSON.stringify({ error: 'No finance data available' }), {
-                    status: 404,
-                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
-                });
-            }
-            return new Response(data, {
-                headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache', ...corsHeaders }
-            });
-        }
-
-        if (url.pathname === '/api/politics') {
-            const data = await env.POLITICS_KV.get('data');
-            if (!data) {
-                return new Response(JSON.stringify({ error: 'No politics data available' }), {
-                    status: 404,
-                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
-                });
-            }
-            return new Response(data, {
-                headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache', ...corsHeaders }
-            });
-        }
-
-        if (url.pathname === '/api/entertainment') {
-            const data = await env.ENTERTAINMENT_KV.get('data');
-            if (!data) {
-                return new Response(JSON.stringify({ error: 'No entertainment data available' }), {
-                    status: 404,
-                    headers: { 'Content-Type': 'application/json', ...corsHeaders }
-                });
-            }
-            return new Response(data, {
-                headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache', ...corsHeaders }
-            });
-        }
-
         // ── STRIPE CHECKOUT ──
         if (url.pathname === '/api/create-checkout-session' && request.method === 'POST') {
             try {
